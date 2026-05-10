@@ -1,0 +1,22 @@
+# === 인증/비밀키 (절대 커밋 금지) ===
+.gdrive-server-credentials.json
+gcp-oauth.keys.json
+token_response.json
+auth_script.py
+
+# === 환경 ===
+.venv/
+.env
+node_modules/
+drive-mcp/node_modules/
+
+# === OS ===
+.DS_Store
+Thumbs.db
+
+# === 대용량 바이너리 (PDF 논문은 Google Drive에서 관리) ===
+GEMINI/진동논문/*.pdf
+
+# === 기타 ===
+*.pyc
+__pycache__/
