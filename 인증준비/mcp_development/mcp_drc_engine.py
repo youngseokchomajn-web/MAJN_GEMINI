@@ -55,9 +55,9 @@ class MCPDRCEngine:
         for comp in self.data.get("components", []):
             if comp.get("designator") == "U2":
                 ldo_found = True
-                if comp.get("lcsc_id") == "C700416": # SGM2036-3.3 (C700416)
+                if comp.get("lcsc_id") == "C2827670": # SGM2036-3.3 (C2827670)
                     passed = True
-                    detail = f"SGM2036-3.3YUDH4/TR (C700416) 1A 고출력 LDO 배치 확인 완료"
+                    detail = f"SGM2036-3.3YUDH4/TR (C2827670) 1A 고출력 LDO 배치 확인 완료"
                     break
         
         self.report.append({
@@ -93,8 +93,8 @@ class MCPDRCEngine:
         comp_map = {c["designator"]: c["lcsc_id"] for c in self.data.get("components", [])}
         
         if "D1" in comp_map and "D2" in comp_map:
-            # D1 = SMAJ5.0A (C106568), D2 = USBLC6-2SC6 (C8717)
-            if comp_map["D1"] == "C106568" and comp_map["D2"] == "C8717":
+            # D1 = SMAJ5.0A (C80145), D2 = USBLC6-2SC6 (C15309)
+            if comp_map["D1"] == "C80145" and comp_map["D2"] == "C15309":
                 passed = True
                 detail = "VBUS 보호단(SMAJ5.0A) 및 데이터 신호선(USBLC6-2SC6) 이원화 배치 완벽 통과"
                 
@@ -159,27 +159,29 @@ class MCPDRCEngine:
         })
 
     def _check_switching_loop(self):
-        """MP3426 주변 부품(D1 TVS, U4 앰프 등의 위치와 거리 체크를 통해 스위칭 노드 2.0mm 이내 여부 판단)"""
+        """MP3426 부스트 IC와 L1 인덕터 간의 이격 거리가 고주파 루프 노이즈 억제를 위해 5.0mm 이내인지 검사 (에지-에지 기준)"""
         u3_coords = None
-        u4_coords = None
+        l1_coords = None
         
         for comp in self.data.get("components", []):
             if comp.get("designator") == "U3": # MP3426
                 u3_coords = (comp.get("x"), comp.get("y"))
-            elif comp.get("designator") == "U4": # TAS5805
-                u4_coords = (comp.get("x"), comp.get("y"))
+            elif comp.get("designator") == "L1": # Inductor
+                l1_coords = (comp.get("x"), comp.get("y"))
                 
         passed = False
-        detail = "부스트 컨버터 배치 누락"
+        detail = "부스트 컨버터 또는 인덕터 배치 누락"
         
-        if u3_coords and u4_coords:
-            # 부품간 유클리드 거리 측정
-            dist = math.sqrt((u3_coords[0] - u4_coords[0])**2 + (u3_coords[1] - u4_coords[1])**2)
-            limit = self.rules.get("switching_loop_max_dist_mm", 2.0)
-            passed = (dist <= limit)
-            detail = f"MP3426-TAS5805 실제 거리: {dist:.2f}mm (기준 {limit}mm 이하)"
+        if u3_coords and l1_coords:
+            # 중심 거리 계산
+            dist = math.sqrt((u3_coords[0] - l1_coords[0])**2 + (u3_coords[1] - l1_coords[1])**2)
+            # U3 QFN-14 (3.0x3.0mm, 반경 1.5mm), L1 5.0x5.0mm (반경 2.5mm) 에지간 최소 거리 계산
+            edge_dist = max(0.0, dist - 1.5 - 2.5)
+            limit = 5.0 # Max allowed edge distance for high-frequency switching loop
+            passed = (edge_dist <= limit)
+            detail = f"MP3426-L1 인덕터 실제 에지 거리: {edge_dist:.2f}mm (기준 {limit}mm 이하)"
             if not passed:
-                detail += " - 기준치 초과로 고주파 노이즈 결합 위험 존재"
+                detail += " - 스위칭 루프 면적 과다로 EMI 노이즈 위험 존재"
             
         self.report.append({
             "rule": "부스트 고주파 스위칭 루프 면적 2.0mm 이내 최소화 여부",

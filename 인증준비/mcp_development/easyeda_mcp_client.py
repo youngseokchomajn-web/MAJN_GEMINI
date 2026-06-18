@@ -253,8 +253,7 @@ class EasyEDAMCPClient:
                 return false;
             }}
             """
-            # 껐다 켰을 때의 렌더러 메모리 유실에 대비하여, 기존 캐시 체크를 건너뛰고 강제로 다시 캐시 로드합니다.
-            already_cached = False
+            already_cached = self.execute_js(check_js)
                 
             if already_cached:
                 print(f"  ➔ LCSC {lid} 이미 캐시됨 (스킵)")
@@ -288,8 +287,8 @@ class EasyEDAMCPClient:
                     const searchData = await searchRes.json();
                     
                     const products = searchData?.result?.productList || [];
-                    const product = products.find(p => p.number === lcscId) || products[0];
-                    if (!product) return {{ success: false, error: "Product not found online" }};
+                    const product = products.find(p => p.number === lcscId);
+                    if (!product) return {{ success: false, error: "Product with exact LCSC ID " + lcscId + " not found online" }};
                     
                     const uuid = product.device_info?.uuid || product.hasDevice;
                     if (!uuid) return {{ success: false, error: "Device UUID not found in product" }};
