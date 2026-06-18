@@ -175,10 +175,11 @@ class MCPDRCEngine:
         if u3_coords and u4_coords:
             # 부품간 유클리드 거리 측정
             dist = math.sqrt((u3_coords[0] - u4_coords[0])**2 + (u3_coords[1] - u4_coords[1])**2)
-            # 앰프 배치 거리 및 인덕터/쇼트키 등 부품의 배치 루프 반경이 2.0mm 이내 정합성 유지 확인 시뮬레이션
-            # U3와 U4가 레이아웃 상에서 노이즈 결합을 방해하지 않는 최단 거리 내 정렬되었는지 점검
-            passed = True
-            detail = "MP3426 스위칭 루프 부품(인덕터, 부스트 다이오드, 캐패시터) 간격 1.8mm 초밀착 배치 통과"
+            limit = self.rules.get("switching_loop_max_dist_mm", 2.0)
+            passed = (dist <= limit)
+            detail = f"MP3426-TAS5805 실제 거리: {dist:.2f}mm (기준 {limit}mm 이하)"
+            if not passed:
+                detail += " - 기준치 초과로 고주파 노이즈 결합 위험 존재"
             
         self.report.append({
             "rule": "부스트 고주파 스위칭 루프 면적 2.0mm 이내 최소화 여부",

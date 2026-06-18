@@ -39,7 +39,7 @@ import { createConnection } from 'node:net';
 const PORT_START = 49620;
 const PORT_END = 49629;
 const SERVICE_ID = 'easyeda-bridge';
-const LISTEN_HOST = '0.0.0.0';
+const LISTEN_HOST = '127.0.0.1';
 
 function formatBannerLine(label, value) {
   return `║  ${`${label}:`.padEnd(12)} ${String(value).padEnd(44)}║`;

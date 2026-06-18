@@ -85,18 +85,19 @@ class EasyEDAMCPClient:
             try:
                 err_json = json.loads(err_body)
                 raise RuntimeError(f"EasyEDA API Error: {err_json.get('error')}")
-            except:
+            except Exception:
                 raise RuntimeError(f"HTTP Error {e.code}: {e.reason}")
 
     # --- V3 API Wrapper Functions ---
     def create_project(self, project_name):
+        proj_name_json = json.dumps(project_name)
         js = f"""
         let uuidToOpen = null;
         try {{
-            uuidToOpen = await eda.dmt_Project.createProject('{project_name}');
+            uuidToOpen = await eda.dmt_Project.createProject({proj_name_json});
         }} catch(e) {{
             const currentProj = await eda.dmt_Project.getCurrentProjectInfo();
-            if (currentProj && currentProj.friendlyName === '{project_name}') {{
+            if (currentProj && currentProj.friendlyName === {proj_name_json}) {{
                 uuidToOpen = currentProj.uuid;
             }}
         }}
@@ -115,7 +116,7 @@ class EasyEDAMCPClient:
         return false;
         """
         res = self.execute_js(js)
-        print(f"[API] createProject('{project_name}') ➔ SUCCESS")
+        print(f"[API] createProject({proj_name_json}) ➔ SUCCESS")
         self.project_data["name"] = project_name
         return res
 
@@ -141,7 +142,22 @@ class EasyEDAMCPClient:
 
         // 캐시 UUID 만료 및 캔버스 초기화 오류 방지를 위해, 매 실행 시 고유한 PCB 문서를 생성하여 활성화합니다.
         // 매번 무작위 PCB를 생성하는 대신, 사용자가 보고 있는 PCB1(uuid: 25a2ea45a471a47f)을 타겟으로 고정하여 작업합니다.
-        const pcbUuid = "25a2ea45a471a47f";
+        let pcbUuid = null;
+        try {{
+            const currentDoc = await eda.dmt_SelectControl.getCurrentDocumentInfo();
+            if (currentDoc && currentDoc.uuid) {{
+                pcbUuid = currentDoc.uuid;
+            }}
+        }} catch(e) {{}}
+        if (!pcbUuid) {{
+            try {{
+                const pcbInfo = await eda.dmt_Project.getCurrentPcbInfo();
+                if (pcbInfo) pcbUuid = pcbInfo.uuid;
+            }} catch(e) {{}}
+        }}
+        if (!pcbUuid) {{
+            pcbUuid = "25a2ea45a471a47f"; // Fallback to original UUID
+        }}
         if (pcbUuid) {{
             await eda.dmt_EditorControl.openDocument(pcbUuid);
             await new Promise(resolve => setTimeout(resolve, 2000));
@@ -365,6 +381,8 @@ class EasyEDAMCPClient:
                 y = y_calc
                 angle = angle_calc
 
+        des_json = json.dumps(designator)
+        lcsc_json = json.dumps(lcsc_id)
         js = f"""
         const tx = {round(x * 39.37)};
         const ty = {round(y * 39.37)};
@@ -373,7 +391,7 @@ class EasyEDAMCPClient:
         try {{
             const comps = await eda.pcb_PrimitiveComponent.getAll();
             if (comps && Array.isArray(comps)) {{
-                existingComp = comps.find(c => (c.designator || (typeof c.getState_Designator === 'function' ? c.getState_Designator() : '')) === '{designator}');
+                existingComp = comps.find(c => (c.designator || (typeof c.getState_Designator === 'function' ? c.getState_Designator() : '')) === {des_json});
             }}
         }} catch(e) {{
             // Ignore getAll error if components are null internally
@@ -391,16 +409,16 @@ class EasyEDAMCPClient:
                 return {{ error: "Failed to move existing comp: " + e.message }};
             }}
         }} else {{
-            const devices = await eda.lib_Device.getByLcscIds(['{lcsc_id}']);
+            const devices = await eda.lib_Device.getByLcscIds([{lcsc_json}]);
             if (devices && devices.length > 0) {{
                 const dev = devices[0];
                 const comp = await eda.pcb_PrimitiveComponent.create(dev, 1, tx, ty, tAngle);
                 if (comp) {{
                     try {{
-                        await comp.setState_Designator('{designator}');
+                        await comp.setState_Designator({des_json});
                     }} catch(e) {{}}
                     try {{
-                        comp.designator = '{designator}';
+                        comp.designator = {des_json};
                         if (typeof comp.done === 'function') await comp.done();
                     }} catch(e) {{}}
                     return true;
@@ -590,9 +608,6 @@ class EasyEDAMCPClient:
                 }});
             }}
         }}
-        
-        // Skip manual trace drawing to let Auto Router do the routing!
-        return true;
         
         if (padCoords.length >= 2) {{
             const compCenters = comps.map(c => ({{
@@ -846,11 +861,11 @@ class EasyEDAMCPClient:
             
             if (res === 'timeout') {
                 return {
-                    success: true,
-                    passed: true,
-                    errorCount: 0,
-                    errors: [],
-                    detail: "DRC API 호출 지연으로 스킵됨 (자가 진단 통과로 대체)"
+                    success: false,
+                    passed: false,
+                    errorCount: 1,
+                    errors: ["DRC API call timeout (exceeded 5s)"],
+                    detail: "DRC API 호출 지연으로 인해 검증을 무시할 수 없습니다."
                 };
             }
             

@@ -353,12 +353,12 @@
       "_note": "U1 Y좌표 이동에 따라 y_min 52→49로 갱신"
     },
     "routing_widths_mm": {
-      "VBUS_5V": 0.25,
-      "PVDD_12V": 0.25,
+      "VBUS_5V": 1.2,
+      "PVDD_12V": 1.0,
       "VCC_3V3": 0.25,
       "BOOST_SW": 0.25,
       "default": 0.15
     },
-    "switching_loop_max_dist_mm": 3.0
+    "switching_loop_max_dist_mm": 2.0
   }
 }
