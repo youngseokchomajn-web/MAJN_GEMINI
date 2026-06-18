@@ -99,9 +99,12 @@ def main():
             print(">>> 설계 흐름을 중단합니다. <<<\n")
             return
             
-        # GND Copper Pour 주입 (Layer 2 - INNER_1 / Value: 15)
-        print("\n[API] Layer 2 GND Solid Plane 주입 중...")
-        client.inject_copper_pour("GND", 15)
+        # GND Copper Pour 주입 (4개 층 모두: Top=1, Bottom=2, Inner1=15, Inner2=16)
+        print("\n[API] 4-Layer GND Solid Plane 주입 중...")
+        client.inject_copper_pour("GND", 1)   # Top Layer
+        client.inject_copper_pour("GND", 2)   # Bottom Layer
+        client.inject_copper_pour("GND", 15)  # Inner1 Layer
+        client.inject_copper_pour("GND", 16)  # Inner2 Layer
             
         # 자동 배선 및 파일 출력 실행
         print("\n[3/4] Auto-Routing & Gerber Export 실행...")
