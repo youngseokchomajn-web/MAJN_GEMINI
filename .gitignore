@@ -20,3 +20,6 @@ GEMINI/진동논문/*.pdf
 # === 기타 ===
 *.pyc
 __pycache__/
+npm_cache_temp/
+Gerber_Output/
+

@@ -1,0 +1,364 @@
+{
+  "project_name": "Majung_Smart_Bassinet_v1.1",
+  "version": "1.1.1",
+  "board_dimensions": {
+    "width_mm": 80.0,
+    "height_mm": 60.0,
+    "layers": 4
+  },
+  "components": [
+    {
+      "designator": "U1",
+      "name": "ESP32-WROOM-32E",
+      "lcsc_id": "C701342",
+      "package": "SMD-ESP32-WROOM",
+      "x": 40.0,
+      "y": 47.0,
+      "angle": 0,
+      "_note": "Y 50→47: 안테나 보드에지 노출 유지하면서 경계 내 수용 (상단 y=59.75mm < 60mm)"
+    },
+    {
+      "designator": "U2",
+      "name": "SGM2036-3.3YUDH4/TR",
+      "lcsc_id": "C700416",
+      "package": "SOT-23-5",
+      "x": 20.0,
+      "y": 30.0,
+      "angle": 90
+    },
+    {
+      "designator": "U3",
+      "name": "MPS MP3426 Boost Converter",
+      "lcsc_id": "C162810",
+      "package": "QFN-14",
+      "x": 60.0,
+      "y": 30.0,
+      "angle": 180
+    },
+    {
+      "designator": "U4",
+      "name": "TI TAS5805M Amplifier",
+      "lcsc_id": "C385387",
+      "package": "HTSSOP-28",
+      "x": 60.0,
+      "y": 15.0,
+      "angle": 0
+    },
+    {
+      "designator": "U5",
+      "name": "ST LSM6DSOX Accelerometer",
+      "lcsc_id": "C481766",
+      "package": "LGA-14",
+      "x": 20.0,
+      "y": 15.0,
+      "angle": 270
+    },
+    {
+      "designator": "D1",
+      "name": "SMAJ5.0A TVS Diode",
+      "lcsc_id": "C106568",
+      "package": "SMA-DO-214AC",
+      "x": 16.0,
+      "y": 35.0,
+      "angle": 90,
+      "_note": "USB-C 우측 상단 밀착 (C3과 간격 1.1mm 확보, 서지 직렬 경로 확보)"
+    },
+    {
+      "designator": "D2",
+      "name": "USBLC6-2SC6 TVS Diode",
+      "lcsc_id": "C8717",
+      "package": "SOT-23-6",
+      "x": 13.0,
+      "y": 26.0,
+      "angle": 90,
+      "_note": "USB-C 바로 우측 하단 밀착 (D+/D- 데이터 라인 보호, 에지 간격 ~0.5mm)"
+    },
+    {
+      "designator": "USB_C",
+      "name": "TYPE-C-16P Female",
+      "lcsc_id": "C165948",
+      "package": "USB-C-16P",
+      "x": 8.0,
+      "y": 30.0,
+      "angle": 90
+    },
+    {
+      "designator": "UART_HDR",
+      "name": "UART 6Pin Header",
+      "lcsc_id": "C124375",
+      "package": "HDR-M-2.54_1X6",
+      "x": 40.0,
+      "y": 10.0,
+      "angle": 0
+    },
+    {
+      "designator": "C1",
+      "name": "MCU Bypass 10uF",
+      "lcsc_id": "C19702",
+      "package": "0603",
+      "x": 35.0,
+      "y": 33.0,
+      "angle": 0,
+      "_note": "ESP32 3V3 핀 바로 아래 밀착 (패키지 에지 ~1mm)"
+    },
+    {
+      "designator": "C2",
+      "name": "MCU Bypass 100nF",
+      "lcsc_id": "C14663",
+      "package": "0603",
+      "x": 38.0,
+      "y": 33.0,
+      "angle": 0,
+      "_note": "C1 우측 나란히 배치 (ESP32 하단 GND/3V3 핀 근접)"
+    },
+    {
+      "designator": "C3",
+      "name": "LDO Input Cap 10uF",
+      "lcsc_id": "C19702",
+      "package": "0603",
+      "x": 17.0,
+      "y": 30.0,
+      "angle": 90
+    },
+    {
+      "designator": "C4",
+      "name": "LDO Output Cap 10uF",
+      "lcsc_id": "C19702",
+      "package": "0603",
+      "x": 23.0,
+      "y": 30.0,
+      "angle": 90
+    },
+    {
+      "designator": "C5",
+      "name": "Boost Input Cap 4.7uF",
+      "lcsc_id": "C19666",
+      "package": "0603",
+      "x": 56.0,
+      "y": 30.0,
+      "angle": 0,
+      "_note": "U3 IN 핀 밀착 (54→56, 에지 간격 1.2mm)"
+    },
+    {
+      "designator": "C6",
+      "name": "Boost Output Cap 22uF",
+      "lcsc_id": "C784585",
+      "package": "0805",
+      "x": 63.0,
+      "y": 32.0,
+      "angle": 90,
+      "_note": "U3 OUT 핀 밀착 (66,36→63,32)"
+    },
+    {
+      "designator": "C7",
+      "name": "Boost Output Cap 22uF",
+      "lcsc_id": "C784585",
+      "package": "0805",
+      "x": 64.0,
+      "y": 28.0,
+      "angle": 0,
+      "_note": "U3 OUT 핀 밀착 2번째 (68,36→64,28, U3 에지 ~1mm)"
+    },
+    {
+      "designator": "C8",
+      "name": "Amp PVDD Cap 10uF",
+      "lcsc_id": "C19702",
+      "package": "0603",
+      "x": 58.0,
+      "y": 10.0,
+      "angle": 0,
+      "_note": "U4 PVDD 핀 밀착 (y:8→10, HTSSOP 바디 밖 0.7mm)"
+    },
+    {
+      "designator": "C9",
+      "name": "Amp PVDD Cap 10uF",
+      "lcsc_id": "C19702",
+      "package": "0603",
+      "x": 62.0,
+      "y": 10.0,
+      "angle": 0,
+      "_note": "U4 PVDD 핀 밀착 (y:8→10, HTSSOP 바디 밖 0.7mm)"
+    },
+    {
+      "designator": "C10",
+      "name": "Accel VDD Cap 100nF",
+      "lcsc_id": "C14663",
+      "package": "0603",
+      "x": 16.0,
+      "y": 15.0,
+      "angle": 90
+    },
+    {
+      "designator": "L1",
+      "name": "Boost Inductor 4.7uH",
+      "lcsc_id": "C168239",
+      "package": "SMD-5.0x5.0",
+      "x": 60.0,
+      "y": 38.0,
+      "angle": 0
+    },
+    {
+      "designator": "D3",
+      "name": "Boost Schottky Diode",
+      "lcsc_id": "C186407",
+      "package": "SOD-123",
+      "x": 66.0,
+      "y": 30.0,
+      "angle": 180
+    },
+    {
+      "designator": "R1",
+      "name": "Boost FB Resistor 1",
+      "lcsc_id": "C22818",
+      "package": "0603",
+      "x": 54.0,
+      "y": 25.0,
+      "angle": 0
+    },
+    {
+      "designator": "R2",
+      "name": "Boost FB Resistor 2",
+      "lcsc_id": "C22807",
+      "package": "0603",
+      "x": 58.0,
+      "y": 25.0,
+      "angle": 0,
+      "_note": "R1과 간격 확보 (56→58, 4mm 이격)"
+    }
+  ],
+  "nets": {
+    "VBUS_5V": [
+      ["USB_C", "VBUS"],
+      ["D1", "1"],
+      ["U2", "IN"],
+      ["C3", "1"],
+      ["U3", "IN"],
+      ["C5", "1"],
+      ["L1", "1"]
+    ],
+    "VCC_3V3": [
+      ["U2", "OUT"],
+      ["C4", "1"],
+      ["U1", "3V3"],
+      ["C1", "1"],
+      ["C2", "1"],
+      ["U5", "VDD"],
+      ["C10", "1"],
+      ["UART_HDR", "3V3"]
+    ],
+    "PVDD_12V": [
+      ["D3", "2"],
+      ["C6", "1"],
+      ["C7", "1"],
+      ["R1", "1"],
+      ["U4", "PVDD"],
+      ["C8", "1"],
+      ["C9", "1"]
+    ],
+    "BOOST_SW": [
+      ["U3", "SW"],
+      ["L1", "2"],
+      ["D3", "1"]
+    ],
+    "BOOST_FB": [
+      ["U3", "FB"],
+      ["R1", "2"],
+      ["R2", "1"]
+    ],
+    "SPI_MOSI": [
+      ["U1", "GPIO23"],
+      ["U5", "SDI"]
+    ],
+    "SPI_MISO": [
+      ["U1", "GPIO19"],
+      ["U5", "SDO"]
+    ],
+    "SPI_SCLK": [
+      ["U1", "GPIO18"],
+      ["U5", "SPC"]
+    ],
+    "SPI_CS": [
+      ["U1", "GPIO5"],
+      ["U5", "CS"]
+    ],
+    "SENSOR_INT1": [
+      ["U5", "INT1"],
+      ["U1", "GPIO34"]
+    ],
+    "I2S_BCLK": [
+      ["U1", "GPIO26"],
+      ["U4", "SCLK"]
+    ],
+    "I2S_LRCLK": [
+      ["U1", "GPIO25"],
+      ["U4", "LRCLK"]
+    ],
+    "I2S_DIN": [
+      ["U1", "GPIO22"],
+      ["U4", "SDIN"]
+    ],
+    "AMP_I2C_SDA": [
+      ["U1", "GPIO21"],
+      ["U4", "SDA"]
+    ],
+    "AMP_I2C_SCL": [
+      ["U1", "GPIO27"],
+      ["U4", "SCL"]
+    ],
+    "ESP_RXD": [
+      ["U1", "RXD"],
+      ["UART_HDR", "RXD"]
+    ],
+    "ESP_TXD": [
+      ["U1", "TXD"],
+      ["UART_HDR", "TXD"]
+    ],
+    "ESP_IO0": [
+      ["U1", "GPIO0"],
+      ["UART_HDR", "IO0"]
+    ],
+    "ESP_EN": [
+      ["U1", "EN"],
+      ["UART_HDR", "EN"]
+    ],
+    "GND": [
+      ["USB_C", "GND"],
+      ["D1", "2"],
+      ["U2", "GND"],
+      ["C3", "2"],
+      ["C4", "2"],
+      ["U3", "GND"],
+      ["C5", "2"],
+      ["C6", "2"],
+      ["C7", "2"],
+      ["R2", "2"],
+      ["U1", "GND"],
+      ["C1", "2"],
+      ["C2", "2"],
+      ["U5", "GND"],
+      ["C10", "2"],
+      ["U4", "GND"],
+      ["C8", "2"],
+      ["C9", "2"],
+      ["D2", "GND"],
+      ["UART_HDR", "GND"]
+    ]
+  },
+  "pcb_constraints": {
+    "antenna_keepout": {
+      "x_min": 32.5,
+      "x_max": 47.5,
+      "y_min": 49.0,
+      "y_max": 60.0,
+      "_note": "U1 Y좌표 이동에 따라 y_min 52→49로 갱신"
+    },
+    "routing_widths_mm": {
+      "VBUS_5V": 0.25,
+      "PVDD_12V": 0.25,
+      "VCC_3V3": 0.25,
+      "BOOST_SW": 0.25,
+      "default": 0.15
+    },
+    "switching_loop_max_dist_mm": 3.0
+  }
+}
