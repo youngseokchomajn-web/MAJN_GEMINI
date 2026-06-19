@@ -376,6 +376,56 @@
       "y": 8.0,
       "angle": 0,
       "_note": "추가(v1.2): TAS5805M VR_DIG(pin4, 내부1.5V reg) 디커플"
+    },
+    {
+      "designator": "R9",
+      "name": "Boost FSET 82k",
+      "lcsc_id": "C325632",
+      "package": "0603",
+      "x": 50.0,
+      "y": 33.0,
+      "angle": 0,
+      "_note": "추가(v1.2.1): MP3426 FSET(14)→GND, 82k≈556kHz (데이터시트 84.5k=540kHz/Table2=600kHz)"
+    },
+    {
+      "designator": "R10",
+      "name": "Boost COMP Res 24.9k",
+      "lcsc_id": "C48391802",
+      "package": "0603",
+      "x": 48.0,
+      "y": 31.0,
+      "angle": 0,
+      "_note": "추가(v1.2.1): MP3426 COMP 보상저항(Table2 5V/12V/22uF=25k)"
+    },
+    {
+      "designator": "R11",
+      "name": "Boost EN Pulldown 100k",
+      "lcsc_id": "C2073721",
+      "package": "0603",
+      "x": 48.0,
+      "y": 35.0,
+      "angle": 0,
+      "_note": "추가(v1.2.1): MP3426 EN(2) 풀다운(부팅 시 boost OFF 페일세이프, 데이터시트 do-not-float)"
+    },
+    {
+      "designator": "C21",
+      "name": "Boost VDD Cap 1uF",
+      "lcsc_id": "C106858",
+      "package": "0603",
+      "x": 50.0,
+      "y": 35.0,
+      "angle": 0,
+      "_note": "추가(v1.2.1): MP3426 VDD(7, 내부LDO 출력) 바이패스"
+    },
+    {
+      "designator": "C22",
+      "name": "Boost COMP Cap 4.7nF",
+      "lcsc_id": "C596328",
+      "package": "0603",
+      "x": 48.0,
+      "y": 33.0,
+      "angle": 0,
+      "_note": "추가(v1.2.1): MP3426 COMP 보상캡(Table2 4.9nF≈4.7nF), R10과 직렬→GND"
     }
   ],
   "nets": {
@@ -433,7 +483,24 @@
     ],
     "BOOST_EN": [
       ["U1", "GPIO4"],
-      ["U3", "2"]
+      ["U3", "2"],
+      ["R11", "1"]
+    ],
+    "BOOST_VDD": [
+      ["U3", "7"],
+      ["C21", "1"]
+    ],
+    "BOOST_FSET": [
+      ["U3", "14"],
+      ["R9", "1"]
+    ],
+    "BOOST_COMP": [
+      ["U3", "1"],
+      ["R10", "1"]
+    ],
+    "COMP_RC": [
+      ["R10", "2"],
+      ["C22", "1"]
     ],
     "SPI_MOSI": [
       ["U1", "GPIO23"],
@@ -591,7 +658,11 @@
       ["C17", "2"],
       ["C18", "2"],
       ["C19", "2"],
-      ["C20", "2"]
+      ["C20", "2"],
+      ["R9", "2"],
+      ["C21", "2"],
+      ["C22", "2"],
+      ["R11", "2"]
     ]
   },
   "pcb_constraints": {

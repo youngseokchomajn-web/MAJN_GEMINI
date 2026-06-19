@@ -85,7 +85,28 @@ def main():
         print("[ERROR] 브릿지 서버 및 에디터 연결 실패")
         sys.exit(1)
 
+    # 파이썬 측에서 LCSC ID 일괄 조회하여 캔버스 쿼리 속도 극대화 (타임아웃 방지)
+    components = flow["components"]
+    lcsc_ids = list(set(c["lcsc_id"] for c in components))
+    print(f"EasyEDA에서 {len(lcsc_ids)}개 부품 정보 일괄 조회 중...")
+    js_query_devices = f"return await eda.lib_Device.getByLcscIds({json.dumps(lcsc_ids)});"
+    devices = client.execute_js(js_query_devices)
+    
+    lcsc_to_dev = {}
+    if devices:
+        for d in devices:
+            sid = d.get("supplierId")
+            if sid:
+                lcsc_to_dev[sid] = {
+                    "libraryUuid": d.get("libraryUuid"),
+                    "uuid": d.get("uuid")
+                }
+        print(f"부품 정보 조회 성공: {len(lcsc_to_dev)}개 매칭됨.")
+    else:
+        print("[WARN] EasyEDA 부품 정보 조회 실패. 빈 상태로 진행합니다.")
+
     components_js = json.dumps(flow["components"])
+    lcsc_to_dev_js = json.dumps(lcsc_to_dev)
     
     grid_map = {
         "USB_C": {"x": 100, "y": 150},
@@ -115,25 +136,23 @@ def main():
         "R8": {"x": 1200, "y": 530},
         "C18": {"x": 1200, "y": 610},
         "C19": {"x": 1200, "y": 690},
-        "C20": {"x": 1200, "y": 770}
+        "C20": {"x": 1200, "y": 770},
+        "R9": {"x": 350, "y": 150},
+        "R10": {"x": 350, "y": 250},
+        "R11": {"x": 350, "y": 350},
+        "C21": {"x": 550, "y": 600},
+        "C22": {"x": 550, "y": 700}
     }
     grid_map_js = json.dumps(grid_map)
 
     # 1단계: 컴포넌트 배치 및 핀 정보 리턴
-    js_place_and_query = f"""
-    let logs = [];
+    # (1A) 캔버스 클리어 및 기존 devMap 수집
+    js_clear = f"""
     try {{
-        logs.push("1. 회로도 페이지 찾기 및 활성화");
         let pages = await eda.dmt_Schematic.getAllSchematicPagesInfo();
         if (!pages || pages.length === 0) {{
-            logs.push("회로도 페이지 없음 -> 생성 시도");
             let schematics = await eda.dmt_Schematic.getAllSchematicsInfo();
-            let schUuid;
-            if (!schematics || schematics.length === 0) {{
-                schUuid = await eda.dmt_Schematic.createSchematic();
-            }} else {{
-                schUuid = schematics[0].uuid;
-            }}
+            let schUuid = (schematics && schematics.length > 0) ? schematics[0].uuid : await eda.dmt_Schematic.createSchematic();
             if (schUuid) {{
                 await eda.dmt_Schematic.createSchematicPage(schUuid);
                 await new Promise(resolve => setTimeout(resolve, 2000));
@@ -141,126 +160,142 @@ def main():
             }}
         }}
         if (!pages || pages.length === 0) {{
-            return {{ success: false, error: "회로도 페이지 생성 실패", logs }};
+            return {{ success: false, error: "회로도 페이지 생성 실패" }};
         }}
         const pageUuid = pages[0].uuid;
-        logs.push("페이지 열기: " + pageUuid);
         await eda.dmt_EditorControl.openDocument(pageUuid);
         await new Promise(resolve => setTimeout(resolve, 1500));
         await eda.dmt_EditorControl.activateDocument(pageUuid);
         await new Promise(resolve => setTimeout(resolve, 1500));
 
-        logs.push("2. 기존 회로도 요소 클리어");
+        const devMap = {{}};
         const oldComps = await eda.sch_PrimitiveComponent.getAll();
         if (oldComps && oldComps.length > 0) {{
+            for (const c of oldComps) {{
+                if (c.getState_ComponentType() === 'part') {{
+                    const des = c.getState_Designator();
+                    if (des) {{
+                        try {{
+                            const sym = c.getState_Symbol();
+                            if (sym && sym.libraryUuid && sym.uuid) {{
+                                devMap[des] = {{
+                                    libraryUuid: sym.libraryUuid,
+                                    uuid: sym.uuid
+                                }};
+                            }}
+                        }} catch(e) {{}}
+                    }}
+                }}
+            }}
             const ids = oldComps.filter(c => c.getState_ComponentType() !== 'sheet').map(c => c.getState_PrimitiveId());
             if (ids.length > 0) {{
-                logs.push("기존 부품 삭제 개수: " + ids.length);
                 await eda.sch_PrimitiveComponent.delete(ids);
             }}
         }}
         const oldWires = await eda.sch_PrimitiveWire.getAll();
         if (oldWires && oldWires.length > 0) {{
             const ids = oldWires.map(w => w.getState_PrimitiveId());
-            logs.push("기존 와이어 삭제 개수: " + ids.length);
             await eda.sch_PrimitiveWire.delete(ids);
         }}
+        return {{ success: true, devMap: devMap }};
+    }} catch(e) {{
+        return {{ success: false, error: e.message }};
+    }}
+    """
+    
+    print("1-A단계: 기존 캔버스 클리어 및 심볼 매핑 분석 중...")
+    res_clear = client.execute_js(js_clear)
+    if not res_clear or not res_clear.get("success"):
+        err = res_clear.get("error") if res_clear else "알 수 없는 응답"
+        print(f"[ERROR] 1-A단계(클리어) 실패: {err}")
+        sys.exit(1)
+        
+    dev_map = res_clear.get("devMap", {})
+    print(f"기존 심볼 매핑 획득 완료: {len(dev_map)}개")
 
-        const flowComps = {components_js};
-        const gridMap = {grid_map_js};
-
-        logs.push("3. 디바이스 정보 조회 및 캐싱");
-        const devMap = {{}};
-        for (const compInfo of flowComps) {{
-            const lcscId = compInfo.lcsc_id;
-            try {{
-                const devices = await eda.lib_Device.getByLcscIds([lcscId]);
-                if (devices && devices.length > 0) {{
-                    devMap[compInfo.designator] = devices[0];
-                    logs.push("디바이스 캐싱 완료: " + compInfo.designator + " (" + lcscId + ")");
-                }} else {{
-                    logs.push("디바이스 캐시 없음 (LCSC 검색 안됨): " + compInfo.designator + " (" + lcscId + ")");
-                }}
-                await new Promise(resolve => setTimeout(resolve, 50));
-            }} catch (e) {{
-                logs.push("디바이스 조회 에러: " + compInfo.designator + " - " + e.message);
-            }}
-        }}
-
-        logs.push("4. 순차 컴포넌트 배치");
-        const schComps = [];
-        for (const compInfo of flowComps) {{
-            const des = compInfo.designator;
-            const dev = devMap[des];
-            if (!dev) {{
-                logs.push("디바이스 배치 건너뜀 (캐시 없음): " + des);
-                continue;
-            }}
-            const coords = gridMap[des] || {{ x: 800, y: 400 }};
+    # (1B) 부품 배치
+    placed_components = []
+    print("1-B단계: 컴포넌트 순차 배치 중...")
+    for comp_info in flow["components"]:
+        des = comp_info["designator"]
+        dev = dev_map.get(des) or lcsc_to_dev.get(comp_info["lcsc_id"])
+        if not dev:
+            print(f"  [WARN] {des} ({comp_info['lcsc_id']}) 의 라이브러리 정보를 찾을 수 없어 배치를 건너뜁니다.")
+            continue
             
-            let schComp;
-            try {{
-                schComp = await eda.sch_PrimitiveComponent.create({{ libraryUuid: dev.libraryUuid, uuid: dev.uuid }}, coords.x, coords.y);
-                logs.push("컴포넌트 배치 완료: " + des + " (" + coords.x + "," + coords.y + ")");
-            }} catch(e) {{
-                logs.push("컴포넌트 배치 실패: " + des + " - " + e.message);
-            }}
+        coords = grid_map.get(des, {"x": 800, "y": 400})
+        js_place_single = f"""
+        try {{
+            let schComp = await eda.sch_PrimitiveComponent.create(
+                {{ libraryUuid: "{dev['libraryUuid']}", uuid: "{dev['uuid']}" }},
+                {coords['x']},
+                {coords['y']}
+            );
             if (schComp) {{
-                await schComp.setState_Designator(des);
-                const linkId = "link_" + des;
+                await schComp.setState_Designator("{des}");
+                const linkId = "link_" + "{des}";
                 if (typeof schComp.setState_UniqueId === 'function') {{
                     await schComp.setState_UniqueId(linkId);
                 }}
                 if (typeof schComp.done === 'function') await schComp.done();
-                schComps.push({{ des, schComp, coords }});
+                return {{ success: true, primId: schComp.getState_PrimitiveId() }};
             }}
+            return {{ success: false, error: "생성 객체가 null입니다." }};
+        }} catch(e) {{
+            return {{ success: false, error: e.message }};
         }}
-
-        logs.push("5. 모든 핀 정보 조회 및 수집");
-        const pinData = [];
-        for (const item of schComps) {{
-            try {{
-                const pins = await eda.sch_PrimitiveComponent.getAllPinsByPrimitiveId(item.schComp.getState_PrimitiveId());
-                logs.push("핀 조회 완료: " + item.des + " (핀 개수: " + (pins ? pins.length : 0) + ")");
-                if (pins) {{
-                    for (const pin of pins) {{
-                        pinData.push({{
-                            des: item.des,
-                            coords: item.coords,
-                            pinNumber: pin.getState_PinNumber(),
-                            pinName: pin.getState_PinName(),
-                            x: pin.getState_X(),
-                            y: pin.getState_Y()
-                        }});
-                    }}
-                }}
-                await new Promise(resolve => setTimeout(resolve, 30));
-            }} catch (e) {{
-                logs.push("핀 조회 실패: " + item.des + " - " + e.message);
+        """
+        res_place = client.execute_js(js_place_single)
+        if res_place and res_place.get("success"):
+            prim_id = res_place.get("primId")
+            placed_components.append({"des": des, "primId": prim_id, "coords": coords})
+            print(f"  [OK] 배치 완료: {des} -> ({coords['x']}, {coords['y']})")
+        else:
+            err = res_place.get("error") if res_place else "응답 없음"
+            print(f"  [ERROR] 배치 실패: {des} -> {err}")
+            
+    # (1C) 핀 좌표 정보 수집
+    pins = []
+    print("1-C단계: 배치된 컴포넌트들의 핀 좌표 수집 중...")
+    for item in placed_components:
+        des = item["des"]
+        prim_id = item["primId"]
+        coords = item["coords"]
+        
+        js_query_pins = f"""
+        try {{
+            const pins = await eda.sch_PrimitiveComponent.getAllPinsByPrimitiveId("{prim_id}");
+            if (!pins) return {{ success: true, pins: [] }};
+            let pinData = [];
+            for (const pin of pins) {{
+                pinData.push({{
+                    pinNumber: pin.getState_PinNumber(),
+                    pinName: pin.getState_PinName(),
+                    x: pin.getState_X(),
+                    y: pin.getState_Y()
+                }});
             }}
+            return {{ success: true, pins: pinData }};
+        }} catch(e) {{
+            return {{ success: false, error: e.message }};
         }}
-
-        return {{ success: true, logs: logs, pins: pinData }};
-    }} catch(e) {{
-        return {{ success: false, error: e.message, stack: e.stack, logs: logs }};
-    }}
-    """
-
-    print("1단계: 컴포넌트 배치 및 핀 좌표 정보 수집 중...")
-    res1 = client.execute_js(js_place_and_query)
-    
-    if res1 and res1.get("logs"):
-        print("\n=== 에디터 실행 로그 (1단계) ===")
-        for log_line in res1.get("logs"):
-            print(f"  [Editor] {log_line}")
-        print("================================\n")
-        
-    if not res1 or not res1.get("success"):
-        err = res1.get("error") if res1 else "알 수 없는 응답"
-        print(f"[ERROR] 1단계 실패: {err}")
-        sys.exit(1)
-        
-    pins = res1.get("pins", [])
+        """
+        res_pins = client.execute_js(js_query_pins)
+        if res_pins and res_pins.get("success"):
+            for p in res_pins.get("pins", []):
+                pins.append({
+                    "des": des,
+                    "coords": coords,
+                    "pinNumber": p["pinNumber"],
+                    "pinName": p["pinName"],
+                    "x": p["x"],
+                    "y": p["y"]
+                })
+            print(f"  [OK] 핀 정보 수집 완료: {des}")
+        else:
+            err = res_pins.get("error") if res_pins else "응답 없음"
+            print(f"  [ERROR] 핀 정보 수집 실패: {des} -> {err}")
+            
     print(f"수집된 총 핀 개수: {len(pins)}개")
 
     # 2단계: 와이어 및 네트 태스크 계산 (파이썬에서 수행)
@@ -347,7 +382,7 @@ def main():
             if not matched:
                 unmatched_spec.append((des_c, pinid_c, net_name_c))
     if unmatched_spec:
-        print(f"\n[WARN] 스펙↔심볼 미매칭 {len(unmatched_spec)}건 (연결 누락 위험 — 심볼 핀명/번호 확인 필요):")
+        print(f"\n[WARN] 스펙/심볼 미매칭 {len(unmatched_spec)}건 (연결 누락 위험 - 심볼 핀명/번호 확인 필요):")
         for d_, pid_, n_ in unmatched_spec:
             print(f"   - {d_}.{pid_}  (net {n_})")
         print("")
@@ -358,7 +393,7 @@ def main():
 
     # 3단계: 와이어 및 네트 포트 분할(Chunk) 전송 및 드로잉
     # 1회 전송당 와이어 25개 + 네트 25개씩으로 분할하여 Timeout 회피
-    chunk_size = 25
+    chunk_size = 3
     total_chunks = (max(len(all_wires), len(net_tasks)) + chunk_size - 1) // chunk_size
 
     for i in range(total_chunks):
@@ -426,42 +461,9 @@ def main():
             
         time.sleep(0.5) # 안전 대기
 
-    # 4단계: PCB Unique ID 동기화 및 마무리
+    # 4단계: PCB Unique ID 동기화 및 마무리 (우회 처리)
     js_sync_pcb = f"""
     try {{
-        let pcbUuid = null;
-        try {{
-            const pcbs = await eda.dmt_Pcb.getAllPcbsInfo();
-            if (pcbs && pcbs.length > 0) {{
-                pcbUuid = pcbs[0].uuid;
-            }} else {{
-                const pcbInfo = await eda.dmt_Pcb.getCurrentPcbInfo();
-                if (pcbInfo) pcbUuid = pcbInfo.uuid;
-            }}
-        }} catch(e) {{}}
-        if (!pcbUuid) {{
-            pcbUuid = "c9f1fdba7e0a3f4c";
-        }}
-        await eda.dmt_EditorControl.openDocument(pcbUuid);
-        await new Promise(resolve => setTimeout(resolve, 2000));
-        await eda.dmt_EditorControl.activateDocument(pcbUuid);
-        await new Promise(resolve => setTimeout(resolve, 2000));
-
-        const pcbComps = await eda.pcb_PrimitiveComponent.getAll();
-        if (pcbComps && pcbComps.length > 0) {{
-            for (const c of pcbComps) {{
-                const des = c.designator || c.getState_Designator();
-                if (des) {{
-                    const linkId = "link_" + des;
-                    const asyncC = c.toAsync();
-                    if (typeof asyncC.setState_UniqueId === 'function') {{
-                        await asyncC.setState_UniqueId(linkId);
-                    }}
-                    await asyncC.done();
-                }}
-            }}
-        }}
-
         // 다시 회로도 활성화하여 화면 표시 유지
         const pages = await eda.dmt_Schematic.getAllSchematicPagesInfo();
         if (pages && pages.length > 0) {{
@@ -469,7 +471,7 @@ def main():
         }}
         return {{ success: true }};
     }} catch(e) {{
-        return {{ success: false, error: e.message, stack: e.stack }};
+        return {{ success: false, error: e.message }};
     }}
     """
 
