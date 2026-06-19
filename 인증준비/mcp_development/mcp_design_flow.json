@@ -19,8 +19,8 @@
     },
     {
       "designator": "U2",
-      "name": "SGM2036-3.3YUDH4/TR LDO",
-      "lcsc_id": "C2827670",
+      "name": "SGM2036-3.3YUDH4 LDO",
+      "lcsc_id": "C81114",
       "package": "UDFN-4",
       "x": 20.0,
       "y": 30.0,
@@ -38,7 +38,7 @@
     {
       "designator": "U4",
       "name": "TI TAS5805M Amplifier",
-      "lcsc_id": "C299105",
+      "lcsc_id": "C478472",
       "package": "HTSSOP-28",
       "x": 60.0,
       "y": 15.0,
@@ -47,7 +47,7 @@
     {
       "designator": "U5",
       "name": "ST LSM6DSOX Accelerometer",
-      "lcsc_id": "C444158",
+      "lcsc_id": "C481766",
       "package": "LGA-14",
       "x": 20.0,
       "y": 15.0,
@@ -56,7 +56,7 @@
     {
       "designator": "D1",
       "name": "SMAJ5.0A TVS Diode",
-      "lcsc_id": "C80145",
+      "lcsc_id": "C83329",
       "package": "SMA-DO-214AC",
       "x": 16.0,
       "y": 35.0,
@@ -66,7 +66,7 @@
     {
       "designator": "D2",
       "name": "USBLC6-2SC6 TVS Diode",
-      "lcsc_id": "C15309",
+      "lcsc_id": "C2827654",
       "package": "SOT-23-6",
       "x": 13.0,
       "y": 26.0,
@@ -85,7 +85,7 @@
     {
       "designator": "UART_HDR",
       "name": "UART 6Pin Header",
-      "lcsc_id": "C124375",
+      "lcsc_id": "C124380",
       "package": "HDR-M-2.54_1X6",
       "x": 40.0,
       "y": 10.0,
