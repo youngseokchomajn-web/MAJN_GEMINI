@@ -71,7 +71,7 @@ class EasyEDAMCPClient:
         )
         
         try:
-            with urllib.request.urlopen(req, timeout=120) as response:
+            with urllib.request.urlopen(req, timeout=600) as response:
                 res = json.loads(response.read().decode("utf-8"))
                 if not res.get("success"):
                     raise RuntimeError(f"EasyEDA 실행 실패: {res.get('error')}")
@@ -94,10 +94,13 @@ class EasyEDAMCPClient:
         js = f"""
         let uuidToOpen = null;
         try {{
-            uuidToOpen = await eda.dmt_Project.createProject({proj_name_json});
-        }} catch(e) {{
+            const teams = await eda.dmt_Team.getAllTeamsInfo();
+            const teamUuid = (teams && teams.length > 0) ? teams[0].uuid : undefined;
+            uuidToOpen = await eda.dmt_Project.createProject({proj_name_json}, undefined, teamUuid);
+        }} catch(e) {{}}
+        if (!uuidToOpen) {{
             const currentProj = await eda.dmt_Project.getCurrentProjectInfo();
-            if (currentProj && currentProj.friendlyName === {proj_name_json}) {{
+            if (currentProj) {{
                 uuidToOpen = currentProj.uuid;
             }}
         }}
@@ -151,6 +154,17 @@ class EasyEDAMCPClient:
         }} catch(e) {{}}
         if (!pcbUuid) {{
             try {{
+                const pcbInfo = await eda.dmt_Project.getCurrentPcbInfo();
+                if (pcbInfo) pcbUuid = pcbInfo.uuid;
+            }} catch(e) {{}}
+        }}
+        if (!pcbUuid) {{
+            try {{
+                const boards = await eda.dmt_Board.getAllBoardsInfo();
+                if (!boards || boards.length === 0) {{
+                    await eda.dmt_Board.createBoard();
+                    await new Promise(resolve => setTimeout(resolve, 3000));
+                }}
                 const pcbInfo = await eda.dmt_Project.getCurrentPcbInfo();
                 if (pcbInfo) pcbUuid = pcbInfo.uuid;
             }} catch(e) {{}}
@@ -402,32 +416,36 @@ class EasyEDAMCPClient:
                 if (typeof existingComp.setState_Y === 'function') await existingComp.setState_Y(ty);
                 if (typeof existingComp.setState_Angle === 'function') await existingComp.setState_Angle(tAngle);
                 
-                if (typeof existingComp.done === 'function') await existingComp.done();
+                    if (typeof existingComp.done === 'function') await existingComp.done();
                 return true;
             }} catch(e) {{
                 return {{ error: "Failed to move existing comp: " + e.message }};
             }}
         }} else {{
             const devices = await eda.lib_Device.getByLcscIds([{lcsc_json}]);
-            if (devices && devices.length > 0) {{
+            if (devices && devices.length > 0 && devices[0]) {{
                 const dev = devices[0];
-                const comp = await eda.pcb_PrimitiveComponent.create(dev, 1, tx, ty, tAngle);
-                if (comp) {{
-                    try {{
-                        await comp.setState_Designator({des_json});
-                    }} catch(e) {{}}
-                    try {{
-                        comp.designator = {des_json};
-                        if (typeof comp.done === 'function') await comp.done();
-                    }} catch(e) {{}}
-                    return true;
+                try {{
+                    const comp = await eda.pcb_PrimitiveComponent.create(dev, 1, tx, ty, tAngle);
+                    if (comp) {{
+                        try {{
+                            await comp.setState_Designator({des_json});
+                        }} catch(e) {{}}
+                        try {{
+                            comp.designator = {des_json};
+                            if (typeof comp.done === 'function') await comp.done();
+                        }} catch(e) {{}}
+                        return true;
+                    }}
+                }} catch(e) {{
+                    return {{ error: "Create component failed: " + e.message }};
                 }}
             }}
         }}
         return false;
         """
         res = self.execute_js(js)
-        if res:
+        if res and not (isinstance(res, dict) and "error" in res):
             print(f"[API] placePart({designator}, {lcsc_id}) ➔ SUCCESS")
             self.project_data["components"].append({
                 "designator": designator,
@@ -439,7 +457,8 @@ class EasyEDAMCPClient:
             })
             return True
         else:
-            print(f"[API] placePart({designator}, {lcsc_id}) ➔ FAILED")
+            err_msg = res.get("error") if isinstance(res, dict) else "Unknown error"
+            print(f"[API] placePart({designator}, {lcsc_id}) ➔ FAILED ({err_msg})")
             return False
 
     def connect_net(self, net_name, pins_list):
