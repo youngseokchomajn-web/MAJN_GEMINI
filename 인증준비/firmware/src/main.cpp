@@ -18,7 +18,8 @@
 #define PIN_I2C_SCL         27  // I2C SCL (Matched to GPIO27 in design json)
 
 #define PIN_BOOST_EN        4   // MP3426 Boost Converter Enable Pin (Active High)
-#define PIN_SAFETY_INT1     34  // LSM6DSOX INT1 (RTC Interrupt Pin)
+#define PIN_SAFETY_INT1     34  // LSM6DSOX INT1 (input-only GPIO34, no internal pull)
+#define PIN_AMP_PDN         15  // TAS5805M PDN# (active-low: HIGH=enable, LOW=shutdown/mute)
 
 // I2S Pins for TI TAS5805M Digital Audio Input
 #define PIN_I2S_BCLK        26  // I2S Bit Clock (GPIO26)
@@ -69,6 +70,8 @@ void IRAM_ATTR safetyLockISR() {
     
     // HARDWARE SHUTDOWN: Immediately disable MP3426 12V Boost Regulator to cut PVDD power to TAS5805M.
     digitalWrite(PIN_BOOST_EN, LOW);
+    // Also assert TAS5805M PDN# low to mute the amplifier instantly (belt-and-suspenders).
+    digitalWrite(PIN_AMP_PDN, LOW);
 }
 
 // -------------------------------------------------------------------------
@@ -277,8 +280,15 @@ void setup() {
     // Configure safety shutdown pin
     pinMode(PIN_BOOST_EN, OUTPUT);
     digitalWrite(PIN_BOOST_EN, HIGH); // Enable MP3426 12V Boost Regulator
-    
-    pinMode(PIN_SAFETY_INT1, INPUT_PULLDOWN);
+
+    // Release TAS5805M from shutdown (PDN# active-low; HIGH = enable). Must precede I2C/I2S init.
+    pinMode(PIN_AMP_PDN, OUTPUT);
+    digitalWrite(PIN_AMP_PDN, HIGH);
+    delay(10);
+
+    // GPIO34 is input-only and has NO internal pull resistor (ESP32 GPIO34-39).
+    // LSM6DSOX INT1 is push-pull (actively driven), so plain INPUT is correct here.
+    pinMode(PIN_SAFETY_INT1, INPUT);
     
     // Initialize Sine Wave Table
     initSineLut();

@@ -63,7 +63,20 @@
 
 > 추가 필요 부품: DVDD 디커플(0.1µF+1µF), AVDD 디커플(1µF→AGND), VR_DIG 디커플(0.1µF). I2C 풀업 2개.
 
-## U5 — ST LSM6DSOX, LGA-14 (C481766)  ✅(critical핀 실측 교차검증)
+## U2 — SGM2036-3.3YUDH4 LDO, UTDFN-1x1-4L (C81114)  ✅
+정류 및 3.3V 변환 전원용 LDO.
+
+| 기능(네트) | 패드# | 핀이름 | 비고 |
+|---|---|---|---|
+| OUT (VCC_3V3) | 1 | OUT | 3.3V 전원 출력 |
+| GND | 2 | GND | 접지 |
+| EN (VBUS_5V) | 3 | EN | LDO 활성화 (5V 인가) |
+| IN (VBUS_5V) | 4 | IN | 5V 전원 입력 |
+| GND | 5 (EP) | EP | 노출 방열 패드, 접지 |
+
+---
+
+## U5 — ST LSM6DSOX, LGA-14 (C481766)  ✅(LCSC 표준 LGA-14 라이브러리 교차검증)
 표준 ST LGA‑14 핀아웃. 실측 U5_1=SDO, U5_4=INT1, U5_6/7=GND, U5_13=SPC, U5_14=SDI 일치.
 
 | 기능(네트) | 패드# | 핀이름 | 비고 |
@@ -72,16 +85,16 @@
 | (보조 I2C) | 2 | SDX | 미사용시 데이터시트대로 종단 |
 | (보조 I2C) | 3 | SCX | 미사용시 종단 |
 | SENSOR_INT1 | 4 | INT1 | ✓ |
-| **VCC_3V3** | 5 | VDDIO | **현재 SPI_CS 오결선→3.3V** |
-| GND | 6 | GND | ✓ |
-| GND | 7 | GND | ✓ |
-| GND | 8 | GND | **현재 미연결→GND** |
-| **VCC_3V3** | 9 | VDD | **현재 미연결→3.3V(주전원)** |
-| (선택) INT2 | 10 | INT2 | 미사용 가능 |
-| 예약 | 11 | reserved | 데이터시트대로(통상 미연결) |
-| **SPI_CS** | 12 | CS | **현재 VCC_3V3 오결선→SPI_CS** |
-| SPI_SCLK | 13 | SCL/SPC | ✓ |
-| SPI_MOSI | 14 | SDA/SDI | ✓ |
+| **VCC_3V3** | 5 | VDDIO | IO 전원 (3.3V 연결) |
+| GND | 6 | GND | 접지 |
+| GND | 7 | GND | 접지 |
+| **VCC_3V3** | 8 | VDD | 주전원 (3.3V 연결 - **오동규 설계 오류 수정**) |
+| (미사용) | 9 | INT2 | 인터럽트2 (미사용 - **기존 VCC_3V3 오연결 수정**) |
+| (선택) INT2 | 10 | OSC_AUX | 보조 오실레이터 |
+| 예약 | 11 | SDO_AUX | 보조 SPI 데이터 |
+| **SPI_CS** | 12 | CS | SPI 칩 셀렉트 (SPI_CS 연결) |
+| SPI_SCLK | 13 | SCL/SPC | SPC 클록 |
+| SPI_MOSI | 14 | SDA/SDI | SDI 데이터 |
 
 ## U3 — MPS MP3426 부스트, QFN-14+EP (C162810)  ⚠️ 핀번호 S4 확정
 C162810=MP3426(6A/35V 부스트) 확인. **현재 보드엔 2패드뿐** → 올바른 14핀 심볼로 교체 후 아래 토폴로지로 결선. 핀 **이름**으로 스펙 작성, 정확한 패드번호는 S4 라이브 심볼 덤프로 확정.
