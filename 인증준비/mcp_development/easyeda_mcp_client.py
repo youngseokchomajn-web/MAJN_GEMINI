@@ -479,6 +479,7 @@ class EasyEDAMCPClient:
             const pins = {json.dumps(pins_list)};
             const widthMm = {width_mm};
             const lineWidth = Math.round(widthMm * 39.37);
+            let unresolved = [];
         
         const comps = await eda.pcb_PrimitiveComponent.getAll();
         
@@ -517,8 +518,9 @@ class EasyEDAMCPClient:
                 if (!targetPad) {{
                     targetPad = pads.find(p => p.padNumber && typeof p.padNumber === 'string' && p.padNumber.toLowerCase() === pinName.toLowerCase());
                 }}
-                if (!targetPad && pads.length > 0) {{
-                    targetPad = pads[0];
+                if (!targetPad) {{
+                    unresolved.push(des + '.' + pinName);
+                    continue;
                 }}
                 
                 if (targetPad) {{
@@ -563,9 +565,9 @@ class EasyEDAMCPClient:
                     await eda.pcb_PrimitiveLine.create(netName, 1, px, py, vx, vy, lineWidth, false);
                 }}
             }}
-            return true;
+            return {{ ok: true, unresolved }};
         }}
-        
+
         const padCoords = [];
         
         for (const pin of pins) {{
@@ -588,17 +590,11 @@ class EasyEDAMCPClient:
                     if (pinName === 'IN') targetPad = pads.find(p => p.padNumber === '14' || p.padNumber === '1');
                     if (pinName === 'OUT') targetPad = pads.find(p => p.padNumber === '8' || p.padNumber === '9');
                 }} else if (des === 'U1') {{
-                    if (pinName === '3V3') targetPad = pads.find(p => p.padNumber === '2');
-                    if (pinName === 'GPIO23') targetPad = pads.find(p => p.padNumber === '37');
-                    if (pinName === 'GPIO19') targetPad = pads.find(p => p.padNumber === '31');
-                    if (pinName === 'GPIO18') targetPad = pads.find(p => p.padNumber === '30');
-                    if (pinName === 'GPIO34') targetPad = pads.find(p => p.padNumber === '6');
+                    const u1 = {{'3V3':'2','EN':'3','GPIO0':'25','GPIO4':'26','GPIO5':'29','GPIO15':'23','GPIO18':'30','GPIO19':'31','GPIO21':'33','GPIO22':'36','GPIO23':'37','GPIO25':'10','GPIO26':'11','GPIO27':'12','GPIO34':'6','RXD':'34','TXD':'35'}};
+                    if (u1[pinName]) targetPad = pads.find(p => p.padNumber === u1[pinName]);
                 }} else if (des === 'U5') {{
-                    if (pinName === 'VDD') targetPad = pads.find(p => p.padNumber === '5');
-                    if (pinName === 'SDI') targetPad = pads.find(p => p.padNumber === '14');
-                    if (pinName === 'SDO') targetPad = pads.find(p => p.padNumber === '1');
-                    if (pinName === 'SPC') targetPad = pads.find(p => p.padNumber === '13');
-                    if (pinName === 'INT1') targetPad = pads.find(p => p.padNumber === '4');
+                    const u5 = {{'VDD':'9','VDDIO':'5','CS':'12','SDI':'14','SDA':'14','SDO':'1','SPC':'13','SCL':'13','INT1':'4','INT2':'10'}};
+                    if (u5[pinName]) targetPad = pads.find(p => p.padNumber === u5[pinName]);
                 }} else if (des === 'USB_C_CON' || des === 'USB_C') {{
                     if (pinName === 'VBUS') targetPad = pads.find(p => p.padNumber && typeof p.padNumber === 'string' && (p.padNumber.startsWith('A9') || p.padNumber.startsWith('B9') || p.padNumber.startsWith('A4') || p.padNumber.startsWith('B4')));
                     if (pinName === 'GND') targetPad = pads.find(p => p.padNumber && typeof p.padNumber === 'string' && (p.padNumber.startsWith('A1') || p.padNumber.startsWith('B1') || p.padNumber.startsWith('A12') || p.padNumber.startsWith('B12')));
@@ -616,8 +612,9 @@ class EasyEDAMCPClient:
                 targetPad = pads.find(p => p.padNumber && typeof p.padNumber === 'string' && p.padNumber.toLowerCase() === pinName.toLowerCase());
             }}
             
-            if (!targetPad && pads.length > 0) {{
-                targetPad = pads[0];
+            if (!targetPad) {{
+                unresolved.push(des + '.' + pinName);
+                continue;
             }}
             
             if (targetPad) {{
@@ -776,8 +773,9 @@ class EasyEDAMCPClient:
                     await drawTopMitred(p1, p2);
                 }}
             }}
-            return true;
+            return {{ ok: true, unresolved }};
         }}
+        return {{ ok: true, unresolved }};
         }} catch(err) {{
             return {{ error: err.message, stack: err.stack }};
         }}
@@ -793,6 +791,8 @@ class EasyEDAMCPClient:
             print("=============================================================")
             return False
             
+        if isinstance(res, dict) and res.get("unresolved"):
+            print(f"[WARN] connect_net('{net_name}') 미해석 핀(연결 안 됨, pads[0] 폴백 제거됨): {res['unresolved']}")
         if res:
             print(f"[API] connect_net('{net_name}') ➔ SUCCESS")
             self.project_data["nets"][net_name] = pins_list
