@@ -148,14 +148,22 @@ class EasyEDAMCPClient:
         let pcbUuid = null;
         try {{
             const currentDoc = await eda.dmt_SelectControl.getCurrentDocumentInfo();
-            if (currentDoc && currentDoc.uuid) {{
+            if (currentDoc && currentDoc.documentType === 'PCB' && currentDoc.uuid) {{
                 pcbUuid = currentDoc.uuid;
             }}
         }} catch(e) {{}}
         if (!pcbUuid) {{
             try {{
-                const pcbInfo = await eda.dmt_Project.getCurrentPcbInfo();
-                if (pcbInfo) pcbUuid = pcbInfo.uuid;
+                const pcbInfo = await eda.dmt_Pcb.getCurrentPcbInfo();
+                if (pcbInfo && pcbInfo.uuid) pcbUuid = pcbInfo.uuid;
+            }} catch(e) {{}}
+        }}
+        if (!pcbUuid) {{
+            try {{
+                const pcbs = await eda.dmt_Pcb.getAllPcbsInfo();
+                if (pcbs && pcbs.length > 0) {{
+                    pcbUuid = pcbs[0].uuid;
+                }}
             }} catch(e) {{}}
         }}
         if (!pcbUuid) {{
@@ -165,12 +173,14 @@ class EasyEDAMCPClient:
                     await eda.dmt_Board.createBoard();
                     await new Promise(resolve => setTimeout(resolve, 3000));
                 }}
-                const pcbInfo = await eda.dmt_Project.getCurrentPcbInfo();
-                if (pcbInfo) pcbUuid = pcbInfo.uuid;
+                const pcbs = await eda.dmt_Pcb.getAllPcbsInfo();
+                if (pcbs && pcbs.length > 0) {{
+                    pcbUuid = pcbs[0].uuid;
+                }}
             }} catch(e) {{}}
         }}
         if (!pcbUuid) {{
-            pcbUuid = "25a2ea45a471a47f"; // Fallback to original UUID
+            pcbUuid = "c9f1fdba7e0a3f4c"; // Fallback to current PCB UUID
         }}
         if (pcbUuid) {{
             await eda.dmt_EditorControl.openDocument(pcbUuid);
@@ -414,7 +424,7 @@ class EasyEDAMCPClient:
             try {{
                 if (typeof existingComp.setState_X === 'function') await existingComp.setState_X(tx);
                 if (typeof existingComp.setState_Y === 'function') await existingComp.setState_Y(ty);
-                if (typeof existingComp.setState_Angle === 'function') await existingComp.setState_Angle(tAngle);
+                if (typeof existingComp.setState_Rotation === 'function') await existingComp.setState_Rotation(tAngle);
                 
                     if (typeof existingComp.done === 'function') await existingComp.done();
                 return true;
@@ -872,6 +882,26 @@ class EasyEDAMCPClient:
         """EasyEDA Pro 내장 DRC 검사 실행 및 결과 반환"""
         js = """
         try {
+            let pcbUuid = null;
+            try {
+                const currentDoc = await eda.dmt_SelectControl.getCurrentDocumentInfo();
+                if (currentDoc && currentDoc.documentType === 'PCB') {
+                    pcbUuid = currentDoc.uuid;
+                }
+            } catch(e) {}
+            if (!pcbUuid) {
+                try {
+                    const pcbInfo = await eda.dmt_Project.getCurrentPcbInfo();
+                    if (pcbInfo) pcbUuid = pcbInfo.uuid;
+                } catch(e) {}
+            }
+            if (pcbUuid) {
+                await eda.dmt_EditorControl.openDocument(pcbUuid);
+                await new Promise(resolve => setTimeout(resolve, 2000));
+                await eda.dmt_EditorControl.activateDocument(pcbUuid);
+                await new Promise(resolve => setTimeout(resolve, 2000));
+            }
+            
             // strict = false, userInterface = false, includeVerboseError = false
             const drcPromise = eda.pcb_Drc.check(false, false, false);
             const timeoutPromise = new Promise(resolve => setTimeout(() => resolve('timeout'), 5000));
@@ -890,9 +920,9 @@ class EasyEDAMCPClient:
             if (typeof res === 'boolean') {
                 return {
                     success: true,
-                    passed: !res,
-                    errorCount: res ? 1 : 0,
-                    errors: res ? ["Native DRC error detected"] : []
+                    passed: res,
+                    errorCount: res ? 0 : 1,
+                    errors: res ? [] : ["Native DRC error detected"]
                 };
             }
             const errList = Array.isArray(res) ? res : [];

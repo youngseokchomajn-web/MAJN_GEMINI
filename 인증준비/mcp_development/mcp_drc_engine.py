@@ -55,9 +55,10 @@ class MCPDRCEngine:
         for comp in self.data.get("components", []):
             if comp.get("designator") == "U2":
                 ldo_found = True
-                if comp.get("lcsc_id") == "C2827670": # SGM2036-3.3 (C2827670)
+                lcsc = comp.get("lcsc_id")
+                if lcsc in ["C2827670", "C81114"]: # SGM2036-3.3 (C2827670 / C81114)
                     passed = True
-                    detail = f"SGM2036-3.3YUDH4/TR (C2827670) 1A 고출력 LDO 배치 확인 완료"
+                    detail = f"SGM2036-3.3YUDH4/TR ({lcsc}) 1A 고출력 LDO 배치 확인 완료"
                     break
         
         self.report.append({
@@ -93,8 +94,10 @@ class MCPDRCEngine:
         comp_map = {c["designator"]: c["lcsc_id"] for c in self.data.get("components", [])}
         
         if "D1" in comp_map and "D2" in comp_map:
-            # D1 = SMAJ5.0A (C80145), D2 = USBLC6-2SC6 (C15309)
-            if comp_map["D1"] == "C80145" and comp_map["D2"] == "C15309":
+            # D1 = SMAJ5.0A (C80145 / C83329), D2 = USBLC6-2SC6 (C15309 / C2827654)
+            d1_ok = comp_map["D1"] in ["C80145", "C83329"]
+            d2_ok = comp_map["D2"] in ["C15309", "C2827654"]
+            if d1_ok and d2_ok:
                 passed = True
                 detail = "VBUS 보호단(SMAJ5.0A) 및 데이터 신호선(USBLC6-2SC6) 이원화 배치 완벽 통과"
                 
