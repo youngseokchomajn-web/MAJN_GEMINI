@@ -59,34 +59,83 @@ class EasyEDAMCPClient:
             return False
 
     def execute_js(self, js_code):
-        """브릿지 서버의 /execute API로 JavaScript 코드를 전송하여 실행"""
+        """브릿지 서버의 /execute API로 JavaScript 코드를 전송하여 실행 (윈도우 끊김 시 자동 재시도 지원)"""
         url = f"{self.base_url}/execute"
-        payload = json.dumps({"code": js_code}).encode("utf-8")
+        window_id = None
         
-        req = urllib.request.Request(
-            url, 
-            data=payload, 
-            headers={"Content-Type": "application/json"},
-            method="POST"
-        )
-        
-        try:
-            with urllib.request.urlopen(req, timeout=600) as response:
-                res = json.loads(response.read().decode("utf-8"))
-                if not res.get("success"):
-                    raise RuntimeError(f"EasyEDA 실행 실패: {res.get('error')}")
-                return res.get("result")
-        except urllib.error.HTTPError as e:
-            err_body = e.read().decode("utf-8")
-            print(f"[HTTP Error Detail] Code={e.code}, Reason={e.reason}")
-            print("==================== [RESPONSE BODY DUMP] ====================")
-            print(err_body)
-            print("==============================================================")
+        for attempt in range(1, 4):
+            payload_dict = {"code": js_code}
+            if window_id:
+                payload_dict["windowId"] = window_id
+                
+            payload = json.dumps(payload_dict).encode("utf-8")
+            
+            req = urllib.request.Request(
+                url, 
+                data=payload, 
+                headers={"Content-Type": "application/json"},
+                method="POST"
+            )
+            
             try:
-                err_json = json.loads(err_body)
-                raise RuntimeError(f"EasyEDA API Error: {err_json.get('error')}")
-            except Exception:
-                raise RuntimeError(f"HTTP Error {e.code}: {e.reason}")
+                with urllib.request.urlopen(req, timeout=120) as response:
+                    res = json.loads(response.read().decode("utf-8"))
+                    if not res.get("success"):
+                        raise RuntimeError(f"EasyEDA 실행 실패: {res.get('error')}")
+                    return res.get("result")
+            except urllib.error.HTTPError as e:
+                err_body = e.read().decode("utf-8")
+                err_json = {}
+                try:
+                    err_json = json.loads(err_body)
+                except Exception:
+                    pass
+                
+                err_msg = err_json.get("error", "")
+                
+                # 윈도우 연결 유실 감지 시, eda-windows에서 최신 activeWindowId 획득 후 재시도
+                if "disconnected" in err_msg.lower() or "window" in err_msg.lower() or e.code == 500:
+                    print(f"  [WARN] EasyEDA 윈도우 유실 감지 (시도 {attempt}/3): {err_msg or e.reason}")
+                    print("  최신 Active Window ID 갱신 시도 중...")
+                    try:
+                        win_req = urllib.request.Request(f"{self.base_url}/eda-windows", method="GET")
+                        with urllib.request.urlopen(win_req, timeout=3) as win_res:
+                            win_data = json.loads(win_res.read().decode("utf-8"))
+                            new_win_id = win_data.get("activeWindowId")
+                            if new_win_id:
+                                window_id = new_win_id
+                                print(f"  ➔ 최신 Active Window ID 획득: {window_id}")
+                                time.sleep(2.0)
+                                continue
+                    except Exception as win_ex:
+                        print(f"  [ERROR] 윈도우 목록 갱신 실패: {win_ex}")
+                
+                print(f"[HTTP Error Detail] Code={e.code}, Reason={e.reason}")
+                print("==================== [RESPONSE BODY DUMP] ====================")
+                print(err_body)
+                print("==============================================================")
+                if err_msg:
+                    raise RuntimeError(f"EasyEDA API Error: {err_msg}")
+                else:
+                    raise RuntimeError(f"HTTP Error {e.code}: {e.reason}")
+            except Exception as ex:
+                # 일반 타임아웃이나 소켓 에러 시에도 active window 재연결 시도
+                print(f"  [WARN] 통신 에러 감지 (시도 {attempt}/3): {ex}")
+                try:
+                    win_req = urllib.request.Request(f"{self.base_url}/eda-windows", method="GET")
+                    with urllib.request.urlopen(win_req, timeout=3) as win_res:
+                        win_data = json.loads(win_res.read().decode("utf-8"))
+                        new_win_id = win_data.get("activeWindowId")
+                        if new_win_id:
+                            window_id = new_win_id
+                            print(f"  ➔ 최신 Active Window ID 갱신: {window_id}")
+                            time.sleep(2.0)
+                            continue
+                except Exception:
+                    pass
+                time.sleep(2.0)
+        
+        raise RuntimeError("EasyEDA 윈도우 연결이 지속적으로 실패하여 중단되었습니다.")
 
     # --- V3 API Wrapper Functions ---
     def create_project(self, project_name):
@@ -502,7 +551,7 @@ class EasyEDAMCPClient:
                     if (des === 'U2') {{
                         if (pinName === 'GND') targetPad = pads.find(p => p.padNumber === '2');
                     }} else if (des === 'U3') {{
-                        if (pinName === 'GND') targetPad = pads.find(p => p.padNumber === '3' || p.padNumber === '15');
+                        if (pinName === 'GND') targetPad = pads.find(p => p.padNumber === '8' || p.padNumber === '9' || p.padNumber === '10' || p.padNumber === '11' || p.padNumber === '15');
                     }} else if (des === 'U1') {{
                         if (pinName === 'GND') targetPad = pads.find(p => p.padNumber === '1' || p.padNumber === '15' || p.padNumber === '38' || p.padNumber === '39');
                     }} else if (des === 'U5') {{
@@ -587,8 +636,8 @@ class EasyEDAMCPClient:
                     if (pinName === 'IN') targetPad = pads.find(p => p.padNumber === '1');
                     if (pinName === 'OUT') targetPad = pads.find(p => p.padNumber === '5');
                 }} else if (des === 'U3') {{
-                    if (pinName === 'IN') targetPad = pads.find(p => p.padNumber === '14' || p.padNumber === '1');
-                    if (pinName === 'OUT') targetPad = pads.find(p => p.padNumber === '8' || p.padNumber === '9');
+                    if (pinName === 'IN') targetPad = pads.find(p => p.padNumber === '3');
+                    if (pinName === 'OUT') targetPad = pads.find(p => p.padNumber === '4' || p.padNumber === '5' || p.padNumber === '6');
                 }} else if (des === 'U1') {{
                     const u1 = {{'3V3':'2','EN':'3','GPIO0':'25','GPIO4':'26','GPIO5':'29','GPIO15':'23','GPIO18':'30','GPIO19':'31','GPIO21':'33','GPIO22':'36','GPIO23':'37','GPIO25':'10','GPIO26':'11','GPIO27':'12','GPIO34':'6','RXD':'34','TXD':'35'}};
                     if (u1[pinName]) targetPad = pads.find(p => p.padNumber === u1[pinName]);

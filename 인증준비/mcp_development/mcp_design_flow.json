@@ -312,7 +312,7 @@
     {
       "designator": "J1",
       "name": "Speaker Output A",
-      "lcsc_id": "C124372",
+      "lcsc_id": "C124375",
       "package": "HDR-M-2.54_1X2",
       "x": 72.0,
       "y": 17.0,
@@ -321,7 +321,7 @@
     {
       "designator": "J2",
       "name": "Speaker Output B",
-      "lcsc_id": "C124372",
+      "lcsc_id": "C124375",
       "package": "HDR-M-2.54_1X2",
       "x": 72.0,
       "y": 13.0,

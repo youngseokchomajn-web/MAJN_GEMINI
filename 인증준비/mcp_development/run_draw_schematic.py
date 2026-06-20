@@ -48,7 +48,7 @@ def get_net_for_pin(pin_to_net_map, des, pin_num, pin_name):
             return n[2:]
         return None
         
-    target_gpio = get_gpio_num(num_key) or get_gpio_num(name_key)
+    target_gpio = get_gpio_num(name_key)
     if target_gpio:
         for k, net in comp_map.items():
             kn = get_gpio_num(k)
@@ -101,47 +101,86 @@ def main():
                     "libraryUuid": d.get("libraryUuid"),
                     "uuid": d.get("uuid")
                 }
-        print(f"부품 정보 조회 성공: {len(lcsc_to_dev)}개 매칭됨.")
+        print(f"부품 정보 1차 조회 성공: {len(lcsc_to_dev)}/{len(lcsc_ids)}개 매칭됨.")
+        
+    missing_lcsc_ids = [lid for lid in lcsc_ids if lid not in lcsc_to_dev]
+    if missing_lcsc_ids:
+        print(f"\n[INFO] 로컬 캐시에 없는 {len(missing_lcsc_ids)}개 부품 우회 캐싱을 진행합니다: {missing_lcsc_ids}")
+        client.cache_components(missing_lcsc_ids)
+        print("우회 캐싱 완료! 부품 정보 재조회 중...")
+        devices = client.execute_js(js_query_devices)
+        if devices:
+            for d in devices:
+                sid = d.get("supplierId")
+                if sid:
+                    lcsc_to_dev[sid] = {
+                        "libraryUuid": d.get("libraryUuid"),
+                        "uuid": d.get("uuid")
+                    }
+            print(f"부품 정보 최종 조회 결과: {len(lcsc_to_dev)}/{len(lcsc_ids)}개 매칭됨.")
+        else:
+            print("[WARN] 부품 정보 최종 재조회 실패.")
     else:
-        print("[WARN] EasyEDA 부품 정보 조회 실패. 빈 상태로 진행합니다.")
+        print("[OK] 모든 부품이 이미 로컬 캐시에 존재합니다.")
 
     components_js = json.dumps(flow["components"])
     lcsc_to_dev_js = json.dumps(lcsc_to_dev)
     
     grid_map = {
+        # 1. 전원 공급 및 LDO 블록 (x: 100~350, y: 150~350)
         "USB_C": {"x": 100, "y": 150},
-        "D1": {"x": 100, "y": 270},
-        "D2": {"x": 100, "y": 380},
-        "U2": {"x": 250, "y": 150},
-        "C3": {"x": 250, "y": 270},
-        "C4": {"x": 250, "y": 380},
-        "U3": {"x": 450, "y": 150},
-        "L1": {"x": 450, "y": 270},
-        "D3": {"x": 450, "y": 380},
-        "C5": {"x": 450, "y": 490},
-        "C6": {"x": 600, "y": 150},
-        "C7": {"x": 600, "y": 250},
-        "R1": {"x": 600, "y": 350},
-        "R2": {"x": 600, "y": 450},
-        "U1": {"x": 800, "y": 200},
-        "C1": {"x": 800, "y": 400},
-        "C2": {"x": 800, "y": 480},
-        "UART_HDR": {"x": 980, "y": 200},
-        "U5": {"x": 800, "y": 600},
-        "C10": {"x": 800, "y": 700},
-        "U4": {"x": 1000, "y": 450},
-        "C8": {"x": 1000, "y": 600},
-        "C9": {"x": 1000, "y": 700},
-        "R7": {"x": 1200, "y": 450},
-        "R8": {"x": 1200, "y": 530},
-        "C18": {"x": 1200, "y": 610},
-        "C19": {"x": 1200, "y": 690},
-        "C20": {"x": 1200, "y": 770},
-        "R9": {"x": 350, "y": 150},
-        "R10": {"x": 350, "y": 250},
-        "R11": {"x": 350, "y": 350},
-        "C21": {"x": 550, "y": 600},
-        "C22": {"x": 550, "y": 700}
+        "D1": {"x": 100, "y": 250},
+        "D2": {"x": 100, "y": 350},
+        "R3": {"x": 200, "y": 150},
+        "R4": {"x": 200, "y": 230},
+        "U2": {"x": 300, "y": 150},
+        "C3": {"x": 300, "y": 250},
+        "C4": {"x": 300, "y": 350},
+        
+        # 2. MP3426 부스트 블록 (x: 500~800, y: 150~450)
+        "U3": {"x": 500, "y": 150},
+        "L1": {"x": 500, "y": 250},
+        "D3": {"x": 500, "y": 350},
+        "C5": {"x": 600, "y": 150},
+        "C21": {"x": 600, "y": 230},
+        "C22": {"x": 600, "y": 310},
+        "R9": {"x": 700, "y": 150},
+        "R10": {"x": 700, "y": 230},
+        "R11": {"x": 700, "y": 310},
+        "C6": {"x": 800, "y": 150},
+        "C7": {"x": 800, "y": 250},
+        "R1": {"x": 800, "y": 350},
+        "R2": {"x": 800, "y": 430},
+        
+        # 3. MCU 및 프로그래밍 블록 (x: 100~300, y: 550~750)
+        "U1": {"x": 100, "y": 550},
+        "C1": {"x": 100, "y": 700},
+        "C2": {"x": 100, "y": 780},
+        "UART_HDR": {"x": 250, "y": 550},
+        "R5": {"x": 250, "y": 630},
+        "C17": {"x": 250, "y": 710},
+        "R6": {"x": 250, "y": 790},
+        
+        # 4. LSM6DSOX 센서 블록 (x: 450, y: 550~750)
+        "U5": {"x": 450, "y": 550},
+        "C10": {"x": 450, "y": 650},
+        "C11": {"x": 450, "y": 730},
+        
+        # 5. TAS5805M 앰프 및 출력 블록 (x: 650~1000, y: 550~800)
+        "U4": {"x": 650, "y": 550},
+        "C8": {"x": 650, "y": 700},
+        "C9": {"x": 650, "y": 780},
+        "C12": {"x": 750, "y": 550},
+        "C13": {"x": 750, "y": 630},
+        "C14": {"x": 750, "y": 710},
+        "C15": {"x": 750, "y": 790},
+        "R7": {"x": 880, "y": 550},
+        "R8": {"x": 880, "y": 630},
+        "C18": {"x": 880, "y": 710},
+        "C19": {"x": 880, "y": 790},
+        "C20": {"x": 880, "y": 870},
+        "J1": {"x": 1000, "y": 550},
+        "J2": {"x": 1000, "y": 650}
     }
     grid_map_js = json.dumps(grid_map)
 
@@ -190,12 +229,14 @@ def main():
             const ids = oldComps.filter(c => c.getState_ComponentType() !== 'sheet').map(c => c.getState_PrimitiveId());
             if (ids.length > 0) {{
                 await eda.sch_PrimitiveComponent.delete(ids);
+                await new Promise(resolve => setTimeout(resolve, 2000));
             }}
         }}
         const oldWires = await eda.sch_PrimitiveWire.getAll();
         if (oldWires && oldWires.length > 0) {{
             const ids = oldWires.map(w => w.getState_PrimitiveId());
             await eda.sch_PrimitiveWire.delete(ids);
+            await new Promise(resolve => setTimeout(resolve, 2000));
         }}
         return {{ success: true, devMap: devMap }};
     }} catch(e) {{
@@ -210,91 +251,102 @@ def main():
         print(f"[ERROR] 1-A단계(클리어) 실패: {err}")
         sys.exit(1)
         
+    print("[OK] 회로도 페이지가 성공적으로 재생성되어 클리어되었습니다. 에디터 대기 중 (3s)...")
+    time.sleep(3.0)
+    
     dev_map = res_clear.get("devMap", {})
     print(f"기존 심볼 매핑 획득 완료: {len(dev_map)}개")
 
-    # (1B) 부품 배치
-    placed_components = []
-    print("1-B단계: 컴포넌트 순차 배치 중...")
+    # (1B & 1C) 부품 배치 및 핀 좌표 Chunk 단위 일괄 수집 (Freeze 및 Timeout 방지)
+    placed_tasks = []
     for comp_info in flow["components"]:
         des = comp_info["designator"]
-        dev = dev_map.get(des) or lcsc_to_dev.get(comp_info["lcsc_id"])
+        # J1, J2(2핀 헤더) 및 U3(DFN-14) 등 스펙의 정합성을 1순위 보장하기 위해 lcsc_to_dev를 최우선 적용
+        dev = lcsc_to_dev.get(comp_info["lcsc_id"]) or dev_map.get(des)
         if not dev:
             print(f"  [WARN] {des} ({comp_info['lcsc_id']}) 의 라이브러리 정보를 찾을 수 없어 배치를 건너뜁니다.")
             continue
             
         coords = grid_map.get(des, {"x": 800, "y": 400})
-        js_place_single = f"""
-        try {{
-            let schComp = await eda.sch_PrimitiveComponent.create(
-                {{ libraryUuid: "{dev['libraryUuid']}", uuid: "{dev['uuid']}" }},
-                {coords['x']},
-                {coords['y']}
-            );
-            if (schComp) {{
-                await schComp.setState_Designator("{des}");
-                const linkId = "link_" + "{des}";
-                if (typeof schComp.setState_UniqueId === 'function') {{
-                    await schComp.setState_UniqueId(linkId);
-                }}
-                if (typeof schComp.done === 'function') await schComp.done();
-                return {{ success: true, primId: schComp.getState_PrimitiveId() }};
-            }}
-            return {{ success: false, error: "생성 객체가 null입니다." }};
-        }} catch(e) {{
-            return {{ success: false, error: e.message }};
-        }}
-        """
-        res_place = client.execute_js(js_place_single)
-        if res_place and res_place.get("success"):
-            prim_id = res_place.get("primId")
-            placed_components.append({"des": des, "primId": prim_id, "coords": coords})
-            print(f"  [OK] 배치 완료: {des} -> ({coords['x']}, {coords['y']})")
-        else:
-            err = res_place.get("error") if res_place else "응답 없음"
-            print(f"  [ERROR] 배치 실패: {des} -> {err}")
-            
-    # (1C) 핀 좌표 정보 수집
-    pins = []
-    print("1-C단계: 배치된 컴포넌트들의 핀 좌표 수집 중...")
-    for item in placed_components:
-        des = item["des"]
-        prim_id = item["primId"]
-        coords = item["coords"]
+        placed_tasks.append({
+            "des": des,
+            "libraryUuid": dev["libraryUuid"],
+            "uuid": dev["uuid"],
+            "x": coords["x"],
+            "y": coords["y"]
+        })
         
-        js_query_pins = f"""
+    placed_components = []
+    pins = []
+    chunk_size = 1
+    total_comp_chunks = (len(placed_tasks) + chunk_size - 1) // chunk_size
+    
+    print(f"1-B & 1-C단계: 부품 {len(placed_tasks)}개를 크기 {chunk_size}의 Chunk {total_comp_chunks}개로 분할 배치 및 핀 좌표 수집 중...")
+    
+    for c_idx in range(total_comp_chunks):
+        c_tasks = placed_tasks[c_idx*chunk_size : (c_idx+1)*chunk_size]
+        print(f"  [Chunk {c_idx+1}/{total_comp_chunks}] {', '.join(t['des'] for t in c_tasks)} 배치 중...")
+        
+        js_batch_place_and_query = f"""
         try {{
-            const pins = await eda.sch_PrimitiveComponent.getAllPinsByPrimitiveId("{prim_id}");
-            if (!pins) return {{ success: true, pins: [] }};
-            let pinData = [];
-            for (const pin of pins) {{
-                pinData.push({{
-                    pinNumber: pin.getState_PinNumber(),
-                    pinName: pin.getState_PinName(),
-                    x: pin.getState_X(),
-                    y: pin.getState_Y()
-                }});
+            const tasks = {json.dumps(c_tasks)};
+            const placed = [];
+            const pins = [];
+            
+            for (const task of tasks) {{
+                try {{
+                    let schComp = await eda.sch_PrimitiveComponent.create(
+                        {{ libraryUuid: task.libraryUuid, uuid: task.uuid }},
+                        task.x,
+                        task.y
+                    );
+                    if (schComp) {{
+                        await schComp.setState_Designator(task.des);
+                        const linkId = "link_" + task.des;
+                        if (typeof schComp.setState_UniqueId === 'function') {{
+                            await schComp.setState_UniqueId(linkId);
+                        }}
+                        if (typeof schComp.done === 'function') await schComp.done();
+                        
+                        const primId = schComp.getState_PrimitiveId();
+                        placed.push({{ des: task.des, primId: primId, coords: {{ x: task.x, y: task.y }} }});
+                        
+                        const componentPins = await eda.sch_PrimitiveComponent.getAllPinsByPrimitiveId(primId);
+                        if (componentPins) {{
+                            for (const pin of componentPins) {{
+                                pins.push({{
+                                    des: task.des,
+                                    coords: {{ x: task.x, y: task.y }},
+                                    pinNumber: pin.getState_PinNumber(),
+                                    pinName: pin.getState_PinName(),
+                                    x: pin.getState_X(),
+                                    y: pin.getState_Y()
+                                }});
+                            }}
+                        }}
+                    }}
+                }} catch(e) {{
+                    // ignore and continue
+                }}
+                await new Promise(resolve => setTimeout(resolve, 150));
             }}
-            return {{ success: true, pins: pinData }};
+            return {{ success: true, placed, pins }};
         }} catch(e) {{
             return {{ success: false, error: e.message }};
         }}
         """
-        res_pins = client.execute_js(js_query_pins)
-        if res_pins and res_pins.get("success"):
-            for p in res_pins.get("pins", []):
-                pins.append({
-                    "des": des,
-                    "coords": coords,
-                    "pinNumber": p["pinNumber"],
-                    "pinName": p["pinName"],
-                    "x": p["x"],
-                    "y": p["y"]
-                })
-            print(f"  [OK] 핀 정보 수집 완료: {des}")
+        
+        res_batch = client.execute_js(js_batch_place_and_query)
+        if res_batch and res_batch.get("success"):
+            placed_components.extend(res_batch.get("placed", []))
+            pins.extend(res_batch.get("pins", []))
         else:
-            err = res_pins.get("error") if res_pins else "응답 없음"
-            print(f"  [ERROR] 핀 정보 수집 실패: {des} -> {err}")
+            err = res_batch.get("error") if res_batch else "응답 없음"
+            print(f"  [Warning] Chunk {c_idx+1} 실행 실패: {err}")
+            
+        time.sleep(1.5) # 각 chunk 사이에 넉넉한 대기 부여
+        
+    print(f"부품 {len(placed_components)}개 배치 완료, 총 핀 {len(pins)}개 정보 수집 완료.")
             
     print(f"수집된 총 핀 개수: {len(pins)}개")
 
@@ -334,23 +386,23 @@ def main():
         target_x = px
         target_y = py
         
-        cx = coords["x"]
-        cy = coords["y"]
+        cx = coords["x"] * 10
+        cy = coords["y"] * 10
         
+        # 칩, 커넥터 포함 모든 컴포넌트 핀에 대해 1.0mm(10단위) 와이어를 연장하여 포트 겹침 및 주변 단락 방지
         if px > cx:
-            target_x += 30
+            target_x += 10
         elif px < cx:
-            target_x -= 30
+            target_x -= 10
         elif py > cy:
-            target_y += 30
+            target_y += 10
         elif py < cy:
-            target_y -= 30
+            target_y -= 10
         else:
-            target_y -= 30
+            target_y -= 10
             
         target_x = round(target_x)
         target_y = round(target_y)
-        
         all_wires.append([px, py, target_x, target_y])
         
         # Net flag type determination
@@ -392,10 +444,9 @@ def main():
     print(f"그려야 할 와이어: {len(all_wires)}개, 배치할 네트 포트/플래그: {len(net_tasks)}개")
 
     # 3단계: 와이어 및 네트 포트 분할(Chunk) 전송 및 드로잉
-    # 1회 전송당 와이어 25개 + 네트 25개씩으로 분할하여 Timeout 회피
-    chunk_size = 3
+    chunk_size = 2
     total_chunks = (max(len(all_wires), len(net_tasks)) + chunk_size - 1) // chunk_size
-
+    
     for i in range(total_chunks):
         chunk_wires = all_wires[i*chunk_size : (i+1)*chunk_size]
         chunk_nets = net_tasks[i*chunk_size : (i+1)*chunk_size]
@@ -422,7 +473,7 @@ def main():
                 }} catch(e) {{
                     logs.push("와이어 생성 실패: " + JSON.stringify(wire) + " - " + e.message);
                 }}
-                await new Promise(resolve => setTimeout(resolve, 35));
+                await new Promise(resolve => setTimeout(resolve, 150));
             }}
             
             logs.push("네트 생성 시작");
@@ -440,7 +491,7 @@ def main():
                 }} catch(e) {{
                     logs.push("네트 생성 실패: " + task.netName + " - " + e.message);
                 }}
-                await new Promise(resolve => setTimeout(resolve, 35));
+                await new Promise(resolve => setTimeout(resolve, 150));
             }}
             return {{ success: true, logs: logs }};
         }} catch(e) {{
@@ -459,7 +510,7 @@ def main():
         else:
             print(f"[OK] 묶음 {i+1} 그리기 완료")
             
-        time.sleep(0.5) # 안전 대기
+        time.sleep(1.5) # 안전 대기 늘림
 
     # 4단계: PCB Unique ID 동기화 및 마무리 (우회 처리)
     js_sync_pcb = f"""
