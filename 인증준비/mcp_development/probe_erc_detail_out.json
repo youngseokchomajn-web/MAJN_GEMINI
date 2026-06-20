@@ -1,0 +1,22 @@
+{
+  "manu_methods": [
+    "constructor",
+    "deleteBomTemplate",
+    "getAssemblyVariantsConfigs",
+    "getBomFile",
+    "getBomTemplateFile",
+    "getBomTemplates",
+    "getExportDocumentFile",
+    "getNetlistFile",
+    "getSimulationNetlistFile",
+    "placeComponentsOrder",
+    "placeSmtComponentsOrder",
+    "uploadBomTemplateFile"
+  ],
+  "erc_verbose": [
+    {
+      "type": "warn",
+      "count": 2
+    }
+  ]
+}

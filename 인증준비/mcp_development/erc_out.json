@@ -1,0 +1,22 @@
+Connecting to EasyEDA Bridge Server at http://127.0.0.1:49620...
+[OK] Bridge Server is running.
+[OK] EasyEDA Editor Client Connection Verified.
+{
+  "saved": true,
+  "erc": [
+    {
+      "type": "warn",
+      "count": 2
+    }
+  ],
+  "pos": {
+    "J1": [
+      1000,
+      550
+    ],
+    "J2": [
+      1000,
+      650
+    ]
+  }
+}

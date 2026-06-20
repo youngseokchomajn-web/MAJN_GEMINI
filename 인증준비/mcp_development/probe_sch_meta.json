@@ -1,0 +1,180 @@
+{
+  "schInfo": [
+    {
+      "itemType": "Schematic",
+      "uuid": "1b82f42f112ab63b",
+      "page": [
+        {
+          "itemType": "Schematic Page",
+          "uuid": "6085a53b74cfcf6b",
+          "name": "p1",
+          "parentSchematicUuid": "1b82f42f112ab63b",
+          "showTitleBlock": true,
+          "titleBlockData": {}
+        }
+      ],
+      "parentProjectUuid": "e908d182d6d34d4caedc67ea0fe43d0d",
+      "parentBoardName": "Board1",
+      "name": "schematic1"
+    }
+  ],
+  "pages": [
+    {
+      "titleBlockData": {
+        "Symbol": {
+          "showTitle": false,
+          "showValue": false,
+          "value": "Drawing-Symbol_A4"
+        },
+        "@Project Name": {
+          "showTitle": false,
+          "showValue": false,
+          "value": "majn"
+        },
+        "@Page Count": {
+          "showTitle": false,
+          "showValue": false,
+          "value": 1
+        },
+        "@Update Date": {
+          "showTitle": false,
+          "showValue": false,
+          "value": "2026-06-20"
+        },
+        "@Create Date": {
+          "showTitle": false,
+          "showValue": false,
+          "value": "2026-06-18"
+        },
+        "@Schematic Name": {
+          "showTitle": false,
+          "showValue": false,
+          "value": "Schematic1"
+        },
+        "@Page No": {
+          "showTitle": false,
+          "showValue": false,
+          "value": 1
+        },
+        "@Page Name": {
+          "showTitle": false,
+          "showValue": false,
+          "value": "P1"
+        },
+        "Company": {
+          "showTitle": false,
+          "showValue": false,
+          "value": "EasyEDA.com"
+        },
+        "Reviewed": {
+          "showTitle": false,
+          "showValue": false,
+          "value": ""
+        },
+        "Version": {
+          "showTitle": false,
+          "showValue": false,
+          "value": "V1.0"
+        },
+        "Page Size": {
+          "showTitle": false,
+          "showValue": false,
+          "value": "A4"
+        },
+        "Drawn": {
+          "showTitle": false,
+          "showValue": false,
+          "value": ""
+        },
+        "Device": {
+          "showTitle": null,
+          "showValue": null,
+          "value": "Drawing-Symbol_A4"
+        },
+        "Name": {
+          "showTitle": null,
+          "showValue": null,
+          "value": ""
+        },
+        "Description": {
+          "showTitle": null,
+          "showValue": null,
+          "value": ""
+        },
+        "@Create Time": {
+          "showTitle": null,
+          "showValue": null,
+          "value": "15:27:33"
+        },
+        "@Update Time": {
+          "showTitle": null,
+          "showValue": null,
+          "value": "09:10:15"
+        },
+        "Border": {
+          "showTitle": null,
+          "showValue": null,
+          "value": "1"
+        },
+        "Width": {
+          "showTitle": null,
+          "showValue": null,
+          "value": "1170"
+        },
+        "Height": {
+          "showTitle": null,
+          "showValue": null,
+          "value": "825"
+        },
+        "Region Start": {
+          "showTitle": null,
+          "showValue": null,
+          "value": "1"
+        },
+        "X Region Count": {
+          "showTitle": null,
+          "showValue": null,
+          "value": "6"
+        },
+        "Y Region Count": {
+          "showTitle": null,
+          "showValue": null,
+          "value": "4"
+        },
+        "Blade Width": {
+          "showTitle": null,
+          "showValue": null,
+          "value": "10"
+        },
+        "Color": {
+          "showTitle": null,
+          "showValue": null,
+          "value": ""
+        },
+        "Title Block Position": {
+          "showTitle": null,
+          "showValue": null,
+          "value": "3"
+        },
+        "Title Block": {
+          "showTitle": null,
+          "showValue": null,
+          "value": "1"
+        },
+        "@Board Name": {
+          "showTitle": null,
+          "showValue": null,
+          "value": "Board1"
+        },
+        "ID": {}
+      },
+      "showTitleBlock": true,
+      "itemType": "Schematic Page",
+      "uuid": "6085a53b74cfcf6b",
+      "name": "P1",
+      "parentSchematicUuid": "1b82f42f112ab63b"
+    }
+  ],
+  "activated": "6085a53b74cfcf6b",
+  "err_JLCEDA": "i is not iterable"
+}

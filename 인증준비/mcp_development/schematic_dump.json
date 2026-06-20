@@ -1,0 +1,4375 @@
+{
+  "success": true,
+  "pageName": "P1",
+  "parts": [
+    {
+      "lcsc": "unknown",
+      "compType": "sheet",
+      "primId": "4a0b8b980e027f88",
+      "x": 0,
+      "y": 0,
+      "net": "",
+      "pins": []
+    },
+    {
+      "des": "U1",
+      "lcsc": "unknown",
+      "compType": "part",
+      "primId": "a43ded4659625363",
+      "x": 800,
+      "y": 200,
+      "net": "",
+      "pins": [
+        {
+          "num": "39",
+          "name": "GND",
+          "x": 800,
+          "y": 330
+        },
+        {
+          "num": "38",
+          "name": "GND",
+          "x": 860,
+          "y": 300
+        },
+        {
+          "num": "37",
+          "name": "IO23",
+          "x": 860,
+          "y": 290
+        },
+        {
+          "num": "36",
+          "name": "IO22",
+          "x": 860,
+          "y": 280
+        },
+        {
+          "num": "35",
+          "name": "TXD0",
+          "x": 860,
+          "y": 270
+        },
+        {
+          "num": "34",
+          "name": "RXD0",
+          "x": 860,
+          "y": 260
+        },
+        {
+          "num": "33",
+          "name": "IO21",
+          "x": 860,
+          "y": 250
+        },
+        {
+          "num": "32",
+          "name": "NC",
+          "x": 860,
+          "y": 240
+        },
+        {
+          "num": "31",
+          "name": "IO19",
+          "x": 860,
+          "y": 230
+        },
+        {
+          "num": "30",
+          "name": "IO18",
+          "x": 860,
+          "y": 220
+        },
+        {
+          "num": "29",
+          "name": "IO5",
+          "x": 860,
+          "y": 210
+        },
+        {
+          "num": "28",
+          "name": "IO17",
+          "x": 860,
+          "y": 200
+        },
+        {
+          "num": "27",
+          "name": "IO16",
+          "x": 860,
+          "y": 190
+        },
+        {
+          "num": "26",
+          "name": "IO4",
+          "x": 860,
+          "y": 180
+        },
+        {
+          "num": "25",
+          "name": "IO0",
+          "x": 860,
+          "y": 170
+        },
+        {
+          "num": "24",
+          "name": "IO2",
+          "x": 860,
+          "y": 160
+        },
+        {
+          "num": "23",
+          "name": "IO15",
+          "x": 860,
+          "y": 150
+        },
+        {
+          "num": "22",
+          "name": "NC",
+          "x": 860,
+          "y": 140
+        },
+        {
+          "num": "21",
+          "name": "NC",
+          "x": 860,
+          "y": 130
+        },
+        {
+          "num": "20",
+          "name": "NC",
+          "x": 860,
+          "y": 120
+        },
+        {
+          "num": "19",
+          "name": "NC",
+          "x": 740,
+          "y": 120
+        },
+        {
+          "num": "18",
+          "name": "NC",
+          "x": 740,
+          "y": 130
+        },
+        {
+          "num": "17",
+          "name": "NC",
+          "x": 740,
+          "y": 140
+        },
+        {
+          "num": "16",
+          "name": "IO13",
+          "x": 740,
+          "y": 150
+        },
+        {
+          "num": "15",
+          "name": "GND",
+          "x": 740,
+          "y": 160
+        },
+        {
+          "num": "14",
+          "name": "IO12",
+          "x": 740,
+          "y": 170
+        },
+        {
+          "num": "13",
+          "name": "IO14",
+          "x": 740,
+          "y": 180
+        },
+        {
+          "num": "12",
+          "name": "IO27",
+          "x": 740,
+          "y": 190
+        },
+        {
+          "num": "11",
+          "name": "IO26",
+          "x": 740,
+          "y": 200
+        },
+        {
+          "num": "10",
+          "name": "IO25",
+          "x": 740,
+          "y": 210
+        },
+        {
+          "num": "9",
+          "name": "IO33",
+          "x": 740,
+          "y": 220
+        },
+        {
+          "num": "8",
+          "name": "IO32",
+          "x": 740,
+          "y": 230
+        },
+        {
+          "num": "7",
+          "name": "IO35",
+          "x": 740,
+          "y": 240
+        },
+        {
+          "num": "6",
+          "name": "IO34",
+          "x": 740,
+          "y": 250
+        },
+        {
+          "num": "5",
+          "name": "SENSOR_VN",
+          "x": 740,
+          "y": 260
+        },
+        {
+          "num": "4",
+          "name": "SENSOR_VP",
+          "x": 740,
+          "y": 270
+        },
+        {
+          "num": "3",
+          "name": "EN",
+          "x": 740,
+          "y": 280
+        },
+        {
+          "num": "2",
+          "name": "3V3",
+          "x": 740,
+          "y": 290
+        },
+        {
+          "num": "1",
+          "name": "GND",
+          "x": 740,
+          "y": 300
+        }
+      ]
+    },
+    {
+      "des": "U2",
+      "lcsc": "unknown",
+      "compType": "part",
+      "primId": "973b515127e2696e",
+      "x": 250,
+      "y": 150,
+      "net": "",
+      "pins": [
+        {
+          "num": "1",
+          "name": "OUT",
+          "x": 210,
+          "y": 160
+        },
+        {
+          "num": "2",
+          "name": "GND",
+          "x": 210,
+          "y": 150
+        },
+        {
+          "num": "3",
+          "name": "EN",
+          "x": 290,
+          "y": 150
+        },
+        {
+          "num": "4",
+          "name": "IN",
+          "x": 290,
+          "y": 160
+        },
+        {
+          "num": "5",
+          "name": "EP",
+          "x": 250,
+          "y": 190
+        }
+      ]
+    },
+    {
+      "des": "U3",
+      "lcsc": "unknown",
+      "compType": "part",
+      "primId": "d10b9a61578de25e",
+      "x": 450,
+      "y": 150,
+      "net": "",
+      "pins": [
+        {
+          "num": "1",
+          "name": "COMP",
+          "x": 405,
+          "y": 180
+        },
+        {
+          "num": "2",
+          "name": "EN",
+          "x": 405,
+          "y": 170
+        },
+        {
+          "num": "3",
+          "name": "VIN",
+          "x": 405,
+          "y": 160
+        },
+        {
+          "num": "4",
+          "name": "SW",
+          "x": 405,
+          "y": 150
+        },
+        {
+          "num": "5",
+          "name": "SW",
+          "x": 405,
+          "y": 140
+        },
+        {
+          "num": "6",
+          "name": "SW",
+          "x": 405,
+          "y": 130
+        },
+        {
+          "num": "7",
+          "name": "VDD",
+          "x": 405,
+          "y": 120
+        },
+        {
+          "num": "8",
+          "name": "PGND",
+          "x": 495,
+          "y": 120
+        },
+        {
+          "num": "9",
+          "name": "PGND",
+          "x": 495,
+          "y": 130
+        },
+        {
+          "num": "10",
+          "name": "PGND",
+          "x": 495,
+          "y": 140
+        },
+        {
+          "num": "11",
+          "name": "AGND",
+          "x": 495,
+          "y": 150
+        },
+        {
+          "num": "12",
+          "name": "SS",
+          "x": 495,
+          "y": 160
+        },
+        {
+          "num": "13",
+          "name": "FB",
+          "x": 495,
+          "y": 170
+        },
+        {
+          "num": "14",
+          "name": "FSET",
+          "x": 495,
+          "y": 180
+        },
+        {
+          "num": "15",
+          "name": "EP",
+          "x": 450,
+          "y": 100
+        }
+      ]
+    },
+    {
+      "des": "U4",
+      "lcsc": "unknown",
+      "compType": "part",
+      "primId": "2e50ad92a214ce73",
+      "x": 1000,
+      "y": 450,
+      "net": "",
+      "pins": [
+        {
+          "num": "1",
+          "name": "DGND",
+          "x": 930,
+          "y": 515
+        },
+        {
+          "num": "2",
+          "name": "DVDD",
+          "x": 930,
+          "y": 505
+        },
+        {
+          "num": "3",
+          "name": "ADR/FAULT#",
+          "x": 930,
+          "y": 495
+        },
+        {
+          "num": "4",
+          "name": "VR_DIG",
+          "x": 930,
+          "y": 485
+        },
+        {
+          "num": "5",
+          "name": "DGND",
+          "x": 930,
+          "y": 475
+        },
+        {
+          "num": "6",
+          "name": "LRCLK",
+          "x": 930,
+          "y": 465
+        },
+        {
+          "num": "7",
+          "name": "SCLK",
+          "x": 930,
+          "y": 455
+        },
+        {
+          "num": "8",
+          "name": "SDIN",
+          "x": 930,
+          "y": 445
+        },
+        {
+          "num": "9",
+          "name": "SDOUT",
+          "x": 930,
+          "y": 435
+        },
+        {
+          "num": "10",
+          "name": "SDA",
+          "x": 930,
+          "y": 425
+        },
+        {
+          "num": "11",
+          "name": "SCL",
+          "x": 930,
+          "y": 415
+        },
+        {
+          "num": "12",
+          "name": "PDN#",
+          "x": 930,
+          "y": 405
+        },
+        {
+          "num": "13",
+          "name": "AVDD",
+          "x": 930,
+          "y": 395
+        },
+        {
+          "num": "14",
+          "name": "AGND",
+          "x": 930,
+          "y": 385
+        },
+        {
+          "num": "15",
+          "name": "PVDD",
+          "x": 1070,
+          "y": 385
+        },
+        {
+          "num": "16",
+          "name": "PVDD",
+          "x": 1070,
+          "y": 395
+        },
+        {
+          "num": "17",
+          "name": "OUT_B+",
+          "x": 1070,
+          "y": 405
+        },
+        {
+          "num": "18",
+          "name": "BST_B+",
+          "x": 1070,
+          "y": 415
+        },
+        {
+          "num": "19",
+          "name": "PGND",
+          "x": 1070,
+          "y": 425
+        },
+        {
+          "num": "20",
+          "name": "OUT_B-",
+          "x": 1070,
+          "y": 435
+        },
+        {
+          "num": "21",
+          "name": "BST_B-",
+          "x": 1070,
+          "y": 445
+        },
+        {
+          "num": "22",
+          "name": "BST_A-",
+          "x": 1070,
+          "y": 455
+        },
+        {
+          "num": "23",
+          "name": "OUT_A-",
+          "x": 1070,
+          "y": 465
+        },
+        {
+          "num": "24",
+          "name": "PGND",
+          "x": 1070,
+          "y": 475
+        },
+        {
+          "num": "25",
+          "name": "BST_A+",
+          "x": 1070,
+          "y": 485
+        },
+        {
+          "num": "26",
+          "name": "OUT_A+",
+          "x": 1070,
+          "y": 495
+        },
+        {
+          "num": "27",
+          "name": "PVDD",
+          "x": 1070,
+          "y": 505
+        },
+        {
+          "num": "28",
+          "name": "PVDD",
+          "x": 1070,
+          "y": 515
+        },
+        {
+          "num": "29",
+          "name": "EP",
+          "x": 1000,
+          "y": 365
+        }
+      ]
+    },
+    {
+      "des": "U5",
+      "lcsc": "unknown",
+      "compType": "part",
+      "primId": "7651ed94ed2fa84a",
+      "x": 800,
+      "y": 600,
+      "net": "",
+      "pins": [
+        {
+          "num": "1",
+          "name": "SDO/SA0",
+          "x": 735,
+          "y": 630
+        },
+        {
+          "num": "2",
+          "name": "SDX",
+          "x": 735,
+          "y": 620
+        },
+        {
+          "num": "3",
+          "name": "SCX",
+          "x": 735,
+          "y": 610
+        },
+        {
+          "num": "4",
+          "name": "INT1",
+          "x": 735,
+          "y": 600
+        },
+        {
+          "num": "5",
+          "name": "VDDIO",
+          "x": 735,
+          "y": 590
+        },
+        {
+          "num": "6",
+          "name": "GND",
+          "x": 735,
+          "y": 580
+        },
+        {
+          "num": "7",
+          "name": "GND",
+          "x": 735,
+          "y": 570
+        },
+        {
+          "num": "8",
+          "name": "VDD",
+          "x": 865,
+          "y": 570
+        },
+        {
+          "num": "9",
+          "name": "INT2",
+          "x": 865,
+          "y": 580
+        },
+        {
+          "num": "10",
+          "name": "OSC_AUX",
+          "x": 865,
+          "y": 590
+        },
+        {
+          "num": "11",
+          "name": "SDO_AUX",
+          "x": 865,
+          "y": 600
+        },
+        {
+          "num": "12",
+          "name": "CS",
+          "x": 865,
+          "y": 610
+        },
+        {
+          "num": "13",
+          "name": "SCL",
+          "x": 865,
+          "y": 620
+        },
+        {
+          "num": "14",
+          "name": "SDA",
+          "x": 865,
+          "y": 630
+        }
+      ]
+    },
+    {
+      "des": "D1",
+      "lcsc": "unknown",
+      "compType": "part",
+      "primId": "30983e5359561256",
+      "x": 100,
+      "y": 270,
+      "net": "",
+      "pins": [
+        {
+          "num": "2",
+          "name": "A",
+          "x": 115,
+          "y": 270
+        },
+        {
+          "num": "1",
+          "name": "C",
+          "x": 75,
+          "y": 270
+        }
+      ]
+    },
+    {
+      "des": "D2",
+      "lcsc": "unknown",
+      "compType": "part",
+      "primId": "978afc195fcc032a",
+      "x": 100,
+      "y": 380,
+      "net": "",
+      "pins": [
+        {
+          "num": "1",
+          "name": "IO1",
+          "x": 60,
+          "y": 390
+        },
+        {
+          "num": "2",
+          "name": "GND",
+          "x": 60,
+          "y": 380
+        },
+        {
+          "num": "3",
+          "name": "IO2",
+          "x": 60,
+          "y": 370
+        },
+        {
+          "num": "4",
+          "name": "IO2",
+          "x": 140,
+          "y": 370
+        },
+        {
+          "num": "5",
+          "name": "VBUS",
+          "x": 140,
+          "y": 380
+        },
+        {
+          "num": "6",
+          "name": "IO1",
+          "x": 140,
+          "y": 390
+        }
+      ]
+    },
+    {
+      "des": "USB_C",
+      "lcsc": "unknown",
+      "compType": "part",
+      "primId": "0b816b7ffa7dd5e7",
+      "x": 100,
+      "y": 150,
+      "net": "",
+      "pins": [
+        {
+          "num": "A1B12",
+          "name": "GND",
+          "x": 65,
+          "y": 205
+        },
+        {
+          "num": "A4B9",
+          "name": "VBUS",
+          "x": 65,
+          "y": 195
+        },
+        {
+          "num": "B8",
+          "name": "SBU2",
+          "x": 65,
+          "y": 185
+        },
+        {
+          "num": "A5",
+          "name": "CC1",
+          "x": 65,
+          "y": 175
+        },
+        {
+          "num": "B7",
+          "name": "DN2",
+          "x": 65,
+          "y": 165
+        },
+        {
+          "num": "A6",
+          "name": "DP1",
+          "x": 65,
+          "y": 155
+        },
+        {
+          "num": "A7",
+          "name": "DN1",
+          "x": 65,
+          "y": 145
+        },
+        {
+          "num": "B6",
+          "name": "DP2",
+          "x": 65,
+          "y": 135
+        },
+        {
+          "num": "A8",
+          "name": "SBU1",
+          "x": 65,
+          "y": 125
+        },
+        {
+          "num": "B5",
+          "name": "CC2",
+          "x": 65,
+          "y": 115
+        },
+        {
+          "num": "B4A9",
+          "name": "VBUS",
+          "x": 65,
+          "y": 105
+        },
+        {
+          "num": "B1A12",
+          "name": "GND",
+          "x": 65,
+          "y": 95
+        },
+        {
+          "num": "4",
+          "name": "EH",
+          "x": 135,
+          "y": 125
+        },
+        {
+          "num": "3",
+          "name": "EH",
+          "x": 135,
+          "y": 115
+        },
+        {
+          "num": "2",
+          "name": "EH",
+          "x": 135,
+          "y": 105
+        },
+        {
+          "num": "1",
+          "name": "EH",
+          "x": 135,
+          "y": 95
+        }
+      ]
+    },
+    {
+      "des": "UART_HDR",
+      "lcsc": "unknown",
+      "compType": "part",
+      "primId": "c0e89ee49c60423c",
+      "x": 980,
+      "y": 200,
+      "net": "",
+      "pins": [
+        {
+          "num": "1",
+          "name": "1",
+          "x": 960,
+          "y": 225
+        },
+        {
+          "num": "2",
+          "name": "2",
+          "x": 960,
+          "y": 215
+        },
+        {
+          "num": "3",
+          "name": "3",
+          "x": 960,
+          "y": 205
+        },
+        {
+          "num": "4",
+          "name": "4",
+          "x": 960,
+          "y": 195
+        },
+        {
+          "num": "5",
+          "name": "5",
+          "x": 960,
+          "y": 185
+        },
+        {
+          "num": "6",
+          "name": "6",
+          "x": 960,
+          "y": 175
+        }
+      ]
+    },
+    {
+      "des": "C1",
+      "lcsc": "unknown",
+      "compType": "part",
+      "primId": "8a00ad1463f0eebd",
+      "x": 800,
+      "y": 400,
+      "net": "",
+      "pins": [
+        {
+          "num": "1",
+          "name": "1",
+          "x": 780,
+          "y": 400
+        },
+        {
+          "num": "2",
+          "name": "2",
+          "x": 820,
+          "y": 400
+        }
+      ]
+    },
+    {
+      "des": "C2",
+      "lcsc": "unknown",
+      "compType": "part",
+      "primId": "97fa11942127a504",
+      "x": 800,
+      "y": 480,
+      "net": "",
+      "pins": [
+        {
+          "num": "1",
+          "name": "1",
+          "x": 780,
+          "y": 480
+        },
+        {
+          "num": "2",
+          "name": "2",
+          "x": 820,
+          "y": 480
+        }
+      ]
+    },
+    {
+      "des": "C3",
+      "lcsc": "unknown",
+      "compType": "part",
+      "primId": "f3423305899f63d7",
+      "x": 250,
+      "y": 270,
+      "net": "",
+      "pins": [
+        {
+          "num": "1",
+          "name": "1",
+          "x": 230,
+          "y": 270
+        },
+        {
+          "num": "2",
+          "name": "2",
+          "x": 270,
+          "y": 270
+        }
+      ]
+    },
+    {
+      "des": "C4",
+      "lcsc": "unknown",
+      "compType": "part",
+      "primId": "e7c03d3d73a4aeca",
+      "x": 250,
+      "y": 380,
+      "net": "",
+      "pins": [
+        {
+          "num": "1",
+          "name": "1",
+          "x": 230,
+          "y": 380
+        },
+        {
+          "num": "2",
+          "name": "2",
+          "x": 270,
+          "y": 380
+        }
+      ]
+    },
+    {
+      "des": "C5",
+      "lcsc": "unknown",
+      "compType": "part",
+      "primId": "02095d0e529dafa1",
+      "x": 450,
+      "y": 490,
+      "net": "",
+      "pins": [
+        {
+          "num": "1",
+          "name": "1",
+          "x": 430,
+          "y": 490
+        },
+        {
+          "num": "2",
+          "name": "2",
+          "x": 470,
+          "y": 490
+        }
+      ]
+    },
+    {
+      "des": "C6",
+      "lcsc": "unknown",
+      "compType": "part",
+      "primId": "579bb97a0939519a",
+      "x": 600,
+      "y": 150,
+      "net": "",
+      "pins": [
+        {
+          "num": "2",
+          "name": "2",
+          "x": 615,
+          "y": 150
+        },
+        {
+          "num": "1",
+          "name": "1",
+          "x": 585,
+          "y": 150
+        }
+      ]
+    },
+    {
+      "des": "C7",
+      "lcsc": "unknown",
+      "compType": "part",
+      "primId": "58c3d8061dd90f27",
+      "x": 600,
+      "y": 250,
+      "net": "",
+      "pins": [
+        {
+          "num": "2",
+          "name": "2",
+          "x": 615,
+          "y": 250
+        },
+        {
+          "num": "1",
+          "name": "1",
+          "x": 585,
+          "y": 250
+        }
+      ]
+    },
+    {
+      "des": "C8",
+      "lcsc": "unknown",
+      "compType": "part",
+      "primId": "ab5e735d0bf13b36",
+      "x": 1000,
+      "y": 600,
+      "net": "",
+      "pins": [
+        {
+          "num": "1",
+          "name": "1",
+          "x": 980,
+          "y": 600
+        },
+        {
+          "num": "2",
+          "name": "2",
+          "x": 1020,
+          "y": 600
+        }
+      ]
+    },
+    {
+      "des": "C9",
+      "lcsc": "unknown",
+      "compType": "part",
+      "primId": "f3b15b1e2ef0c83c",
+      "x": 1000,
+      "y": 700,
+      "net": "",
+      "pins": [
+        {
+          "num": "1",
+          "name": "1",
+          "x": 980,
+          "y": 700
+        },
+        {
+          "num": "2",
+          "name": "2",
+          "x": 1020,
+          "y": 700
+        }
+      ]
+    },
+    {
+      "des": "C10",
+      "lcsc": "unknown",
+      "compType": "part",
+      "primId": "e111d4064c45a1a3",
+      "x": 800,
+      "y": 700,
+      "net": "",
+      "pins": [
+        {
+          "num": "1",
+          "name": "1",
+          "x": 780,
+          "y": 700
+        },
+        {
+          "num": "2",
+          "name": "2",
+          "x": 820,
+          "y": 700
+        }
+      ]
+    },
+    {
+      "des": "L1",
+      "lcsc": "unknown",
+      "compType": "part",
+      "primId": "682dce52e9eb2d01",
+      "x": 450,
+      "y": 270,
+      "net": "",
+      "pins": [
+        {
+          "num": "2",
+          "name": "2",
+          "x": 470,
+          "y": 270
+        },
+        {
+          "num": "1",
+          "name": "1",
+          "x": 430,
+          "y": 270
+        }
+      ]
+    },
+    {
+      "des": "D3",
+      "lcsc": "unknown",
+      "compType": "part",
+      "primId": "eecd07840af23661",
+      "x": 450,
+      "y": 380,
+      "net": "",
+      "pins": [
+        {
+          "num": "2",
+          "name": "2",
+          "x": 470,
+          "y": 380
+        },
+        {
+          "num": "1",
+          "name": "1",
+          "x": 430,
+          "y": 380
+        }
+      ]
+    },
+    {
+      "des": "R1",
+      "lcsc": "unknown",
+      "compType": "part",
+      "primId": "76ebf306a5aab57b",
+      "x": 600,
+      "y": 350,
+      "net": "",
+      "pins": [
+        {
+          "num": "2",
+          "name": "2",
+          "x": 620,
+          "y": 350
+        },
+        {
+          "num": "1",
+          "name": "1",
+          "x": 580,
+          "y": 350
+        }
+      ]
+    },
+    {
+      "des": "R2",
+      "lcsc": "unknown",
+      "compType": "part",
+      "primId": "e21a1a2dc54e210d",
+      "x": 600,
+      "y": 450,
+      "net": "",
+      "pins": [
+        {
+          "num": "2",
+          "name": "2",
+          "x": 620,
+          "y": 450
+        },
+        {
+          "num": "1",
+          "name": "1",
+          "x": 580,
+          "y": 450
+        }
+      ]
+    },
+    {
+      "des": "R3",
+      "lcsc": "unknown",
+      "compType": "part",
+      "primId": "ba5f2eb34bd27c47",
+      "x": 800,
+      "y": 400,
+      "net": "",
+      "pins": [
+        {
+          "num": "2",
+          "name": "2",
+          "x": 820,
+          "y": 400
+        },
+        {
+          "num": "1",
+          "name": "1",
+          "x": 780,
+          "y": 400
+        }
+      ]
+    },
+    {
+      "des": "R4",
+      "lcsc": "unknown",
+      "compType": "part",
+      "primId": "a86652e67bbaa18a",
+      "x": 800,
+      "y": 400,
+      "net": "",
+      "pins": [
+        {
+          "num": "2",
+          "name": "2",
+          "x": 820,
+          "y": 400
+        },
+        {
+          "num": "1",
+          "name": "1",
+          "x": 780,
+          "y": 400
+        }
+      ]
+    },
+    {
+      "des": "R5",
+      "lcsc": "unknown",
+      "compType": "part",
+      "primId": "a735985076639869",
+      "x": 800,
+      "y": 400,
+      "net": "",
+      "pins": [
+        {
+          "num": "2",
+          "name": "2",
+          "x": 820,
+          "y": 400
+        },
+        {
+          "num": "1",
+          "name": "1",
+          "x": 780,
+          "y": 400
+        }
+      ]
+    },
+    {
+      "des": "C17",
+      "lcsc": "unknown",
+      "compType": "part",
+      "primId": "091ce185df055d0d",
+      "x": 800,
+      "y": 400,
+      "net": "",
+      "pins": [
+        {
+          "num": "1",
+          "name": "1",
+          "x": 780,
+          "y": 400
+        },
+        {
+          "num": "2",
+          "name": "2",
+          "x": 820,
+          "y": 400
+        }
+      ]
+    },
+    {
+      "des": "R6",
+      "lcsc": "unknown",
+      "compType": "part",
+      "primId": "949f44e1740adc04",
+      "x": 800,
+      "y": 400,
+      "net": "",
+      "pins": [
+        {
+          "num": "2",
+          "name": "2",
+          "x": 820,
+          "y": 400
+        },
+        {
+          "num": "1",
+          "name": "1",
+          "x": 780,
+          "y": 400
+        }
+      ]
+    },
+    {
+      "des": "C11",
+      "lcsc": "unknown",
+      "compType": "part",
+      "primId": "c1823938900a7d40",
+      "x": 800,
+      "y": 400,
+      "net": "",
+      "pins": [
+        {
+          "num": "1",
+          "name": "1",
+          "x": 780,
+          "y": 400
+        },
+        {
+          "num": "2",
+          "name": "2",
+          "x": 820,
+          "y": 400
+        }
+      ]
+    },
+    {
+      "des": "C12",
+      "lcsc": "unknown",
+      "compType": "part",
+      "primId": "0e1caad164fb1835",
+      "x": 800,
+      "y": 400,
+      "net": "",
+      "pins": [
+        {
+          "num": "1",
+          "name": "1",
+          "x": 780,
+          "y": 400
+        },
+        {
+          "num": "2",
+          "name": "2",
+          "x": 820,
+          "y": 400
+        }
+      ]
+    },
+    {
+      "des": "C13",
+      "lcsc": "unknown",
+      "compType": "part",
+      "primId": "b01eaeb466391995",
+      "x": 800,
+      "y": 400,
+      "net": "",
+      "pins": [
+        {
+          "num": "1",
+          "name": "1",
+          "x": 780,
+          "y": 400
+        },
+        {
+          "num": "2",
+          "name": "2",
+          "x": 820,
+          "y": 400
+        }
+      ]
+    },
+    {
+      "des": "C14",
+      "lcsc": "unknown",
+      "compType": "part",
+      "primId": "0310f4efcc060ee8",
+      "x": 800,
+      "y": 400,
+      "net": "",
+      "pins": [
+        {
+          "num": "1",
+          "name": "1",
+          "x": 780,
+          "y": 400
+        },
+        {
+          "num": "2",
+          "name": "2",
+          "x": 820,
+          "y": 400
+        }
+      ]
+    },
+    {
+      "des": "C15",
+      "lcsc": "unknown",
+      "compType": "part",
+      "primId": "fe7da8b3b74aad05",
+      "x": 800,
+      "y": 400,
+      "net": "",
+      "pins": [
+        {
+          "num": "1",
+          "name": "1",
+          "x": 780,
+          "y": 400
+        },
+        {
+          "num": "2",
+          "name": "2",
+          "x": 820,
+          "y": 400
+        }
+      ]
+    },
+    {
+      "des": "J1",
+      "lcsc": "unknown",
+      "compType": "part",
+      "primId": "6455bf00b72ca4b8",
+      "x": 800,
+      "y": 400,
+      "net": "",
+      "pins": [
+        {
+          "num": "1",
+          "name": "1",
+          "x": 780,
+          "y": 445
+        },
+        {
+          "num": "2",
+          "name": "2",
+          "x": 780,
+          "y": 435
+        },
+        {
+          "num": "3",
+          "name": "3",
+          "x": 780,
+          "y": 425
+        },
+        {
+          "num": "4",
+          "name": "4",
+          "x": 780,
+          "y": 415
+        },
+        {
+          "num": "5",
+          "name": "5",
+          "x": 780,
+          "y": 405
+        },
+        {
+          "num": "6",
+          "name": "6",
+          "x": 780,
+          "y": 395
+        },
+        {
+          "num": "7",
+          "name": "7",
+          "x": 780,
+          "y": 385
+        },
+        {
+          "num": "8",
+          "name": "8",
+          "x": 780,
+          "y": 375
+        },
+        {
+          "num": "9",
+          "name": "9",
+          "x": 780,
+          "y": 365
+        },
+        {
+          "num": "10",
+          "name": "10",
+          "x": 780,
+          "y": 355
+        }
+      ]
+    },
+    {
+      "des": "J2",
+      "lcsc": "unknown",
+      "compType": "part",
+      "primId": "cea78947e63ee5e7",
+      "x": 800,
+      "y": 400,
+      "net": "",
+      "pins": [
+        {
+          "num": "1",
+          "name": "1",
+          "x": 780,
+          "y": 445
+        },
+        {
+          "num": "2",
+          "name": "2",
+          "x": 780,
+          "y": 435
+        },
+        {
+          "num": "3",
+          "name": "3",
+          "x": 780,
+          "y": 425
+        },
+        {
+          "num": "4",
+          "name": "4",
+          "x": 780,
+          "y": 415
+        },
+        {
+          "num": "5",
+          "name": "5",
+          "x": 780,
+          "y": 405
+        },
+        {
+          "num": "6",
+          "name": "6",
+          "x": 780,
+          "y": 395
+        },
+        {
+          "num": "7",
+          "name": "7",
+          "x": 780,
+          "y": 385
+        },
+        {
+          "num": "8",
+          "name": "8",
+          "x": 780,
+          "y": 375
+        },
+        {
+          "num": "9",
+          "name": "9",
+          "x": 780,
+          "y": 365
+        },
+        {
+          "num": "10",
+          "name": "10",
+          "x": 780,
+          "y": 355
+        }
+      ]
+    },
+    {
+      "des": "R7",
+      "lcsc": "unknown",
+      "compType": "part",
+      "primId": "eea73d600843d0e4",
+      "x": 1200,
+      "y": 450,
+      "net": "",
+      "pins": [
+        {
+          "num": "2",
+          "name": "2",
+          "x": 1220,
+          "y": 450
+        },
+        {
+          "num": "1",
+          "name": "1",
+          "x": 1180,
+          "y": 450
+        }
+      ]
+    },
+    {
+      "des": "R8",
+      "lcsc": "unknown",
+      "compType": "part",
+      "primId": "6d1c5a0944eab4ee",
+      "x": 1200,
+      "y": 530,
+      "net": "",
+      "pins": [
+        {
+          "num": "2",
+          "name": "2",
+          "x": 1220,
+          "y": 530
+        },
+        {
+          "num": "1",
+          "name": "1",
+          "x": 1180,
+          "y": 530
+        }
+      ]
+    },
+    {
+      "des": "C18",
+      "lcsc": "unknown",
+      "compType": "part",
+      "primId": "5f0edc161c653397",
+      "x": 1200,
+      "y": 610,
+      "net": "",
+      "pins": [
+        {
+          "num": "1",
+          "name": "1",
+          "x": 1180,
+          "y": 610
+        },
+        {
+          "num": "2",
+          "name": "2",
+          "x": 1220,
+          "y": 610
+        }
+      ]
+    },
+    {
+      "des": "C19",
+      "lcsc": "unknown",
+      "compType": "part",
+      "primId": "ab736adfd1c9ead8",
+      "x": 1200,
+      "y": 690,
+      "net": "",
+      "pins": [
+        {
+          "num": "1",
+          "name": "1",
+          "x": 1180,
+          "y": 690
+        },
+        {
+          "num": "2",
+          "name": "2",
+          "x": 1220,
+          "y": 690
+        }
+      ]
+    },
+    {
+      "des": "C20",
+      "lcsc": "unknown",
+      "compType": "part",
+      "primId": "4889f0c83a445bcc",
+      "x": 1200,
+      "y": 770,
+      "net": "",
+      "pins": [
+        {
+          "num": "1",
+          "name": "1",
+          "x": 1180,
+          "y": 770
+        },
+        {
+          "num": "2",
+          "name": "2",
+          "x": 1220,
+          "y": 770
+        }
+      ]
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netflag",
+      "primId": "725e614fa356fecc",
+      "x": 800,
+      "y": 360,
+      "net": "GND",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netflag",
+      "primId": "58dc6aa98c09d9bc",
+      "x": 890,
+      "y": 300,
+      "net": "GND",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netport",
+      "primId": "b44260f428889ee1",
+      "x": 890,
+      "y": 290,
+      "net": "SPI_MOSI",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netport",
+      "primId": "55bce4cbf9995ef7",
+      "x": 890,
+      "y": 280,
+      "net": "I2S_DIN",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netport",
+      "primId": "9e6c0a3185514399",
+      "x": 890,
+      "y": 270,
+      "net": "ESP_TXD",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netport",
+      "primId": "9080bdd2d6a6dadd",
+      "x": 890,
+      "y": 260,
+      "net": "ESP_RXD",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netport",
+      "primId": "4182effcdd1ff312",
+      "x": 890,
+      "y": 250,
+      "net": "AMP_I2C_SDA",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netport",
+      "primId": "2b5ba04b7dc7239c",
+      "x": 890,
+      "y": 230,
+      "net": "SPI_MISO",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netport",
+      "primId": "6486a486b37dca74",
+      "x": 890,
+      "y": 220,
+      "net": "SPI_SCLK",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netport",
+      "primId": "42f295fe6678225c",
+      "x": 890,
+      "y": 210,
+      "net": "SPI_CS",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netport",
+      "primId": "81f5aa7d35f3217b",
+      "x": 890,
+      "y": 180,
+      "net": "BOOST_EN",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netport",
+      "primId": "8c50fa313d04bbb9",
+      "x": 890,
+      "y": 170,
+      "net": "ESP_IO0",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netport",
+      "primId": "ae8bbe09716a892e",
+      "x": 890,
+      "y": 150,
+      "net": "AMP_PDN",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netflag",
+      "primId": "2fd26ccf93f1b91d",
+      "x": 710,
+      "y": 160,
+      "net": "GND",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netport",
+      "primId": "859eaf7b712d0cac",
+      "x": 710,
+      "y": 190,
+      "net": "AMP_I2C_SCL",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netport",
+      "primId": "b4cea043752b0079",
+      "x": 710,
+      "y": 200,
+      "net": "I2S_BCLK",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netport",
+      "primId": "f697b6895d941270",
+      "x": 710,
+      "y": 210,
+      "net": "I2S_LRCLK",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netport",
+      "primId": "b9a5b72150b7e618",
+      "x": 710,
+      "y": 250,
+      "net": "SENSOR_INT1",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netport",
+      "primId": "aed12831b3af661a",
+      "x": 710,
+      "y": 280,
+      "net": "ESP_EN",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netflag",
+      "primId": "0699e40faed9ec1f",
+      "x": 710,
+      "y": 290,
+      "net": "VCC_3V3",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netflag",
+      "primId": "77d7da6d459cbaff",
+      "x": 710,
+      "y": 300,
+      "net": "GND",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netflag",
+      "primId": "8c5d9fae748c01a0",
+      "x": 180,
+      "y": 160,
+      "net": "VBUS_5V",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netflag",
+      "primId": "bada4d225c66db89",
+      "x": 180,
+      "y": 150,
+      "net": "GND",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netflag",
+      "primId": "3230ad17d009e857",
+      "x": 250,
+      "y": 220,
+      "net": "VCC_3V3",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netport",
+      "primId": "4a7521871273d839",
+      "x": 375,
+      "y": 170,
+      "net": "BOOST_EN",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netflag",
+      "primId": "f894c6acc81734c7",
+      "x": 375,
+      "y": 160,
+      "net": "VBUS_5V",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netport",
+      "primId": "9bcfcf7415d1b317",
+      "x": 375,
+      "y": 150,
+      "net": "BOOST_SW",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netport",
+      "primId": "caee544f7d5c078b",
+      "x": 375,
+      "y": 140,
+      "net": "BOOST_SW",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netport",
+      "primId": "9ed7567aa0d1ce87",
+      "x": 375,
+      "y": 130,
+      "net": "BOOST_SW",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netflag",
+      "primId": "86d1087a1e434a53",
+      "x": 525,
+      "y": 120,
+      "net": "GND",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netflag",
+      "primId": "f69e880ba86b5935",
+      "x": 525,
+      "y": 130,
+      "net": "GND",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netflag",
+      "primId": "3f0401ec5bb0e596",
+      "x": 525,
+      "y": 140,
+      "net": "GND",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netflag",
+      "primId": "b0227a27c478ffdd",
+      "x": 525,
+      "y": 150,
+      "net": "GND",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netport",
+      "primId": "6f65ad57cf8d597d",
+      "x": 525,
+      "y": 170,
+      "net": "BOOST_FB",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netflag",
+      "primId": "5b5f5a3d86d8f52d",
+      "x": 450,
+      "y": 70,
+      "net": "GND",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netflag",
+      "primId": "8f10de5ff0e2051b",
+      "x": 900,
+      "y": 515,
+      "net": "GND",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netflag",
+      "primId": "bbe512a25c02c651",
+      "x": 900,
+      "y": 505,
+      "net": "VCC_3V3",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netflag",
+      "primId": "f3adc7dab364db62",
+      "x": 900,
+      "y": 495,
+      "net": "GND",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netport",
+      "primId": "5cd796a7cabb185b",
+      "x": 900,
+      "y": 485,
+      "net": "VR_DIG",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netflag",
+      "primId": "8719512afe841101",
+      "x": 900,
+      "y": 475,
+      "net": "GND",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netport",
+      "primId": "f648e2b4cc9c8bf6",
+      "x": 900,
+      "y": 465,
+      "net": "I2S_LRCLK",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netport",
+      "primId": "878a79926eb5ec4b",
+      "x": 900,
+      "y": 455,
+      "net": "I2S_BCLK",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netport",
+      "primId": "a78d271e976d2210",
+      "x": 900,
+      "y": 445,
+      "net": "I2S_DIN",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netport",
+      "primId": "e7d76b4a492bb7a6",
+      "x": 900,
+      "y": 425,
+      "net": "AMP_I2C_SDA",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netport",
+      "primId": "fd01793657ba4e3d",
+      "x": 900,
+      "y": 415,
+      "net": "AMP_I2C_SCL",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netport",
+      "primId": "1ca7729739d20a96",
+      "x": 900,
+      "y": 405,
+      "net": "AMP_PDN",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netport",
+      "primId": "ce22a780143b1425",
+      "x": 900,
+      "y": 395,
+      "net": "AVDD",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netflag",
+      "primId": "01b70acb789f6df1",
+      "x": 900,
+      "y": 385,
+      "net": "GND",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netflag",
+      "primId": "d8e69076046d0a02",
+      "x": 1100,
+      "y": 385,
+      "net": "PVDD_12V",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netflag",
+      "primId": "a6821b3a79b2ac5f",
+      "x": 1100,
+      "y": 395,
+      "net": "PVDD_12V",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netport",
+      "primId": "f0ebd9ef212e8d92",
+      "x": 1100,
+      "y": 405,
+      "net": "AMP_OUT_B+",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netport",
+      "primId": "cc0d058affc2b3c0",
+      "x": 1100,
+      "y": 415,
+      "net": "BST_B+",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netflag",
+      "primId": "52eed6af91a254f0",
+      "x": 1100,
+      "y": 425,
+      "net": "GND",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netport",
+      "primId": "da54eef2ef8d2ca1",
+      "x": 1100,
+      "y": 435,
+      "net": "AMP_OUT_B-",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netport",
+      "primId": "6ada4e928dea345a",
+      "x": 1100,
+      "y": 445,
+      "net": "BST_B-",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netport",
+      "primId": "72e0d7604c2f221e",
+      "x": 1100,
+      "y": 455,
+      "net": "BST_A-",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netport",
+      "primId": "be1493542ee31e00",
+      "x": 1100,
+      "y": 465,
+      "net": "AMP_OUT_A-",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netflag",
+      "primId": "76d98eb406d6f3c0",
+      "x": 1100,
+      "y": 475,
+      "net": "GND",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netport",
+      "primId": "fcb59c4fd672f0c8",
+      "x": 1100,
+      "y": 485,
+      "net": "BST_A+",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netport",
+      "primId": "5325b3adcec6c440",
+      "x": 1100,
+      "y": 495,
+      "net": "AMP_OUT_A+",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netflag",
+      "primId": "632614c7370c95ba",
+      "x": 1100,
+      "y": 505,
+      "net": "PVDD_12V",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netflag",
+      "primId": "ca892f112c4afcd8",
+      "x": 1100,
+      "y": 515,
+      "net": "PVDD_12V",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netflag",
+      "primId": "5d586b3c67dc38ff",
+      "x": 1000,
+      "y": 335,
+      "net": "GND",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netport",
+      "primId": "7c44aa964f2b2481",
+      "x": 705,
+      "y": 630,
+      "net": "SPI_MISO",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netport",
+      "primId": "32c638212f108eb1",
+      "x": 705,
+      "y": 600,
+      "net": "SENSOR_INT1",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netflag",
+      "primId": "9242d4e26694ef39",
+      "x": 705,
+      "y": 590,
+      "net": "VCC_3V3",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netflag",
+      "primId": "910bf6232df12fe8",
+      "x": 705,
+      "y": 580,
+      "net": "GND",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netflag",
+      "primId": "d3e364279f8b9919",
+      "x": 705,
+      "y": 570,
+      "net": "GND",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netflag",
+      "primId": "9a22d40d13379b7f",
+      "x": 895,
+      "y": 570,
+      "net": "GND",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netflag",
+      "primId": "b0a7c5eaaf364380",
+      "x": 895,
+      "y": 580,
+      "net": "VCC_3V3",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netport",
+      "primId": "6014322625b15b46",
+      "x": 895,
+      "y": 610,
+      "net": "SPI_CS",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netport",
+      "primId": "0e86a75dc047e4bd",
+      "x": 895,
+      "y": 620,
+      "net": "SPI_SCLK",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netport",
+      "primId": "283208b717be102e",
+      "x": 895,
+      "y": 630,
+      "net": "SPI_MOSI",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netflag",
+      "primId": "ca56afb978b4ab43",
+      "x": 145,
+      "y": 270,
+      "net": "GND",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netflag",
+      "primId": "4937509e2e617cd2",
+      "x": 45,
+      "y": 270,
+      "net": "VBUS_5V",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netflag",
+      "primId": "a2709b7d59c1c9b4",
+      "x": 30,
+      "y": 380,
+      "net": "GND",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netflag",
+      "primId": "3c3b0779381a1bda",
+      "x": 35,
+      "y": 205,
+      "net": "GND",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netflag",
+      "primId": "47e4a9c2a67fd577",
+      "x": 35,
+      "y": 195,
+      "net": "VBUS_5V",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netport",
+      "primId": "46a3f897fa91a3da",
+      "x": 35,
+      "y": 175,
+      "net": "USB_CC1",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netport",
+      "primId": "0437fcbe603b9c5d",
+      "x": 35,
+      "y": 115,
+      "net": "USB_CC2",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netflag",
+      "primId": "5fb57f07247da7d0",
+      "x": 35,
+      "y": 105,
+      "net": "VBUS_5V",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netflag",
+      "primId": "a6d88eccf3d30e1f",
+      "x": 35,
+      "y": 95,
+      "net": "GND",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netflag",
+      "primId": "15cc675434b89a1c",
+      "x": 930,
+      "y": 225,
+      "net": "VCC_3V3",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netport",
+      "primId": "ad0ce0a991fbf090",
+      "x": 930,
+      "y": 215,
+      "net": "ESP_EN",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netport",
+      "primId": "e9003994505a0a4b",
+      "x": 930,
+      "y": 205,
+      "net": "ESP_IO0",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netport",
+      "primId": "b3f035104ba5f6ab",
+      "x": 930,
+      "y": 195,
+      "net": "ESP_TXD",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netport",
+      "primId": "cdc9d6412990b92d",
+      "x": 930,
+      "y": 185,
+      "net": "ESP_RXD",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netflag",
+      "primId": "0a00df7fd8a54edc",
+      "x": 930,
+      "y": 175,
+      "net": "GND",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netflag",
+      "primId": "3cb753d20941e825",
+      "x": 750,
+      "y": 400,
+      "net": "VCC_3V3",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netflag",
+      "primId": "a109aeb4883df50f",
+      "x": 850,
+      "y": 400,
+      "net": "GND",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netflag",
+      "primId": "a7a1b74abcb84e45",
+      "x": 750,
+      "y": 480,
+      "net": "VCC_3V3",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netflag",
+      "primId": "c559848e9032db02",
+      "x": 850,
+      "y": 480,
+      "net": "GND",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netflag",
+      "primId": "39d7632f178462eb",
+      "x": 200,
+      "y": 270,
+      "net": "VBUS_5V",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netflag",
+      "primId": "aa25a859c647e317",
+      "x": 300,
+      "y": 270,
+      "net": "GND",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netflag",
+      "primId": "c262ca33d2bd5c96",
+      "x": 200,
+      "y": 380,
+      "net": "VCC_3V3",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netflag",
+      "primId": "0b22ae4270d01ac5",
+      "x": 300,
+      "y": 380,
+      "net": "GND",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netflag",
+      "primId": "9cade40836c39606",
+      "x": 400,
+      "y": 490,
+      "net": "VBUS_5V",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netflag",
+      "primId": "63468df4c2729241",
+      "x": 500,
+      "y": 490,
+      "net": "GND",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netflag",
+      "primId": "3428cd8a2970d022",
+      "x": 645,
+      "y": 150,
+      "net": "GND",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netflag",
+      "primId": "75d6e813feef0945",
+      "x": 555,
+      "y": 150,
+      "net": "PVDD_12V",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netflag",
+      "primId": "c3d38bd8464875f2",
+      "x": 645,
+      "y": 250,
+      "net": "GND",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netflag",
+      "primId": "8cb74f4fd751a5a2",
+      "x": 555,
+      "y": 250,
+      "net": "PVDD_12V",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netflag",
+      "primId": "a7014961852c38e2",
+      "x": 950,
+      "y": 600,
+      "net": "PVDD_12V",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netflag",
+      "primId": "c6362b37aec0fe2d",
+      "x": 1050,
+      "y": 600,
+      "net": "GND",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netflag",
+      "primId": "92e6408f2285fe43",
+      "x": 950,
+      "y": 700,
+      "net": "PVDD_12V",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netflag",
+      "primId": "ca87c747f05226f6",
+      "x": 1050,
+      "y": 700,
+      "net": "GND",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netflag",
+      "primId": "d3115d8970ad7e29",
+      "x": 750,
+      "y": 700,
+      "net": "VCC_3V3",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netflag",
+      "primId": "fa67a4f6be2a6095",
+      "x": 850,
+      "y": 700,
+      "net": "GND",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netport",
+      "primId": "1221b3d619229e12",
+      "x": 500,
+      "y": 270,
+      "net": "BOOST_SW",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netflag",
+      "primId": "fdeaf016076a0747",
+      "x": 400,
+      "y": 270,
+      "net": "VBUS_5V",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netflag",
+      "primId": "1f72bb12c89cd83b",
+      "x": 500,
+      "y": 380,
+      "net": "PVDD_12V",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netport",
+      "primId": "c8261166765f01d9",
+      "x": 400,
+      "y": 380,
+      "net": "BOOST_SW",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netport",
+      "primId": "d82228972bac096d",
+      "x": 650,
+      "y": 350,
+      "net": "BOOST_FB",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netflag",
+      "primId": "56eb538cf2f79966",
+      "x": 550,
+      "y": 350,
+      "net": "PVDD_12V",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netflag",
+      "primId": "c775e158589dab53",
+      "x": 650,
+      "y": 450,
+      "net": "GND",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netport",
+      "primId": "ff9037f9a8f7fa5d",
+      "x": 550,
+      "y": 450,
+      "net": "BOOST_FB",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netflag",
+      "primId": "4b30fde6f765dbf2",
+      "x": 850,
+      "y": 400,
+      "net": "GND",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netport",
+      "primId": "2ea726ded864a945",
+      "x": 750,
+      "y": 400,
+      "net": "USB_CC1",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netflag",
+      "primId": "04de207b664c2bc8",
+      "x": 850,
+      "y": 400,
+      "net": "GND",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netport",
+      "primId": "b2abfd0c3708ee43",
+      "x": 750,
+      "y": 400,
+      "net": "USB_CC2",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netport",
+      "primId": "4c58b2febd5ff093",
+      "x": 850,
+      "y": 400,
+      "net": "ESP_EN",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netflag",
+      "primId": "9d6896c352d8ed5a",
+      "x": 750,
+      "y": 400,
+      "net": "VCC_3V3",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netport",
+      "primId": "3d110845b64967aa",
+      "x": 750,
+      "y": 400,
+      "net": "ESP_EN",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netflag",
+      "primId": "0fd96d48c9d3b4f7",
+      "x": 850,
+      "y": 400,
+      "net": "GND",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netport",
+      "primId": "3ae97dcc9a443a6b",
+      "x": 850,
+      "y": 400,
+      "net": "ESP_IO0",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netflag",
+      "primId": "0fcd353593493f55",
+      "x": 750,
+      "y": 400,
+      "net": "VCC_3V3",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netflag",
+      "primId": "767c588f71fa3c9d",
+      "x": 750,
+      "y": 400,
+      "net": "VCC_3V3",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netflag",
+      "primId": "dd998999ee1b023d",
+      "x": 850,
+      "y": 400,
+      "net": "GND",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netport",
+      "primId": "7b9e6552720a27fe",
+      "x": 750,
+      "y": 400,
+      "net": "AMP_OUT_A+",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netport",
+      "primId": "bc6de4ecc3135d16",
+      "x": 850,
+      "y": 400,
+      "net": "BST_A+",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netport",
+      "primId": "61a279419e294c72",
+      "x": 750,
+      "y": 400,
+      "net": "AMP_OUT_A-",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netport",
+      "primId": "1270eed4d459c11a",
+      "x": 850,
+      "y": 400,
+      "net": "BST_A-",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netport",
+      "primId": "32509c515f0f8415",
+      "x": 750,
+      "y": 400,
+      "net": "AMP_OUT_B+",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netport",
+      "primId": "fcb3f621fe5c212f",
+      "x": 850,
+      "y": 400,
+      "net": "BST_B+",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netport",
+      "primId": "b7ebfa21c9de00e6",
+      "x": 750,
+      "y": 400,
+      "net": "AMP_OUT_B-",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netport",
+      "primId": "67aa2fc2e006b89e",
+      "x": 850,
+      "y": 400,
+      "net": "BST_B-",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netport",
+      "primId": "51e91d3542be2096",
+      "x": 750,
+      "y": 445,
+      "net": "AMP_OUT_A+",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netport",
+      "primId": "445bb40cf709c9ce",
+      "x": 750,
+      "y": 435,
+      "net": "AMP_OUT_A-",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netport",
+      "primId": "fab2d564b3cc3df9",
+      "x": 750,
+      "y": 355,
+      "net": "AMP_OUT_A+",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netport",
+      "primId": "f3db6b23b08800fe",
+      "x": 750,
+      "y": 445,
+      "net": "AMP_OUT_B+",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netport",
+      "primId": "76a61c39de7401cb",
+      "x": 750,
+      "y": 435,
+      "net": "AMP_OUT_B-",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netport",
+      "primId": "a8f62b73b22439a0",
+      "x": 750,
+      "y": 355,
+      "net": "AMP_OUT_B+",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netflag",
+      "primId": "37322623ec39f5a2",
+      "x": 1250,
+      "y": 450,
+      "net": "VCC_3V3",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netport",
+      "primId": "b9b13e32d12f534c",
+      "x": 1150,
+      "y": 450,
+      "net": "AMP_I2C_SDA",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netflag",
+      "primId": "d2bdd7dcbbcbdedd",
+      "x": 1250,
+      "y": 530,
+      "net": "VCC_3V3",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netport",
+      "primId": "d73f79e71891d35c",
+      "x": 1150,
+      "y": 530,
+      "net": "AMP_I2C_SCL",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netflag",
+      "primId": "c605af9861edf943",
+      "x": 1150,
+      "y": 610,
+      "net": "VCC_3V3",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netflag",
+      "primId": "c9622fc64ef18b31",
+      "x": 1250,
+      "y": 610,
+      "net": "GND",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netport",
+      "primId": "b77239cc12e94f51",
+      "x": 1150,
+      "y": 690,
+      "net": "AVDD",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netflag",
+      "primId": "2265f09ac2798037",
+      "x": 1250,
+      "y": 690,
+      "net": "GND",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netport",
+      "primId": "a680210f975c57d7",
+      "x": 1150,
+      "y": 770,
+      "net": "VR_DIG",
+      "pins": []
+    },
+    {
+      "lcsc": "unknown",
+      "compType": "netflag",
+      "primId": "7555ff932ab1062b",
+      "x": 1250,
+      "y": 770,
+      "net": "GND",
+      "pins": []
+    }
+  ],
+  "wires": [
+    {
+      "net": "",
+      "line": [
+        800,
+        360,
+        800,
+        330
+      ],
+      "primId": "d43d943206af0e6c"
+    },
+    {
+      "net": "",
+      "line": [
+        890,
+        300,
+        860,
+        300
+      ],
+      "primId": "674697e7723b71ae"
+    },
+    {
+      "net": "",
+      "line": [
+        890,
+        290,
+        860,
+        290
+      ],
+      "primId": "a95310796fb35c64"
+    },
+    {
+      "net": "",
+      "line": [
+        890,
+        280,
+        860,
+        280
+      ],
+      "primId": "ef19148d5348568c"
+    },
+    {
+      "net": "",
+      "line": [
+        890,
+        270,
+        860,
+        270
+      ],
+      "primId": "78c5697aca6b522e"
+    },
+    {
+      "net": "",
+      "line": [
+        890,
+        260,
+        860,
+        260
+      ],
+      "primId": "894459a2f9e3096f"
+    },
+    {
+      "net": "",
+      "line": [
+        890,
+        250,
+        860,
+        250
+      ],
+      "primId": "69c87c36b2ead28a"
+    },
+    {
+      "net": "",
+      "line": [
+        890,
+        230,
+        860,
+        230
+      ],
+      "primId": "440b1c339fe350ee"
+    },
+    {
+      "net": "",
+      "line": [
+        890,
+        220,
+        860,
+        220
+      ],
+      "primId": "ef2cc7cf6c2d82ca"
+    },
+    {
+      "net": "",
+      "line": [
+        890,
+        210,
+        860,
+        210
+      ],
+      "primId": "919cc02f0415ec06"
+    },
+    {
+      "net": "",
+      "line": [
+        890,
+        180,
+        860,
+        180
+      ],
+      "primId": "3de36cb08903e238"
+    },
+    {
+      "net": "",
+      "line": [
+        890,
+        170,
+        860,
+        170
+      ],
+      "primId": "b56e4bf9c6f6e635"
+    },
+    {
+      "net": "",
+      "line": [
+        890,
+        150,
+        860,
+        150
+      ],
+      "primId": "2b6e985614f7b839"
+    },
+    {
+      "net": "",
+      "line": [
+        710,
+        160,
+        740,
+        160
+      ],
+      "primId": "d7c44e7a0721e5f9"
+    },
+    {
+      "net": "",
+      "line": [
+        710,
+        190,
+        740,
+        190
+      ],
+      "primId": "754b4817e0625935"
+    },
+    {
+      "net": "",
+      "line": [
+        710,
+        200,
+        740,
+        200
+      ],
+      "primId": "cb8d536e2793fe31"
+    },
+    {
+      "net": "",
+      "line": [
+        710,
+        210,
+        740,
+        210
+      ],
+      "primId": "c7055a50e53ef309"
+    },
+    {
+      "net": "",
+      "line": [
+        710,
+        250,
+        740,
+        250
+      ],
+      "primId": "fcea5dd9fc927bbc"
+    },
+    {
+      "net": "",
+      "line": [
+        710,
+        280,
+        740,
+        280
+      ],
+      "primId": "738e18b428584bcf"
+    },
+    {
+      "net": "",
+      "line": [
+        710,
+        290,
+        740,
+        290
+      ],
+      "primId": "41be25304bd1a66c"
+    },
+    {
+      "net": "",
+      "line": [
+        710,
+        300,
+        740,
+        300
+      ],
+      "primId": "a804bc158a292f9b"
+    },
+    {
+      "net": "",
+      "line": [
+        180,
+        160,
+        210,
+        160
+      ],
+      "primId": "40e927376882f042"
+    },
+    {
+      "net": "",
+      "line": [
+        180,
+        150,
+        210,
+        150
+      ],
+      "primId": "8844e47fbb37c796"
+    },
+    {
+      "net": "",
+      "line": [
+        250,
+        220,
+        250,
+        190
+      ],
+      "primId": "ee6a61b341cbdb3e"
+    },
+    {
+      "net": "",
+      "line": [
+        375,
+        170,
+        405,
+        170
+      ],
+      "primId": "9e8f9a27c65f89f8"
+    },
+    {
+      "net": "",
+      "line": [
+        375,
+        160,
+        405,
+        160
+      ],
+      "primId": "35d75d8c8e5ced0d"
+    },
+    {
+      "net": "",
+      "line": [
+        375,
+        150,
+        405,
+        150
+      ],
+      "primId": "908769e9d5a9b4e5"
+    },
+    {
+      "net": "",
+      "line": [
+        375,
+        140,
+        405,
+        140
+      ],
+      "primId": "ad821b5bfb8f2c23"
+    },
+    {
+      "net": "",
+      "line": [
+        375,
+        130,
+        405,
+        130
+      ],
+      "primId": "6586276d3dc1e56e"
+    },
+    {
+      "net": "",
+      "line": [
+        525,
+        120,
+        495,
+        120
+      ],
+      "primId": "fea41cd1148dedc3"
+    },
+    {
+      "net": "",
+      "line": [
+        525,
+        130,
+        495,
+        130
+      ],
+      "primId": "2c79ccb7ed62194f"
+    },
+    {
+      "net": "",
+      "line": [
+        525,
+        140,
+        495,
+        140
+      ],
+      "primId": "8a2d4abab76583e9"
+    },
+    {
+      "net": "",
+      "line": [
+        525,
+        150,
+        495,
+        150
+      ],
+      "primId": "bb4e3467dbdcde78"
+    },
+    {
+      "net": "",
+      "line": [
+        525,
+        170,
+        495,
+        170
+      ],
+      "primId": "8de6b7eb9bd47213"
+    },
+    {
+      "net": "",
+      "line": [
+        450,
+        70,
+        450,
+        100
+      ],
+      "primId": "6c40c01684f35295"
+    },
+    {
+      "net": "",
+      "line": [
+        900,
+        515,
+        930,
+        515
+      ],
+      "primId": "be8d159b30c35c71"
+    },
+    {
+      "net": "",
+      "line": [
+        900,
+        505,
+        930,
+        505
+      ],
+      "primId": "4eca96173e5d6d7f"
+    },
+    {
+      "net": "",
+      "line": [
+        900,
+        495,
+        930,
+        495
+      ],
+      "primId": "189750c1a9e42c3f"
+    },
+    {
+      "net": "",
+      "line": [
+        900,
+        485,
+        930,
+        485
+      ],
+      "primId": "958e90756815727e"
+    },
+    {
+      "net": "",
+      "line": [
+        900,
+        475,
+        930,
+        475
+      ],
+      "primId": "52ab0f7b7baddffc"
+    },
+    {
+      "net": "",
+      "line": [
+        900,
+        465,
+        930,
+        465
+      ],
+      "primId": "b7e921bcd05e44b9"
+    },
+    {
+      "net": "",
+      "line": [
+        900,
+        455,
+        930,
+        455
+      ],
+      "primId": "b7000e5ff8fd44e7"
+    },
+    {
+      "net": "",
+      "line": [
+        900,
+        445,
+        930,
+        445
+      ],
+      "primId": "8ff8816620c4e515"
+    },
+    {
+      "net": "",
+      "line": [
+        900,
+        425,
+        930,
+        425
+      ],
+      "primId": "c5d7ced03344f2c3"
+    },
+    {
+      "net": "",
+      "line": [
+        900,
+        415,
+        930,
+        415
+      ],
+      "primId": "b044684f82dacf73"
+    },
+    {
+      "net": "",
+      "line": [
+        900,
+        405,
+        930,
+        405
+      ],
+      "primId": "d6313d2ccde74789"
+    },
+    {
+      "net": "",
+      "line": [
+        900,
+        395,
+        930,
+        395
+      ],
+      "primId": "0601746b92f343b2"
+    },
+    {
+      "net": "",
+      "line": [
+        900,
+        385,
+        930,
+        385
+      ],
+      "primId": "266f90f0fd021a95"
+    },
+    {
+      "net": "",
+      "line": [
+        1100,
+        385,
+        1070,
+        385
+      ],
+      "primId": "53b4a16c232a348e"
+    },
+    {
+      "net": "",
+      "line": [
+        1100,
+        395,
+        1070,
+        395
+      ],
+      "primId": "b8795c31c1514c0e"
+    },
+    {
+      "net": "",
+      "line": [
+        1100,
+        405,
+        1070,
+        405
+      ],
+      "primId": "9aa369de262f09d3"
+    },
+    {
+      "net": "",
+      "line": [
+        1100,
+        415,
+        1070,
+        415
+      ],
+      "primId": "0388273454293e3c"
+    },
+    {
+      "net": "",
+      "line": [
+        1100,
+        425,
+        1070,
+        425
+      ],
+      "primId": "5dd7b5d54cc0fae8"
+    },
+    {
+      "net": "",
+      "line": [
+        1100,
+        435,
+        1070,
+        435
+      ],
+      "primId": "533c0f1e34ee2588"
+    },
+    {
+      "net": "",
+      "line": [
+        1100,
+        445,
+        1070,
+        445
+      ],
+      "primId": "1b7e297f3419b318"
+    },
+    {
+      "net": "",
+      "line": [
+        1100,
+        455,
+        1070,
+        455
+      ],
+      "primId": "7f3d21431164db92"
+    },
+    {
+      "net": "",
+      "line": [
+        1100,
+        465,
+        1070,
+        465
+      ],
+      "primId": "76f2a97acb0eefcf"
+    },
+    {
+      "net": "",
+      "line": [
+        1100,
+        475,
+        1070,
+        475
+      ],
+      "primId": "12f766e326d9b44c"
+    },
+    {
+      "net": "",
+      "line": [
+        1100,
+        485,
+        1070,
+        485
+      ],
+      "primId": "d0071be0217ea6e9"
+    },
+    {
+      "net": "",
+      "line": [
+        1100,
+        495,
+        1070,
+        495
+      ],
+      "primId": "ce44092a41a39685"
+    },
+    {
+      "net": "",
+      "line": [
+        1100,
+        505,
+        1070,
+        505
+      ],
+      "primId": "8af12b473df85655"
+    },
+    {
+      "net": "",
+      "line": [
+        1100,
+        515,
+        1070,
+        515
+      ],
+      "primId": "5e13e396472f8417"
+    },
+    {
+      "net": "",
+      "line": [
+        1000,
+        335,
+        1000,
+        365
+      ],
+      "primId": "732a6d6fe6e5c2ab"
+    },
+    {
+      "net": "",
+      "line": [
+        705,
+        630,
+        735,
+        630
+      ],
+      "primId": "be53aabe5163ecb5"
+    },
+    {
+      "net": "",
+      "line": [
+        705,
+        600,
+        735,
+        600
+      ],
+      "primId": "9dbebafe2b57048e"
+    },
+    {
+      "net": "",
+      "line": [
+        705,
+        590,
+        735,
+        590
+      ],
+      "primId": "8491c5a057452070"
+    },
+    {
+      "net": "",
+      "line": [
+        705,
+        580,
+        735,
+        580
+      ],
+      "primId": "e86895a57ea5fc9a"
+    },
+    {
+      "net": "",
+      "line": [
+        705,
+        570,
+        735,
+        570
+      ],
+      "primId": "59787d615f0d6d14"
+    },
+    {
+      "net": "",
+      "line": [
+        895,
+        570,
+        865,
+        570
+      ],
+      "primId": "f1eeaf3ab3f38707"
+    },
+    {
+      "net": "",
+      "line": [
+        895,
+        580,
+        865,
+        580
+      ],
+      "primId": "6d3b65c57050e0f9"
+    },
+    {
+      "net": "",
+      "line": [
+        895,
+        610,
+        865,
+        610
+      ],
+      "primId": "720d6ef555184220"
+    },
+    {
+      "net": "",
+      "line": [
+        895,
+        620,
+        865,
+        620
+      ],
+      "primId": "b5bf65d3880ee9f1"
+    },
+    {
+      "net": "",
+      "line": [
+        895,
+        630,
+        865,
+        630
+      ],
+      "primId": "a6fde46846173e79"
+    },
+    {
+      "net": "",
+      "line": [
+        145,
+        270,
+        115,
+        270
+      ],
+      "primId": "c148bf73303bdf7d"
+    },
+    {
+      "net": "",
+      "line": [
+        45,
+        270,
+        75,
+        270
+      ],
+      "primId": "a927fcea0ebc59bf"
+    },
+    {
+      "net": "",
+      "line": [
+        30,
+        380,
+        60,
+        380
+      ],
+      "primId": "4eea196155457b27"
+    },
+    {
+      "net": "",
+      "line": [
+        35,
+        205,
+        65,
+        205
+      ],
+      "primId": "1e8a6fb5d7e943b8"
+    },
+    {
+      "net": "",
+      "line": [
+        35,
+        195,
+        65,
+        195
+      ],
+      "primId": "cfc7d0436c8a6d50"
+    },
+    {
+      "net": "",
+      "line": [
+        35,
+        175,
+        65,
+        175
+      ],
+      "primId": "0eb5edfabdff86bc"
+    },
+    {
+      "net": "",
+      "line": [
+        35,
+        115,
+        65,
+        115
+      ],
+      "primId": "9c8aa53d74ecd4f9"
+    },
+    {
+      "net": "",
+      "line": [
+        35,
+        105,
+        65,
+        105
+      ],
+      "primId": "0bee5d3850c52044"
+    },
+    {
+      "net": "",
+      "line": [
+        35,
+        95,
+        65,
+        95
+      ],
+      "primId": "03bc2b0992209a77"
+    },
+    {
+      "net": "",
+      "line": [
+        930,
+        225,
+        960,
+        225
+      ],
+      "primId": "8a808c102be14c6f"
+    },
+    {
+      "net": "",
+      "line": [
+        930,
+        215,
+        960,
+        215
+      ],
+      "primId": "5eafdef1408332ac"
+    },
+    {
+      "net": "",
+      "line": [
+        930,
+        205,
+        960,
+        205
+      ],
+      "primId": "fcbf394945a807d7"
+    },
+    {
+      "net": "",
+      "line": [
+        930,
+        195,
+        960,
+        195
+      ],
+      "primId": "55d9698facc8d510"
+    },
+    {
+      "net": "",
+      "line": [
+        930,
+        185,
+        960,
+        185
+      ],
+      "primId": "6036bb506226399f"
+    },
+    {
+      "net": "",
+      "line": [
+        930,
+        175,
+        960,
+        175
+      ],
+      "primId": "b5b8c6aed0a8dfa3"
+    },
+    {
+      "net": "",
+      "line": [
+        750,
+        400,
+        780,
+        400
+      ],
+      "primId": "90296bb467fb79b2"
+    },
+    {
+      "net": "",
+      "line": [
+        850,
+        400,
+        820,
+        400
+      ],
+      "primId": "d8ff5327e88638e7"
+    },
+    {
+      "net": "",
+      "line": [
+        750,
+        480,
+        780,
+        480
+      ],
+      "primId": "b2535badfd709436"
+    },
+    {
+      "net": "",
+      "line": [
+        850,
+        480,
+        820,
+        480
+      ],
+      "primId": "de6925c418ef23d3"
+    },
+    {
+      "net": "",
+      "line": [
+        200,
+        270,
+        230,
+        270
+      ],
+      "primId": "57350260b98a66dc"
+    },
+    {
+      "net": "",
+      "line": [
+        300,
+        270,
+        270,
+        270
+      ],
+      "primId": "f46730cf8d4313f3"
+    },
+    {
+      "net": "",
+      "line": [
+        200,
+        380,
+        230,
+        380
+      ],
+      "primId": "d5c3ad58f4ab33a6"
+    },
+    {
+      "net": "",
+      "line": [
+        300,
+        380,
+        270,
+        380
+      ],
+      "primId": "bd5caa6baa1c4b5c"
+    },
+    {
+      "net": "",
+      "line": [
+        400,
+        490,
+        430,
+        490
+      ],
+      "primId": "d522b62149b97a96"
+    },
+    {
+      "net": "",
+      "line": [
+        500,
+        490,
+        470,
+        490
+      ],
+      "primId": "a1ddf0d01c3b5a97"
+    },
+    {
+      "net": "",
+      "line": [
+        645,
+        150,
+        615,
+        150
+      ],
+      "primId": "c26aba1ce789b540"
+    },
+    {
+      "net": "",
+      "line": [
+        555,
+        150,
+        585,
+        150
+      ],
+      "primId": "076c6eca27bad258"
+    },
+    {
+      "net": "",
+      "line": [
+        645,
+        250,
+        615,
+        250
+      ],
+      "primId": "bab1de57eabacf9d"
+    },
+    {
+      "net": "",
+      "line": [
+        555,
+        250,
+        585,
+        250
+      ],
+      "primId": "ac3ffeaf500db415"
+    },
+    {
+      "net": "",
+      "line": [
+        950,
+        600,
+        980,
+        600
+      ],
+      "primId": "072537ea1c2fd4a0"
+    },
+    {
+      "net": "",
+      "line": [
+        1050,
+        600,
+        1020,
+        600
+      ],
+      "primId": "d1a3ef336c3cd6f3"
+    },
+    {
+      "net": "",
+      "line": [
+        950,
+        700,
+        980,
+        700
+      ],
+      "primId": "76cf40cb48062793"
+    },
+    {
+      "net": "",
+      "line": [
+        1050,
+        700,
+        1020,
+        700
+      ],
+      "primId": "2f3c43c0ba5efc08"
+    },
+    {
+      "net": "",
+      "line": [
+        750,
+        700,
+        780,
+        700
+      ],
+      "primId": "641feeab4db55a3b"
+    },
+    {
+      "net": "",
+      "line": [
+        850,
+        700,
+        820,
+        700
+      ],
+      "primId": "ae071b2902b1d2fc"
+    },
+    {
+      "net": "",
+      "line": [
+        500,
+        270,
+        470,
+        270
+      ],
+      "primId": "4c02fdd8f878069a"
+    },
+    {
+      "net": "",
+      "line": [
+        400,
+        270,
+        430,
+        270
+      ],
+      "primId": "7aaa9768d6d61cbd"
+    },
+    {
+      "net": "",
+      "line": [
+        500,
+        380,
+        470,
+        380
+      ],
+      "primId": "c4aa98de5ee8f813"
+    },
+    {
+      "net": "",
+      "line": [
+        400,
+        380,
+        430,
+        380
+      ],
+      "primId": "121b77452a5cee3d"
+    },
+    {
+      "net": "",
+      "line": [
+        650,
+        350,
+        620,
+        350
+      ],
+      "primId": "a5b378d6e154a6f8"
+    },
+    {
+      "net": "",
+      "line": [
+        550,
+        350,
+        580,
+        350
+      ],
+      "primId": "067675caf4d787c2"
+    },
+    {
+      "net": "",
+      "line": [
+        650,
+        450,
+        620,
+        450
+      ],
+      "primId": "9a554b14bb83411c"
+    },
+    {
+      "net": "",
+      "line": [
+        550,
+        450,
+        580,
+        450
+      ],
+      "primId": "9dea8053b16a22be"
+    },
+    {
+      "net": "",
+      "line": [
+        750,
+        445,
+        780,
+        445
+      ],
+      "primId": "14b99841838f728b"
+    },
+    {
+      "net": "",
+      "line": [
+        750,
+        435,
+        780,
+        435
+      ],
+      "primId": "b8a6a2bce8cbce35"
+    },
+    {
+      "net": "",
+      "line": [
+        750,
+        355,
+        780,
+        355
+      ],
+      "primId": "d12d37affb89d42a"
+    },
+    {
+      "net": "",
+      "line": [
+        1250,
+        450,
+        1220,
+        450
+      ],
+      "primId": "b995349bcd65c01d"
+    },
+    {
+      "net": "",
+      "line": [
+        1150,
+        450,
+        1180,
+        450
+      ],
+      "primId": "6741457475a9e450"
+    },
+    {
+      "net": "",
+      "line": [
+        1250,
+        530,
+        1220,
+        530
+      ],
+      "primId": "9f8ff502c47f672d"
+    },
+    {
+      "net": "",
+      "line": [
+        1150,
+        530,
+        1180,
+        530
+      ],
+      "primId": "6a6cece9ccc22d18"
+    },
+    {
+      "net": "",
+      "line": [
+        1150,
+        610,
+        1180,
+        610
+      ],
+      "primId": "6c58f195d61b9f36"
+    },
+    {
+      "net": "",
+      "line": [
+        1250,
+        610,
+        1220,
+        610
+      ],
+      "primId": "f87aaf422f1b867b"
+    },
+    {
+      "net": "",
+      "line": [
+        1150,
+        690,
+        1180,
+        690
+      ],
+      "primId": "6d1950d578c96cc7"
+    },
+    {
+      "net": "",
+      "line": [
+        1250,
+        690,
+        1220,
+        690
+      ],
+      "primId": "07e98e5889b7a87c"
+    },
+    {
+      "net": "",
+      "line": [
+        1150,
+        770,
+        1180,
+        770
+      ],
+      "primId": "065cdebe568ee2a0"
+    },
+    {
+      "net": "",
+      "line": [
+        1250,
+        770,
+        1220,
+        770
+      ],
+      "primId": "8f83064b9df322df"
+    }
+  ]
+}

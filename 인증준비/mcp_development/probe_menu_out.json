@@ -1,0 +1,53 @@
+{
+  "sys_HeaderMenu": [
+    "constructor",
+    "insertHeaderMenus",
+    "removeHeaderMenus",
+    "replaceHeaderMenus",
+    "removeSystemHeaderMenuItem",
+    "insertSystemHeaderMenuItem",
+    "insertSystemHeaderMenus"
+  ],
+  "sys_Tool": [
+    "constructor",
+    "netlistComparison",
+    "schematicComparison",
+    "pcbComparison"
+  ],
+  "pcb_Document": [
+    "constructor",
+    "importChanges",
+    "importAutoRouteJsonFile",
+    "importAutoRouteSesFile",
+    "importAutoLayoutJsonFile",
+    "save",
+    "getCalculatingRatlineStatus",
+    "startCalculatingRatline",
+    "stopCalculatingRatline",
+    "convertCanvasOriginToDataOrigin",
+    "convertDataOriginToCanvasOrigin",
+    "getCanvasOrigin",
+    "setCanvasOrigin",
+    "navigateToCoordinates",
+    "navigateToRegion",
+    "getPrimitiveAtPoint",
+    "getPrimitivesInRegion",
+    "zoomToBoardOutline",
+    "getCurrentFilterConfiguration",
+    "clearRouting"
+  ],
+  "sch_Document": [
+    "constructor",
+    "importChanges",
+    "save",
+    "navigateToCoordinates",
+    "navigateToRegion",
+    "getPrimitiveAtPoint",
+    "getPrimitivesInRegion",
+    "getCurrentFilterConfiguration",
+    "autoRouting",
+    "autoLayout"
+  ],
+  "netlistComparison_src": "async netlistComparison(t,i){return await _.extensionApiMessageBus2.rpcCall(\"extensionApi.SYS_Tool.netlistComparison\",{netlist1:t,netlist2:i})}",
+  "pcbComparison_src": "async pcbComparison(t,i){}"
+}

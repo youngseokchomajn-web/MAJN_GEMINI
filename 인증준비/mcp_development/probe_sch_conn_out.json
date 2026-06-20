@@ -1,0 +1,22 @@
+{
+  "wires": 141,
+  "components": 212,
+  "sch_Net": "no getNetlist",
+  "wireSample": [
+    {
+      "net": ""
+    },
+    {
+      "net": ""
+    },
+    {
+      "net": ""
+    },
+    {
+      "net": ""
+    },
+    {
+      "net": ""
+    }
+  ]
+}

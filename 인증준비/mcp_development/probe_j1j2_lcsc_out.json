@@ -1,0 +1,24 @@
+{
+  "devs": [
+    {
+      "supplierId": "C124372",
+      "footprintName": "HDR-TH_10P-P2.54-V-M-1",
+      "libraryUuid": "0819f05c4eef4c71ace90d822a990e87",
+      "uuid": "f48674e50e6340a19547d397348cec6e"
+    }
+  ],
+  "pages": [
+    {
+      "uuid": "939d8ca4c7bf9626",
+      "name": "P1"
+    },
+    {
+      "uuid": "b6ff2b84137708af",
+      "name": "P2"
+    }
+  ],
+  "p2_byType": {
+    "sheet": 1
+  },
+  "p2_wires": 0
+}

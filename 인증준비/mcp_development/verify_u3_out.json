@@ -1,0 +1,30 @@
+{
+  "deviceFound": true,
+  "footprintRaw": null,
+  "deviceKeys": [
+    "uuid",
+    "libraryUuid",
+    "classification",
+    "ordinal",
+    "name",
+    "symbolName",
+    "symbolUuid",
+    "footprintName",
+    "footprintUuid",
+    "model3DName",
+    "model3DUuid",
+    "imageUuid",
+    "description",
+    "manufacturer",
+    "manufacturerId",
+    "supplier",
+    "supplierId",
+    "otherProperty"
+  ],
+  "pcb_U3_padCount": 2,
+  "pcb_U3_padNumbers": [
+    "2",
+    "1"
+  ],
+  "pcb_U3_lcsc": "C162810"
+}

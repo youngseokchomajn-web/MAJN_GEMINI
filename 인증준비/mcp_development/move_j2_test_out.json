@@ -1,0 +1,23 @@
+{
+  "before": [
+    {
+      "type": "fatalError",
+      "count": 7
+    },
+    {
+      "type": "warn",
+      "count": 4
+    }
+  ],
+  "j2_before_x": 800,
+  "j2_before_y": 400,
+  "moved": true,
+  "j2_after_x": 1100,
+  "j2_after_y": 400,
+  "after": [
+    {
+      "type": "warn",
+      "count": 4
+    }
+  ]
+}

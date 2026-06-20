@@ -1,0 +1,14 @@
+{
+  "openDialogs": [],
+  "visibleButtons": [
+    "Check DRC",
+    "Export",
+    "Clear"
+  ],
+  "pcb_importChanges_argc": 1,
+  "sch_importChanges_src": "async importChanges(){try{return(await _.extensionApiMessageBus2.rpcCall(\"extensionApi.SCH_Document.importChanges\")).success}catch{return!1}}",
+  "currentDoc": {
+    "type": 3,
+    "uuid": "c9f1fdba7e0a3f4c"
+  }
+}

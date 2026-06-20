@@ -1,0 +1,43 @@
+{
+  "sch_Netlist_methods": [
+    "__defineGetter__",
+    "__defineSetter__",
+    "__lookupGetter__",
+    "__lookupSetter__",
+    "constructor",
+    "getNetlist",
+    "hasOwnProperty",
+    "isPrototypeOf",
+    "propertyIsEnumerable",
+    "setNetlist",
+    "toLocaleString",
+    "toString",
+    "valueOf"
+  ],
+  "sch_PrimitiveComponent_net_methods": [
+    "createNetFlag",
+    "createNetPort",
+    "createShortCircuitFlag",
+    "getAllPinsByPrimitiveId",
+    "setNetFlagComponentUuid_AnalogGround",
+    "setNetFlagComponentUuid_Ground",
+    "setNetFlagComponentUuid_Power",
+    "setNetFlagComponentUuid_ProtectGround",
+    "setNetPortComponentUuid_BI",
+    "setNetPortComponentUuid_IN",
+    "setNetPortComponentUuid_OUT"
+  ],
+  "has_NetLabel_ns": false,
+  "has_NetPort_ns": false,
+  "has_NetFlag_ns": false,
+  "pinprobe_err": "获取所有器件失败",
+  "getNetlist_try": {
+    "JLCEDA": "ERR:i is not iterable",
+    "EasyEDA": "ERR:i is not iterable",
+    "Spice": "OK type=undefined",
+    "Protel": "OK type=undefined",
+    "Protel2": "OK type=undefined",
+    "PADS": "OK type=undefined",
+    "Allegro": "OK type=undefined"
+  }
+}

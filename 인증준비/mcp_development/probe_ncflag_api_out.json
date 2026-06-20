@@ -1,0 +1,7 @@
+{
+  "createNetFlag_src": "async createNetFlag(t,i,n,r,s,a){let o=\"netflag\",l=Object.create({});switch(t){case\"Power\":this.netFlagComponentUuid_Power.uuid||await this.initUuid(),l=this.netFlagComponentUuid_Power;break;case\"Ground\":this.netFlagComponentUuid_Ground.uuid||await this.initUuid(),l=this.netFlagComponentUuid_Ground;break;case\"AnalogGround\":this.netFlagComponentUuid_AnalogGround.uuid||await this.initUuid(),l=this.netFlagComponentUuid_AnalogGround;break;case\"ProtectGround\":this.netFlagComponentUuid_ProtectGround.uuid||await this.initUuid(),l=this.netFlagComponentUuid_ProtectGround;break}return await new fa(o,l,n,r,\"\",s,a,void 0,void 0,i).create()}",
+  "createShortCircuitFlag_src": "async createShortCircuitFlag(t,i,n,r){let s=\"short_symbol\";this.shortCircuitFlagComponentUuid.uuid||await this.initUuid();let a=this.shortCircuitFlagComponentUuid;return await new fa(s,a,t,i,\"\",n,r).create()}",
+  "modify_src": "async modify(t,i){let{x:n,y:r,rotation:s,mirror:a,addIntoBom:o,addIntoPcb:l,designator:u,name:c,uniqueId:d,manufacturer:f,manufacturerId:p,supplier:m,supplierId:y,otherProperty:b={}}=i,E;if(typeof t==\"string\")E=await this.get(t);else if(t instanceof fa)E=t,t=E.getState_PrimitiveId();else throw new Error(\"\\u5668\\u4EF6\\u56FE\\u5143\\u6570\\u636E\\u9519\\u8BEF\");if(E.getState_ComponentType()!==\"part\")throw new Error(\"\\u4EC5\\u5F53\\u5668\\u4EF6\\u7C7B\\u578B\\u4E3A\\u5143\\u4EF6\\u65F6\\u5141\\u8BB8\\u4F7F\\u7528\\u8",
+  "nc_methods": {},
+  "ns_with_nc": []
+}

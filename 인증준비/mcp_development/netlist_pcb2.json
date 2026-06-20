@@ -1,0 +1,3009 @@
+{
+  "version": "2.0.0",
+  "components": {
+    "link_C1": {
+      "props": {
+        "Footprint": "d071906520fd1bc2",
+        "Designator": "C1",
+        "LCSC Part Name": "10uF ±10% 10V",
+        "Supplier Part": "C19702",
+        "Manufacturer": "SAMSUNG(三星)",
+        "Manufacturer Part": "CL10A106KP8NNNC",
+        "Supplier Footprint": "0603",
+        "JLCPCB Part Class": "Basic Part",
+        "Datasheet": "https://item.szlcsc.com/datasheet/CL10A106KP8NNNC/20411.html",
+        "Supplier": "LCSC",
+        "Add into BOM": "yes",
+        "3D Model": "624118aa3cc7497086c383c2d72e0852|0819f05c4eef4c71ace90d822a990e87",
+        "3D Model Title": "C0603_L1.6-W0.8-H0.8",
+        "3D Model Transform": "62.992,31.496,0,0,0,0,0,0,0",
+        "Value": "10uF",
+        "Tolerance": "±10%",
+        "Voltage Rating": "10V",
+        "Temperature Coefficient": "X5R",
+        "Name": "10uF",
+        "Description": "Capacitance:10uF Tolerance:±10% Tolerance:±10% Voltage Rating:10V Temperature Coefficient:X5R",
+        "Device": "30949a5ef50c9118",
+        "Unique ID": "link_C1",
+        "Reuse Block": "",
+        "Group ID": "",
+        "Channel ID": "$1I1875",
+        "FootprintName": "C0603",
+        "DeviceName": "CL10A106KP8NNNC",
+        "PCB Layer": "TopLayer",
+        "Convert to PCB": "yes"
+      },
+      "pinInfoMap": {
+        "1": {
+          "name": "",
+          "number": "1",
+          "net": "VCC_3V3"
+        },
+        "2": {
+          "name": "",
+          "number": "2",
+          "net": "GND"
+        }
+      }
+    },
+    "link_C2": {
+      "props": {
+        "Footprint": "d071906520fd1bc2",
+        "Designator": "C2",
+        "LCSC Part Name": "100nF ±10% 50V",
+        "Supplier Part": "C14663",
+        "Manufacturer": "YAGEO(国巨)",
+        "Manufacturer Part": "CC0603KRX7R9BB104",
+        "Supplier Footprint": "0603",
+        "JLCPCB Part Class": "Basic Part",
+        "Datasheet": "https://item.szlcsc.com/datasheet/CC0603KRX7R9BB104/15331.html",
+        "Supplier": "LCSC",
+        "Add into BOM": "yes",
+        "3D Model": "624118aa3cc7497086c383c2d72e0852|0819f05c4eef4c71ace90d822a990e87",
+        "3D Model Title": "C0603_L1.6-W0.8-H0.8",
+        "3D Model Transform": "62.992,31.496,0,0,0,0,0,0,0",
+        "Value": "100nF",
+        "Tolerance": "±10%",
+        "Voltage Rating": "50V",
+        "Temperature Coefficient": "X7R",
+        "Name": "100nF",
+        "Description": "Capacitance:100nF Tolerance:±10% Tolerance:±10% Voltage Rating:50V Temperature Coefficient:X7R",
+        "Device": "ce55eddd06a7f611",
+        "Unique ID": "link_C2",
+        "Reuse Block": "",
+        "Group ID": "",
+        "Channel ID": "$1I1876",
+        "FootprintName": "C0603",
+        "DeviceName": "CC0603KRX7R9BB104",
+        "PCB Layer": "TopLayer",
+        "Convert to PCB": "yes"
+      },
+      "pinInfoMap": {
+        "1": {
+          "name": "",
+          "number": "1",
+          "net": "VCC_3V3"
+        },
+        "2": {
+          "name": "",
+          "number": "2",
+          "net": "GND"
+        }
+      }
+    },
+    "link_C3": {
+      "props": {
+        "Footprint": "d071906520fd1bc2",
+        "Designator": "C3",
+        "LCSC Part Name": "10uF ±10% 10V",
+        "Supplier Part": "C19702",
+        "Manufacturer": "SAMSUNG(三星)",
+        "Manufacturer Part": "CL10A106KP8NNNC",
+        "Supplier Footprint": "0603",
+        "JLCPCB Part Class": "Basic Part",
+        "Datasheet": "https://item.szlcsc.com/datasheet/CL10A106KP8NNNC/20411.html",
+        "Supplier": "LCSC",
+        "Add into BOM": "yes",
+        "3D Model": "624118aa3cc7497086c383c2d72e0852|0819f05c4eef4c71ace90d822a990e87",
+        "3D Model Title": "C0603_L1.6-W0.8-H0.8",
+        "3D Model Transform": "62.992,31.496,0,0,0,0,0,0,0",
+        "Value": "10uF",
+        "Tolerance": "±10%",
+        "Voltage Rating": "10V",
+        "Temperature Coefficient": "X5R",
+        "Name": "10uF",
+        "Description": "Capacitance:10uF Tolerance:±10% Tolerance:±10% Voltage Rating:10V Temperature Coefficient:X5R",
+        "Device": "30949a5ef50c9118",
+        "Unique ID": "link_C3",
+        "Reuse Block": "",
+        "Group ID": "",
+        "Channel ID": "$1I1877",
+        "FootprintName": "C0603",
+        "DeviceName": "CL10A106KP8NNNC",
+        "PCB Layer": "TopLayer",
+        "Convert to PCB": "yes"
+      },
+      "pinInfoMap": {
+        "1": {
+          "name": "",
+          "number": "1",
+          "net": "VBUS_5V"
+        },
+        "2": {
+          "name": "",
+          "number": "2",
+          "net": "GND"
+        }
+      }
+    },
+    "link_C4": {
+      "props": {
+        "Footprint": "d071906520fd1bc2",
+        "Designator": "C4",
+        "LCSC Part Name": "10uF ±10% 10V",
+        "Supplier Part": "C19702",
+        "Manufacturer": "SAMSUNG(三星)",
+        "Manufacturer Part": "CL10A106KP8NNNC",
+        "Supplier Footprint": "0603",
+        "JLCPCB Part Class": "Basic Part",
+        "Datasheet": "https://item.szlcsc.com/datasheet/CL10A106KP8NNNC/20411.html",
+        "Supplier": "LCSC",
+        "Add into BOM": "yes",
+        "3D Model": "624118aa3cc7497086c383c2d72e0852|0819f05c4eef4c71ace90d822a990e87",
+        "3D Model Title": "C0603_L1.6-W0.8-H0.8",
+        "3D Model Transform": "62.992,31.496,0,0,0,0,0,0,0",
+        "Value": "10uF",
+        "Tolerance": "±10%",
+        "Voltage Rating": "10V",
+        "Temperature Coefficient": "X5R",
+        "Name": "10uF",
+        "Description": "Capacitance:10uF Tolerance:±10% Tolerance:±10% Voltage Rating:10V Temperature Coefficient:X5R",
+        "Device": "30949a5ef50c9118",
+        "Unique ID": "link_C4",
+        "Reuse Block": "",
+        "Group ID": "",
+        "Channel ID": "$1I1878",
+        "FootprintName": "C0603",
+        "DeviceName": "CL10A106KP8NNNC",
+        "PCB Layer": "TopLayer",
+        "Convert to PCB": "yes"
+      },
+      "pinInfoMap": {
+        "1": {
+          "name": "",
+          "number": "1",
+          "net": "VCC_3V3"
+        },
+        "2": {
+          "name": "",
+          "number": "2",
+          "net": "GND"
+        }
+      }
+    },
+    "link_C5": {
+      "props": {
+        "Footprint": "d071906520fd1bc2",
+        "Designator": "C5",
+        "LCSC Part Name": "4.7uF ±10% 16V",
+        "Supplier Part": "C19666",
+        "Manufacturer": "SAMSUNG(三星)",
+        "Manufacturer Part": "CL10A475KO8NNNC",
+        "Supplier Footprint": "0603",
+        "JLCPCB Part Class": "Basic Part",
+        "Datasheet": "https://item.szlcsc.com/datasheet/CL10A475KO8NNNC/20375.html",
+        "Supplier": "LCSC",
+        "Add into BOM": "yes",
+        "3D Model": "624118aa3cc7497086c383c2d72e0852|0819f05c4eef4c71ace90d822a990e87",
+        "3D Model Title": "C0603_L1.6-W0.8-H0.8",
+        "3D Model Transform": "62.992,31.496,0,0,0,0,0,0,0",
+        "Value": "4.7uF",
+        "Tolerance": "±10%",
+        "Voltage Rating": "16V",
+        "Temperature Coefficient": "X5R",
+        "Name": "4.7uF",
+        "Description": "Capacitance:4.7uF Tolerance:±10% Tolerance:±10% Voltage Rating:16V Temperature Coefficient:X5R",
+        "Device": "03897cffd73f56c3",
+        "Unique ID": "link_C5",
+        "Reuse Block": "",
+        "Group ID": "",
+        "Channel ID": "$1I1879",
+        "FootprintName": "C0603",
+        "DeviceName": "CL10A475KO8NNNC",
+        "PCB Layer": "TopLayer",
+        "Convert to PCB": "yes"
+      },
+      "pinInfoMap": {
+        "1": {
+          "name": "",
+          "number": "1",
+          "net": "VBUS_5V"
+        },
+        "2": {
+          "name": "",
+          "number": "2",
+          "net": "GND"
+        }
+      }
+    },
+    "link_C6": {
+      "props": {
+        "Footprint": "540fc17de4bcda69",
+        "Designator": "C6",
+        "LCSC Part Name": "22uF ±20% 25V",
+        "Supplier Part": "C784585",
+        "Manufacturer": "YAGEO(国巨)",
+        "Manufacturer Part": "CC0805MKX5R8BB226",
+        "Supplier Footprint": "0805",
+        "JLCPCB Part Class": "Extended Part",
+        "Datasheet": "https://item.szlcsc.com/datasheet/CC0805MKX5R8BB226/840648.html",
+        "Supplier": "LCSC",
+        "Add into BOM": "yes",
+        "3D Model": "8c88e81f49c6409b980720ec8953afb6|0819f05c4eef4c71ace90d822a990e87",
+        "3D Model Title": "C0805_L2.0-W1.3-H1.3",
+        "3D Model Transform": "78.74,51.181,0,0,0,0,0,0.0005,0",
+        "Value": "22uF",
+        "Tolerance": "±20%",
+        "Voltage Rating": "25V",
+        "Temperature Coefficient": "X5R",
+        "Name": "22uF",
+        "Description": "Capacitance:22uF Tolerance:±20% Tolerance:±20% Voltage Rating:25V Temperature Coefficient:X5R",
+        "Device": "ad1d34428a792d01",
+        "Unique ID": "link_C6",
+        "Reuse Block": "",
+        "Group ID": "",
+        "Channel ID": "$1I1880",
+        "FootprintName": "C0805",
+        "DeviceName": "CC0805MKX5R8BB226",
+        "PCB Layer": "TopLayer",
+        "Convert to PCB": "yes"
+      },
+      "pinInfoMap": {
+        "1": {
+          "name": "",
+          "number": "1",
+          "net": "PVDD_12V"
+        },
+        "2": {
+          "name": "",
+          "number": "2",
+          "net": "GND"
+        }
+      }
+    },
+    "link_C7": {
+      "props": {
+        "Footprint": "540fc17de4bcda69",
+        "Designator": "C7",
+        "LCSC Part Name": "22uF ±20% 25V",
+        "Supplier Part": "C784585",
+        "Manufacturer": "YAGEO(国巨)",
+        "Manufacturer Part": "CC0805MKX5R8BB226",
+        "Supplier Footprint": "0805",
+        "JLCPCB Part Class": "Extended Part",
+        "Datasheet": "https://item.szlcsc.com/datasheet/CC0805MKX5R8BB226/840648.html",
+        "Supplier": "LCSC",
+        "Add into BOM": "yes",
+        "3D Model": "8c88e81f49c6409b980720ec8953afb6|0819f05c4eef4c71ace90d822a990e87",
+        "3D Model Title": "C0805_L2.0-W1.3-H1.3",
+        "3D Model Transform": "78.74,51.181,0,0,0,0,0,0.0005,0",
+        "Value": "22uF",
+        "Tolerance": "±20%",
+        "Voltage Rating": "25V",
+        "Temperature Coefficient": "X5R",
+        "Name": "22uF",
+        "Description": "Capacitance:22uF Tolerance:±20% Tolerance:±20% Voltage Rating:25V Temperature Coefficient:X5R",
+        "Device": "ad1d34428a792d01",
+        "Unique ID": "link_C7",
+        "Reuse Block": "",
+        "Group ID": "",
+        "Channel ID": "$1I1881",
+        "FootprintName": "C0805",
+        "DeviceName": "CC0805MKX5R8BB226",
+        "PCB Layer": "TopLayer",
+        "Convert to PCB": "yes"
+      },
+      "pinInfoMap": {
+        "1": {
+          "name": "",
+          "number": "1",
+          "net": "PVDD_12V"
+        },
+        "2": {
+          "name": "",
+          "number": "2",
+          "net": "GND"
+        }
+      }
+    },
+    "link_C8": {
+      "props": {
+        "Footprint": "d071906520fd1bc2",
+        "Designator": "C8",
+        "LCSC Part Name": "10uF ±10% 10V",
+        "Supplier Part": "C19702",
+        "Manufacturer": "SAMSUNG(三星)",
+        "Manufacturer Part": "CL10A106KP8NNNC",
+        "Supplier Footprint": "0603",
+        "JLCPCB Part Class": "Basic Part",
+        "Datasheet": "https://item.szlcsc.com/datasheet/CL10A106KP8NNNC/20411.html",
+        "Supplier": "LCSC",
+        "Add into BOM": "yes",
+        "3D Model": "624118aa3cc7497086c383c2d72e0852|0819f05c4eef4c71ace90d822a990e87",
+        "3D Model Title": "C0603_L1.6-W0.8-H0.8",
+        "3D Model Transform": "62.992,31.496,0,0,0,0,0,0,0",
+        "Value": "10uF",
+        "Tolerance": "±10%",
+        "Voltage Rating": "10V",
+        "Temperature Coefficient": "X5R",
+        "Name": "10uF",
+        "Description": "Capacitance:10uF Tolerance:±10% Tolerance:±10% Voltage Rating:10V Temperature Coefficient:X5R",
+        "Device": "30949a5ef50c9118",
+        "Unique ID": "link_C8",
+        "Reuse Block": "",
+        "Group ID": "",
+        "Channel ID": "$1I1882",
+        "FootprintName": "C0603",
+        "DeviceName": "CL10A106KP8NNNC",
+        "PCB Layer": "TopLayer",
+        "Convert to PCB": "yes"
+      },
+      "pinInfoMap": {
+        "1": {
+          "name": "",
+          "number": "1",
+          "net": "PVDD_12V"
+        },
+        "2": {
+          "name": "",
+          "number": "2",
+          "net": "GND"
+        }
+      }
+    },
+    "link_C9": {
+      "props": {
+        "Footprint": "d071906520fd1bc2",
+        "Designator": "C9",
+        "LCSC Part Name": "10uF ±10% 10V",
+        "Supplier Part": "C19702",
+        "Manufacturer": "SAMSUNG(三星)",
+        "Manufacturer Part": "CL10A106KP8NNNC",
+        "Supplier Footprint": "0603",
+        "JLCPCB Part Class": "Basic Part",
+        "Datasheet": "https://item.szlcsc.com/datasheet/CL10A106KP8NNNC/20411.html",
+        "Supplier": "LCSC",
+        "Add into BOM": "yes",
+        "3D Model": "624118aa3cc7497086c383c2d72e0852|0819f05c4eef4c71ace90d822a990e87",
+        "3D Model Title": "C0603_L1.6-W0.8-H0.8",
+        "3D Model Transform": "62.992,31.496,0,0,0,0,0,0,0",
+        "Value": "10uF",
+        "Tolerance": "±10%",
+        "Voltage Rating": "10V",
+        "Temperature Coefficient": "X5R",
+        "Name": "10uF",
+        "Description": "Capacitance:10uF Tolerance:±10% Tolerance:±10% Voltage Rating:10V Temperature Coefficient:X5R",
+        "Device": "30949a5ef50c9118",
+        "Unique ID": "link_C9",
+        "Reuse Block": "",
+        "Group ID": "",
+        "Channel ID": "$1I1883",
+        "FootprintName": "C0603",
+        "DeviceName": "CL10A106KP8NNNC",
+        "PCB Layer": "TopLayer",
+        "Convert to PCB": "yes"
+      },
+      "pinInfoMap": {
+        "1": {
+          "name": "",
+          "number": "1",
+          "net": "PVDD_12V"
+        },
+        "2": {
+          "name": "",
+          "number": "2",
+          "net": "GND"
+        }
+      }
+    },
+    "link_C10": {
+      "props": {
+        "Footprint": "d071906520fd1bc2",
+        "Designator": "C10",
+        "LCSC Part Name": "100nF ±10% 50V",
+        "Supplier Part": "C14663",
+        "Manufacturer": "YAGEO(国巨)",
+        "Manufacturer Part": "CC0603KRX7R9BB104",
+        "Supplier Footprint": "0603",
+        "JLCPCB Part Class": "Basic Part",
+        "Datasheet": "https://item.szlcsc.com/datasheet/CC0603KRX7R9BB104/15331.html",
+        "Supplier": "LCSC",
+        "Add into BOM": "yes",
+        "3D Model": "624118aa3cc7497086c383c2d72e0852|0819f05c4eef4c71ace90d822a990e87",
+        "3D Model Title": "C0603_L1.6-W0.8-H0.8",
+        "3D Model Transform": "62.992,31.496,0,0,0,0,0,0,0",
+        "Value": "100nF",
+        "Tolerance": "±10%",
+        "Voltage Rating": "50V",
+        "Temperature Coefficient": "X7R",
+        "Name": "100nF",
+        "Description": "Capacitance:100nF Tolerance:±10% Tolerance:±10% Voltage Rating:50V Temperature Coefficient:X7R",
+        "Device": "ce55eddd06a7f611",
+        "Unique ID": "link_C10",
+        "Reuse Block": "",
+        "Group ID": "",
+        "Channel ID": "$1I1884",
+        "FootprintName": "C0603",
+        "DeviceName": "CC0603KRX7R9BB104",
+        "PCB Layer": "TopLayer",
+        "Convert to PCB": "yes"
+      },
+      "pinInfoMap": {
+        "1": {
+          "name": "",
+          "number": "1",
+          "net": "VCC_3V3"
+        },
+        "2": {
+          "name": "",
+          "number": "2",
+          "net": "GND"
+        }
+      }
+    },
+    "link_C11": {
+      "props": {
+        "Footprint": "d071906520fd1bc2",
+        "Designator": "C11",
+        "LCSC Part Name": "100nF ±10% 50V",
+        "Supplier Part": "C14663",
+        "Manufacturer": "YAGEO(国巨)",
+        "Manufacturer Part": "CC0603KRX7R9BB104",
+        "Supplier Footprint": "0603",
+        "JLCPCB Part Class": "Basic Part",
+        "Datasheet": "https://item.szlcsc.com/datasheet/CC0603KRX7R9BB104/15331.html",
+        "Supplier": "LCSC",
+        "Add into BOM": "yes",
+        "3D Model": "624118aa3cc7497086c383c2d72e0852|0819f05c4eef4c71ace90d822a990e87",
+        "3D Model Title": "C0603_L1.6-W0.8-H0.8",
+        "3D Model Transform": "62.992,31.496,0,0,0,0,0,0,0",
+        "Value": "100nF",
+        "Tolerance": "±10%",
+        "Voltage Rating": "50V",
+        "Temperature Coefficient": "X7R",
+        "Name": "100nF",
+        "Description": "Capacitance:100nF Tolerance:±10% Tolerance:±10% Voltage Rating:50V Temperature Coefficient:X7R",
+        "Device": "ce55eddd06a7f611",
+        "Unique ID": "link_C11",
+        "Reuse Block": "",
+        "Group ID": "",
+        "Channel ID": "$1I1894",
+        "FootprintName": "C0603",
+        "DeviceName": "CC0603KRX7R9BB104",
+        "PCB Layer": "TopLayer",
+        "Convert to PCB": "yes"
+      },
+      "pinInfoMap": {
+        "1": {
+          "name": "",
+          "number": "1",
+          "net": "VCC_3V3"
+        },
+        "2": {
+          "name": "",
+          "number": "2",
+          "net": "GND"
+        }
+      }
+    },
+    "link_C12": {
+      "props": {
+        "Footprint": "d071906520fd1bc2",
+        "Designator": "C12",
+        "LCSC Part Name": "100nF ±10% 50V",
+        "Supplier Part": "C14663",
+        "Manufacturer": "YAGEO(国巨)",
+        "Manufacturer Part": "CC0603KRX7R9BB104",
+        "Supplier Footprint": "0603",
+        "JLCPCB Part Class": "Basic Part",
+        "Datasheet": "https://item.szlcsc.com/datasheet/CC0603KRX7R9BB104/15331.html",
+        "Supplier": "LCSC",
+        "Add into BOM": "yes",
+        "3D Model": "624118aa3cc7497086c383c2d72e0852|0819f05c4eef4c71ace90d822a990e87",
+        "3D Model Title": "C0603_L1.6-W0.8-H0.8",
+        "3D Model Transform": "62.992,31.496,0,0,0,0,0,0,0",
+        "Value": "100nF",
+        "Tolerance": "±10%",
+        "Voltage Rating": "50V",
+        "Temperature Coefficient": "X7R",
+        "Name": "100nF",
+        "Description": "Capacitance:100nF Tolerance:±10% Tolerance:±10% Voltage Rating:50V Temperature Coefficient:X7R",
+        "Device": "ce55eddd06a7f611",
+        "Unique ID": "link_C12",
+        "Reuse Block": "",
+        "Group ID": "",
+        "Channel ID": "$1I1895",
+        "FootprintName": "C0603",
+        "DeviceName": "CC0603KRX7R9BB104",
+        "PCB Layer": "TopLayer",
+        "Convert to PCB": "yes"
+      },
+      "pinInfoMap": {
+        "1": {
+          "name": "",
+          "number": "1",
+          "net": "AMP_OUT_A+"
+        },
+        "2": {
+          "name": "",
+          "number": "2",
+          "net": "BST_A+"
+        }
+      }
+    },
+    "link_C13": {
+      "props": {
+        "Footprint": "d071906520fd1bc2",
+        "Designator": "C13",
+        "LCSC Part Name": "100nF ±10% 50V",
+        "Supplier Part": "C14663",
+        "Manufacturer": "YAGEO(国巨)",
+        "Manufacturer Part": "CC0603KRX7R9BB104",
+        "Supplier Footprint": "0603",
+        "JLCPCB Part Class": "Basic Part",
+        "Datasheet": "https://item.szlcsc.com/datasheet/CC0603KRX7R9BB104/15331.html",
+        "Supplier": "LCSC",
+        "Add into BOM": "yes",
+        "3D Model": "624118aa3cc7497086c383c2d72e0852|0819f05c4eef4c71ace90d822a990e87",
+        "3D Model Title": "C0603_L1.6-W0.8-H0.8",
+        "3D Model Transform": "62.992,31.496,0,0,0,0,0,0,0",
+        "Value": "100nF",
+        "Tolerance": "±10%",
+        "Voltage Rating": "50V",
+        "Temperature Coefficient": "X7R",
+        "Name": "100nF",
+        "Description": "Capacitance:100nF Tolerance:±10% Tolerance:±10% Voltage Rating:50V Temperature Coefficient:X7R",
+        "Device": "ce55eddd06a7f611",
+        "Unique ID": "link_C13",
+        "Reuse Block": "",
+        "Group ID": "",
+        "Channel ID": "$1I1896",
+        "FootprintName": "C0603",
+        "DeviceName": "CC0603KRX7R9BB104",
+        "PCB Layer": "TopLayer",
+        "Convert to PCB": "yes"
+      },
+      "pinInfoMap": {
+        "1": {
+          "name": "",
+          "number": "1",
+          "net": "AMP_OUT_A-"
+        },
+        "2": {
+          "name": "",
+          "number": "2",
+          "net": "BST_A-"
+        }
+      }
+    },
+    "link_C14": {
+      "props": {
+        "Footprint": "d071906520fd1bc2",
+        "Designator": "C14",
+        "LCSC Part Name": "100nF ±10% 50V",
+        "Supplier Part": "C14663",
+        "Manufacturer": "YAGEO(国巨)",
+        "Manufacturer Part": "CC0603KRX7R9BB104",
+        "Supplier Footprint": "0603",
+        "JLCPCB Part Class": "Basic Part",
+        "Datasheet": "https://item.szlcsc.com/datasheet/CC0603KRX7R9BB104/15331.html",
+        "Supplier": "LCSC",
+        "Add into BOM": "yes",
+        "3D Model": "624118aa3cc7497086c383c2d72e0852|0819f05c4eef4c71ace90d822a990e87",
+        "3D Model Title": "C0603_L1.6-W0.8-H0.8",
+        "3D Model Transform": "62.992,31.496,0,0,0,0,0,0,0",
+        "Value": "100nF",
+        "Tolerance": "±10%",
+        "Voltage Rating": "50V",
+        "Temperature Coefficient": "X7R",
+        "Name": "100nF",
+        "Description": "Capacitance:100nF Tolerance:±10% Tolerance:±10% Voltage Rating:50V Temperature Coefficient:X7R",
+        "Device": "ce55eddd06a7f611",
+        "Unique ID": "link_C14",
+        "Reuse Block": "",
+        "Group ID": "",
+        "Channel ID": "$1I1897",
+        "FootprintName": "C0603",
+        "DeviceName": "CC0603KRX7R9BB104",
+        "PCB Layer": "TopLayer",
+        "Convert to PCB": "yes"
+      },
+      "pinInfoMap": {
+        "1": {
+          "name": "",
+          "number": "1",
+          "net": "AMP_OUT_B+"
+        },
+        "2": {
+          "name": "",
+          "number": "2",
+          "net": "BST_B+"
+        }
+      }
+    },
+    "link_C15": {
+      "props": {
+        "Footprint": "d071906520fd1bc2",
+        "Designator": "C15",
+        "LCSC Part Name": "100nF ±10% 50V",
+        "Supplier Part": "C14663",
+        "Manufacturer": "YAGEO(国巨)",
+        "Manufacturer Part": "CC0603KRX7R9BB104",
+        "Supplier Footprint": "0603",
+        "JLCPCB Part Class": "Basic Part",
+        "Datasheet": "https://item.szlcsc.com/datasheet/CC0603KRX7R9BB104/15331.html",
+        "Supplier": "LCSC",
+        "Add into BOM": "yes",
+        "3D Model": "624118aa3cc7497086c383c2d72e0852|0819f05c4eef4c71ace90d822a990e87",
+        "3D Model Title": "C0603_L1.6-W0.8-H0.8",
+        "3D Model Transform": "62.992,31.496,0,0,0,0,0,0,0",
+        "Value": "100nF",
+        "Tolerance": "±10%",
+        "Voltage Rating": "50V",
+        "Temperature Coefficient": "X7R",
+        "Name": "100nF",
+        "Description": "Capacitance:100nF Tolerance:±10% Tolerance:±10% Voltage Rating:50V Temperature Coefficient:X7R",
+        "Device": "ce55eddd06a7f611",
+        "Unique ID": "link_C15",
+        "Reuse Block": "",
+        "Group ID": "",
+        "Channel ID": "$1I1898",
+        "FootprintName": "C0603",
+        "DeviceName": "CC0603KRX7R9BB104",
+        "PCB Layer": "TopLayer",
+        "Convert to PCB": "yes"
+      },
+      "pinInfoMap": {
+        "1": {
+          "name": "",
+          "number": "1",
+          "net": "AMP_OUT_B-"
+        },
+        "2": {
+          "name": "",
+          "number": "2",
+          "net": "BST_B-"
+        }
+      }
+    },
+    "link_C17": {
+      "props": {
+        "Footprint": "d071906520fd1bc2",
+        "Designator": "C17",
+        "LCSC Part Name": "100nF ±10% 50V",
+        "Supplier Part": "C14663",
+        "Manufacturer": "YAGEO(国巨)",
+        "Manufacturer Part": "CC0603KRX7R9BB104",
+        "Supplier Footprint": "0603",
+        "JLCPCB Part Class": "Basic Part",
+        "Datasheet": "https://item.szlcsc.com/datasheet/CC0603KRX7R9BB104/15331.html",
+        "Supplier": "LCSC",
+        "Add into BOM": "yes",
+        "3D Model": "624118aa3cc7497086c383c2d72e0852|0819f05c4eef4c71ace90d822a990e87",
+        "3D Model Title": "C0603_L1.6-W0.8-H0.8",
+        "3D Model Transform": "62.992,31.496,0,0,0,0,0,0,0",
+        "Value": "100nF",
+        "Tolerance": "±10%",
+        "Voltage Rating": "50V",
+        "Temperature Coefficient": "X7R",
+        "Name": "100nF",
+        "Description": "Capacitance:100nF Tolerance:±10% Tolerance:±10% Voltage Rating:50V Temperature Coefficient:X7R",
+        "Device": "ce55eddd06a7f611",
+        "Unique ID": "link_C17",
+        "Reuse Block": "",
+        "Group ID": "",
+        "Channel ID": "$1I1892",
+        "FootprintName": "C0603",
+        "DeviceName": "CC0603KRX7R9BB104",
+        "PCB Layer": "TopLayer",
+        "Convert to PCB": "yes"
+      },
+      "pinInfoMap": {
+        "1": {
+          "name": "",
+          "number": "1",
+          "net": "ESP_EN"
+        },
+        "2": {
+          "name": "",
+          "number": "2",
+          "net": "GND"
+        }
+      }
+    },
+    "link_C18": {
+      "props": {
+        "Footprint": "d071906520fd1bc2",
+        "Designator": "C18",
+        "LCSC Part Name": "100nF ±10% 50V",
+        "Supplier Part": "C14663",
+        "Manufacturer": "YAGEO(国巨)",
+        "Manufacturer Part": "CC0603KRX7R9BB104",
+        "Supplier Footprint": "0603",
+        "JLCPCB Part Class": "Basic Part",
+        "Datasheet": "https://item.szlcsc.com/datasheet/CC0603KRX7R9BB104/15331.html",
+        "Supplier": "LCSC",
+        "Add into BOM": "yes",
+        "3D Model": "624118aa3cc7497086c383c2d72e0852|0819f05c4eef4c71ace90d822a990e87",
+        "3D Model Title": "C0603_L1.6-W0.8-H0.8",
+        "3D Model Transform": "62.992,31.496,0,0,0,0,0,0,0",
+        "Value": "100nF",
+        "Tolerance": "±10%",
+        "Voltage Rating": "50V",
+        "Temperature Coefficient": "X7R",
+        "Name": "100nF",
+        "Description": "Capacitance:100nF Tolerance:±10% Tolerance:±10% Voltage Rating:50V Temperature Coefficient:X7R",
+        "Device": "ce55eddd06a7f611",
+        "Unique ID": "link_C18",
+        "Reuse Block": "",
+        "Group ID": "",
+        "Channel ID": "$1I1903",
+        "FootprintName": "C0603",
+        "DeviceName": "CC0603KRX7R9BB104",
+        "PCB Layer": "TopLayer",
+        "Convert to PCB": "yes"
+      },
+      "pinInfoMap": {
+        "1": {
+          "name": "",
+          "number": "1",
+          "net": "VCC_3V3"
+        },
+        "2": {
+          "name": "",
+          "number": "2",
+          "net": "GND"
+        }
+      }
+    },
+    "link_C19": {
+      "props": {
+        "Footprint": "d071906520fd1bc2",
+        "Designator": "C19",
+        "LCSC Part Name": "100nF ±10% 50V",
+        "Supplier Part": "C14663",
+        "Manufacturer": "YAGEO(国巨)",
+        "Manufacturer Part": "CC0603KRX7R9BB104",
+        "Supplier Footprint": "0603",
+        "JLCPCB Part Class": "Basic Part",
+        "Datasheet": "https://item.szlcsc.com/datasheet/CC0603KRX7R9BB104/15331.html",
+        "Supplier": "LCSC",
+        "Add into BOM": "yes",
+        "3D Model": "624118aa3cc7497086c383c2d72e0852|0819f05c4eef4c71ace90d822a990e87",
+        "3D Model Title": "C0603_L1.6-W0.8-H0.8",
+        "3D Model Transform": "62.992,31.496,0,0,0,0,0,0,0",
+        "Value": "100nF",
+        "Tolerance": "±10%",
+        "Voltage Rating": "50V",
+        "Temperature Coefficient": "X7R",
+        "Name": "100nF",
+        "Description": "Capacitance:100nF Tolerance:±10% Tolerance:±10% Voltage Rating:50V Temperature Coefficient:X7R",
+        "Device": "ce55eddd06a7f611",
+        "Unique ID": "link_C19",
+        "Reuse Block": "",
+        "Group ID": "",
+        "Channel ID": "$1I1904",
+        "FootprintName": "C0603",
+        "DeviceName": "CC0603KRX7R9BB104",
+        "PCB Layer": "TopLayer",
+        "Convert to PCB": "yes"
+      },
+      "pinInfoMap": {
+        "1": {
+          "name": "",
+          "number": "1",
+          "net": "AVDD"
+        },
+        "2": {
+          "name": "",
+          "number": "2",
+          "net": "GND"
+        }
+      }
+    },
+    "link_C20": {
+      "props": {
+        "Footprint": "d071906520fd1bc2",
+        "Designator": "C20",
+        "LCSC Part Name": "100nF ±10% 50V",
+        "Supplier Part": "C14663",
+        "Manufacturer": "YAGEO(国巨)",
+        "Manufacturer Part": "CC0603KRX7R9BB104",
+        "Supplier Footprint": "0603",
+        "JLCPCB Part Class": "Basic Part",
+        "Datasheet": "https://item.szlcsc.com/datasheet/CC0603KRX7R9BB104/15331.html",
+        "Supplier": "LCSC",
+        "Add into BOM": "yes",
+        "3D Model": "624118aa3cc7497086c383c2d72e0852|0819f05c4eef4c71ace90d822a990e87",
+        "3D Model Title": "C0603_L1.6-W0.8-H0.8",
+        "3D Model Transform": "62.992,31.496,0,0,0,0,0,0,0",
+        "Value": "100nF",
+        "Tolerance": "±10%",
+        "Voltage Rating": "50V",
+        "Temperature Coefficient": "X7R",
+        "Name": "100nF",
+        "Description": "Capacitance:100nF Tolerance:±10% Tolerance:±10% Voltage Rating:50V Temperature Coefficient:X7R",
+        "Device": "ce55eddd06a7f611",
+        "Unique ID": "link_C20",
+        "Reuse Block": "",
+        "Group ID": "",
+        "Channel ID": "$1I1905",
+        "FootprintName": "C0603",
+        "DeviceName": "CC0603KRX7R9BB104",
+        "PCB Layer": "TopLayer",
+        "Convert to PCB": "yes"
+      },
+      "pinInfoMap": {
+        "1": {
+          "name": "",
+          "number": "1",
+          "net": "VR_DIG"
+        },
+        "2": {
+          "name": "",
+          "number": "2",
+          "net": "GND"
+        }
+      }
+    },
+    "link_C21": {
+      "props": {
+        "Footprint": "d071906520fd1bc2",
+        "Designator": "C21",
+        "LCSC Part Name": "1uF ±10% 25V",
+        "Supplier Part": "C106858",
+        "Manufacturer": "YAGEO(国巨)",
+        "Manufacturer Part": "CC0603KRX7R8BB105",
+        "Supplier Footprint": "0603",
+        "JLCPCB Part Class": "Extended Part",
+        "Datasheet": "https://item.szlcsc.com/datasheet/CC0603KRX7R8BB105/108074.html",
+        "Supplier": "LCSC",
+        "Add into BOM": "yes",
+        "3D Model": "624118aa3cc7497086c383c2d72e0852|0819f05c4eef4c71ace90d822a990e87",
+        "3D Model Title": "C0603_L1.6-W0.8-H0.8",
+        "3D Model Transform": "62.992,31.496,0,0,0,0,0,0,0",
+        "Value": "1uF",
+        "Tolerance": "±10%",
+        "Voltage Rating": "25V",
+        "Temperature Coefficient": "X7R",
+        "Name": "1uF",
+        "Description": "Capacitance:1uF Tolerance:±10% Tolerance:±10% Voltage Rating:25V Temperature Coefficient:X7R",
+        "Device": "9429ad323a3f42fe",
+        "Unique ID": "link_C21",
+        "Reuse Block": "",
+        "Group ID": "",
+        "Channel ID": "$1I1909",
+        "FootprintName": "C0603",
+        "DeviceName": "CC0603KRX7R8BB105",
+        "PCB Layer": "TopLayer",
+        "Convert to PCB": "yes"
+      },
+      "pinInfoMap": {
+        "1": {
+          "name": "",
+          "number": "1",
+          "net": "BOOST_VDD"
+        },
+        "2": {
+          "name": "",
+          "number": "2",
+          "net": "GND"
+        }
+      }
+    },
+    "link_C22": {
+      "props": {
+        "Footprint": "d071906520fd1bc2",
+        "Designator": "C22",
+        "LCSC Part Name": "4.7nF ±10% 200V",
+        "Supplier Part": "C596328",
+        "Manufacturer": "YAGEO(国巨)",
+        "Manufacturer Part": "CC0603KRX7RABB472",
+        "Supplier Footprint": "0603",
+        "JLCPCB Part Class": "Extended Part",
+        "Datasheet": "https://item.szlcsc.com/datasheet/CC0603KRX7RABB472/624312.html",
+        "Supplier": "LCSC",
+        "Add into BOM": "yes",
+        "3D Model": "624118aa3cc7497086c383c2d72e0852|0819f05c4eef4c71ace90d822a990e87",
+        "3D Model Title": "C0603_L1.6-W0.8-H0.8",
+        "3D Model Transform": "62.992,31.496,0,0,0,0,0,0,0",
+        "Value": "4.7nF",
+        "Tolerance": "±10%",
+        "Voltage Rating": "200V",
+        "Temperature Coefficient": "X7R",
+        "Name": "4.7nF",
+        "Description": "Capacitance:4.7nF Tolerance:±10% Tolerance:±10% Voltage Rating:200V Temperature Coefficient:X7R",
+        "Device": "800839f4f892a3ea",
+        "Unique ID": "link_C22",
+        "Reuse Block": "",
+        "Group ID": "",
+        "Channel ID": "$1I1910",
+        "FootprintName": "C0603",
+        "DeviceName": "CC0603KRX7RABB472",
+        "PCB Layer": "TopLayer",
+        "Convert to PCB": "yes"
+      },
+      "pinInfoMap": {
+        "1": {
+          "name": "",
+          "number": "1",
+          "net": "COMP_RC"
+        },
+        "2": {
+          "name": "",
+          "number": "2",
+          "net": "GND"
+        }
+      }
+    },
+    "link_D1": {
+      "props": {
+        "Footprint": "4512c487c1757dfa",
+        "Designator": "D1",
+        "LCSC Part Name": "单向TVS 5V截止 峰值脉冲电流：43.5A",
+        "Supplier Part": "C83329",
+        "Manufacturer": "Littelfuse(美国力特)",
+        "Manufacturer Part": "SMAJ5.0A",
+        "Supplier Footprint": "DO-214AC(SMA)",
+        "JLCPCB Part Class": "Extended Part",
+        "Datasheet": "https://item.szlcsc.com/datasheet/SMAJ5.0A/84493.html",
+        "Supplier": "LCSC",
+        "Add into BOM": "yes",
+        "3D Model": "e3551acb3c5a4975a5e9d36087fe1fa2|0819f05c4eef4c71ace90d822a990e87",
+        "3D Model Title": "SMA_L4.3-W2.6-LS5.2-RD",
+        "3D Model Transform": "185.039,102.362,0,0,0,0,0,0,0",
+        "Polarity": "Unidirectional",
+        "Reverse Stand-Off Voltage (Vrwm)": "5V",
+        "Clamping Voltage": "9.2V",
+        "Peak Pulse Current (Ipp)": "43.5A",
+        "Peak Pulse Power Dissipation (Ppp)": "400W",
+        "Voltage - Breakdown": "6.4V",
+        "Reverse Leakage Current (Ir)": "800uA",
+        "Operating Temperature": "-65℃~+150℃",
+        "Type": "TVS",
+        "Name": "SMAJ5.0A",
+        "Description": "Polarity:Unidirectional Reverse Stand-Off Voltage (Vrwm):5V Clamping Voltage:9.2V Peak Pulse Current (Ipp):43.5A Peak Pulse Power Dissipation (Ppp):400W Voltage - Breakdown:6.4V Reverse Leakage Current (Ir):800uA Operating Temperature:-65℃~+150℃ Operating",
+        "Device": "9ddd4a8f2077c87e",
+        "Unique ID": "link_D1",
+        "Reuse Block": "",
+        "Group ID": "",
+        "Channel ID": "$1I1871",
+        "FootprintName": "SMA_L4.3-W2.6-LS5.2-RD",
+        "DeviceName": "SMAJ5.0A_C83329",
+        "PCB Layer": "TopLayer",
+        "Convert to PCB": "yes"
+      },
+      "pinInfoMap": {
+        "1": {
+          "name": "",
+          "number": "1",
+          "net": "VBUS_5V"
+        },
+        "2": {
+          "name": "",
+          "number": "2",
+          "net": "GND"
+        }
+      }
+    },
+    "link_D2": {
+      "props": {
+        "Footprint": "a9727b8ac84f8b60",
+        "Designator": "D2",
+        "LCSC Part Name": "ESD，可防30kV静电",
+        "Supplier Part": "C2827654",
+        "Manufacturer": "TECH PUBLIC(台舟)",
+        "Manufacturer Part": "USBLC6-2SC6",
+        "Supplier Footprint": "SOT-23-6",
+        "JLCPCB Part Class": "Extended Part",
+        "Datasheet": "https://item.szlcsc.com/datasheet/USBLC6-2SC6/2973336.html",
+        "Supplier": "LCSC",
+        "Add into BOM": "yes",
+        "3D Model": "1370be37a17e44418ae52e2b4cc1f5e5|0819f05c4eef4c71ace90d822a990e87",
+        "3D Model Title": "SOT-23-6_L2.9-W1.6-H1.5-LS2.8-P0.95",
+        "3D Model Transform": "110.236,113.364,0,90,0,0,0.0005,0.0005,0",
+        "Polarity": "Unidirectional",
+        "Reverse Stand-Off Voltage (Vrwm)": "5V",
+        "Clamping Voltage": "12V",
+        "Peak Pulse Current (Ipp)": "6A",
+        "Peak Pulse Power Dissipation (Ppp)": "150W",
+        "Voltage - Breakdown": "6V",
+        "Reverse Leakage Current (Ir)": "80nA",
+        "Number of Channels": "2",
+        "Operating Temperature": "-55℃~+125℃",
+        "level of protection": "IEC 61000-4-2；IEC 61000-4-4；IEC 61000-4-5",
+        "Type": "ESD",
+        "Junction Capacitance": "0.35pF",
+        "Name": "USBLC6-2SC6",
+        "Description": "Polarity:Unidirectional Reverse Stand-Off Voltage (Vrwm):5V Clamping Voltage:12V Peak Pulse Current (Ipp):6A Peak Pulse Power Dissipation (Ppp):150W Voltage - Breakdown:6V Reverse Leakage Current (Ir):80nA Number of Channels:2 Operating Temperature:-55℃~+",
+        "Device": "e906431b77cce4bd",
+        "Unique ID": "link_D2",
+        "Reuse Block": "",
+        "Group ID": "",
+        "Channel ID": "$1I1872",
+        "FootprintName": "SOT-23-6_L2.9-W1.6-P0.95-LS2.8-BL",
+        "DeviceName": "USBLC6-2SC6_C2827654",
+        "PCB Layer": "TopLayer",
+        "Convert to PCB": "yes"
+      },
+      "pinInfoMap": {
+        "1": {
+          "name": "",
+          "number": "1",
+          "net": ""
+        },
+        "2": {
+          "name": "",
+          "number": "2",
+          "net": "GND"
+        },
+        "3": {
+          "name": "",
+          "number": "3",
+          "net": ""
+        },
+        "4": {
+          "name": "",
+          "number": "4",
+          "net": ""
+        },
+        "5": {
+          "name": "",
+          "number": "5",
+          "net": ""
+        },
+        "6": {
+          "name": "",
+          "number": "6",
+          "net": ""
+        }
+      }
+    },
+    "link_D3": {
+      "props": {
+        "Footprint": "9c955a26463542cb",
+        "Designator": "D3",
+        "LCSC Part Name": "薄膜电阻 3.9kΩ ±0.1% 63mW",
+        "Supplier Part": "C186407",
+        "Manufacturer": "KOA",
+        "Manufacturer Part": "RN731JTTD3901B25",
+        "Supplier Footprint": "0603",
+        "JLCPCB Part Class": "Extended Part",
+        "Datasheet": "https://item.szlcsc.com/datasheet/RN731JTTD3901B25/197812.html",
+        "Supplier": "LCSC",
+        "Add into BOM": "yes",
+        "3D Model": "112863783b5b41f1b5254f87eedc7932|0819f05c4eef4c71ace90d822a990e87",
+        "3D Model Title": "R0603",
+        "3D Model Transform": "31.8897,63.7794,0,90,0,0,0,0,0",
+        "Type": "Thin Film Resistor",
+        "Value": "3.9kΩ",
+        "Tolerance": "±0.1%",
+        "Power(Watts)": "63mW",
+        "Voltage-Supply(Max)": "75V",
+        "Temperature Coefficient": "±25ppm/℃",
+        "Operating Temperature": "-55℃~+155℃",
+        "Name": "3.9kΩ",
+        "Description": "Type:Thin Film Resistor Resistance:3.9kΩ Tolerance:±0.1% Tolerance:±0.1% Power(Watts):63mW Voltage-Supply(Max):75V Temperature Coefficient:±25ppm/℃ Temperature Coefficient:±25ppm/℃ Operating Temperature:-55℃~+155℃ Operating Temperature:-55℃~+155℃",
+        "Device": "fe6ad98f25c0022c",
+        "Unique ID": "link_D3",
+        "Reuse Block": "",
+        "Group ID": "",
+        "Channel ID": "$1I1886",
+        "FootprintName": "R0603",
+        "DeviceName": "RN731JTTD3901B25",
+        "PCB Layer": "TopLayer",
+        "Convert to PCB": "yes"
+      },
+      "pinInfoMap": {
+        "1": {
+          "name": "",
+          "number": "1",
+          "net": "BOOST_SW"
+        },
+        "2": {
+          "name": "",
+          "number": "2",
+          "net": "PVDD_12V"
+        }
+      }
+    },
+    "link_J1": {
+      "props": {
+        "Footprint": "3be59b23b8a762cb",
+        "Designator": "J1",
+        "LCSC Part Name": "1x2P 间距:2.54mm 方针 直插",
+        "Supplier Part": "C124375",
+        "Manufacturer": "Ckmtw(灿科盟)",
+        "Manufacturer Part": "B-2100S02P-A110",
+        "Supplier Footprint": "插件,P=2.54mm",
+        "JLCPCB Part Class": "Extended Part",
+        "Datasheet": "https://item.szlcsc.com/datasheet/B-2100S02P-A110/125650.html",
+        "Supplier": "LCSC",
+        "Add into BOM": "yes",
+        "3D Model": "e506c2b6a89c4aacb020357246aab725|0819f05c4eef4c71ace90d822a990e87",
+        "3D Model Title": "HDR-M-2.54_1x2",
+        "3D Model Transform": "200,100,0,0,0,0,0,0,-118.11",
+        "Pin Structure": "1x2P",
+        "Pitch": "2.54mm",
+        "Row Spacing": "-",
+        "Circluar Pins/Square Pins": "Pin Header",
+        "Mounting Type": "Through Hole",
+        "Number of Rows": "1",
+        "Number of Pins": "2P",
+        "Current Rating": "3A",
+        "Voltage Rating (Max)": "-",
+        "Length of Mating Pin": "6mm",
+        "Insulation Height": "2.54mm",
+        "Length of End Connection Pin": "3mm",
+        "Contact Material": "Brass",
+        "Contact Plating": "Gold",
+        "Operating Temperature": "-40℃~+105℃",
+        "Color": "Black",
+        "Name": "B-2100S02P-A110",
+        "Description": "Pin Structure:1x2P Pitch:2.54mm Row Spacing:- Circluar Pins/Square Pins:Pin Header Mounting Type:Through Hole Number of Rows:1 Number of Pins:2P Current Rating:3A Voltage Rating (Max):- Length of Mating Pin:6mm Insulation Height:2.54mm Length of End Conne",
+        "Device": "7535ec94df4a0c27",
+        "Unique ID": "link_J1",
+        "Reuse Block": "",
+        "Group ID": "",
+        "Channel ID": "$1I1899",
+        "FootprintName": "HDR-TH_2P-P2.54-V-M-1",
+        "DeviceName": "B-2100S02P-A110",
+        "PCB Layer": "TopLayer",
+        "Convert to PCB": "yes"
+      },
+      "pinInfoMap": {
+        "1": {
+          "name": "",
+          "number": "1",
+          "net": "AMP_OUT_A+"
+        },
+        "2": {
+          "name": "",
+          "number": "2",
+          "net": "AMP_OUT_A-"
+        }
+      }
+    },
+    "link_J2": {
+      "props": {
+        "Footprint": "3be59b23b8a762cb",
+        "Designator": "J2",
+        "LCSC Part Name": "1x2P 间距:2.54mm 方针 直插",
+        "Supplier Part": "C124375",
+        "Manufacturer": "Ckmtw(灿科盟)",
+        "Manufacturer Part": "B-2100S02P-A110",
+        "Supplier Footprint": "插件,P=2.54mm",
+        "JLCPCB Part Class": "Extended Part",
+        "Datasheet": "https://item.szlcsc.com/datasheet/B-2100S02P-A110/125650.html",
+        "Supplier": "LCSC",
+        "Add into BOM": "yes",
+        "3D Model": "e506c2b6a89c4aacb020357246aab725|0819f05c4eef4c71ace90d822a990e87",
+        "3D Model Title": "HDR-M-2.54_1x2",
+        "3D Model Transform": "200,100,0,0,0,0,0,0,-118.11",
+        "Pin Structure": "1x2P",
+        "Pitch": "2.54mm",
+        "Row Spacing": "-",
+        "Circluar Pins/Square Pins": "Pin Header",
+        "Mounting Type": "Through Hole",
+        "Number of Rows": "1",
+        "Number of Pins": "2P",
+        "Current Rating": "3A",
+        "Voltage Rating (Max)": "-",
+        "Length of Mating Pin": "6mm",
+        "Insulation Height": "2.54mm",
+        "Length of End Connection Pin": "3mm",
+        "Contact Material": "Brass",
+        "Contact Plating": "Gold",
+        "Operating Temperature": "-40℃~+105℃",
+        "Color": "Black",
+        "Name": "B-2100S02P-A110",
+        "Description": "Pin Structure:1x2P Pitch:2.54mm Row Spacing:- Circluar Pins/Square Pins:Pin Header Mounting Type:Through Hole Number of Rows:1 Number of Pins:2P Current Rating:3A Voltage Rating (Max):- Length of Mating Pin:6mm Insulation Height:2.54mm Length of End Conne",
+        "Device": "7535ec94df4a0c27",
+        "Unique ID": "link_J2",
+        "Reuse Block": "",
+        "Group ID": "",
+        "Channel ID": "$1I1900",
+        "FootprintName": "HDR-TH_2P-P2.54-V-M-1",
+        "DeviceName": "B-2100S02P-A110",
+        "PCB Layer": "TopLayer",
+        "Convert to PCB": "yes"
+      },
+      "pinInfoMap": {
+        "1": {
+          "name": "",
+          "number": "1",
+          "net": "AMP_OUT_B+"
+        },
+        "2": {
+          "name": "",
+          "number": "2",
+          "net": "AMP_OUT_B-"
+        }
+      }
+    },
+    "link_L1": {
+      "props": {
+        "Footprint": "73cae8ef5c88ef45",
+        "Designator": "L1",
+        "LCSC Part Name": "厚膜电阻 5.6kΩ ±1% 62.5mW",
+        "Supplier Part": "C168239",
+        "Manufacturer": "Walsin(华新科)",
+        "Manufacturer Part": "WR04X5601FTL",
+        "Supplier Footprint": "0402",
+        "JLCPCB Part Class": "Extended Part",
+        "Datasheet": "https://item.szlcsc.com/datasheet/WR04X5601FTL/179622.html",
+        "Supplier": "LCSC",
+        "Add into BOM": "yes",
+        "3D Model": "efdecb7dae4442949d28eecaf748420f|0819f05c4eef4c71ace90d822a990e87",
+        "3D Model Title": "R0402_L1.0-W0.5-H0.4",
+        "3D Model Transform": "39.37,19.685,0,0,0,0,0,0,0",
+        "Type": "Thick Film Resistor",
+        "Value": "5.6kΩ",
+        "Tolerance": "±1%",
+        "Power(Watts)": "62.5mW",
+        "Voltage-Supply(Max)": "50V",
+        "Temperature Coefficient": "±100ppm/℃",
+        "Operating Temperature": "-55℃~+155℃",
+        "Name": "5.6kΩ",
+        "Description": "Type:Thick Film Resistor Resistance:5.6kΩ Tolerance:±1% Tolerance:±1% Power(Watts):62.5mW Voltage-Supply(Max):50V Temperature Coefficient:±100ppm/℃ Temperature Coefficient:±100ppm/℃ Operating Temperature:-55℃~+155℃ Operating Temperature:-55℃~+155℃",
+        "Device": "a0787ee55afe8351",
+        "Unique ID": "link_L1",
+        "Reuse Block": "",
+        "Group ID": "",
+        "Channel ID": "$1I1885",
+        "FootprintName": "R0402",
+        "DeviceName": "WR04X5601FTL",
+        "PCB Layer": "TopLayer",
+        "Convert to PCB": "yes"
+      },
+      "pinInfoMap": {
+        "1": {
+          "name": "",
+          "number": "1",
+          "net": "VBUS_5V"
+        },
+        "2": {
+          "name": "",
+          "number": "2",
+          "net": "BOOST_SW"
+        }
+      }
+    },
+    "link_R1": {
+      "props": {
+        "Footprint": "9c955a26463542cb",
+        "Designator": "R1",
+        "LCSC Part Name": "169kΩ ±1% 100mW 厚膜电阻",
+        "Supplier Part": "C22817",
+        "Manufacturer": "UNI-ROYAL(厚声)",
+        "Manufacturer Part": "0603WAF1693T5E",
+        "Supplier Footprint": "0603",
+        "JLCPCB Part Class": "Extended Part",
+        "Datasheet": "https://atta.szlcsc.com/upload/public/pdf/source/20200306/C422600_1E6D84923E4A46A82E41ADD87F860B5C.pdf",
+        "Supplier": "LCSC",
+        "Add into BOM": "yes",
+        "3D Model": "112863783b5b41f1b5254f87eedc7932|0819f05c4eef4c71ace90d822a990e87",
+        "3D Model Title": "R0603",
+        "3D Model Transform": "31.8897,63.7794,0,90,0,0,0,0,0",
+        "Type": "Thick Film Resistors",
+        "Value": "169kΩ",
+        "Tolerance": "±1%",
+        "Power(Watts)": "",
+        "Overload Voltage (Max)": "",
+        "Temperature Coefficient": "±100ppm/℃",
+        "Operating Temperature Range": "-55℃~+155℃",
+        "Name": "169kΩ",
+        "Description": "Type:Thick Film Resistors Resistance:169kΩ Tolerance:±1% Tolerance:±1% Power(Watts): Overload Voltage (Max): Temperature Coefficient:±100ppm/℃ Temperature Coefficient:±100ppm/℃ Operating Temperature Range:-55℃~+155℃ Operating Temperature Range:-55℃~+155℃",
+        "Device": "5d0b3ba0c9c5fdf3",
+        "Unique ID": "link_R1",
+        "Reuse Block": "",
+        "Group ID": "",
+        "Channel ID": "$1I1887",
+        "FootprintName": "R0603",
+        "DeviceName": "0603WAF1693T5E",
+        "PCB Layer": "TopLayer",
+        "Convert to PCB": "yes"
+      },
+      "pinInfoMap": {
+        "1": {
+          "name": "",
+          "number": "1",
+          "net": "PVDD_12V"
+        },
+        "2": {
+          "name": "",
+          "number": "2",
+          "net": "BOOST_FB"
+        }
+      }
+    },
+    "link_R2": {
+      "props": {
+        "Footprint": "9c955a26463542cb",
+        "Designator": "R2",
+        "LCSC Part Name": "15Ω ±1% 100mW 厚膜电阻",
+        "Supplier Part": "C22810",
+        "Manufacturer": "UNI-ROYAL(厚声)",
+        "Manufacturer Part": "0603WAF150JT5E",
+        "Supplier Footprint": "0603",
+        "JLCPCB Part Class": "Extended Part",
+        "Datasheet": "https://item.szlcsc.com/datasheet/0603WAF150JT5E/23537.html",
+        "Supplier": "LCSC",
+        "Add into BOM": "yes",
+        "3D Model": "112863783b5b41f1b5254f87eedc7932|0819f05c4eef4c71ace90d822a990e87",
+        "3D Model Title": "R0603",
+        "3D Model Transform": "31.8897,63.7794,0,90,0,0,0,0,0",
+        "Type": "Thick Film Resistor",
+        "Value": "15Ω",
+        "Tolerance": "±1%",
+        "Power(Watts)": "100mW",
+        "Voltage-Supply(Max)": "75V",
+        "Temperature Coefficient": "±100ppm/℃",
+        "Operating Temperature": "-55℃~+155℃",
+        "Name": "15Ω",
+        "Description": "Type:Thick Film Resistor Resistance:15Ω Tolerance:±1% Tolerance:±1% Power(Watts):100mW Voltage-Supply(Max):75V Temperature Coefficient:±100ppm/℃ Temperature Coefficient:±100ppm/℃ Operating Temperature:-55℃~+155℃ Operating Temperature:-55℃~+155℃",
+        "Device": "e4a7c60e1e5c6f11",
+        "Unique ID": "link_R2",
+        "Reuse Block": "",
+        "Group ID": "",
+        "Channel ID": "$1I1888",
+        "FootprintName": "R0603",
+        "DeviceName": "0603WAF150JT5E",
+        "PCB Layer": "TopLayer",
+        "Convert to PCB": "yes"
+      },
+      "pinInfoMap": {
+        "1": {
+          "name": "",
+          "number": "1",
+          "net": "BOOST_FB"
+        },
+        "2": {
+          "name": "",
+          "number": "2",
+          "net": "GND"
+        }
+      }
+    },
+    "link_R3": {
+      "props": {
+        "Footprint": "9c955a26463542cb",
+        "Designator": "R3",
+        "LCSC Part Name": "14kΩ ±1% 100mW 厚膜电阻",
+        "Supplier Part": "C22803",
+        "Manufacturer": "UNI-ROYAL(厚声)",
+        "Manufacturer Part": "0603WAF1402T5E",
+        "Supplier Footprint": "0603",
+        "JLCPCB Part Class": "Extended Part",
+        "Datasheet": "https://item.szlcsc.com/datasheet/0603WAF1402T5E/23530.html",
+        "Supplier": "LCSC",
+        "Add into BOM": "yes",
+        "3D Model": "112863783b5b41f1b5254f87eedc7932|0819f05c4eef4c71ace90d822a990e87",
+        "3D Model Title": "R0603",
+        "3D Model Transform": "31.8897,63.7794,0,90,0,0,0,0,0",
+        "Type": "Thick Film Resistor",
+        "Value": "14kΩ",
+        "Tolerance": "±1%",
+        "Power(Watts)": "100mW",
+        "Voltage-Supply(Max)": "75V",
+        "Temperature Coefficient": "±100ppm/℃",
+        "Operating Temperature": "-55℃~+155℃",
+        "Name": "14kΩ",
+        "Description": "Type:Thick Film Resistor Resistance:14kΩ Tolerance:±1% Tolerance:±1% Power(Watts):100mW Voltage-Supply(Max):75V Temperature Coefficient:±100ppm/℃ Temperature Coefficient:±100ppm/℃ Operating Temperature:-55℃~+155℃ Operating Temperature:-55℃~+155℃",
+        "Device": "00eedc3f96d2eb30",
+        "Unique ID": "link_R3",
+        "Reuse Block": "",
+        "Group ID": "",
+        "Channel ID": "$1I1889",
+        "FootprintName": "R0603",
+        "DeviceName": "0603WAF1402T5E",
+        "PCB Layer": "TopLayer",
+        "Convert to PCB": "yes"
+      },
+      "pinInfoMap": {
+        "1": {
+          "name": "",
+          "number": "1",
+          "net": "USB_CC1"
+        },
+        "2": {
+          "name": "",
+          "number": "2",
+          "net": "GND"
+        }
+      }
+    },
+    "link_R4": {
+      "props": {
+        "Footprint": "9c955a26463542cb",
+        "Designator": "R4",
+        "LCSC Part Name": "14kΩ ±1% 100mW 厚膜电阻",
+        "Supplier Part": "C22803",
+        "Manufacturer": "UNI-ROYAL(厚声)",
+        "Manufacturer Part": "0603WAF1402T5E",
+        "Supplier Footprint": "0603",
+        "JLCPCB Part Class": "Extended Part",
+        "Datasheet": "https://item.szlcsc.com/datasheet/0603WAF1402T5E/23530.html",
+        "Supplier": "LCSC",
+        "Add into BOM": "yes",
+        "3D Model": "112863783b5b41f1b5254f87eedc7932|0819f05c4eef4c71ace90d822a990e87",
+        "3D Model Title": "R0603",
+        "3D Model Transform": "31.8897,63.7794,0,90,0,0,0,0,0",
+        "Type": "Thick Film Resistor",
+        "Value": "14kΩ",
+        "Tolerance": "±1%",
+        "Power(Watts)": "100mW",
+        "Voltage-Supply(Max)": "75V",
+        "Temperature Coefficient": "±100ppm/℃",
+        "Operating Temperature": "-55℃~+155℃",
+        "Name": "14kΩ",
+        "Description": "Type:Thick Film Resistor Resistance:14kΩ Tolerance:±1% Tolerance:±1% Power(Watts):100mW Voltage-Supply(Max):75V Temperature Coefficient:±100ppm/℃ Temperature Coefficient:±100ppm/℃ Operating Temperature:-55℃~+155℃ Operating Temperature:-55℃~+155℃",
+        "Device": "00eedc3f96d2eb30",
+        "Unique ID": "link_R4",
+        "Reuse Block": "",
+        "Group ID": "",
+        "Channel ID": "$1I1890",
+        "FootprintName": "R0603",
+        "DeviceName": "0603WAF1402T5E",
+        "PCB Layer": "TopLayer",
+        "Convert to PCB": "yes"
+      },
+      "pinInfoMap": {
+        "1": {
+          "name": "",
+          "number": "1",
+          "net": "USB_CC2"
+        },
+        "2": {
+          "name": "",
+          "number": "2",
+          "net": "GND"
+        }
+      }
+    },
+    "link_R5": {
+      "props": {
+        "Footprint": "9c955a26463542cb",
+        "Designator": "R5",
+        "LCSC Part Name": "厚膜电阻 1kΩ ±1% 100mW",
+        "Supplier Part": "C22548",
+        "Manufacturer": "YAGEO(国巨)",
+        "Manufacturer Part": "RC0603FR-071KL",
+        "Supplier Footprint": "0603",
+        "JLCPCB Part Class": "Extended Part",
+        "Datasheet": "https://item.szlcsc.com/datasheet/RC0603FR-071KL/23274.html",
+        "Supplier": "LCSC",
+        "Add into BOM": "yes",
+        "3D Model": "112863783b5b41f1b5254f87eedc7932|0819f05c4eef4c71ace90d822a990e87",
+        "3D Model Title": "R0603",
+        "3D Model Transform": "31.8897,63.7794,0,90,0,0,0,0,0",
+        "Type": "Thick Film Resistor",
+        "Value": "1kΩ",
+        "Tolerance": "±1%",
+        "Power(Watts)": "100mW",
+        "Voltage-Supply(Max)": "75V",
+        "Temperature Coefficient": "±100ppm/℃",
+        "Operating Temperature": "-55℃~+155℃",
+        "Name": "1kΩ",
+        "Description": "Type:Thick Film Resistor Resistance:1kΩ Tolerance:±1% Tolerance:±1% Power(Watts):100mW Voltage-Supply(Max):75V Temperature Coefficient:±100ppm/℃ Temperature Coefficient:±100ppm/℃ Operating Temperature:-55℃~+155℃ Operating Temperature:-55℃~+155℃",
+        "Device": "2e37c14c38e16624",
+        "Unique ID": "link_R5",
+        "Reuse Block": "",
+        "Group ID": "",
+        "Channel ID": "$1I1891",
+        "FootprintName": "R0603",
+        "DeviceName": "RC0603FR-071KL",
+        "PCB Layer": "TopLayer",
+        "Convert to PCB": "yes"
+      },
+      "pinInfoMap": {
+        "1": {
+          "name": "",
+          "number": "1",
+          "net": "VCC_3V3"
+        },
+        "2": {
+          "name": "",
+          "number": "2",
+          "net": "ESP_EN"
+        }
+      }
+    },
+    "link_R6": {
+      "props": {
+        "Footprint": "9c955a26463542cb",
+        "Designator": "R6",
+        "LCSC Part Name": "厚膜电阻 1kΩ ±1% 100mW",
+        "Supplier Part": "C22548",
+        "Manufacturer": "YAGEO(国巨)",
+        "Manufacturer Part": "RC0603FR-071KL",
+        "Supplier Footprint": "0603",
+        "JLCPCB Part Class": "Extended Part",
+        "Datasheet": "https://item.szlcsc.com/datasheet/RC0603FR-071KL/23274.html",
+        "Supplier": "LCSC",
+        "Add into BOM": "yes",
+        "3D Model": "112863783b5b41f1b5254f87eedc7932|0819f05c4eef4c71ace90d822a990e87",
+        "3D Model Title": "R0603",
+        "3D Model Transform": "31.8897,63.7794,0,90,0,0,0,0,0",
+        "Type": "Thick Film Resistor",
+        "Value": "1kΩ",
+        "Tolerance": "±1%",
+        "Power(Watts)": "100mW",
+        "Voltage-Supply(Max)": "75V",
+        "Temperature Coefficient": "±100ppm/℃",
+        "Operating Temperature": "-55℃~+155℃",
+        "Name": "1kΩ",
+        "Description": "Type:Thick Film Resistor Resistance:1kΩ Tolerance:±1% Tolerance:±1% Power(Watts):100mW Voltage-Supply(Max):75V Temperature Coefficient:±100ppm/℃ Temperature Coefficient:±100ppm/℃ Operating Temperature:-55℃~+155℃ Operating Temperature:-55℃~+155℃",
+        "Device": "2e37c14c38e16624",
+        "Unique ID": "link_R6",
+        "Reuse Block": "",
+        "Group ID": "",
+        "Channel ID": "$1I1893",
+        "FootprintName": "R0603",
+        "DeviceName": "RC0603FR-071KL",
+        "PCB Layer": "TopLayer",
+        "Convert to PCB": "yes"
+      },
+      "pinInfoMap": {
+        "1": {
+          "name": "",
+          "number": "1",
+          "net": "VCC_3V3"
+        },
+        "2": {
+          "name": "",
+          "number": "2",
+          "net": "ESP_IO0"
+        }
+      }
+    },
+    "link_R7": {
+      "props": {
+        "Footprint": "9c955a26463542cb",
+        "Designator": "R7",
+        "LCSC Part Name": "14kΩ ±1% 100mW 厚膜电阻",
+        "Supplier Part": "C22803",
+        "Manufacturer": "UNI-ROYAL(厚声)",
+        "Manufacturer Part": "0603WAF1402T5E",
+        "Supplier Footprint": "0603",
+        "JLCPCB Part Class": "Extended Part",
+        "Datasheet": "https://item.szlcsc.com/datasheet/0603WAF1402T5E/23530.html",
+        "Supplier": "LCSC",
+        "Add into BOM": "yes",
+        "3D Model": "112863783b5b41f1b5254f87eedc7932|0819f05c4eef4c71ace90d822a990e87",
+        "3D Model Title": "R0603",
+        "3D Model Transform": "31.8897,63.7794,0,90,0,0,0,0,0",
+        "Type": "Thick Film Resistor",
+        "Value": "14kΩ",
+        "Tolerance": "±1%",
+        "Power(Watts)": "100mW",
+        "Voltage-Supply(Max)": "75V",
+        "Temperature Coefficient": "±100ppm/℃",
+        "Operating Temperature": "-55℃~+155℃",
+        "Name": "14kΩ",
+        "Description": "Type:Thick Film Resistor Resistance:14kΩ Tolerance:±1% Tolerance:±1% Power(Watts):100mW Voltage-Supply(Max):75V Temperature Coefficient:±100ppm/℃ Temperature Coefficient:±100ppm/℃ Operating Temperature:-55℃~+155℃ Operating Temperature:-55℃~+155℃",
+        "Device": "00eedc3f96d2eb30",
+        "Unique ID": "link_R7",
+        "Reuse Block": "",
+        "Group ID": "",
+        "Channel ID": "$1I1901",
+        "FootprintName": "R0603",
+        "DeviceName": "0603WAF1402T5E",
+        "PCB Layer": "TopLayer",
+        "Convert to PCB": "yes"
+      },
+      "pinInfoMap": {
+        "1": {
+          "name": "",
+          "number": "1",
+          "net": "AMP_I2C_SDA"
+        },
+        "2": {
+          "name": "",
+          "number": "2",
+          "net": "VCC_3V3"
+        }
+      }
+    },
+    "link_R8": {
+      "props": {
+        "Footprint": "9c955a26463542cb",
+        "Designator": "R8",
+        "LCSC Part Name": "14kΩ ±1% 100mW 厚膜电阻",
+        "Supplier Part": "C22803",
+        "Manufacturer": "UNI-ROYAL(厚声)",
+        "Manufacturer Part": "0603WAF1402T5E",
+        "Supplier Footprint": "0603",
+        "JLCPCB Part Class": "Extended Part",
+        "Datasheet": "https://item.szlcsc.com/datasheet/0603WAF1402T5E/23530.html",
+        "Supplier": "LCSC",
+        "Add into BOM": "yes",
+        "3D Model": "112863783b5b41f1b5254f87eedc7932|0819f05c4eef4c71ace90d822a990e87",
+        "3D Model Title": "R0603",
+        "3D Model Transform": "31.8897,63.7794,0,90,0,0,0,0,0",
+        "Type": "Thick Film Resistor",
+        "Value": "14kΩ",
+        "Tolerance": "±1%",
+        "Power(Watts)": "100mW",
+        "Voltage-Supply(Max)": "75V",
+        "Temperature Coefficient": "±100ppm/℃",
+        "Operating Temperature": "-55℃~+155℃",
+        "Name": "14kΩ",
+        "Description": "Type:Thick Film Resistor Resistance:14kΩ Tolerance:±1% Tolerance:±1% Power(Watts):100mW Voltage-Supply(Max):75V Temperature Coefficient:±100ppm/℃ Temperature Coefficient:±100ppm/℃ Operating Temperature:-55℃~+155℃ Operating Temperature:-55℃~+155℃",
+        "Device": "00eedc3f96d2eb30",
+        "Unique ID": "link_R8",
+        "Reuse Block": "",
+        "Group ID": "",
+        "Channel ID": "$1I1902",
+        "FootprintName": "R0603",
+        "DeviceName": "0603WAF1402T5E",
+        "PCB Layer": "TopLayer",
+        "Convert to PCB": "yes"
+      },
+      "pinInfoMap": {
+        "1": {
+          "name": "",
+          "number": "1",
+          "net": "AMP_I2C_SCL"
+        },
+        "2": {
+          "name": "",
+          "number": "2",
+          "net": "VCC_3V3"
+        }
+      }
+    },
+    "link_R9": {
+      "props": {
+        "Footprint": "9c955a26463542cb",
+        "Designator": "R9",
+        "LCSC Part Name": "82kΩ ±1% 100mW",
+        "Supplier Part": "C325632",
+        "Manufacturer": "Tyohm(幸亚电阻)",
+        "Manufacturer Part": "RMC060382K1%N",
+        "Supplier Footprint": "0603",
+        "JLCPCB Part Class": "Extended Part",
+        "Datasheet": "https://item.szlcsc.com/datasheet/RMC060382K1%2525N/305837.html",
+        "Supplier": "LCSC",
+        "Add into BOM": "yes",
+        "3D Model": "112863783b5b41f1b5254f87eedc7932|0819f05c4eef4c71ace90d822a990e87",
+        "3D Model Title": "R0603",
+        "3D Model Transform": "31.8897,63.7794,0,90,0,0,0,0,0",
+        "Type": "Thick Film Resistor",
+        "Value": "82kΩ",
+        "Tolerance": "±1%",
+        "Power(Watts)": "100mW",
+        "Voltage-Supply(Max)": "50V",
+        "Temperature Coefficient": "±100ppm/℃",
+        "Operating Temperature": "-55℃~+155℃",
+        "Name": "82kΩ",
+        "Description": "Type:Thick Film Resistor Resistance:82kΩ Tolerance:±1% Tolerance:±1% Power(Watts):100mW Voltage-Supply(Max):50V Temperature Coefficient:±100ppm/℃ Temperature Coefficient:±100ppm/℃ Operating Temperature:-55℃~+155℃ Operating Temperature:-55℃~+155℃",
+        "Device": "2fefcc66fddda193",
+        "Unique ID": "link_R9",
+        "Reuse Block": "",
+        "Group ID": "",
+        "Channel ID": "$1I1906",
+        "FootprintName": "R0603",
+        "DeviceName": "RMC060382K1%N",
+        "PCB Layer": "TopLayer",
+        "Convert to PCB": "yes"
+      },
+      "pinInfoMap": {
+        "1": {
+          "name": "",
+          "number": "1",
+          "net": "BOOST_FSET"
+        },
+        "2": {
+          "name": "",
+          "number": "2",
+          "net": "GND"
+        }
+      }
+    },
+    "link_R10": {
+      "props": {
+        "Footprint": "9c955a26463542cb",
+        "Designator": "R10",
+        "LCSC Part Name": "厚膜电阻 24.9kΩ ±1% 100mW",
+        "Supplier Part": "C48391802",
+        "Manufacturer": "昶龙科技",
+        "Manufacturer Part": "CL0603FN24K9P",
+        "Supplier Footprint": "0603",
+        "JLCPCB Part Class": "Extended Part",
+        "Datasheet": "https://item.szlcsc.com/datasheet/CL0603FN24K9P/50640384.html",
+        "Supplier": "LCSC",
+        "Add into BOM": "yes",
+        "3D Model": "112863783b5b41f1b5254f87eedc7932|0819f05c4eef4c71ace90d822a990e87",
+        "3D Model Title": "R0603",
+        "3D Model Transform": "31.8897,63.7794,0,90,0,0,0,0,0",
+        "Type": "Thick Film Resistor",
+        "Value": "24.9kΩ",
+        "Tolerance": "±1%",
+        "Power(Watts)": "100mW",
+        "Voltage-Supply(Max)": "75V",
+        "Temperature Coefficient": "±100ppm/℃",
+        "Operating Temperature": "-55℃~+70℃",
+        "Name": "24.9kΩ",
+        "Description": "Type:Thick Film Resistor Resistance:24.9kΩ Tolerance:±1% Tolerance:±1% Power(Watts):100mW Voltage-Supply(Max):75V Temperature Coefficient:±100ppm/℃ Temperature Coefficient:±100ppm/℃ Operating Temperature:-55℃~+70℃ Operating Temperature:-55℃~+70℃",
+        "Device": "865c89fc31ff7dca",
+        "Unique ID": "link_R10",
+        "Reuse Block": "",
+        "Group ID": "",
+        "Channel ID": "$1I1907",
+        "FootprintName": "R0603",
+        "DeviceName": "CL0603FN24K9P",
+        "PCB Layer": "TopLayer",
+        "Convert to PCB": "yes"
+      },
+      "pinInfoMap": {
+        "1": {
+          "name": "",
+          "number": "1",
+          "net": "BOOST_COMP"
+        },
+        "2": {
+          "name": "",
+          "number": "2",
+          "net": "COMP_RC"
+        }
+      }
+    },
+    "link_R11": {
+      "props": {
+        "Footprint": "9c955a26463542cb",
+        "Designator": "R11",
+        "LCSC Part Name": "厚膜电阻 100kΩ ±1% 100mW",
+        "Supplier Part": "C2073721",
+        "Manufacturer": "TE Connectivity(泰科电子)",
+        "Manufacturer Part": "CRG0603F100K",
+        "Supplier Footprint": "0603",
+        "JLCPCB Part Class": "Extended Part",
+        "Datasheet": "https://item.szlcsc.com/datasheet/CRG0603F100K/2165307.html",
+        "Supplier": "LCSC",
+        "Add into BOM": "yes",
+        "3D Model": "112863783b5b41f1b5254f87eedc7932|0819f05c4eef4c71ace90d822a990e87",
+        "3D Model Title": "R0603",
+        "3D Model Transform": "31.8897,63.7794,0,90,0,0,0,0,0",
+        "Type": "Thick Film Resistor",
+        "Value": "100kΩ",
+        "Tolerance": "±1%",
+        "Power(Watts)": "100mW",
+        "Voltage-Supply(Max)": "75V",
+        "Temperature Coefficient": "±100ppm/℃",
+        "Operating Temperature": "-55℃~+155℃",
+        "Name": "100kΩ",
+        "Description": "Type:Thick Film Resistor Resistance:100kΩ Tolerance:±1% Tolerance:±1% Power(Watts):100mW Voltage-Supply(Max):75V Temperature Coefficient:±100ppm/℃ Temperature Coefficient:±100ppm/℃ Operating Temperature:-55℃~+155℃ Operating Temperature:-55℃~+155℃",
+        "Device": "def8564ad1444faa",
+        "Unique ID": "link_R11",
+        "Reuse Block": "",
+        "Group ID": "",
+        "Channel ID": "$1I1908",
+        "FootprintName": "R0603",
+        "DeviceName": "CRG0603F100K",
+        "PCB Layer": "TopLayer",
+        "Convert to PCB": "yes"
+      },
+      "pinInfoMap": {
+        "1": {
+          "name": "",
+          "number": "1",
+          "net": "BOOST_EN"
+        },
+        "2": {
+          "name": "",
+          "number": "2",
+          "net": "GND"
+        }
+      }
+    },
+    "link_U1": {
+      "props": {
+        "Footprint": "529a4a30b7dc8568",
+        "Designator": "U1",
+        "LCSC Part Name": "不带固件 通用型Wi-Fi+BT+BLE MCU模组",
+        "Supplier Part": "C701342",
+        "Manufacturer": "ESPRESSIF(乐鑫)",
+        "Manufacturer Part": "ESP32-WROOM-32E-N8",
+        "Supplier Footprint": "SMD,25.5x18mm",
+        "JLCPCB Part Class": "Extended Part",
+        "Datasheet": "https://item.szlcsc.com/datasheet/ESP32-WROOM-32E-N8/736350.html",
+        "Supplier": "LCSC",
+        "Add into BOM": "yes",
+        "3D Model": "32d362831e524a98b752e42c3a8d73a7|0819f05c4eef4c71ace90d822a990e87",
+        "3D Model Title": "WIFI-SMD_L25.5-W18.0-H3.1-ESP32-WROOM-32E",
+        "3D Model Transform": "1003.935,708.66,0,180,0,0,-148.762,0,0",
+        "Utilized IC / Part": "ESP32-DOWD-V3",
+        "Wireless Standard": "Bluetooth4.2",
+        "Interface Type": "I2C；GPIO；UART；SPI；PWM；SDIO；I2S",
+        "Value": "2.4GHz",
+        "Antenna Type": "On-board PCB Antenna",
+        "Output Power": "20dBm",
+        "Voltage - Supply": "3V~3.6V",
+        "Receive  Current": "112mA",
+        "Send  Current": "239mA",
+        "Sensitivity": "-98dBm",
+        "Operating Temperature": "-40℃~+85℃",
+        "Name": "2.4GHz",
+        "Description": "Utilized IC / Part:ESP32-DOWD-V3 Wireless Standard:Bluetooth4.2 Interface Type:I2C；GPIO；UART；SPI；PWM；SDIO；I2S Frequency:2.4GHz Antenna Type:On-board PCB Antenna Output Power:20dBm Output Power:20dBm Voltage - Supply:3V~3.6V Voltage - Supply:3V~3.6V Receiv",
+        "Device": "c450339c5974ebca",
+        "Unique ID": "link_U1",
+        "Reuse Block": "",
+        "Group ID": "",
+        "Channel ID": "$1I1866",
+        "FootprintName": "WIFI-SMD_ESP32-WROOM-32E",
+        "DeviceName": "ESP32-WROOM-32E-N8",
+        "PCB Layer": "TopLayer",
+        "Convert to PCB": "yes"
+      },
+      "pinInfoMap": {
+        "1": {
+          "name": "",
+          "number": "1",
+          "net": "GND"
+        },
+        "2": {
+          "name": "",
+          "number": "2",
+          "net": "VCC_3V3"
+        },
+        "3": {
+          "name": "",
+          "number": "3",
+          "net": "ESP_EN"
+        },
+        "4": {
+          "name": "",
+          "number": "4",
+          "net": ""
+        },
+        "5": {
+          "name": "",
+          "number": "5",
+          "net": ""
+        },
+        "6": {
+          "name": "",
+          "number": "6",
+          "net": "SENSOR_INT1"
+        },
+        "7": {
+          "name": "",
+          "number": "7",
+          "net": ""
+        },
+        "8": {
+          "name": "",
+          "number": "8",
+          "net": ""
+        },
+        "9": {
+          "name": "",
+          "number": "9",
+          "net": ""
+        },
+        "10": {
+          "name": "",
+          "number": "10",
+          "net": "I2S_LRCLK"
+        },
+        "11": {
+          "name": "",
+          "number": "11",
+          "net": "I2S_BCLK"
+        },
+        "12": {
+          "name": "",
+          "number": "12",
+          "net": "AMP_I2C_SCL"
+        },
+        "13": {
+          "name": "",
+          "number": "13",
+          "net": ""
+        },
+        "14": {
+          "name": "",
+          "number": "14",
+          "net": ""
+        },
+        "15": {
+          "name": "",
+          "number": "15",
+          "net": "GND"
+        },
+        "16": {
+          "name": "",
+          "number": "16",
+          "net": ""
+        },
+        "17": {
+          "name": "",
+          "number": "17",
+          "net": ""
+        },
+        "18": {
+          "name": "",
+          "number": "18",
+          "net": ""
+        },
+        "19": {
+          "name": "",
+          "number": "19",
+          "net": ""
+        },
+        "20": {
+          "name": "",
+          "number": "20",
+          "net": ""
+        },
+        "21": {
+          "name": "",
+          "number": "21",
+          "net": ""
+        },
+        "22": {
+          "name": "",
+          "number": "22",
+          "net": ""
+        },
+        "23": {
+          "name": "",
+          "number": "23",
+          "net": "AMP_PDN"
+        },
+        "24": {
+          "name": "",
+          "number": "24",
+          "net": ""
+        },
+        "25": {
+          "name": "",
+          "number": "25",
+          "net": "ESP_IO0"
+        },
+        "26": {
+          "name": "",
+          "number": "26",
+          "net": "BOOST_EN"
+        },
+        "27": {
+          "name": "",
+          "number": "27",
+          "net": ""
+        },
+        "28": {
+          "name": "",
+          "number": "28",
+          "net": ""
+        },
+        "29": {
+          "name": "",
+          "number": "29",
+          "net": "SPI_CS"
+        },
+        "30": {
+          "name": "",
+          "number": "30",
+          "net": "SPI_SCLK"
+        },
+        "31": {
+          "name": "",
+          "number": "31",
+          "net": "SPI_MISO"
+        },
+        "32": {
+          "name": "",
+          "number": "32",
+          "net": ""
+        },
+        "33": {
+          "name": "",
+          "number": "33",
+          "net": "AMP_I2C_SDA"
+        },
+        "34": {
+          "name": "",
+          "number": "34",
+          "net": "ESP_RXD"
+        },
+        "35": {
+          "name": "",
+          "number": "35",
+          "net": "ESP_TXD"
+        },
+        "36": {
+          "name": "",
+          "number": "36",
+          "net": "I2S_DIN"
+        },
+        "37": {
+          "name": "",
+          "number": "37",
+          "net": "SPI_MOSI"
+        },
+        "38": {
+          "name": "",
+          "number": "38",
+          "net": "GND"
+        },
+        "39": {
+          "name": "",
+          "number": "39",
+          "net": "GND"
+        }
+      }
+    },
+    "link_U2": {
+      "props": {
+        "Footprint": "ae22a8f84e5636e1",
+        "Designator": "U2",
+        "LCSC Part Name": "3.3V 300mA 5.5V",
+        "Supplier Part": "C81114",
+        "Manufacturer": "SGMICRO(圣邦微)",
+        "Manufacturer Part": "SGM2036-3.3YUDH4G/TR",
+        "Supplier Footprint": "UTDFN-1x1-4L",
+        "JLCPCB Part Class": "Extended Part",
+        "Datasheet": "https://item.szlcsc.com/datasheet/SGM2036-3.3YUDH4G%252FTR/82264.html",
+        "Supplier": "LCSC",
+        "Add into BOM": "yes",
+        "3D Model": "5564edc8a92d4e2e99f1ef14a6e4fe61|0819f05c4eef4c71ace90d822a990e87",
+        "3D Model Title": "USPQ-4B04_L1.0-W1.0-P0.65-BL-EP",
+        "3D Model Transform": "39.37,40.1574,0,0,0,0,0,0,0",
+        "Output Configuration": "Positive",
+        "Voltage - Supply": "5.5V",
+        "Output Voltage": "3.3V",
+        "Output Current": "300mA",
+        "Power Supply Rejection Ratio (PSRR)": "80dB@(1kHz)",
+        "Voltage Dropout": "190mV@(300mA)",
+        "standby current": "20uA",
+        "Noise": "200uVrms",
+        "Features": "Short Circuit Protection；Enable control；Output discharge；Thermal shutdown",
+        "Operating Temperature": "-40℃~+85℃",
+        "Output Type": "Fixed",
+        "Number of Outputs": "1",
+        "Name": "SGM2036-3.3YUDH4G/TR",
+        "Description": "Output Configuration:Positive Voltage - Supply:5.5V Output Voltage:3.3V Output Voltage:3.3V Output Current:300mA Power Supply Rejection Ratio (PSRR):80dB@(1kHz) Voltage Dropout:190mV@(300mA) standby current:20uA Noise:200uVrms Features:Short Circuit Prote",
+        "Device": "ed4c955d02817ae8",
+        "Unique ID": "link_U2",
+        "Reuse Block": "",
+        "Group ID": "",
+        "Channel ID": "$1I1867",
+        "FootprintName": "USPQ-4B04_L1.0-W1.0-P0.65-BL-EP",
+        "DeviceName": "SGM2036-3.3YUDH4G/TR",
+        "PCB Layer": "TopLayer",
+        "Convert to PCB": "yes"
+      },
+      "pinInfoMap": {
+        "1": {
+          "name": "",
+          "number": "1",
+          "net": "VCC_3V3"
+        },
+        "2": {
+          "name": "",
+          "number": "2",
+          "net": "GND"
+        },
+        "3": {
+          "name": "",
+          "number": "3",
+          "net": "VBUS_5V"
+        },
+        "4": {
+          "name": "",
+          "number": "4",
+          "net": "VBUS_5V"
+        },
+        "5": {
+          "name": "",
+          "number": "5",
+          "net": "GND"
+        }
+      }
+    },
+    "link_U3": {
+      "props": {
+        "Footprint": "232980fbab9b0529",
+        "Designator": "U3",
+        "LCSC Part Name": "MP3426DL",
+        "Supplier Part": "C2909511",
+        "Manufacturer": "",
+        "Manufacturer Part": "MP3426DL",
+        "Supplier Footprint": "QFN-14(3x4x0.5)",
+        "JLCPCB Part Class": "Extended Part",
+        "Datasheet": "",
+        "Supplier": "LCSC",
+        "Add into BOM": "yes",
+        "3D Model": "85fd6c0be3f64f25acfd3eac426240b3|0819f05c4eef4c71ace90d822a990e87",
+        "3D Model Title": "DFN-14_L4.0-W3.0-P0.50-BL-EP",
+        "3D Model Transform": "157.48,118.18874,0,0,0,0,0,0,0",
+        "Name": "MP3426DL",
+        "Description": "",
+        "Device": "7a10151aafcd5a12",
+        "Unique ID": "link_U3",
+        "Reuse Block": "",
+        "Group ID": "",
+        "Channel ID": "$1I1868",
+        "FootprintName": "DFN-14_L4.0-W3.0-P0.50-BL-EP",
+        "DeviceName": "MP3426DL",
+        "PCB Layer": "TopLayer",
+        "Convert to PCB": "yes"
+      },
+      "pinInfoMap": {
+        "1": {
+          "name": "",
+          "number": "1",
+          "net": "BOOST_COMP"
+        },
+        "2": {
+          "name": "",
+          "number": "2",
+          "net": "BOOST_EN"
+        },
+        "3": {
+          "name": "",
+          "number": "3",
+          "net": "VBUS_5V"
+        },
+        "4": {
+          "name": "",
+          "number": "4",
+          "net": "BOOST_SW"
+        },
+        "5": {
+          "name": "",
+          "number": "5",
+          "net": "BOOST_SW"
+        },
+        "6": {
+          "name": "",
+          "number": "6",
+          "net": "BOOST_SW"
+        },
+        "7": {
+          "name": "",
+          "number": "7",
+          "net": "BOOST_VDD"
+        },
+        "8": {
+          "name": "",
+          "number": "8",
+          "net": "GND"
+        },
+        "9": {
+          "name": "",
+          "number": "9",
+          "net": "GND"
+        },
+        "10": {
+          "name": "",
+          "number": "10",
+          "net": "GND"
+        },
+        "11": {
+          "name": "",
+          "number": "11",
+          "net": "GND"
+        },
+        "12": {
+          "name": "",
+          "number": "12",
+          "net": ""
+        },
+        "13": {
+          "name": "",
+          "number": "13",
+          "net": "BOOST_FB"
+        },
+        "14": {
+          "name": "",
+          "number": "14",
+          "net": "BOOST_FSET"
+        },
+        "15": {
+          "name": "",
+          "number": "15",
+          "net": "GND"
+        }
+      }
+    },
+    "link_U4": {
+      "props": {
+        "Footprint": "5b5bf2728fb413c0",
+        "Designator": "U4",
+        "LCSC Part Name": "23W立体声D类音频功率放大器",
+        "Supplier Part": "C478472",
+        "Manufacturer": "TI(德州仪器)",
+        "Manufacturer Part": "TAS5805MPWPR",
+        "Supplier Footprint": "HTSSOP-28-EP",
+        "JLCPCB Part Class": "Extended Part",
+        "Datasheet": "https://www.ti.com/cn/lit/gpn/tas5805m",
+        "Supplier": "LCSC",
+        "Add into BOM": "yes",
+        "3D Model": "e8a410c55eab474c8619c269ff25181b|0819f05c4eef4c71ace90d822a990e87",
+        "3D Model Title": "HTSSOP-28_L9.7-W4.4-P0.65-LS6.4-BL-EP",
+        "3D Model Transform": "381.889,251.968,0,0,0,0,0,0,0",
+        "Class": "Class D",
+        "Speaker Channels": "2-Channel",
+        "Output Power": "23W×2@8Ω",
+        "Total Harmonic Distortion + Noise (THD+N)": "0.03%",
+        "Quiescent Current": "16.5mA",
+        "Signal-to-Noise Ratio": "107dB",
+        "Power Supply Rejection Ratio (PSRR)": "72dB",
+        "Efficiency": "-",
+        "Number of Inputs": "-",
+        "Features": "Digital programmable gain；Overvoltage protection；Built-in audio processing；Configurable output topology",
+        "Voltage - Supply": "4.5V~26.4V",
+        "Operating Temperature": "-25℃~+85℃",
+        "Name": "TAS5805MPWPR",
+        "Description": "Class:Class D Speaker Channels:2-Channel Output Power:23W×2@8Ω Total Harmonic Distortion + Noise (THD+N):0.03% Quiescent Current:16.5mA Signal-to-Noise Ratio:107dB Power Supply Rejection Ratio (PSRR):72dB Efficiency:- Number of Inputs:- Features:Digital p",
+        "Device": "11441f0f3800f0e3",
+        "Unique ID": "link_U4",
+        "Reuse Block": "",
+        "Group ID": "",
+        "Channel ID": "$1I1869",
+        "FootprintName": "HTSSOP-28_L9.7-W4.4-P0.65-LS6.4-BL-EP",
+        "DeviceName": "TAS5805MPWPR",
+        "PCB Layer": "TopLayer",
+        "Convert to PCB": "yes"
+      },
+      "pinInfoMap": {
+        "1": {
+          "name": "",
+          "number": "1",
+          "net": "GND"
+        },
+        "2": {
+          "name": "",
+          "number": "2",
+          "net": "VCC_3V3"
+        },
+        "3": {
+          "name": "",
+          "number": "3",
+          "net": "GND"
+        },
+        "4": {
+          "name": "",
+          "number": "4",
+          "net": "VR_DIG"
+        },
+        "5": {
+          "name": "",
+          "number": "5",
+          "net": "GND"
+        },
+        "6": {
+          "name": "",
+          "number": "6",
+          "net": "I2S_LRCLK"
+        },
+        "7": {
+          "name": "",
+          "number": "7",
+          "net": "I2S_BCLK"
+        },
+        "8": {
+          "name": "",
+          "number": "8",
+          "net": "I2S_DIN"
+        },
+        "9": {
+          "name": "",
+          "number": "9",
+          "net": ""
+        },
+        "10": {
+          "name": "",
+          "number": "10",
+          "net": "AMP_I2C_SDA"
+        },
+        "11": {
+          "name": "",
+          "number": "11",
+          "net": "AMP_I2C_SCL"
+        },
+        "12": {
+          "name": "",
+          "number": "12",
+          "net": "AMP_PDN"
+        },
+        "13": {
+          "name": "",
+          "number": "13",
+          "net": "AVDD"
+        },
+        "14": {
+          "name": "",
+          "number": "14",
+          "net": "GND"
+        },
+        "15": {
+          "name": "",
+          "number": "15",
+          "net": "PVDD_12V"
+        },
+        "16": {
+          "name": "",
+          "number": "16",
+          "net": "PVDD_12V"
+        },
+        "17": {
+          "name": "",
+          "number": "17",
+          "net": "AMP_OUT_B+"
+        },
+        "18": {
+          "name": "",
+          "number": "18",
+          "net": "BST_B+"
+        },
+        "19": {
+          "name": "",
+          "number": "19",
+          "net": "GND"
+        },
+        "20": {
+          "name": "",
+          "number": "20",
+          "net": "AMP_OUT_B-"
+        },
+        "21": {
+          "name": "",
+          "number": "21",
+          "net": "BST_B-"
+        },
+        "22": {
+          "name": "",
+          "number": "22",
+          "net": "BST_A-"
+        },
+        "23": {
+          "name": "",
+          "number": "23",
+          "net": "AMP_OUT_A-"
+        },
+        "24": {
+          "name": "",
+          "number": "24",
+          "net": "GND"
+        },
+        "25": {
+          "name": "",
+          "number": "25",
+          "net": "BST_A+"
+        },
+        "26": {
+          "name": "",
+          "number": "26",
+          "net": "AMP_OUT_A+"
+        },
+        "27": {
+          "name": "",
+          "number": "27",
+          "net": "PVDD_12V"
+        },
+        "28": {
+          "name": "",
+          "number": "28",
+          "net": "PVDD_12V"
+        },
+        "29": {
+          "name": "",
+          "number": "29",
+          "net": "GND"
+        }
+      }
+    },
+    "link_U5": {
+      "props": {
+        "Footprint": "cbb98af0ba18dd91",
+        "Designator": "U5",
+        "LCSC Part Name": "LSM6DSOXTR",
+        "Supplier Part": "C481766",
+        "Manufacturer": "ST(意法半导体)",
+        "Manufacturer Part": "LSM6DSOXTR",
+        "Supplier Footprint": "LGA-14(2.5x3)",
+        "JLCPCB Part Class": "Extended Part",
+        "Datasheet": "https://item.szlcsc.com/datasheet/LSM6DSOXTR/489350.html",
+        "Supplier": "LCSC",
+        "Add into BOM": "yes",
+        "3D Model": "ba71f3cdab504178a9a45bd067d2295b|0819f05c4eef4c71ace90d822a990e87",
+        "3D Model Title": "LGA-14_L2.5-W3.0-H0.9-P0.50",
+        "3D Model Transform": "118.11,98.425,0,0,0,0,0,0.0005,0",
+        "Sensor Type": "Accelerometer Gyroscope",
+        "Operating Temperature": "-40℃~+85℃",
+        "Name": "LSM6DSOXTR",
+        "Description": "Sensor Type:Accelerometer Gyroscope Operating Temperature:-40℃~+85℃ Operating Temperature:-40℃~+85℃",
+        "Device": "d95a84310aa86442",
+        "Unique ID": "link_U5",
+        "Reuse Block": "",
+        "Group ID": "",
+        "Channel ID": "$1I1870",
+        "FootprintName": "LGA-14L_L3.0-W2.5-P0.50-TL",
+        "DeviceName": "LSM6DSOXTR",
+        "PCB Layer": "TopLayer",
+        "Convert to PCB": "yes"
+      },
+      "pinInfoMap": {
+        "1": {
+          "name": "",
+          "number": "1",
+          "net": "SPI_MISO"
+        },
+        "2": {
+          "name": "",
+          "number": "2",
+          "net": ""
+        },
+        "3": {
+          "name": "",
+          "number": "3",
+          "net": ""
+        },
+        "4": {
+          "name": "",
+          "number": "4",
+          "net": "SENSOR_INT1"
+        },
+        "5": {
+          "name": "",
+          "number": "5",
+          "net": "VCC_3V3"
+        },
+        "6": {
+          "name": "",
+          "number": "6",
+          "net": "GND"
+        },
+        "7": {
+          "name": "",
+          "number": "7",
+          "net": "GND"
+        },
+        "8": {
+          "name": "",
+          "number": "8",
+          "net": "VCC_3V3"
+        },
+        "9": {
+          "name": "",
+          "number": "9",
+          "net": ""
+        },
+        "10": {
+          "name": "",
+          "number": "10",
+          "net": ""
+        },
+        "11": {
+          "name": "",
+          "number": "11",
+          "net": ""
+        },
+        "12": {
+          "name": "",
+          "number": "12",
+          "net": "SPI_CS"
+        },
+        "13": {
+          "name": "",
+          "number": "13",
+          "net": "SPI_SCLK"
+        },
+        "14": {
+          "name": "",
+          "number": "14",
+          "net": "SPI_MOSI"
+        }
+      }
+    },
+    "link_UART_HDR": {
+      "props": {
+        "Footprint": "8b7117bae6e613d4",
+        "Designator": "UART_HDR",
+        "LCSC Part Name": "1x6P 间距:2.54mm 方针 直插",
+        "Supplier Part": "C124380",
+        "Manufacturer": "Ckmtw(灿科盟)",
+        "Manufacturer Part": "B-2100S06P-A110",
+        "Supplier Footprint": "插件,P=2.54mm",
+        "JLCPCB Part Class": "Extended Part",
+        "Datasheet": "https://item.szlcsc.com/datasheet/B-2100S06P-A110/125655.html",
+        "Supplier": "LCSC",
+        "Add into BOM": "yes",
+        "3D Model": "46ef4df9ae594cc085aa437facc0bc52|0819f05c4eef4c71ace90d822a990e87",
+        "3D Model Title": "HDR2.54-M-LI-1X6P",
+        "3D Model Transform": "599.999,100,0,0,0,0,0,0,-118.11",
+        "Pin Structure": "1x6P",
+        "Pitch": "2.54mm",
+        "Row Spacing": "-",
+        "Circluar Pins/Square Pins": "Pin Header",
+        "Mounting Type": "Through Hole",
+        "Number of Rows": "1",
+        "Number of Pins": "6P",
+        "Current Rating": "3A",
+        "Voltage Rating (Max)": "-",
+        "Length of Mating Pin": "6mm",
+        "Insulation Height": "2.54mm",
+        "Length of End Connection Pin": "3mm",
+        "Contact Material": "Brass",
+        "Contact Plating": "-",
+        "Operating Temperature": "-40℃~+105℃",
+        "Color": "Black",
+        "Name": "B-2100S06P-A110",
+        "Description": "Pin Structure:1x6P Pitch:2.54mm Row Spacing:- Circluar Pins/Square Pins:Pin Header Mounting Type:Through Hole Number of Rows:1 Number of Pins:6P Current Rating:3A Voltage Rating (Max):- Length of Mating Pin:6mm Insulation Height:2.54mm Length of End Conne",
+        "Device": "58cb60e164cd4808",
+        "Unique ID": "link_UART_HDR",
+        "Reuse Block": "",
+        "Group ID": "",
+        "Channel ID": "$1I1874",
+        "FootprintName": "HDR-TH_6P-P2.54-V_Z-211-0611-0021-001",
+        "DeviceName": "B-2100S06P-A110",
+        "PCB Layer": "TopLayer",
+        "Convert to PCB": "yes"
+      },
+      "pinInfoMap": {
+        "1": {
+          "name": "",
+          "number": "1",
+          "net": "VCC_3V3"
+        },
+        "2": {
+          "name": "",
+          "number": "2",
+          "net": "ESP_EN"
+        },
+        "3": {
+          "name": "",
+          "number": "3",
+          "net": "ESP_IO0"
+        },
+        "4": {
+          "name": "",
+          "number": "4",
+          "net": "ESP_TXD"
+        },
+        "5": {
+          "name": "",
+          "number": "5",
+          "net": "ESP_RXD"
+        },
+        "6": {
+          "name": "",
+          "number": "6",
+          "net": "GND"
+        }
+      }
+    },
+    "link_USB_C": {
+      "props": {
+        "Footprint": "a92408d78e5ee59e",
+        "Designator": "USB_C",
+        "LCSC Part Name": "Type-C 母 卧贴",
+        "Supplier Part": "C165948",
+        "Manufacturer": "韩国韩荣",
+        "Manufacturer Part": "TYPE-C-31-M-12",
+        "Supplier Footprint": "SMD",
+        "JLCPCB Part Class": "Extended Part",
+        "Datasheet": "https://item.szlcsc.com/datasheet/TYPE-C-31-M-12/177331.html",
+        "Supplier": "LCSC",
+        "Add into BOM": "yes",
+        "3D Model": "8421221a464047838322348b3a9debc3|0819f05c4eef4c71ace90d822a990e87",
+        "3D Model Title": "USB-C_SMD-TYPE-C-31-M-12_1",
+        "3D Model Transform": "351.9678,311.023,0,180,0,0,0,-43.307,-33.465",
+        "Connector Type": "Type-C",
+        "Protocol Standard": "-",
+        "Gender": "Female",
+        "Mounting Type": "Surface Mount, Right Angle",
+        "Number of Contacts": "16P",
+        "Number of Ports": "1",
+        "Current Rating-Power": "5A",
+        "Voltage Rating": "20V",
+        "Connect-Disconnect Life": "10,000 cycles",
+        "Length": "7.35mm",
+        "Operating Temperature": "-30℃~+80℃",
+        "Name": "TYPE-C-31-M-12",
+        "Description": "Connector Type:Type-C Protocol Standard:- Gender:Female Mounting Type:Surface Mount, Right Angle Number of Contacts:16P Number of Ports:1 Current Rating-Power:5A Voltage Rating:20V Connect-Disconnect Life:10,000 cycles Length:7.35mm Operating Temperature:",
+        "Device": "2b8ae6efc245d728",
+        "Unique ID": "link_USB_C",
+        "Reuse Block": "",
+        "Group ID": "",
+        "Channel ID": "$1I1873",
+        "FootprintName": "USB-C_SMD-TYPE-C-31-M-12_1",
+        "DeviceName": "TYPE-C-31-M-12",
+        "PCB Layer": "TopLayer",
+        "Convert to PCB": "yes"
+      },
+      "pinInfoMap": {
+        "1": {
+          "name": "",
+          "number": "1",
+          "net": ""
+        },
+        "2": {
+          "name": "",
+          "number": "2",
+          "net": ""
+        },
+        "3": {
+          "name": "",
+          "number": "3",
+          "net": ""
+        },
+        "4": {
+          "name": "",
+          "number": "4",
+          "net": ""
+        },
+        "B8": {
+          "name": "",
+          "number": "B8",
+          "net": ""
+        },
+        "A5": {
+          "name": "",
+          "number": "A5",
+          "net": "USB_CC1"
+        },
+        "B7": {
+          "name": "",
+          "number": "B7",
+          "net": ""
+        },
+        "A6": {
+          "name": "",
+          "number": "A6",
+          "net": ""
+        },
+        "A7": {
+          "name": "",
+          "number": "A7",
+          "net": ""
+        },
+        "B6": {
+          "name": "",
+          "number": "B6",
+          "net": ""
+        },
+        "A8": {
+          "name": "",
+          "number": "A8",
+          "net": ""
+        },
+        "B5": {
+          "name": "",
+          "number": "B5",
+          "net": "USB_CC2"
+        },
+        "A1B12": {
+          "name": "",
+          "number": "A1B12",
+          "net": "GND"
+        },
+        "B1A12": {
+          "name": "",
+          "number": "B1A12",
+          "net": "GND"
+        },
+        "B4A9": {
+          "name": "",
+          "number": "B4A9",
+          "net": "VBUS_5V"
+        },
+        "A4B9": {
+          "name": "",
+          "number": "A4B9",
+          "net": "VBUS_5V"
+        }
+      }
+    }
+  },
+  "designRule": {
+    "trackPhysics": {
+      "copperThickness1oz": {
+        "name": "copperThickness1oz",
+        "isDefault": true,
+        "unit": "mm",
+        "strokeValue": {
+          "1": {
+            "default": 0.254,
+            "min": 0.127,
+            "max": 2.54
+          }
+        }
+      },
+      "copperThickness2oz": {
+        "name": "copperThickness2oz",
+        "isDefault": false,
+        "unit": "mm",
+        "strokeValue": {
+          "1": {
+            "default": 0.254,
+            "min": 0.20299934,
+            "max": 2.54
+          }
+        }
+      }
+    },
+    "netRule": {
+      "GND": {
+        "net": "GND",
+        "ruleMap": {
+          "TrackPhysics": ""
+        }
+      },
+      "VCC_3V3": {
+        "net": "VCC_3V3",
+        "ruleMap": {
+          "TrackPhysics": ""
+        }
+      },
+      "VBUS_5V": {
+        "net": "VBUS_5V",
+        "ruleMap": {
+          "TrackPhysics": ""
+        }
+      },
+      "PVDD_12V": {
+        "net": "PVDD_12V",
+        "ruleMap": {
+          "TrackPhysics": ""
+        }
+      },
+      "BST_A+": {
+        "net": "BST_A+",
+        "ruleMap": {
+          "TrackPhysics": ""
+        }
+      },
+      "AMP_OUT_A+": {
+        "net": "AMP_OUT_A+",
+        "ruleMap": {
+          "TrackPhysics": ""
+        }
+      },
+      "BST_A-": {
+        "net": "BST_A-",
+        "ruleMap": {
+          "TrackPhysics": ""
+        }
+      },
+      "AMP_OUT_A-": {
+        "net": "AMP_OUT_A-",
+        "ruleMap": {
+          "TrackPhysics": ""
+        }
+      },
+      "BST_B+": {
+        "net": "BST_B+",
+        "ruleMap": {
+          "TrackPhysics": ""
+        }
+      },
+      "AMP_OUT_B+": {
+        "net": "AMP_OUT_B+",
+        "ruleMap": {
+          "TrackPhysics": ""
+        }
+      },
+      "BST_B-": {
+        "net": "BST_B-",
+        "ruleMap": {
+          "TrackPhysics": ""
+        }
+      },
+      "AMP_OUT_B-": {
+        "net": "AMP_OUT_B-",
+        "ruleMap": {
+          "TrackPhysics": ""
+        }
+      },
+      "ESP_EN": {
+        "net": "ESP_EN",
+        "ruleMap": {
+          "TrackPhysics": ""
+        }
+      },
+      "AVDD": {
+        "net": "AVDD",
+        "ruleMap": {
+          "TrackPhysics": ""
+        }
+      },
+      "VR_DIG": {
+        "net": "VR_DIG",
+        "ruleMap": {
+          "TrackPhysics": ""
+        }
+      },
+      "BOOST_VDD": {
+        "net": "BOOST_VDD",
+        "ruleMap": {
+          "TrackPhysics": ""
+        }
+      },
+      "COMP_RC": {
+        "net": "COMP_RC",
+        "ruleMap": {
+          "TrackPhysics": ""
+        }
+      },
+      "BOOST_SW": {
+        "net": "BOOST_SW",
+        "ruleMap": {
+          "TrackPhysics": ""
+        }
+      },
+      "BOOST_FB": {
+        "net": "BOOST_FB",
+        "ruleMap": {
+          "TrackPhysics": ""
+        }
+      },
+      "USB_CC1": {
+        "net": "USB_CC1",
+        "ruleMap": {
+          "TrackPhysics": ""
+        }
+      },
+      "USB_CC2": {
+        "net": "USB_CC2",
+        "ruleMap": {
+          "TrackPhysics": ""
+        }
+      },
+      "ESP_IO0": {
+        "net": "ESP_IO0",
+        "ruleMap": {
+          "TrackPhysics": ""
+        }
+      },
+      "AMP_I2C_SDA": {
+        "net": "AMP_I2C_SDA",
+        "ruleMap": {
+          "TrackPhysics": ""
+        }
+      },
+      "AMP_I2C_SCL": {
+        "net": "AMP_I2C_SCL",
+        "ruleMap": {
+          "TrackPhysics": ""
+        }
+      },
+      "BOOST_FSET": {
+        "net": "BOOST_FSET",
+        "ruleMap": {
+          "TrackPhysics": ""
+        }
+      },
+      "BOOST_COMP": {
+        "net": "BOOST_COMP",
+        "ruleMap": {
+          "TrackPhysics": ""
+        }
+      },
+      "BOOST_EN": {
+        "net": "BOOST_EN",
+        "ruleMap": {
+          "TrackPhysics": ""
+        }
+      },
+      "SENSOR_INT1": {
+        "net": "SENSOR_INT1",
+        "ruleMap": {
+          "TrackPhysics": ""
+        }
+      },
+      "I2S_LRCLK": {
+        "net": "I2S_LRCLK",
+        "ruleMap": {
+          "TrackPhysics": ""
+        }
+      },
+      "I2S_BCLK": {
+        "net": "I2S_BCLK",
+        "ruleMap": {
+          "TrackPhysics": ""
+        }
+      },
+      "AMP_PDN": {
+        "net": "AMP_PDN",
+        "ruleMap": {
+          "TrackPhysics": ""
+        }
+      },
+      "SPI_CS": {
+        "net": "SPI_CS",
+        "ruleMap": {
+          "TrackPhysics": ""
+        }
+      },
+      "SPI_SCLK": {
+        "net": "SPI_SCLK",
+        "ruleMap": {
+          "TrackPhysics": ""
+        }
+      },
+      "SPI_MISO": {
+        "net": "SPI_MISO",
+        "ruleMap": {
+          "TrackPhysics": ""
+        }
+      },
+      "ESP_RXD": {
+        "net": "ESP_RXD",
+        "ruleMap": {
+          "TrackPhysics": ""
+        }
+      },
+      "ESP_TXD": {
+        "net": "ESP_TXD",
+        "ruleMap": {
+          "TrackPhysics": ""
+        }
+      },
+      "I2S_DIN": {
+        "net": "I2S_DIN",
+        "ruleMap": {
+          "TrackPhysics": ""
+        }
+      },
+      "SPI_MOSI": {
+        "net": "SPI_MOSI",
+        "ruleMap": {
+          "TrackPhysics": ""
+        }
+      }
+    }
+  },
+  "netClass": {},
+  "equalLengthNetGroup": {},
+  "differentialPair": {}
+}
+{
+  "version": "2.0.0",
+  "components": {},
+  "designRule": {
+    "trackPhysics": {
+      "copperThickness1oz": {
+        "name": "copperThickness1oz",
+        "isDefault": true,
+        "unit": "mm",
+        "strokeValue": {
+          "1": {
+            "default": 0.254,
+            "min": 0.127,
+            "max": 2.54
+          }
+        }
+      },
+      "copperThickness2oz": {
+        "name": "copperThickness2oz",
+        "isDefault": false,
+        "unit": "mm",
+        "strokeValue": {
+          "1": {
+            "default": 0.254,
+            "min": 0.20299934,
+            "max": 2.54
+          }
+        }
+      }
+    },
+    "netRule": {}
+  },
+  "netClass": {},
+  "equalLengthNetGroup": {},
+  "differentialPair": {}
+}

@@ -1,0 +1,532 @@
+{
+  "project_name": "Majung_Smart_Bassinet_v1.1",
+  "version": "1.1.2",
+  "board_dimensions": {
+    "width_mm": 80.0,
+    "height_mm": 60.0,
+    "layers": 4
+  },
+  "components": [
+    {
+      "designator": "U1",
+      "name": "ESP32-WROOM-32E",
+      "lcsc_id": "C701342",
+      "package": "SMD-ESP32-WROOM",
+      "x": 40.0,
+      "y": 47.0,
+      "angle": 0,
+      "_note": "Y 50??7: ?덊뀒??蹂대뱶?먯? ?몄텧 ?좎??섎㈃??寃쎄퀎 ???섏슜 (?곷떒 y=59.75mm < 60mm)"
+    },
+    {
+      "designator": "U2",
+      "name": "SGM2036-3.3YUDH4 LDO",
+      "lcsc_id": "C81114",
+      "package": "UDFN-4",
+      "x": 20.0,
+      "y": 30.0,
+      "angle": 90
+    },
+    {
+      "designator": "U3",
+      "name": "MPS MP3426 Boost Converter",
+      "lcsc_id": "C162810",
+      "package": "QFN-14",
+      "x": 60.0,
+      "y": 30.0,
+      "angle": 180
+    },
+    {
+      "designator": "U4",
+      "name": "TI TAS5805M Amplifier",
+      "lcsc_id": "C478472",
+      "package": "HTSSOP-28",
+      "x": 60.0,
+      "y": 15.0,
+      "angle": 0
+    },
+    {
+      "designator": "U5",
+      "name": "ST LSM6DSOX Accelerometer",
+      "lcsc_id": "C481766",
+      "package": "LGA-14",
+      "x": 20.0,
+      "y": 15.0,
+      "angle": 270
+    },
+    {
+      "designator": "D1",
+      "name": "SMAJ5.0A TVS Diode",
+      "lcsc_id": "C83329",
+      "package": "SMA-DO-214AC",
+      "x": 16.0,
+      "y": 35.0,
+      "angle": 90,
+      "_note": "USB-C ?곗륫 ?곷떒 諛李?
+    },
+    {
+      "designator": "D2",
+      "name": "USBLC6-2SC6 TVS Diode",
+      "lcsc_id": "C2827654",
+      "package": "SOT-23-6",
+      "x": 13.0,
+      "y": 26.0,
+      "angle": 90,
+      "_note": "USB-C 諛붾줈 ?곗륫 ?섎떒 諛李?
+    },
+    {
+      "designator": "USB_C",
+      "name": "TYPE-C-16P Female",
+      "lcsc_id": "C165948",
+      "package": "USB-C-16P",
+      "x": 8.0,
+      "y": 30.0,
+      "angle": 90
+    },
+    {
+      "designator": "UART_HDR",
+      "name": "UART 6Pin Header",
+      "lcsc_id": "C124380",
+      "package": "HDR-M-2.54_1X6",
+      "x": 40.0,
+      "y": 10.0,
+      "angle": 0
+    },
+    {
+      "designator": "C1",
+      "name": "MCU Bypass 10uF",
+      "lcsc_id": "C19702",
+      "package": "0603",
+      "x": 35.0,
+      "y": 33.0,
+      "angle": 0
+    },
+    {
+      "designator": "C2",
+      "name": "MCU Bypass 100nF",
+      "lcsc_id": "C14663",
+      "package": "0603",
+      "x": 38.0,
+      "y": 33.0,
+      "angle": 0
+    },
+    {
+      "designator": "C3",
+      "name": "LDO Input Cap 10uF",
+      "lcsc_id": "C19702",
+      "package": "0603",
+      "x": 18.5,
+      "y": 30.0,
+      "angle": 90
+    },
+    {
+      "designator": "C4",
+      "name": "LDO Output Cap 10uF",
+      "lcsc_id": "C19702",
+      "package": "0603",
+      "x": 21.5,
+      "y": 30.0,
+      "angle": 90
+    },
+    {
+      "designator": "C5",
+      "name": "Boost Input Cap 4.7uF",
+      "lcsc_id": "C19666",
+      "package": "0603",
+      "x": 57.5,
+      "y": 30.0,
+      "angle": 0
+    },
+    {
+      "designator": "C6",
+      "name": "Boost Output Cap 22uF",
+      "lcsc_id": "C784585",
+      "package": "0805",
+      "x": 63.0,
+      "y": 32.0,
+      "angle": 90
+    },
+    {
+      "designator": "C7",
+      "name": "Boost Output Cap 22uF",
+      "lcsc_id": "C784585",
+      "package": "0805",
+      "x": 61.5,
+      "y": 28.0,
+      "angle": 0
+    },
+    {
+      "designator": "C8",
+      "name": "Amp PVDD Cap 10uF",
+      "lcsc_id": "C19702",
+      "package": "0603",
+      "x": 58.0,
+      "y": 11.5,
+      "angle": 0
+    },
+    {
+      "designator": "C9",
+      "name": "Amp PVDD Cap 10uF",
+      "lcsc_id": "C19702",
+      "package": "0603",
+      "x": 62.0,
+      "y": 11.5,
+      "angle": 0
+    },
+    {
+      "designator": "C10",
+      "name": "Accel VDD Cap 100nF",
+      "lcsc_id": "C14663",
+      "package": "0603",
+      "x": 17.5,
+      "y": 15.0,
+      "angle": 90
+    },
+    {
+      "designator": "L1",
+      "name": "Boost Inductor 4.7uH",
+      "lcsc_id": "C168239",
+      "package": "SMD-5.0x5.0",
+      "x": 60.0,
+      "y": 38.0,
+      "angle": 0
+    },
+    {
+      "designator": "D3",
+      "name": "Boost Schottky Diode",
+      "lcsc_id": "C186407",
+      "package": "SOD-123",
+      "x": 66.0,
+      "y": 30.0,
+      "angle": 180
+    },
+    {
+      "designator": "R1",
+      "name": "Boost FB Resistor 1 (150k)",
+      "lcsc_id": "C22817",
+      "package": "0603",
+      "x": 54.0,
+      "y": 25.0,
+      "angle": 0
+    },
+    {
+      "designator": "R2",
+      "name": "Boost FB Resistor 2 (16k)",
+      "lcsc_id": "C22810",
+      "package": "0603",
+      "x": 58.0,
+      "y": 25.0,
+      "angle": 0
+    },
+    {
+      "designator": "R3",
+      "name": "USB CC1 Pulldown 5.1k",
+      "lcsc_id": "C22803",
+      "package": "0603",
+      "x": 11.0,
+      "y": 33.0,
+      "angle": 90
+    },
+    {
+      "designator": "R4",
+      "name": "USB CC2 Pulldown 5.1k",
+      "lcsc_id": "C22803",
+      "package": "0603",
+      "x": 11.0,
+      "y": 27.0,
+      "angle": 90
+    },
+    {
+      "designator": "R5",
+      "name": "ESP EN Pullup 10k",
+      "lcsc_id": "C22548",
+      "package": "0603",
+      "x": 32.0,
+      "y": 43.0,
+      "angle": 0
+    },
+    {
+      "designator": "C17",
+      "name": "ESP EN RC Cap 100nF",
+      "lcsc_id": "C14663",
+      "package": "0603",
+      "x": 32.0,
+      "y": 40.0,
+      "angle": 0
+    },
+    {
+      "designator": "R6",
+      "name": "ESP IO0 Pullup 10k",
+      "lcsc_id": "C22548",
+      "package": "0603",
+      "x": 48.0,
+      "y": 43.0,
+      "angle": 0
+    },
+    {
+      "designator": "C11",
+      "name": "Accel VDDIO Cap 100nF",
+      "lcsc_id": "C14663",
+      "package": "0603",
+      "x": 16.0,
+      "y": 12.0,
+      "angle": 90
+    },
+    {
+      "designator": "C12",
+      "name": "BST A+ Cap 100nF",
+      "lcsc_id": "C14663",
+      "package": "0603",
+      "x": 54.0,
+      "y": 18.0,
+      "angle": 0
+    },
+    {
+      "designator": "C13",
+      "name": "BST A- Cap 100nF",
+      "lcsc_id": "C14663",
+      "package": "0603",
+      "x": 54.0,
+      "y": 12.0,
+      "angle": 0
+    },
+    {
+      "designator": "C14",
+      "name": "BST B+ Cap 100nF",
+      "lcsc_id": "C14663",
+      "package": "0603",
+      "x": 66.0,
+      "y": 18.0,
+      "angle": 0
+    },
+    {
+      "designator": "C15",
+      "name": "BST B- Cap 100nF",
+      "lcsc_id": "C14663",
+      "package": "0603",
+      "x": 66.0,
+      "y": 12.0,
+      "angle": 0
+    },
+    {
+      "designator": "J1",
+      "name": "Speaker Output A",
+      "lcsc_id": "C124372",
+      "package": "HDR-M-2.54_1X2",
+      "x": 72.0,
+      "y": 17.0,
+      "angle": 180
+    },
+    {
+      "designator": "J2",
+      "name": "Speaker Output B",
+      "lcsc_id": "C124372",
+      "package": "HDR-M-2.54_1X2",
+      "x": 72.0,
+      "y": 13.0,
+      "angle": 180
+    }
+  ],
+  "nets": {
+    "VBUS_5V": [
+      ["USB_C", "VBUS"],
+      ["D1", "1"],
+      ["U2", "1"],
+      ["C3", "1"],
+      ["U3", "14"],
+      ["C5", "1"],
+      ["L1", "1"]
+    ],
+    "VCC_3V3": [
+      ["U2", "5"],
+      ["C4", "1"],
+      ["U1", "3V3"],
+      ["C1", "1"],
+      ["C2", "1"],
+      ["U5", "5"],
+      ["U5", "12"],
+      ["C10", "1"],
+      ["C11", "1"],
+      ["UART_HDR", "3V3"],
+      ["R5", "1"],
+      ["R6", "1"]
+    ],
+    "PVDD_12V": [
+      ["D3", "2"],
+      ["C6", "1"],
+      ["C7", "1"],
+      ["R1", "1"],
+      ["U4", "15"],
+      ["U4", "29"],
+      ["C8", "1"],
+      ["C9", "1"]
+    ],
+    "BOOST_SW": [
+      ["U3", "13"],
+      ["L1", "2"],
+      ["D3", "1"]
+    ],
+    "BOOST_FB": [
+      ["U3", "5"],
+      ["R1", "2"],
+      ["R2", "1"]
+    ],
+    "BOOST_EN": [
+      ["U1", "GPIO4"],
+      ["U3", "4"]
+    ],
+    "SPI_MOSI": [
+      ["U1", "GPIO23"],
+      ["U5", "14"]
+    ],
+    "SPI_MISO": [
+      ["U1", "GPIO19"],
+      ["U5", "1"]
+    ],
+    "SPI_SCLK": [
+      ["U1", "GPIO18"],
+      ["U5", "13"]
+    ],
+    "SPI_CS": [
+      ["U1", "GPIO5"],
+      ["U5", "5"]
+    ],
+    "SENSOR_INT1": [
+      ["U5", "4"],
+      ["U1", "GPIO34"]
+    ],
+    "I2S_BCLK": [
+      ["U1", "GPIO26"],
+      ["U4", "7"]
+    ],
+    "I2S_LRCLK": [
+      ["U1", "GPIO25"],
+      ["U4", "8"]
+    ],
+    "I2S_DIN": [
+      ["U1", "GPIO22"],
+      ["U4", "9"]
+    ],
+    "AMP_I2C_SDA": [
+      ["U1", "GPIO21"],
+      ["U4", "5"]
+    ],
+    "AMP_I2C_SCL": [
+      ["U1", "GPIO27"],
+      ["U4", "6"]
+    ],
+    "AMP_PDN": [
+      ["U1", "GPIO15"],
+      ["U4", "12"]
+    ],
+    "ESP_RXD": [
+      ["U1", "RXD"],
+      ["UART_HDR", "RXD"]
+    ],
+    "ESP_TXD": [
+      ["U1", "TXD"],
+      ["UART_HDR", "TXD"]
+    ],
+    "ESP_IO0": [
+      ["U1", "GPIO0"],
+      ["UART_HDR", "IO0"],
+      ["R6", "2"]
+    ],
+    "ESP_EN": [
+      ["U1", "EN"],
+      ["UART_HDR", "EN"],
+      ["R5", "2"],
+      ["C17", "1"]
+    ],
+    "USB_CC1": [
+      ["USB_C", "CC1"],
+      ["R3", "1"]
+    ],
+    "USB_CC2": [
+      ["USB_C", "CC2"],
+      ["R4", "1"]
+    ],
+    "BST_A+": [
+      ["U4", "25"],
+      ["C12", "2"]
+    ],
+    "BST_A-": [
+      ["U4", "22"],
+      ["C13", "2"]
+    ],
+    "BST_B+": [
+      ["U4", "18"],
+      ["C14", "2"]
+    ],
+    "BST_B-": [
+      ["U4", "21"],
+      ["C15", "2"]
+    ],
+    "AMP_OUT_A+": [
+      ["U4", "26"],
+      ["C12", "1"],
+      ["J1", "1"]
+    ],
+    "AMP_OUT_A-": [
+      ["U4", "23"],
+      ["C13", "1"],
+      ["J1", "2"]
+    ],
+    "AMP_OUT_B+": [
+      ["U4", "17"],
+      ["C14", "1"],
+      ["J2", "1"]
+    ],
+    "AMP_OUT_B-": [
+      ["U4", "20"],
+      ["C15", "1"],
+      ["J2", "2"]
+    ],
+    "GND": [
+      ["USB_C", "GND"],
+      ["D1", "2"],
+      ["U2", "2"],
+      ["C3", "2"],
+      ["C4", "2"],
+      ["U3", "3"],
+      ["U3", "15"],
+      ["C5", "2"],
+      ["C6", "2"],
+      ["C7", "2"],
+      ["R2", "2"],
+      ["U1", "GND"],
+      ["C1", "2"],
+      ["C2", "2"],
+      ["U5", "6"],
+      ["U5", "7"],
+      ["C10", "2"],
+      ["C11", "2"],
+      ["U4", "14"],
+      ["U4", "28"],
+      ["C8", "2"],
+      ["C9", "2"],
+      ["D2", "GND"],
+      ["UART_HDR", "GND"],
+      ["R3", "2"],
+      ["R4", "2"],
+      ["C17", "2"],
+      ["U4", "3"]
+    ]
+  },
+  "pcb_constraints": {
+    "antenna_keepout": {
+      "x_min": 32.5,
+      "x_max": 47.5,
+      "y_min": 49.0,
+      "y_max": 60.0,
+      "_note": "U1 Y醫뚰몴 ?대룞???곕씪 y_min 52??9濡?媛깆떊"
+    },
+    "routing_widths_mm": {
+      "VBUS_5V": 1.2,
+      "PVDD_12V": 1.0,
+      "VCC_3V3": 0.25,
+      "BOOST_SW": 0.8,
+      "default": 0.15
+    },
+    "switching_loop_max_dist_mm": 2.0
+  }
+}
