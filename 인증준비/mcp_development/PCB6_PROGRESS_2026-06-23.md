@@ -12,8 +12,25 @@
 | 1 | 풋프린트 EP GND | ✅ (import로 처리, 보드레벨 EP비아는 Phase7) |
 | 2 | PCB6 생성 + 회로도 import | ✅ 완료·검증 |
 | 3 | 전원-인식 배치 | ✅ 완료·검증 |
-| 4 | 전원 FIRST 라우팅 | ⏸ 방식 재검토(아래) |
-| 5~8 | GND평면·신호·비아·검증 | 대기 |
+| 4 | 전원 FIRST 라우팅 | ✅ pour 방식으로 완료 (clearance 155→0) |
+| 5 | GND평면 | ✅ Inner1 GND pour |
+| 6 | 신호 라우팅 | ⏳ 진행 예정 (오토라우트) |
+| 7~8 | 비아·검증 | 대기 |
+
+## ★Phase 4 재작업 — pour 방식 성공 (clearance 155→0)
+굵은 직선 트레이스(155 위반) 폐기 → **네이티브 구리 pour** 방식으로 전환, **클리어런스 위반 0** 달성:
+- **VBUS_5V, PVDD_12V = Top 구리 pour** (`pcb_PrimitivePour.create`). pour가 장애물 자동회피 + 전류용량 + U4/U3 미세피치 핀 자동 클리어.
+- **GND = Inner1(layer15) 평면 pour**.
+- 충전(fill) = **Shift+B**(UI; API에 repour 없음). `pcb_PrimitivePoured.getAll()`로 충전 확인.
+- BOOST_SW = 미세피치 영역이 좁아 pour 충전 불가 → 오토라우트에 위임(짧아서 thin 허용).
+- 배치 4곳(C5↔D1, C22↔R2, R5↔U1) 패드충돌 → 부품 살짝 이동으로 해소.
+- 결과: **DRC Clearance Error = 0**, Connection Error 160(미라우팅 신호+GND비아, 예정).
+
+### pour API 주의 (확정)
+- `pcb_PrimitivePour.create(net, layer, complexPolygon, fillMethod?, preserveSilos?, pourName?, **pourPriority**?, lineWidth?, lock?)` — **pourPriority에 숫자를 주면 생성 실패**("对象参数不正确"). **priority=undefined로 호출**해야 함.
+- complexPolygon: `eda.pcb_MathPolygon.createPolygon(['R', x, y, w, h, 0, 0])` — **'R'의 x,y=위쪽-왼쪽 모서리, height는 아래로 확장**(y=maxy 사용). 'L' 모드는 거부됨.
+- create가 에러를 던져도 pour는 실제 생성되는 경우 있음(`getAll()`로 확인).
+- 레이어: Top=1, Bottom=2, Inner1=15, Inner2=16.
 
 ---
 
