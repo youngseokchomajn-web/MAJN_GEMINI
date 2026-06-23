@@ -1,0 +1,78 @@
+{
+  "pcb_Document": [
+    "clearRouting",
+    "constructor",
+    "convertCanvasOriginToDataOrigin",
+    "convertDataOriginToCanvasOrigin",
+    "getCalculatingRatlineStatus",
+    "getCanvasOrigin",
+    "getCurrentFilterConfiguration",
+    "getPrimitiveAtPoint",
+    "getPrimitivesInRegion",
+    "importAutoLayoutJsonFile",
+    "importAutoRouteJsonFile",
+    "importAutoRouteSesFile",
+    "importChanges",
+    "navigateToCoordinates",
+    "navigateToRegion",
+    "save",
+    "setCanvasOrigin",
+    "startCalculatingRatline",
+    "stopCalculatingRatline",
+    "zoomToBoardOutline"
+  ],
+  "pcb_ManufactureData": [
+    "constructor",
+    "deleteBomTemplate",
+    "get3DFile",
+    "get3DShellFile",
+    "getAltiumDesignerFile",
+    "getAutoLayoutJsonFile",
+    "getAutoRouteJsonFile",
+    "getAutoRouteJsonFileForJRouter",
+    "getBomFile",
+    "getBomTemplateFile",
+    "getBomTemplates",
+    "getDsnFile",
+    "getDxfFile",
+    "getFlyingProbeTestFile",
+    "getGerberFile",
+    "getIdxFile",
+    "getInteractiveBomFile",
+    "getIpc2581CFile",
+    "getIpcD356AFile",
+    "getManufactureData",
+    "getNetlistFile",
+    "getOpenDatabaseDoublePlusFile",
+    "getPadsFile",
+    "getPcbInfoFile",
+    "getPdfFile",
+    "getPickAndPlaceFile",
+    "getTestPointFile",
+    "place3DShellOrder",
+    "placeComponentsOrder",
+    "placePcbOrder",
+    "placeSmtComponentsOrder",
+    "uploadBomTemplateFile"
+  ],
+  "hits": {
+    "pcb_Document": [
+      "clearRouting",
+      "importAutoRouteJsonFile",
+      "importAutoRouteSesFile"
+    ],
+    "pcb_ManufactureData": [
+      "getAutoRouteJsonFile",
+      "getAutoRouteJsonFileForJRouter"
+    ],
+    "sch_Document": [
+      "autoRouting"
+    ]
+  },
+  "src": {
+    "getAutoRouteJsonFileForJRouter": "async getAutoRouteJsonFileForJRouter(t){let{jsonObject:i,pcbName:n}=await _.extensionApiMessageBus2.rpcCall(\"extensionApi.PCB_ManufactureData.getAutoRouteJsonForJR\",_.extensionPCB_ManufactureDataAutoRouteRule);if(i)return new File([JSON.stringify(i,null,\"\t\")],t||\"AutoRoute2_\"+n+\"_\"+Iy()+\".json\")}",
+    "getAutoRouteJsonFile": "async getAutoRouteJsonFile(t){let{jsonObject:i,pcbName:n}=await _.extensionApiMessageBus2.rpcCall(\"extensionApi.PCB_ManufactureData.getAutoRouteJson\",_.extensionPCB_ManufactureDataAutoRouteRule);if(i)return new File([JSON.stringify(i,null,\"\t\")],t||\"AutoRoute2_\"+n+\"_\"+Iy()+\".json\")}",
+    "importAutoRouteJsonFile": "async importAutoRouteJsonFile(t){return await _.extensionApiMessageBus2.rpcCall(\"extensionApi.PCB_Document.importAutoRouteJsonFile\",t)}",
+    "importAutoRouteSesFile": "async importAutoRouteSesFile(t){return await _.extensionApiMessageBus2.rpcCall(\"extensionApi.PCB_Document.importAutoRouteSesFile\",t)}"
+  }
+}

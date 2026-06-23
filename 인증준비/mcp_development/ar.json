@@ -1,0 +1,7195 @@
+{
+	"boardOutline": {
+		"bbox": [
+			0,
+			80.0002,
+			-60.0002,
+			0
+		],
+		"path": [
+			[
+				0,
+				-60.00015240030481
+			],
+			[
+				0,
+				0
+			],
+			[
+				80.00020320040642,
+				0
+			],
+			[
+				80.00020320040642,
+				-60.00015240030481
+			],
+			[
+				0,
+				-60.00015240030481
+			]
+		]
+	},
+	"layers": {
+		"route": [
+			1,
+			2,
+			15,
+			16
+		],
+		"notRoute": []
+	},
+	"routingCorner": "45",
+	"rules": {
+		"safeClearances": {
+			"copperThickness1oz": [
+				{
+					"layers": [
+						1,
+						2,
+						15,
+						16
+					],
+					"trackToTrack": 0.102,
+					"trackToVia": 0.152,
+					"trackToPad": 0.152,
+					"trackToFillRegion": 0.152,
+					"trackToProhibitedRegion": 0.3,
+					"trackToBoardOutline": 0.3,
+					"viaToVia": 0.152,
+					"viaToPad": 0.152,
+					"viaToFillRegion": 0.152,
+					"viaToProhibitedRegion": 0.152,
+					"viaToBoardOutline": 0.3
+				}
+			],
+			"copperThickness2oz": [
+				{
+					"layers": [
+						1,
+						2,
+						15,
+						16
+					],
+					"trackToTrack": 0.203,
+					"trackToVia": 0.152,
+					"trackToPad": 0.152,
+					"trackToFillRegion": 0.152,
+					"trackToProhibitedRegion": 0.3,
+					"trackToBoardOutline": 0.3,
+					"viaToVia": 0.152,
+					"viaToPad": 0.152,
+					"viaToFillRegion": 0.152,
+					"viaToProhibitedRegion": 0.152,
+					"viaToBoardOutline": 0.3
+				}
+			]
+		},
+		"trackWidths": {
+			"copperThickness1oz": [
+				{
+					"layers": [
+						1,
+						2,
+						15,
+						16
+					],
+					"trackWidth": [
+						0.127,
+						0.254,
+						2.54
+					]
+				}
+			],
+			"copperThickness2oz": [
+				{
+					"layers": [
+						1,
+						2,
+						15,
+						16
+					],
+					"trackWidth": [
+						0.203,
+						0.254,
+						2.54
+					]
+				}
+			]
+		},
+		"viaSizes": {
+			"viaSize": [
+				0.61,
+				0.305
+			]
+		},
+		"differentialPairs": {
+			"differentialPair": [
+				{
+					"layers": [
+						1,
+						2,
+						15,
+						16
+					],
+					"lengthTolerance": 0.254,
+					"width": [
+						0.127,
+						0.254,
+						2.54
+					],
+					"clearance": [
+						0.152,
+						0.152
+					]
+				}
+			]
+		},
+		"trackLengths": {
+			"netLength": [
+				0,
+				0
+			]
+		}
+	},
+	"classes": {
+		"netClasses": {},
+		"differentialPairClasses": {},
+		"netClearancesClasses": {
+			"copperThickness1oz": [
+				"GND",
+				"VCC_3V3",
+				"VBUS_5V",
+				"PVDD_12V",
+				"BST_A+",
+				"AMP_OUT_A+",
+				"BST_A-",
+				"AMP_OUT_A-",
+				"BST_B+",
+				"AMP_OUT_B+",
+				"BST_B-",
+				"AMP_OUT_B-",
+				"ESP_EN",
+				"AVDD",
+				"VR_DIG",
+				"BOOST_VDD",
+				"COMP_RC",
+				"BOOST_SW",
+				"BOOST_FB",
+				"USB_CC1",
+				"USB_CC2",
+				"ESP_IO0",
+				"AMP_I2C_SDA",
+				"AMP_I2C_SCL",
+				"BOOST_FSET",
+				"BOOST_COMP",
+				"BOOST_EN",
+				"SENSOR_INT1",
+				"I2S_LRCLK",
+				"I2S_BCLK",
+				"AMP_PDN",
+				"SPI_CS",
+				"SPI_SCLK",
+				"SPI_MISO",
+				"ESP_RXD",
+				"ESP_TXD",
+				"I2S_DIN",
+				"SPI_MOSI"
+			]
+		}
+	},
+	"nets": [
+		{
+			"net": "GND",
+			"routing": true,
+			"safeClearance": "copperThickness1oz",
+			"trackWidth": "copperThickness1oz",
+			"viaSize": "viaSize",
+			"differentialPair": "differentialPair",
+			"trackLength": "netLength"
+		},
+		{
+			"net": "VCC_3V3",
+			"routing": true,
+			"safeClearance": "copperThickness1oz",
+			"trackWidth": "copperThickness1oz",
+			"viaSize": "viaSize",
+			"differentialPair": "differentialPair",
+			"trackLength": "netLength"
+		},
+		{
+			"net": "VBUS_5V",
+			"routing": true,
+			"safeClearance": "copperThickness1oz",
+			"trackWidth": "copperThickness1oz",
+			"viaSize": "viaSize",
+			"differentialPair": "differentialPair",
+			"trackLength": "netLength"
+		},
+		{
+			"net": "PVDD_12V",
+			"routing": true,
+			"safeClearance": "copperThickness1oz",
+			"trackWidth": "copperThickness1oz",
+			"viaSize": "viaSize",
+			"differentialPair": "differentialPair",
+			"trackLength": "netLength"
+		},
+		{
+			"net": "BST_A+",
+			"routing": true,
+			"safeClearance": "copperThickness1oz",
+			"trackWidth": "copperThickness1oz",
+			"viaSize": "viaSize",
+			"differentialPair": "differentialPair",
+			"trackLength": "netLength"
+		},
+		{
+			"net": "AMP_OUT_A+",
+			"routing": true,
+			"safeClearance": "copperThickness1oz",
+			"trackWidth": "copperThickness1oz",
+			"viaSize": "viaSize",
+			"differentialPair": "differentialPair",
+			"trackLength": "netLength"
+		},
+		{
+			"net": "BST_A-",
+			"routing": true,
+			"safeClearance": "copperThickness1oz",
+			"trackWidth": "copperThickness1oz",
+			"viaSize": "viaSize",
+			"differentialPair": "differentialPair",
+			"trackLength": "netLength"
+		},
+		{
+			"net": "AMP_OUT_A-",
+			"routing": true,
+			"safeClearance": "copperThickness1oz",
+			"trackWidth": "copperThickness1oz",
+			"viaSize": "viaSize",
+			"differentialPair": "differentialPair",
+			"trackLength": "netLength"
+		},
+		{
+			"net": "BST_B+",
+			"routing": true,
+			"safeClearance": "copperThickness1oz",
+			"trackWidth": "copperThickness1oz",
+			"viaSize": "viaSize",
+			"differentialPair": "differentialPair",
+			"trackLength": "netLength"
+		},
+		{
+			"net": "AMP_OUT_B+",
+			"routing": true,
+			"safeClearance": "copperThickness1oz",
+			"trackWidth": "copperThickness1oz",
+			"viaSize": "viaSize",
+			"differentialPair": "differentialPair",
+			"trackLength": "netLength"
+		},
+		{
+			"net": "BST_B-",
+			"routing": true,
+			"safeClearance": "copperThickness1oz",
+			"trackWidth": "copperThickness1oz",
+			"viaSize": "viaSize",
+			"differentialPair": "differentialPair",
+			"trackLength": "netLength"
+		},
+		{
+			"net": "AMP_OUT_B-",
+			"routing": true,
+			"safeClearance": "copperThickness1oz",
+			"trackWidth": "copperThickness1oz",
+			"viaSize": "viaSize",
+			"differentialPair": "differentialPair",
+			"trackLength": "netLength"
+		},
+		{
+			"net": "ESP_EN",
+			"routing": true,
+			"safeClearance": "copperThickness1oz",
+			"trackWidth": "copperThickness1oz",
+			"viaSize": "viaSize",
+			"differentialPair": "differentialPair",
+			"trackLength": "netLength"
+		},
+		{
+			"net": "AVDD",
+			"routing": true,
+			"safeClearance": "copperThickness1oz",
+			"trackWidth": "copperThickness1oz",
+			"viaSize": "viaSize",
+			"differentialPair": "differentialPair",
+			"trackLength": "netLength"
+		},
+		{
+			"net": "VR_DIG",
+			"routing": true,
+			"safeClearance": "copperThickness1oz",
+			"trackWidth": "copperThickness1oz",
+			"viaSize": "viaSize",
+			"differentialPair": "differentialPair",
+			"trackLength": "netLength"
+		},
+		{
+			"net": "BOOST_VDD",
+			"routing": true,
+			"safeClearance": "copperThickness1oz",
+			"trackWidth": "copperThickness1oz",
+			"viaSize": "viaSize",
+			"differentialPair": "differentialPair",
+			"trackLength": "netLength"
+		},
+		{
+			"net": "COMP_RC",
+			"routing": true,
+			"safeClearance": "copperThickness1oz",
+			"trackWidth": "copperThickness1oz",
+			"viaSize": "viaSize",
+			"differentialPair": "differentialPair",
+			"trackLength": "netLength"
+		},
+		{
+			"net": "BOOST_SW",
+			"routing": true,
+			"safeClearance": "copperThickness1oz",
+			"trackWidth": "copperThickness1oz",
+			"viaSize": "viaSize",
+			"differentialPair": "differentialPair",
+			"trackLength": "netLength"
+		},
+		{
+			"net": "BOOST_FB",
+			"routing": true,
+			"safeClearance": "copperThickness1oz",
+			"trackWidth": "copperThickness1oz",
+			"viaSize": "viaSize",
+			"differentialPair": "differentialPair",
+			"trackLength": "netLength"
+		},
+		{
+			"net": "USB_CC1",
+			"routing": true,
+			"safeClearance": "copperThickness1oz",
+			"trackWidth": "copperThickness1oz",
+			"viaSize": "viaSize",
+			"differentialPair": "differentialPair",
+			"trackLength": "netLength"
+		},
+		{
+			"net": "USB_CC2",
+			"routing": true,
+			"safeClearance": "copperThickness1oz",
+			"trackWidth": "copperThickness1oz",
+			"viaSize": "viaSize",
+			"differentialPair": "differentialPair",
+			"trackLength": "netLength"
+		},
+		{
+			"net": "ESP_IO0",
+			"routing": true,
+			"safeClearance": "copperThickness1oz",
+			"trackWidth": "copperThickness1oz",
+			"viaSize": "viaSize",
+			"differentialPair": "differentialPair",
+			"trackLength": "netLength"
+		},
+		{
+			"net": "AMP_I2C_SDA",
+			"routing": true,
+			"safeClearance": "copperThickness1oz",
+			"trackWidth": "copperThickness1oz",
+			"viaSize": "viaSize",
+			"differentialPair": "differentialPair",
+			"trackLength": "netLength"
+		},
+		{
+			"net": "AMP_I2C_SCL",
+			"routing": true,
+			"safeClearance": "copperThickness1oz",
+			"trackWidth": "copperThickness1oz",
+			"viaSize": "viaSize",
+			"differentialPair": "differentialPair",
+			"trackLength": "netLength"
+		},
+		{
+			"net": "BOOST_FSET",
+			"routing": true,
+			"safeClearance": "copperThickness1oz",
+			"trackWidth": "copperThickness1oz",
+			"viaSize": "viaSize",
+			"differentialPair": "differentialPair",
+			"trackLength": "netLength"
+		},
+		{
+			"net": "BOOST_COMP",
+			"routing": true,
+			"safeClearance": "copperThickness1oz",
+			"trackWidth": "copperThickness1oz",
+			"viaSize": "viaSize",
+			"differentialPair": "differentialPair",
+			"trackLength": "netLength"
+		},
+		{
+			"net": "BOOST_EN",
+			"routing": true,
+			"safeClearance": "copperThickness1oz",
+			"trackWidth": "copperThickness1oz",
+			"viaSize": "viaSize",
+			"differentialPair": "differentialPair",
+			"trackLength": "netLength"
+		},
+		{
+			"net": "SENSOR_INT1",
+			"routing": true,
+			"safeClearance": "copperThickness1oz",
+			"trackWidth": "copperThickness1oz",
+			"viaSize": "viaSize",
+			"differentialPair": "differentialPair",
+			"trackLength": "netLength"
+		},
+		{
+			"net": "I2S_LRCLK",
+			"routing": true,
+			"safeClearance": "copperThickness1oz",
+			"trackWidth": "copperThickness1oz",
+			"viaSize": "viaSize",
+			"differentialPair": "differentialPair",
+			"trackLength": "netLength"
+		},
+		{
+			"net": "I2S_BCLK",
+			"routing": true,
+			"safeClearance": "copperThickness1oz",
+			"trackWidth": "copperThickness1oz",
+			"viaSize": "viaSize",
+			"differentialPair": "differentialPair",
+			"trackLength": "netLength"
+		},
+		{
+			"net": "AMP_PDN",
+			"routing": true,
+			"safeClearance": "copperThickness1oz",
+			"trackWidth": "copperThickness1oz",
+			"viaSize": "viaSize",
+			"differentialPair": "differentialPair",
+			"trackLength": "netLength"
+		},
+		{
+			"net": "SPI_CS",
+			"routing": true,
+			"safeClearance": "copperThickness1oz",
+			"trackWidth": "copperThickness1oz",
+			"viaSize": "viaSize",
+			"differentialPair": "differentialPair",
+			"trackLength": "netLength"
+		},
+		{
+			"net": "SPI_SCLK",
+			"routing": true,
+			"safeClearance": "copperThickness1oz",
+			"trackWidth": "copperThickness1oz",
+			"viaSize": "viaSize",
+			"differentialPair": "differentialPair",
+			"trackLength": "netLength"
+		},
+		{
+			"net": "SPI_MISO",
+			"routing": true,
+			"safeClearance": "copperThickness1oz",
+			"trackWidth": "copperThickness1oz",
+			"viaSize": "viaSize",
+			"differentialPair": "differentialPair",
+			"trackLength": "netLength"
+		},
+		{
+			"net": "ESP_RXD",
+			"routing": true,
+			"safeClearance": "copperThickness1oz",
+			"trackWidth": "copperThickness1oz",
+			"viaSize": "viaSize",
+			"differentialPair": "differentialPair",
+			"trackLength": "netLength"
+		},
+		{
+			"net": "ESP_TXD",
+			"routing": true,
+			"safeClearance": "copperThickness1oz",
+			"trackWidth": "copperThickness1oz",
+			"viaSize": "viaSize",
+			"differentialPair": "differentialPair",
+			"trackLength": "netLength"
+		},
+		{
+			"net": "I2S_DIN",
+			"routing": true,
+			"safeClearance": "copperThickness1oz",
+			"trackWidth": "copperThickness1oz",
+			"viaSize": "viaSize",
+			"differentialPair": "differentialPair",
+			"trackLength": "netLength"
+		},
+		{
+			"net": "SPI_MOSI",
+			"routing": true,
+			"safeClearance": "copperThickness1oz",
+			"trackWidth": "copperThickness1oz",
+			"viaSize": "viaSize",
+			"differentialPair": "differentialPair",
+			"trackLength": "netLength"
+		}
+	],
+	"components": {
+		"C1": {
+			"name": "CL10A106KP8NNNC",
+			"footprint": "C0603",
+			"layer": 1,
+			"location": [
+				35.0001,
+				33.0001
+			],
+			"rotation": 0,
+			"nets": {
+				"e14": "GND",
+				"e15": "VCC_3V3"
+			},
+			"pinName": {
+				"e14": "2",
+				"e15": "1"
+			},
+			"reuseModules": {
+				"moduleName": "",
+				"groupID": "",
+				"channelID": "$1I1875"
+			}
+		},
+		"C2": {
+			"name": "CC0603KRX7R9BB104",
+			"footprint": "C0603",
+			"layer": 1,
+			"location": [
+				38.0001,
+				33.0001
+			],
+			"rotation": 0,
+			"nets": {
+				"e14": "GND",
+				"e15": "VCC_3V3"
+			},
+			"pinName": {
+				"e14": "2",
+				"e15": "1"
+			},
+			"reuseModules": {
+				"moduleName": "",
+				"groupID": "",
+				"channelID": "$1I1876"
+			}
+		},
+		"C3": {
+			"name": "CL10A106KP8NNNC",
+			"footprint": "C0603",
+			"layer": 1,
+			"location": [
+				18.5,
+				30.0001
+			],
+			"rotation": 90,
+			"nets": {
+				"e14": "GND",
+				"e15": "VBUS_5V"
+			},
+			"pinName": {
+				"e14": "2",
+				"e15": "1"
+			},
+			"reuseModules": {
+				"moduleName": "",
+				"groupID": "",
+				"channelID": "$1I1877"
+			}
+		},
+		"C4": {
+			"name": "CL10A106KP8NNNC",
+			"footprint": "C0603",
+			"layer": 1,
+			"location": [
+				21.5001,
+				30.0001
+			],
+			"rotation": 90,
+			"nets": {
+				"e14": "GND",
+				"e15": "VCC_3V3"
+			},
+			"pinName": {
+				"e14": "2",
+				"e15": "1"
+			},
+			"reuseModules": {
+				"moduleName": "",
+				"groupID": "",
+				"channelID": "$1I1878"
+			}
+		},
+		"C5": {
+			"name": "CL10A475KO8NNNC",
+			"footprint": "C0603",
+			"layer": 1,
+			"location": [
+				57.5001,
+				30.0001
+			],
+			"rotation": 0,
+			"nets": {
+				"e14": "GND",
+				"e15": "VBUS_5V"
+			},
+			"pinName": {
+				"e14": "2",
+				"e15": "1"
+			},
+			"reuseModules": {
+				"moduleName": "",
+				"groupID": "",
+				"channelID": "$1I1879"
+			}
+		},
+		"C6": {
+			"name": "CC0805MKX5R8BB226",
+			"footprint": "C0805",
+			"layer": 1,
+			"location": [
+				63.0002,
+				32.0001
+			],
+			"rotation": 90,
+			"nets": {
+				"e15": "GND",
+				"e16": "PVDD_12V"
+			},
+			"pinName": {
+				"e15": "2",
+				"e16": "1"
+			},
+			"reuseModules": {
+				"moduleName": "",
+				"groupID": "",
+				"channelID": "$1I1880"
+			}
+		},
+		"C7": {
+			"name": "CC0805MKX5R8BB226",
+			"footprint": "C0805",
+			"layer": 1,
+			"location": [
+				61.5002,
+				28.0001
+			],
+			"rotation": 0,
+			"nets": {
+				"e15": "GND",
+				"e16": "PVDD_12V"
+			},
+			"pinName": {
+				"e15": "2",
+				"e16": "1"
+			},
+			"reuseModules": {
+				"moduleName": "",
+				"groupID": "",
+				"channelID": "$1I1881"
+			}
+		},
+		"C8": {
+			"name": "CL10A106KP8NNNC",
+			"footprint": "C0603",
+			"layer": 1,
+			"location": [
+				58.0001,
+				11.5
+			],
+			"rotation": 0,
+			"nets": {
+				"e14": "GND",
+				"e15": "PVDD_12V"
+			},
+			"pinName": {
+				"e14": "2",
+				"e15": "1"
+			},
+			"reuseModules": {
+				"moduleName": "",
+				"groupID": "",
+				"channelID": "$1I1882"
+			}
+		},
+		"C9": {
+			"name": "CL10A106KP8NNNC",
+			"footprint": "C0603",
+			"layer": 1,
+			"location": [
+				62.0002,
+				11.5
+			],
+			"rotation": 0,
+			"nets": {
+				"e14": "GND",
+				"e15": "PVDD_12V"
+			},
+			"pinName": {
+				"e14": "2",
+				"e15": "1"
+			},
+			"reuseModules": {
+				"moduleName": "",
+				"groupID": "",
+				"channelID": "$1I1883"
+			}
+		},
+		"C10": {
+			"name": "CC0603KRX7R9BB104",
+			"footprint": "C0603",
+			"layer": 1,
+			"location": [
+				17.5,
+				15
+			],
+			"rotation": 90,
+			"nets": {
+				"e14": "GND",
+				"e15": "VCC_3V3"
+			},
+			"pinName": {
+				"e14": "2",
+				"e15": "1"
+			},
+			"reuseModules": {
+				"moduleName": "",
+				"groupID": "",
+				"channelID": "$1I1884"
+			}
+		},
+		"C11": {
+			"name": "CC0603KRX7R9BB104",
+			"footprint": "C0603",
+			"layer": 1,
+			"location": [
+				16,
+				12
+			],
+			"rotation": 90,
+			"nets": {
+				"e14": "GND",
+				"e15": "VCC_3V3"
+			},
+			"pinName": {
+				"e14": "2",
+				"e15": "1"
+			},
+			"reuseModules": {
+				"moduleName": "",
+				"groupID": "",
+				"channelID": "$1I1894"
+			}
+		},
+		"C12": {
+			"name": "CC0603KRX7R9BB104",
+			"footprint": "C0603",
+			"layer": 1,
+			"location": [
+				54.0001,
+				18
+			],
+			"rotation": 0,
+			"nets": {
+				"e14": "BST_A+",
+				"e15": "AMP_OUT_A+"
+			},
+			"pinName": {
+				"e14": "2",
+				"e15": "1"
+			},
+			"reuseModules": {
+				"moduleName": "",
+				"groupID": "",
+				"channelID": "$1I1895"
+			}
+		},
+		"C13": {
+			"name": "CC0603KRX7R9BB104",
+			"footprint": "C0603",
+			"layer": 1,
+			"location": [
+				54.0001,
+				12
+			],
+			"rotation": 0,
+			"nets": {
+				"e14": "BST_A-",
+				"e15": "AMP_OUT_A-"
+			},
+			"pinName": {
+				"e14": "2",
+				"e15": "1"
+			},
+			"reuseModules": {
+				"moduleName": "",
+				"groupID": "",
+				"channelID": "$1I1896"
+			}
+		},
+		"C14": {
+			"name": "CC0603KRX7R9BB104",
+			"footprint": "C0603",
+			"layer": 1,
+			"location": [
+				66.0002,
+				18
+			],
+			"rotation": 0,
+			"nets": {
+				"e14": "BST_B+",
+				"e15": "AMP_OUT_B+"
+			},
+			"pinName": {
+				"e14": "2",
+				"e15": "1"
+			},
+			"reuseModules": {
+				"moduleName": "",
+				"groupID": "",
+				"channelID": "$1I1897"
+			}
+		},
+		"C15": {
+			"name": "CC0603KRX7R9BB104",
+			"footprint": "C0603",
+			"layer": 1,
+			"location": [
+				66.0002,
+				12
+			],
+			"rotation": 0,
+			"nets": {
+				"e14": "BST_B-",
+				"e15": "AMP_OUT_B-"
+			},
+			"pinName": {
+				"e14": "2",
+				"e15": "1"
+			},
+			"reuseModules": {
+				"moduleName": "",
+				"groupID": "",
+				"channelID": "$1I1898"
+			}
+		},
+		"C17": {
+			"name": "CC0603KRX7R9BB104",
+			"footprint": "C0603",
+			"layer": 1,
+			"location": [
+				32.0001,
+				40.0001
+			],
+			"rotation": 0,
+			"nets": {
+				"e14": "GND",
+				"e15": "ESP_EN"
+			},
+			"pinName": {
+				"e14": "2",
+				"e15": "1"
+			},
+			"reuseModules": {
+				"moduleName": "",
+				"groupID": "",
+				"channelID": "$1I1892"
+			}
+		},
+		"C18": {
+			"name": "CC0603KRX7R9BB104",
+			"footprint": "C0603",
+			"layer": 1,
+			"location": [
+				55.0001,
+				20.0001
+			],
+			"rotation": 0,
+			"nets": {
+				"e14": "GND",
+				"e15": "VCC_3V3"
+			},
+			"pinName": {
+				"e14": "2",
+				"e15": "1"
+			},
+			"reuseModules": {
+				"moduleName": "",
+				"groupID": "",
+				"channelID": "$1I1903"
+			}
+		},
+		"C19": {
+			"name": "CC0603KRX7R9BB104",
+			"footprint": "C0603",
+			"layer": 1,
+			"location": [
+				65.0002,
+				20.0001
+			],
+			"rotation": 0,
+			"nets": {
+				"e14": "GND",
+				"e15": "AVDD"
+			},
+			"pinName": {
+				"e14": "2",
+				"e15": "1"
+			},
+			"reuseModules": {
+				"moduleName": "",
+				"groupID": "",
+				"channelID": "$1I1904"
+			}
+		},
+		"C20": {
+			"name": "CC0603KRX7R9BB104",
+			"footprint": "C0603",
+			"layer": 1,
+			"location": [
+				55.0001,
+				8
+			],
+			"rotation": 0,
+			"nets": {
+				"e14": "GND",
+				"e15": "VR_DIG"
+			},
+			"pinName": {
+				"e14": "2",
+				"e15": "1"
+			},
+			"reuseModules": {
+				"moduleName": "",
+				"groupID": "",
+				"channelID": "$1I1905"
+			}
+		},
+		"C21": {
+			"name": "CC0603KRX7R8BB105",
+			"footprint": "C0603",
+			"layer": 1,
+			"location": [
+				50.0001,
+				35.0001
+			],
+			"rotation": 0,
+			"nets": {
+				"e14": "GND",
+				"e15": "BOOST_VDD"
+			},
+			"pinName": {
+				"e14": "2",
+				"e15": "1"
+			},
+			"reuseModules": {
+				"moduleName": "",
+				"groupID": "",
+				"channelID": "$1I1909"
+			}
+		},
+		"C22": {
+			"name": "CC0603KRX7RABB472",
+			"footprint": "C0603",
+			"layer": 1,
+			"location": [
+				48.0001,
+				33.0001
+			],
+			"rotation": 0,
+			"nets": {
+				"e14": "GND",
+				"e15": "COMP_RC"
+			},
+			"pinName": {
+				"e14": "2",
+				"e15": "1"
+			},
+			"reuseModules": {
+				"moduleName": "",
+				"groupID": "",
+				"channelID": "$1I1910"
+			}
+		},
+		"D1": {
+			"name": "SMAJ5.0A_C83329",
+			"footprint": "SMA_L4.3-W2.6-LS5.2-RD",
+			"layer": 1,
+			"location": [
+				16,
+				35.0001
+			],
+			"rotation": 90,
+			"nets": {
+				"e12": "GND",
+				"e13": "VBUS_5V"
+			},
+			"pinName": {
+				"e12": "A",
+				"e13": "C"
+			},
+			"reuseModules": {
+				"moduleName": "",
+				"groupID": "",
+				"channelID": "$1I1871"
+			}
+		},
+		"D2": {
+			"name": "USBLC6-2SC6_C2827654",
+			"footprint": "SOT-23-6_L2.9-W1.6-P0.95-LS2.8-BL",
+			"layer": 1,
+			"location": [
+				13,
+				26.0001
+			],
+			"rotation": 90,
+			"nets": {
+				"e7": "",
+				"e8": "GND",
+				"e9": "",
+				"e10": "",
+				"e11": "",
+				"e12": ""
+			},
+			"pinName": {
+				"e7": "IO1",
+				"e8": "GND",
+				"e9": "IO2",
+				"e10": "IO2",
+				"e11": "VBUS",
+				"e12": "IO1"
+			},
+			"reuseModules": {
+				"moduleName": "",
+				"groupID": "",
+				"channelID": "$1I1872"
+			}
+		},
+		"D3": {
+			"name": "RN731JTTD3901B25",
+			"footprint": "R0603",
+			"layer": 1,
+			"location": [
+				66.0002,
+				30.0001
+			],
+			"rotation": 180,
+			"nets": {
+				"e7": "PVDD_12V",
+				"e8": "BOOST_SW"
+			},
+			"pinName": {
+				"e7": "2",
+				"e8": "1"
+			},
+			"reuseModules": {
+				"moduleName": "",
+				"groupID": "",
+				"channelID": "$1I1886"
+			}
+		},
+		"J1": {
+			"name": "B-2100S02P-A110",
+			"footprint": "HDR-TH_2P-P2.54-V-M-1",
+			"layer": 1,
+			"location": [
+				72.0002,
+				17
+			],
+			"rotation": 180,
+			"nets": {
+				"e6": "AMP_OUT_A-",
+				"e7": "AMP_OUT_A+"
+			},
+			"pinName": {
+				"e6": "2",
+				"e7": "1"
+			},
+			"reuseModules": {
+				"moduleName": "",
+				"groupID": "",
+				"channelID": "$1I1899"
+			}
+		},
+		"J2": {
+			"name": "B-2100S02P-A110",
+			"footprint": "HDR-TH_2P-P2.54-V-M-1",
+			"layer": 1,
+			"location": [
+				72.0002,
+				13
+			],
+			"rotation": 180,
+			"nets": {
+				"e6": "AMP_OUT_B-",
+				"e7": "AMP_OUT_B+"
+			},
+			"pinName": {
+				"e6": "2",
+				"e7": "1"
+			},
+			"reuseModules": {
+				"moduleName": "",
+				"groupID": "",
+				"channelID": "$1I1900"
+			}
+		},
+		"L1": {
+			"name": "WR04X5601FTL",
+			"footprint": "R0402",
+			"layer": 1,
+			"location": [
+				60.0002,
+				38.0001
+			],
+			"rotation": 0,
+			"nets": {
+				"e12": "BOOST_SW",
+				"e13": "VBUS_5V"
+			},
+			"pinName": {
+				"e12": "2",
+				"e13": "1"
+			},
+			"reuseModules": {
+				"moduleName": "",
+				"groupID": "",
+				"channelID": "$1I1885"
+			}
+		},
+		"R1": {
+			"name": "0603WAF1693T5E",
+			"footprint": "R0603",
+			"layer": 1,
+			"location": [
+				54.0001,
+				25.0001
+			],
+			"rotation": 0,
+			"nets": {
+				"e7": "BOOST_FB",
+				"e8": "PVDD_12V"
+			},
+			"pinName": {
+				"e7": "2",
+				"e8": "1"
+			},
+			"reuseModules": {
+				"moduleName": "",
+				"groupID": "",
+				"channelID": "$1I1887"
+			}
+		},
+		"R2": {
+			"name": "0603WAF150JT5E",
+			"footprint": "R0603",
+			"layer": 1,
+			"location": [
+				58.0001,
+				25.0001
+			],
+			"rotation": 0,
+			"nets": {
+				"e7": "GND",
+				"e8": "BOOST_FB"
+			},
+			"pinName": {
+				"e7": "2",
+				"e8": "1"
+			},
+			"reuseModules": {
+				"moduleName": "",
+				"groupID": "",
+				"channelID": "$1I1888"
+			}
+		},
+		"R3": {
+			"name": "0603WAF1402T5E",
+			"footprint": "R0603",
+			"layer": 1,
+			"location": [
+				11,
+				33.0001
+			],
+			"rotation": 90,
+			"nets": {
+				"e7": "GND",
+				"e8": "USB_CC1"
+			},
+			"pinName": {
+				"e7": "2",
+				"e8": "1"
+			},
+			"reuseModules": {
+				"moduleName": "",
+				"groupID": "",
+				"channelID": "$1I1889"
+			}
+		},
+		"R4": {
+			"name": "0603WAF1402T5E",
+			"footprint": "R0603",
+			"layer": 1,
+			"location": [
+				11,
+				27.0001
+			],
+			"rotation": 90,
+			"nets": {
+				"e7": "GND",
+				"e8": "USB_CC2"
+			},
+			"pinName": {
+				"e7": "2",
+				"e8": "1"
+			},
+			"reuseModules": {
+				"moduleName": "",
+				"groupID": "",
+				"channelID": "$1I1890"
+			}
+		},
+		"R5": {
+			"name": "RC0603FR-071KL",
+			"footprint": "R0603",
+			"layer": 1,
+			"location": [
+				32.0001,
+				43.0001
+			],
+			"rotation": 0,
+			"nets": {
+				"e7": "ESP_EN",
+				"e8": "VCC_3V3"
+			},
+			"pinName": {
+				"e7": "2",
+				"e8": "1"
+			},
+			"reuseModules": {
+				"moduleName": "",
+				"groupID": "",
+				"channelID": "$1I1891"
+			}
+		},
+		"R6": {
+			"name": "RC0603FR-071KL",
+			"footprint": "R0603",
+			"layer": 1,
+			"location": [
+				48.0001,
+				43.0001
+			],
+			"rotation": 0,
+			"nets": {
+				"e7": "ESP_IO0",
+				"e8": "VCC_3V3"
+			},
+			"pinName": {
+				"e7": "2",
+				"e8": "1"
+			},
+			"reuseModules": {
+				"moduleName": "",
+				"groupID": "",
+				"channelID": "$1I1893"
+			}
+		},
+		"R7": {
+			"name": "0603WAF1402T5E",
+			"footprint": "R0603",
+			"layer": 1,
+			"location": [
+				50.0001,
+				22.0001
+			],
+			"rotation": 90,
+			"nets": {
+				"e7": "VCC_3V3",
+				"e8": "AMP_I2C_SDA"
+			},
+			"pinName": {
+				"e7": "2",
+				"e8": "1"
+			},
+			"reuseModules": {
+				"moduleName": "",
+				"groupID": "",
+				"channelID": "$1I1901"
+			}
+		},
+		"R8": {
+			"name": "0603WAF1402T5E",
+			"footprint": "R0603",
+			"layer": 1,
+			"location": [
+				52.0001,
+				22.0001
+			],
+			"rotation": 90,
+			"nets": {
+				"e7": "VCC_3V3",
+				"e8": "AMP_I2C_SCL"
+			},
+			"pinName": {
+				"e7": "2",
+				"e8": "1"
+			},
+			"reuseModules": {
+				"moduleName": "",
+				"groupID": "",
+				"channelID": "$1I1902"
+			}
+		},
+		"R9": {
+			"name": "RMC060382K1%N",
+			"footprint": "R0603",
+			"layer": 1,
+			"location": [
+				50.0001,
+				33.0001
+			],
+			"rotation": 0,
+			"nets": {
+				"e7": "GND",
+				"e8": "BOOST_FSET"
+			},
+			"pinName": {
+				"e7": "2",
+				"e8": "1"
+			},
+			"reuseModules": {
+				"moduleName": "",
+				"groupID": "",
+				"channelID": "$1I1906"
+			}
+		},
+		"R10": {
+			"name": "CL0603FN24K9P",
+			"footprint": "R0603",
+			"layer": 1,
+			"location": [
+				48.0001,
+				31.0001
+			],
+			"rotation": 0,
+			"nets": {
+				"e7": "COMP_RC",
+				"e8": "BOOST_COMP"
+			},
+			"pinName": {
+				"e7": "2",
+				"e8": "1"
+			},
+			"reuseModules": {
+				"moduleName": "",
+				"groupID": "",
+				"channelID": "$1I1907"
+			}
+		},
+		"R11": {
+			"name": "CRG0603F100K",
+			"footprint": "R0603",
+			"layer": 1,
+			"location": [
+				48.0001,
+				35.0001
+			],
+			"rotation": 0,
+			"nets": {
+				"e7": "GND",
+				"e8": "BOOST_EN"
+			},
+			"pinName": {
+				"e7": "2",
+				"e8": "1"
+			},
+			"reuseModules": {
+				"moduleName": "",
+				"groupID": "",
+				"channelID": "$1I1908"
+			}
+		},
+		"U1": {
+			"name": "ESP32-WROOM-32E-N8",
+			"footprint": "WIFI-SMD_ESP32-WROOM-32E",
+			"layer": 1,
+			"location": [
+				40.0001,
+				47.0001
+			],
+			"rotation": 0,
+			"nets": {
+				"e51": "GND",
+				"e52": "VCC_3V3",
+				"e53": "ESP_EN",
+				"e54": "",
+				"e55": "",
+				"e56": "SENSOR_INT1",
+				"e57": "",
+				"e58": "",
+				"e59": "",
+				"e60": "I2S_LRCLK",
+				"e61": "I2S_BCLK",
+				"e62": "AMP_I2C_SCL",
+				"e63": "",
+				"e64": "",
+				"e65": "GND",
+				"e66": "",
+				"e67": "",
+				"e68": "",
+				"e69": "",
+				"e70": "",
+				"e71": "",
+				"e72": "",
+				"e73": "AMP_PDN",
+				"e74": "",
+				"e75": "ESP_IO0",
+				"e76": "BOOST_EN",
+				"e77": "",
+				"e78": "",
+				"e79": "SPI_CS",
+				"e80": "SPI_SCLK",
+				"e81": "SPI_MISO",
+				"e82": "",
+				"e83": "AMP_I2C_SDA",
+				"e84": "ESP_RXD",
+				"e85": "ESP_TXD",
+				"e86": "I2S_DIN",
+				"e87": "SPI_MOSI",
+				"e88": "GND",
+				"e89": "GND",
+				"e90": "GND",
+				"e91": "GND",
+				"e92": "GND",
+				"e93": "GND",
+				"e94": "GND",
+				"e95": "GND",
+				"e96": "GND",
+				"e97": "GND"
+			},
+			"pinName": {
+				"e51": "GND",
+				"e52": "3V3",
+				"e53": "EN",
+				"e54": "SENSOR_VP",
+				"e55": "SENSOR_VN",
+				"e56": "IO34",
+				"e57": "IO35",
+				"e58": "IO32",
+				"e59": "IO33",
+				"e60": "IO25",
+				"e61": "IO26",
+				"e62": "IO27",
+				"e63": "IO14",
+				"e64": "IO12",
+				"e65": "GND",
+				"e66": "IO13",
+				"e67": "NC",
+				"e68": "NC",
+				"e69": "NC",
+				"e70": "NC",
+				"e71": "NC",
+				"e72": "NC",
+				"e73": "IO15",
+				"e74": "IO2",
+				"e75": "IO0",
+				"e76": "IO4",
+				"e77": "IO16",
+				"e78": "IO17",
+				"e79": "IO5",
+				"e80": "IO18",
+				"e81": "IO19",
+				"e82": "NC",
+				"e83": "IO21",
+				"e84": "RXD0",
+				"e85": "TXD0",
+				"e86": "IO22",
+				"e87": "IO23",
+				"e88": "GND",
+				"e89": "GND",
+				"e90": "GND",
+				"e91": "GND",
+				"e92": "GND",
+				"e93": "GND",
+				"e94": "GND",
+				"e95": "GND",
+				"e96": "GND",
+				"e97": "GND"
+			},
+			"reuseModules": {
+				"moduleName": "",
+				"groupID": "",
+				"channelID": "$1I1866"
+			}
+		},
+		"U2": {
+			"name": "SGM2036-3.3YUDH4G/TR",
+			"footprint": "USPQ-4B04_L1.0-W1.0-P0.65-BL-EP",
+			"layer": 1,
+			"location": [
+				20.0001,
+				30.0001
+			],
+			"rotation": 90,
+			"nets": {
+				"e17": "GND",
+				"e18": "VBUS_5V",
+				"e19": "GND",
+				"e20": "VBUS_5V",
+				"e21": "VCC_3V3"
+			},
+			"pinName": {
+				"e17": "EP",
+				"e18": "IN",
+				"e19": "GND",
+				"e20": "EN",
+				"e21": "OUT"
+			},
+			"reuseModules": {
+				"moduleName": "",
+				"groupID": "",
+				"channelID": "$1I1867"
+			}
+		},
+		"U3": {
+			"name": "MP3426DL",
+			"footprint": "DFN-14_L4.0-W3.0-P0.50-BL-EP",
+			"layer": 1,
+			"location": [
+				60.0002,
+				30.0001
+			],
+			"rotation": 180,
+			"nets": {
+				"e11": "BOOST_COMP",
+				"e12": "BOOST_EN",
+				"e13": "VBUS_5V",
+				"e14": "BOOST_SW",
+				"e15": "BOOST_SW",
+				"e16": "BOOST_SW",
+				"e17": "BOOST_VDD",
+				"e18": "GND",
+				"e19": "GND",
+				"e20": "GND",
+				"e21": "GND",
+				"e22": "",
+				"e23": "BOOST_FB",
+				"e24": "BOOST_FSET",
+				"e25": "GND"
+			},
+			"pinName": {
+				"e11": "COMP",
+				"e12": "EN",
+				"e13": "VIN",
+				"e14": "SW",
+				"e15": "SW",
+				"e16": "SW",
+				"e17": "VDD",
+				"e18": "PGND",
+				"e19": "PGND",
+				"e20": "PGND",
+				"e21": "AGND",
+				"e22": "SS",
+				"e23": "FB",
+				"e24": "FSET",
+				"e25": "EP"
+			},
+			"reuseModules": {
+				"moduleName": "",
+				"groupID": "",
+				"channelID": "$1I1868"
+			}
+		},
+		"U4": {
+			"name": "TAS5805MPWPR",
+			"footprint": "HTSSOP-28_L9.7-W4.4-P0.65-LS6.4-BL-EP",
+			"layer": 1,
+			"location": [
+				60.0002,
+				15
+			],
+			"rotation": 0,
+			"nets": {
+				"e10": "GND",
+				"e11": "VCC_3V3",
+				"e12": "GND",
+				"e13": "VR_DIG",
+				"e14": "GND",
+				"e15": "I2S_LRCLK",
+				"e16": "I2S_BCLK",
+				"e17": "I2S_DIN",
+				"e18": "",
+				"e19": "AMP_I2C_SDA",
+				"e20": "AMP_I2C_SCL",
+				"e21": "AMP_PDN",
+				"e22": "AVDD",
+				"e23": "GND",
+				"e24": "PVDD_12V",
+				"e25": "PVDD_12V",
+				"e26": "AMP_OUT_A+",
+				"e27": "BST_A+",
+				"e28": "GND",
+				"e29": "AMP_OUT_A-",
+				"e30": "BST_A-",
+				"e31": "BST_B-",
+				"e32": "AMP_OUT_B-",
+				"e33": "GND",
+				"e34": "BST_B+",
+				"e35": "AMP_OUT_B+",
+				"e36": "PVDD_12V",
+				"e37": "PVDD_12V",
+				"e38": "GND"
+			},
+			"pinName": {
+				"e10": "DGND",
+				"e11": "DVDD",
+				"e12": "ADR/FAULT#",
+				"e13": "VR_DIG",
+				"e14": "DGND",
+				"e15": "LRCLK",
+				"e16": "SCLK",
+				"e17": "SDIN",
+				"e18": "SDOUT",
+				"e19": "SDA",
+				"e20": "SCL",
+				"e21": "PDN#",
+				"e22": "AVDD",
+				"e23": "AGND",
+				"e24": "PVDD",
+				"e25": "PVDD",
+				"e26": "OUT_A+",
+				"e27": "BST_A+",
+				"e28": "PGND",
+				"e29": "OUT_A-",
+				"e30": "BST_A-",
+				"e31": "BST_B-",
+				"e32": "OUT_B-",
+				"e33": "PGND",
+				"e34": "BST_B+",
+				"e35": "OUT_B+",
+				"e36": "PVDD",
+				"e37": "PVDD",
+				"e38": "EP"
+			},
+			"reuseModules": {
+				"moduleName": "",
+				"groupID": "",
+				"channelID": "$1I1869"
+			}
+		},
+		"U5": {
+			"name": "LSM6DSOXTR",
+			"footprint": "LGA-14L_L3.0-W2.5-P0.50-TL",
+			"layer": 1,
+			"location": [
+				20.0001,
+				15
+			],
+			"rotation": 270,
+			"nets": {
+				"e9": "SPI_MISO",
+				"e10": "",
+				"e11": "",
+				"e12": "SENSOR_INT1",
+				"e13": "VCC_3V3",
+				"e14": "GND",
+				"e15": "GND",
+				"e16": "VCC_3V3",
+				"e17": "",
+				"e18": "",
+				"e19": "",
+				"e20": "SPI_CS",
+				"e21": "SPI_SCLK",
+				"e22": "SPI_MOSI"
+			},
+			"pinName": {
+				"e9": "SDO/SA0",
+				"e10": "SDX",
+				"e11": "SCX",
+				"e12": "INT1",
+				"e13": "VDDIO",
+				"e14": "GND",
+				"e15": "GND",
+				"e16": "VDD",
+				"e17": "INT2",
+				"e18": "OSC_AUX",
+				"e19": "SDO_AUX",
+				"e20": "CS",
+				"e21": "SCL",
+				"e22": "SDA"
+			},
+			"reuseModules": {
+				"moduleName": "",
+				"groupID": "",
+				"channelID": "$1I1870"
+			}
+		},
+		"UART_HDR": {
+			"name": "B-2100S06P-A110",
+			"footprint": "HDR-TH_6P-P2.54-V_Z-211-0611-0021-001",
+			"layer": 1,
+			"location": [
+				40.0001,
+				10
+			],
+			"rotation": 0,
+			"nets": {
+				"e14": "VCC_3V3",
+				"e15": "ESP_EN",
+				"e16": "ESP_IO0",
+				"e17": "ESP_TXD",
+				"e18": "ESP_RXD",
+				"e19": "GND"
+			},
+			"pinName": {
+				"e14": "1",
+				"e15": "2",
+				"e16": "3",
+				"e17": "4",
+				"e18": "5",
+				"e19": "6"
+			},
+			"reuseModules": {
+				"moduleName": "",
+				"groupID": "",
+				"channelID": "$1I1874"
+			}
+		},
+		"USB_C": {
+			"name": "TYPE-C-31-M-12",
+			"footprint": "USB-C_SMD-TYPE-C-31-M-12_1",
+			"layer": 1,
+			"location": [
+				8,
+				30.0001
+			],
+			"rotation": 90,
+			"nets": {
+				"e26": "",
+				"e27": "USB_CC1",
+				"e28": "",
+				"e29": "",
+				"e30": "",
+				"e31": "",
+				"e32": "",
+				"e33": "USB_CC2",
+				"e34": "GND",
+				"e35": "GND",
+				"e36": "VBUS_5V",
+				"e37": "VBUS_5V",
+				"e56": "",
+				"e57": "",
+				"e58": "",
+				"e59": ""
+			},
+			"pinName": {
+				"e26": "SBU2",
+				"e27": "CC1",
+				"e28": "DN2",
+				"e29": "DP1",
+				"e30": "DN1",
+				"e31": "DP2",
+				"e32": "SBU1",
+				"e33": "CC2",
+				"e34": "GND",
+				"e35": "GND",
+				"e36": "VBUS",
+				"e37": "VBUS",
+				"e56": "EH",
+				"e57": "EH",
+				"e58": "EH",
+				"e59": "EH"
+			},
+			"reuseModules": {
+				"moduleName": "",
+				"groupID": "",
+				"channelID": "$1I1873"
+			}
+		}
+	},
+	"footprints": {
+		"C0603": {
+			"pads": {
+				"e14": {
+					"number": "2",
+					"layers": [
+						1
+					],
+					"location": [
+						0.7,
+						0
+					],
+					"path": [
+						[
+							0.3000254000508001,
+							-0.45000000000000007
+						],
+						[
+							0.3000254000508001,
+							0.45000000000000007
+						],
+						[
+							1.1000254000508003,
+							0.45000000000000007
+						],
+						[
+							1.1000254000508003,
+							-0.45000000000000007
+						],
+						[
+							0.3000254000508001,
+							-0.45000000000000007
+						]
+					],
+					"diameter": null
+				},
+				"e15": {
+					"number": "1",
+					"layers": [
+						1
+					],
+					"location": [
+						-0.7,
+						0
+					],
+					"path": [
+						[
+							-1.1000254000508003,
+							-0.45000000000000007
+						],
+						[
+							-1.1000254000508003,
+							0.45000000000000007
+						],
+						[
+							-0.3000254000508001,
+							0.45000000000000007
+						],
+						[
+							-0.3000254000508001,
+							-0.45000000000000007
+						],
+						[
+							-1.1000254000508003,
+							-0.45000000000000007
+						]
+					],
+					"diameter": null
+				}
+			},
+			"bbox": [
+				-1.5169,
+				1.517,
+				-0.837,
+				0.8371
+			]
+		},
+		"C0805": {
+			"pads": {
+				"e15": {
+					"number": "2",
+					"layers": [
+						1
+					],
+					"location": [
+						1,
+						0
+					],
+					"path": [
+						[
+							0.29499618999238003,
+							-0.6750063500127
+						],
+						[
+							0.29499618999238003,
+							0.6750063500127
+						],
+						[
+							1.7050038100076204,
+							0.6750063500127
+						],
+						[
+							1.7050038100076204,
+							-0.6750063500127
+						],
+						[
+							0.29499618999238003,
+							-0.6750063500127
+						]
+					],
+					"diameter": null
+				},
+				"e16": {
+					"number": "1",
+					"layers": [
+						1
+					],
+					"location": [
+						-1,
+						0
+					],
+					"path": [
+						[
+							-1.7050038100076204,
+							-0.6750063500127
+						],
+						[
+							-1.7050038100076204,
+							0.6750063500127
+						],
+						[
+							-0.29499618999238003,
+							0.6750063500127
+						],
+						[
+							-0.29499618999238003,
+							-0.6750063500127
+						],
+						[
+							-1.7050038100076204,
+							-0.6750063500127
+						]
+					],
+					"diameter": null
+				}
+			},
+			"bbox": [
+				-2.0398,
+				2.0398,
+				-0.9798,
+				0.9798
+			]
+		},
+		"SMA_L4.3-W2.6-LS5.2-RD": {
+			"pads": {
+				"e12": {
+					"number": "2",
+					"layers": [
+						1
+					],
+					"location": [
+						2.1999,
+						0
+					],
+					"path": [
+						[
+							3.1998983997968,
+							1
+						],
+						[
+							3.1998983997968,
+							-1.0000000000000002
+						],
+						[
+							1.1998983997967998,
+							-1
+						],
+						[
+							1.1998983997967998,
+							1.0000000000000002
+						],
+						[
+							3.1998983997968,
+							1
+						]
+					],
+					"diameter": null
+				},
+				"e13": {
+					"number": "1",
+					"layers": [
+						1
+					],
+					"location": [
+						-2.1999,
+						0
+					],
+					"path": [
+						[
+							-1.1998983997967998,
+							1
+						],
+						[
+							-1.1998983997967998,
+							-1.0000000000000002
+						],
+						[
+							-3.1998983997968,
+							-1
+						],
+						[
+							-3.1998983997968,
+							1.0000000000000002
+						],
+						[
+							-1.1998983997967998,
+							1
+						]
+					],
+					"diameter": null
+				}
+			},
+			"bbox": [
+				-3.1999,
+				3.1999,
+				-1.5051,
+				1.505
+			]
+		},
+		"SOT-23-6_L2.9-W1.6-P0.95-LS2.8-BL": {
+			"pads": {
+				"e7": {
+					"number": "1",
+					"layers": [
+						1
+					],
+					"location": [
+						-0.95,
+						-1.1491
+					],
+					"path": [
+						[
+							-1.2159639319278641,
+							-1.6851028702057405
+						],
+						[
+							-1.2159639319278641,
+							-0.6130937261874525
+						],
+						[
+							-0.6839598679197358,
+							-0.6130937261874525
+						],
+						[
+							-0.6839598679197358,
+							-1.6851028702057405
+						],
+						[
+							-1.2159639319278641,
+							-1.6851028702057405
+						]
+					],
+					"diameter": null
+				},
+				"e8": {
+					"number": "2",
+					"layers": [
+						1
+					],
+					"location": [
+						0,
+						-1.1491
+					],
+					"path": [
+						[
+							-0.266002032004064,
+							-1.6851028702057405
+						],
+						[
+							-0.266002032004064,
+							-0.6130937261874525
+						],
+						[
+							0.266002032004064,
+							-0.6130937261874525
+						],
+						[
+							0.266002032004064,
+							-1.6851028702057405
+						],
+						[
+							-0.266002032004064,
+							-1.6851028702057405
+						]
+					],
+					"diameter": null
+				},
+				"e9": {
+					"number": "3",
+					"layers": [
+						1
+					],
+					"location": [
+						0.95,
+						-1.1491
+					],
+					"path": [
+						[
+							0.6839598679197358,
+							-1.6851028702057405
+						],
+						[
+							0.6839598679197358,
+							-0.6130937261874525
+						],
+						[
+							1.2159639319278641,
+							-0.6130937261874525
+						],
+						[
+							1.2159639319278641,
+							-1.6851028702057405
+						],
+						[
+							0.6839598679197358,
+							-1.6851028702057405
+						]
+					],
+					"diameter": null
+				},
+				"e10": {
+					"number": "4",
+					"layers": [
+						1
+					],
+					"location": [
+						0.95,
+						1.1491
+					],
+					"path": [
+						[
+							0.6839598679197358,
+							0.6130937261874525
+						],
+						[
+							0.6839598679197358,
+							1.6851028702057405
+						],
+						[
+							1.2159639319278641,
+							1.6851028702057405
+						],
+						[
+							1.2159639319278641,
+							0.6130937261874525
+						],
+						[
+							0.6839598679197358,
+							0.6130937261874525
+						]
+					],
+					"diameter": null
+				},
+				"e11": {
+					"number": "5",
+					"layers": [
+						1
+					],
+					"location": [
+						0,
+						1.1491
+					],
+					"path": [
+						[
+							-0.266002032004064,
+							0.6130937261874525
+						],
+						[
+							-0.266002032004064,
+							1.6851028702057405
+						],
+						[
+							0.266002032004064,
+							1.6851028702057405
+						],
+						[
+							0.266002032004064,
+							0.6130937261874525
+						],
+						[
+							-0.266002032004064,
+							0.6130937261874525
+						]
+					],
+					"diameter": null
+				},
+				"e12": {
+					"number": "6",
+					"layers": [
+						1
+					],
+					"location": [
+						-0.95,
+						1.1491
+					],
+					"path": [
+						[
+							-1.2159639319278641,
+							0.6130937261874525
+						],
+						[
+							-1.2159639319278641,
+							1.6851028702057405
+						],
+						[
+							-0.6839598679197358,
+							1.6851028702057405
+						],
+						[
+							-0.6839598679197358,
+							0.6130937261874525
+						],
+						[
+							-1.2159639319278641,
+							0.6130937261874525
+						]
+					],
+					"diameter": null
+				}
+			},
+			"bbox": [
+				-1.9684,
+				1.6154,
+				-1.88,
+				1.6851
+			]
+		},
+		"R0603": {
+			"pads": {
+				"e7": {
+					"number": "2",
+					"layers": [
+						1
+					],
+					"location": [
+						0.7534,
+						0
+					],
+					"path": [
+						[
+							0.3501270002540006,
+							-0.432004064008128
+						],
+						[
+							0.3501270002540006,
+							0.432004064008128
+						],
+						[
+							1.1566040132080266,
+							0.432004064008128
+						],
+						[
+							1.1566040132080266,
+							-0.432004064008128
+						],
+						[
+							0.3501270002540006,
+							-0.432004064008128
+						]
+					],
+					"diameter": null
+				},
+				"e8": {
+					"number": "1",
+					"layers": [
+						1
+					],
+					"location": [
+						-0.7534,
+						0
+					],
+					"path": [
+						[
+							-1.1566040132080266,
+							-0.432004064008128
+						],
+						[
+							-1.1566040132080266,
+							0.432004064008128
+						],
+						[
+							-0.3501270002540006,
+							0.432004064008128
+						],
+						[
+							-0.3501270002540006,
+							-0.432004064008128
+						],
+						[
+							-1.1566040132080266,
+							-0.432004064008128
+						]
+					],
+					"diameter": null
+				}
+			},
+			"bbox": [
+				-1.4613,
+				1.4613,
+				-0.7368,
+				0.7368
+			]
+		},
+		"HDR-TH_2P-P2.54-V-M-1": {
+			"pads": {
+				"e6": {
+					"number": "2",
+					"layers": [
+						1,
+						2,
+						15,
+						16
+					],
+					"location": [
+						1.27,
+						0
+					],
+					"path": [
+						[
+							2.1700025400050804,
+							0
+						],
+						[
+							0.3700025400050801,
+							0,
+							-180
+						],
+						[
+							2.1700025400050804,
+							0,
+							-180
+						]
+					],
+					"diameter": 1.8
+				},
+				"e7": {
+					"number": "1",
+					"layers": [
+						1,
+						2,
+						15,
+						16
+					],
+					"location": [
+						-1.27,
+						0
+					],
+					"path": [
+						[
+							-2.1700025400050804,
+							-0.9000000000000001
+						],
+						[
+							-2.1700025400050804,
+							0.9000000000000001
+						],
+						[
+							-0.3700025400050801,
+							0.9000000000000001
+						],
+						[
+							-0.3700025400050801,
+							-0.9000000000000001
+						],
+						[
+							-2.1700025400050804,
+							-0.9000000000000001
+						]
+					],
+					"diameter": null
+				}
+			},
+			"bbox": [
+				-2.667,
+				2.667,
+				-1.397,
+				1.397
+			]
+		},
+		"R0402": {
+			"pads": {
+				"e12": {
+					"number": "2",
+					"layers": [
+						1
+					],
+					"location": [
+						0.4328,
+						0
+					],
+					"path": [
+						[
+							0.14998729997459997,
+							-0.27000254000508006
+						],
+						[
+							0.14998729997459997,
+							0.27000254000508006
+						],
+						[
+							0.7156464312928627,
+							0.27000254000508006
+						],
+						[
+							0.7156464312928627,
+							-0.27000254000508006
+						],
+						[
+							0.14998729997459997,
+							-0.27000254000508006
+						]
+					],
+					"diameter": null
+				},
+				"e13": {
+					"number": "1",
+					"layers": [
+						1
+					],
+					"location": [
+						-0.4328,
+						0
+					],
+					"path": [
+						[
+							-0.7156464312928627,
+							-0.27000254000508006
+						],
+						[
+							-0.7156464312928627,
+							0.27000254000508006
+						],
+						[
+							-0.14998729997459997,
+							0.27000254000508006
+						],
+						[
+							-0.14998729997459997,
+							-0.27000254000508006
+						],
+						[
+							-0.7156464312928627,
+							-0.27000254000508006
+						]
+					],
+					"diameter": null
+				}
+			},
+			"bbox": [
+				-1.0204,
+				1.0204,
+				-0.5748,
+				0.5748
+			]
+		},
+		"WIFI-SMD_ESP32-WROOM-32E": {
+			"pads": {
+				"e51": {
+					"number": "1",
+					"layers": [
+						1
+					],
+					"location": [
+						-9.0025,
+						-9.0001
+					],
+					"path": [
+						[
+							-9.477546355092711,
+							-10.050127000254001
+						],
+						[
+							-9.477546355092711,
+							-7.950127000254
+						],
+						[
+							-8.52753365506731,
+							-7.950127000254
+						],
+						[
+							-8.52753365506731,
+							-10.050127000254001
+						],
+						[
+							-9.477546355092711,
+							-10.050127000254001
+						]
+					],
+					"diameter": null
+				},
+				"e52": {
+					"number": "2",
+					"layers": [
+						1
+					],
+					"location": [
+						-7.7325,
+						-9.0001
+					],
+					"path": [
+						[
+							-8.20754381508763,
+							-10.050127000254001
+						],
+						[
+							-8.20754381508763,
+							-7.950127000254
+						],
+						[
+							-7.257531115062231,
+							-7.950127000254
+						],
+						[
+							-7.257531115062231,
+							-10.050127000254001
+						],
+						[
+							-8.20754381508763,
+							-10.050127000254001
+						]
+					],
+					"diameter": null
+				},
+				"e53": {
+					"number": "3",
+					"layers": [
+						1
+					],
+					"location": [
+						-6.4625,
+						-9.0001
+					],
+					"path": [
+						[
+							-6.937541275082552,
+							-10.050127000254001
+						],
+						[
+							-6.937541275082552,
+							-7.950127000254
+						],
+						[
+							-5.987528575057151,
+							-7.950127000254
+						],
+						[
+							-5.987528575057151,
+							-10.050127000254001
+						],
+						[
+							-6.937541275082552,
+							-10.050127000254001
+						]
+					],
+					"diameter": null
+				},
+				"e54": {
+					"number": "4",
+					"layers": [
+						1
+					],
+					"location": [
+						-5.1925,
+						-9.0001
+					],
+					"path": [
+						[
+							-5.667538735077471,
+							-10.050127000254001
+						],
+						[
+							-5.667538735077471,
+							-7.950127000254
+						],
+						[
+							-4.717526035052071,
+							-7.950127000254
+						],
+						[
+							-4.717526035052071,
+							-10.050127000254001
+						],
+						[
+							-5.667538735077471,
+							-10.050127000254001
+						]
+					],
+					"diameter": null
+				},
+				"e55": {
+					"number": "5",
+					"layers": [
+						1
+					],
+					"location": [
+						-3.9225,
+						-9.0001
+					],
+					"path": [
+						[
+							-4.397536195072392,
+							-10.050127000254001
+						],
+						[
+							-4.397536195072392,
+							-7.950127000254
+						],
+						[
+							-3.447523495046991,
+							-7.950127000254
+						],
+						[
+							-3.447523495046991,
+							-10.050127000254001
+						],
+						[
+							-4.397536195072392,
+							-10.050127000254001
+						]
+					],
+					"diameter": null
+				},
+				"e56": {
+					"number": "6",
+					"layers": [
+						1
+					],
+					"location": [
+						-2.6525,
+						-9.0001
+					],
+					"path": [
+						[
+							-3.127533655067311,
+							-10.050127000254001
+						],
+						[
+							-3.127533655067311,
+							-7.950127000254
+						],
+						[
+							-2.1775209550419103,
+							-7.950127000254
+						],
+						[
+							-2.1775209550419103,
+							-10.050127000254001
+						],
+						[
+							-3.127533655067311,
+							-10.050127000254001
+						]
+					],
+					"diameter": null
+				},
+				"e57": {
+					"number": "7",
+					"layers": [
+						1
+					],
+					"location": [
+						-1.3825,
+						-9.0001
+					],
+					"path": [
+						[
+							-1.8575311150622302,
+							-10.050127000254001
+						],
+						[
+							-1.8575311150622302,
+							-7.950127000254
+						],
+						[
+							-0.9075184150368302,
+							-7.950127000254
+						],
+						[
+							-0.9075184150368302,
+							-10.050127000254001
+						],
+						[
+							-1.8575311150622302,
+							-10.050127000254001
+						]
+					],
+					"diameter": null
+				},
+				"e58": {
+					"number": "8",
+					"layers": [
+						1
+					],
+					"location": [
+						-0.1125,
+						-9.0001
+					],
+					"path": [
+						[
+							-0.5875285750571502,
+							-10.050127000254001
+						],
+						[
+							-0.5875285750571502,
+							-7.950127000254
+						],
+						[
+							0.36248412496825005,
+							-7.950127000254
+						],
+						[
+							0.36248412496825005,
+							-10.050127000254001
+						],
+						[
+							-0.5875285750571502,
+							-10.050127000254001
+						]
+					],
+					"diameter": null
+				},
+				"e59": {
+					"number": "9",
+					"layers": [
+						1
+					],
+					"location": [
+						1.1575,
+						-9.0001
+					],
+					"path": [
+						[
+							0.6824739649479301,
+							-10.050127000254001
+						],
+						[
+							0.6824739649479301,
+							-7.950127000254
+						],
+						[
+							1.6324866649733303,
+							-7.950127000254
+						],
+						[
+							1.6324866649733303,
+							-10.050127000254001
+						],
+						[
+							0.6824739649479301,
+							-10.050127000254001
+						]
+					],
+					"diameter": null
+				},
+				"e60": {
+					"number": "10",
+					"layers": [
+						1
+					],
+					"location": [
+						2.4275,
+						-9.0001
+					],
+					"path": [
+						[
+							1.9524765049530097,
+							-10.050127000254001
+						],
+						[
+							1.9524765049530097,
+							-7.950127000254
+						],
+						[
+							2.9024892049784103,
+							-7.950127000254
+						],
+						[
+							2.9024892049784103,
+							-10.050127000254001
+						],
+						[
+							1.9524765049530097,
+							-10.050127000254001
+						]
+					],
+					"diameter": null
+				},
+				"e61": {
+					"number": "11",
+					"layers": [
+						1
+					],
+					"location": [
+						3.6975,
+						-9.0001
+					],
+					"path": [
+						[
+							3.2224790449580896,
+							-10.050127000254001
+						],
+						[
+							3.2224790449580896,
+							-7.950127000254
+						],
+						[
+							4.17249174498349,
+							-7.950127000254
+						],
+						[
+							4.17249174498349,
+							-10.050127000254001
+						],
+						[
+							3.2224790449580896,
+							-10.050127000254001
+						]
+					],
+					"diameter": null
+				},
+				"e62": {
+					"number": "12",
+					"layers": [
+						1
+					],
+					"location": [
+						4.9675,
+						-9.0001
+					],
+					"path": [
+						[
+							4.49248158496317,
+							-10.050127000254001
+						],
+						[
+							4.49248158496317,
+							-7.950127000254
+						],
+						[
+							5.4424942849885705,
+							-7.950127000254
+						],
+						[
+							5.4424942849885705,
+							-10.050127000254001
+						],
+						[
+							4.49248158496317,
+							-10.050127000254001
+						]
+					],
+					"diameter": null
+				},
+				"e63": {
+					"number": "13",
+					"layers": [
+						1
+					],
+					"location": [
+						6.2375,
+						-9.0001
+					],
+					"path": [
+						[
+							5.76248412496825,
+							-10.050127000254001
+						],
+						[
+							5.76248412496825,
+							-7.950127000254
+						],
+						[
+							6.712496824993651,
+							-7.950127000254
+						],
+						[
+							6.712496824993651,
+							-10.050127000254001
+						],
+						[
+							5.76248412496825,
+							-10.050127000254001
+						]
+					],
+					"diameter": null
+				},
+				"e64": {
+					"number": "14",
+					"layers": [
+						1
+					],
+					"location": [
+						7.5075,
+						-9.0001
+					],
+					"path": [
+						[
+							7.03248666497333,
+							-10.050127000254001
+						],
+						[
+							7.03248666497333,
+							-7.950127000254
+						],
+						[
+							7.982499364998731,
+							-7.950127000254
+						],
+						[
+							7.982499364998731,
+							-10.050127000254001
+						],
+						[
+							7.03248666497333,
+							-10.050127000254001
+						]
+					],
+					"diameter": null
+				},
+				"e65": {
+					"number": "15",
+					"layers": [
+						1
+					],
+					"location": [
+						9.0025,
+						-5.7149
+					],
+					"path": [
+						[
+							7.95254000508001,
+							-6.189890779781561
+						],
+						[
+							7.95254000508001,
+							-5.23987807975616
+						],
+						[
+							10.052540005080012,
+							-5.23987807975616
+						],
+						[
+							10.052540005080012,
+							-6.189890779781561
+						],
+						[
+							7.95254000508001,
+							-6.189890779781561
+						]
+					],
+					"diameter": null
+				},
+				"e66": {
+					"number": "16",
+					"layers": [
+						1
+					],
+					"location": [
+						9.0025,
+						-4.4449
+					],
+					"path": [
+						[
+							7.95254000508001,
+							-4.919888239776481
+						],
+						[
+							7.95254000508001,
+							-3.9698755397510803
+						],
+						[
+							10.052540005080012,
+							-3.9698755397510803
+						],
+						[
+							10.052540005080012,
+							-4.919888239776481
+						],
+						[
+							7.95254000508001,
+							-4.919888239776481
+						]
+					],
+					"diameter": null
+				},
+				"e67": {
+					"number": "17",
+					"layers": [
+						1
+					],
+					"location": [
+						9.0025,
+						-3.1749
+					],
+					"path": [
+						[
+							7.95254000508001,
+							-3.6498856997714006
+						],
+						[
+							7.95254000508001,
+							-2.699872999746
+						],
+						[
+							10.052540005080012,
+							-2.699872999746
+						],
+						[
+							10.052540005080012,
+							-3.6498856997714006
+						],
+						[
+							7.95254000508001,
+							-3.6498856997714006
+						]
+					],
+					"diameter": null
+				},
+				"e68": {
+					"number": "18",
+					"layers": [
+						1
+					],
+					"location": [
+						9.0025,
+						-1.9049
+					],
+					"path": [
+						[
+							7.95254000508001,
+							-2.3798831597663197
+						],
+						[
+							7.95254000508001,
+							-1.4298704597409198
+						],
+						[
+							10.052540005080012,
+							-1.4298704597409198
+						],
+						[
+							10.052540005080012,
+							-2.3798831597663197
+						],
+						[
+							7.95254000508001,
+							-2.3798831597663197
+						]
+					],
+					"diameter": null
+				},
+				"e69": {
+					"number": "19",
+					"layers": [
+						1
+					],
+					"location": [
+						9.0025,
+						-0.6349
+					],
+					"path": [
+						[
+							7.95254000508001,
+							-1.1098806197612396
+						],
+						[
+							7.95254000508001,
+							-0.15986791973583953
+						],
+						[
+							10.052540005080012,
+							-0.15986791973583953
+						],
+						[
+							10.052540005080012,
+							-1.1098806197612396
+						],
+						[
+							7.95254000508001,
+							-1.1098806197612396
+						]
+					],
+					"diameter": null
+				},
+				"e70": {
+					"number": "20",
+					"layers": [
+						1
+					],
+					"location": [
+						9.0025,
+						0.6351
+					],
+					"path": [
+						[
+							7.95254000508001,
+							0.16012192024384042
+						],
+						[
+							7.95254000508001,
+							1.1101346202692406
+						],
+						[
+							10.052540005080012,
+							1.1101346202692406
+						],
+						[
+							10.052540005080012,
+							0.16012192024384042
+						],
+						[
+							7.95254000508001,
+							0.16012192024384042
+						]
+					],
+					"diameter": null
+				},
+				"e71": {
+					"number": "21",
+					"layers": [
+						1
+					],
+					"location": [
+						9.0025,
+						1.9051
+					],
+					"path": [
+						[
+							7.95254000508001,
+							1.4301244602489207
+						],
+						[
+							7.95254000508001,
+							2.380137160274321
+						],
+						[
+							10.052540005080012,
+							2.380137160274321
+						],
+						[
+							10.052540005080012,
+							1.4301244602489207
+						],
+						[
+							7.95254000508001,
+							1.4301244602489207
+						]
+					],
+					"diameter": null
+				},
+				"e72": {
+					"number": "22",
+					"layers": [
+						1
+					],
+					"location": [
+						9.0025,
+						3.1751
+					],
+					"path": [
+						[
+							7.95254000508001,
+							2.7001270002540005
+						],
+						[
+							7.95254000508001,
+							3.650139700279401
+						],
+						[
+							10.052540005080012,
+							3.650139700279401
+						],
+						[
+							10.052540005080012,
+							2.7001270002540005
+						],
+						[
+							7.95254000508001,
+							2.7001270002540005
+						]
+					],
+					"diameter": null
+				},
+				"e73": {
+					"number": "23",
+					"layers": [
+						1
+					],
+					"location": [
+						9.0025,
+						4.4451
+					],
+					"path": [
+						[
+							7.95254000508001,
+							3.9701295402590806
+						],
+						[
+							7.95254000508001,
+							4.920142240284481
+						],
+						[
+							10.052540005080012,
+							4.920142240284481
+						],
+						[
+							10.052540005080012,
+							3.9701295402590806
+						],
+						[
+							7.95254000508001,
+							3.9701295402590806
+						]
+					],
+					"diameter": null
+				},
+				"e74": {
+					"number": "24",
+					"layers": [
+						1
+					],
+					"location": [
+						9.0025,
+						5.7151
+					],
+					"path": [
+						[
+							7.95254000508001,
+							5.240132080264161
+						],
+						[
+							7.95254000508001,
+							6.190144780289561
+						],
+						[
+							10.052540005080012,
+							6.190144780289561
+						],
+						[
+							10.052540005080012,
+							5.240132080264161
+						],
+						[
+							7.95254000508001,
+							5.240132080264161
+						]
+					],
+					"diameter": null
+				},
+				"e75": {
+					"number": "25",
+					"layers": [
+						1
+					],
+					"location": [
+						7.5075,
+						9.0001
+					],
+					"path": [
+						[
+							7.03248666497333,
+							7.950127000254
+						],
+						[
+							7.03248666497333,
+							10.050127000254001
+						],
+						[
+							7.982499364998731,
+							10.050127000254001
+						],
+						[
+							7.982499364998731,
+							7.950127000254
+						],
+						[
+							7.03248666497333,
+							7.950127000254
+						]
+					],
+					"diameter": null
+				},
+				"e76": {
+					"number": "26",
+					"layers": [
+						1
+					],
+					"location": [
+						6.2375,
+						9.0001
+					],
+					"path": [
+						[
+							5.76248412496825,
+							7.950127000254
+						],
+						[
+							5.76248412496825,
+							10.050127000254001
+						],
+						[
+							6.712496824993651,
+							10.050127000254001
+						],
+						[
+							6.712496824993651,
+							7.950127000254
+						],
+						[
+							5.76248412496825,
+							7.950127000254
+						]
+					],
+					"diameter": null
+				},
+				"e77": {
+					"number": "27",
+					"layers": [
+						1
+					],
+					"location": [
+						4.9675,
+						9.0001
+					],
+					"path": [
+						[
+							4.49248158496317,
+							7.950127000254
+						],
+						[
+							4.49248158496317,
+							10.050127000254001
+						],
+						[
+							5.4424942849885705,
+							10.050127000254001
+						],
+						[
+							5.4424942849885705,
+							7.950127000254
+						],
+						[
+							4.49248158496317,
+							7.950127000254
+						]
+					],
+					"diameter": null
+				},
+				"e78": {
+					"number": "28",
+					"layers": [
+						1
+					],
+					"location": [
+						3.6975,
+						9.0001
+					],
+					"path": [
+						[
+							3.2224790449580896,
+							7.950127000254
+						],
+						[
+							3.2224790449580896,
+							10.050127000254001
+						],
+						[
+							4.17249174498349,
+							10.050127000254001
+						],
+						[
+							4.17249174498349,
+							7.950127000254
+						],
+						[
+							3.2224790449580896,
+							7.950127000254
+						]
+					],
+					"diameter": null
+				},
+				"e79": {
+					"number": "29",
+					"layers": [
+						1
+					],
+					"location": [
+						2.4275,
+						9.0001
+					],
+					"path": [
+						[
+							1.9524765049530097,
+							7.950127000254
+						],
+						[
+							1.9524765049530097,
+							10.050127000254001
+						],
+						[
+							2.9024892049784103,
+							10.050127000254001
+						],
+						[
+							2.9024892049784103,
+							7.950127000254
+						],
+						[
+							1.9524765049530097,
+							7.950127000254
+						]
+					],
+					"diameter": null
+				},
+				"e80": {
+					"number": "30",
+					"layers": [
+						1
+					],
+					"location": [
+						1.1575,
+						9.0001
+					],
+					"path": [
+						[
+							0.6824739649479301,
+							7.950127000254
+						],
+						[
+							0.6824739649479301,
+							10.050127000254001
+						],
+						[
+							1.6324866649733303,
+							10.050127000254001
+						],
+						[
+							1.6324866649733303,
+							7.950127000254
+						],
+						[
+							0.6824739649479301,
+							7.950127000254
+						]
+					],
+					"diameter": null
+				},
+				"e81": {
+					"number": "31",
+					"layers": [
+						1
+					],
+					"location": [
+						-0.1125,
+						9.0001
+					],
+					"path": [
+						[
+							-0.5875285750571502,
+							7.950127000254
+						],
+						[
+							-0.5875285750571502,
+							10.050127000254001
+						],
+						[
+							0.36248412496825005,
+							10.050127000254001
+						],
+						[
+							0.36248412496825005,
+							7.950127000254
+						],
+						[
+							-0.5875285750571502,
+							7.950127000254
+						]
+					],
+					"diameter": null
+				},
+				"e82": {
+					"number": "32",
+					"layers": [
+						1
+					],
+					"location": [
+						-1.3825,
+						9.0001
+					],
+					"path": [
+						[
+							-1.8575311150622302,
+							7.950127000254
+						],
+						[
+							-1.8575311150622302,
+							10.050127000254001
+						],
+						[
+							-0.9075184150368302,
+							10.050127000254001
+						],
+						[
+							-0.9075184150368302,
+							7.950127000254
+						],
+						[
+							-1.8575311150622302,
+							7.950127000254
+						]
+					],
+					"diameter": null
+				},
+				"e83": {
+					"number": "33",
+					"layers": [
+						1
+					],
+					"location": [
+						-2.6525,
+						9.0001
+					],
+					"path": [
+						[
+							-3.127533655067311,
+							7.950127000254
+						],
+						[
+							-3.127533655067311,
+							10.050127000254001
+						],
+						[
+							-2.1775209550419103,
+							10.050127000254001
+						],
+						[
+							-2.1775209550419103,
+							7.950127000254
+						],
+						[
+							-3.127533655067311,
+							7.950127000254
+						]
+					],
+					"diameter": null
+				},
+				"e84": {
+					"number": "34",
+					"layers": [
+						1
+					],
+					"location": [
+						-3.9225,
+						9.0001
+					],
+					"path": [
+						[
+							-4.397536195072392,
+							7.950127000254
+						],
+						[
+							-4.397536195072392,
+							10.050127000254001
+						],
+						[
+							-3.447523495046991,
+							10.050127000254001
+						],
+						[
+							-3.447523495046991,
+							7.950127000254
+						],
+						[
+							-4.397536195072392,
+							7.950127000254
+						]
+					],
+					"diameter": null
+				},
+				"e85": {
+					"number": "35",
+					"layers": [
+						1
+					],
+					"location": [
+						-5.1925,
+						9.0001
+					],
+					"path": [
+						[
+							-5.667538735077471,
+							7.950127000254
+						],
+						[
+							-5.667538735077471,
+							10.050127000254001
+						],
+						[
+							-4.717526035052071,
+							10.050127000254001
+						],
+						[
+							-4.717526035052071,
+							7.950127000254
+						],
+						[
+							-5.667538735077471,
+							7.950127000254
+						]
+					],
+					"diameter": null
+				},
+				"e86": {
+					"number": "36",
+					"layers": [
+						1
+					],
+					"location": [
+						-6.4625,
+						9.0001
+					],
+					"path": [
+						[
+							-6.937541275082552,
+							7.950127000254
+						],
+						[
+							-6.937541275082552,
+							10.050127000254001
+						],
+						[
+							-5.987528575057151,
+							10.050127000254001
+						],
+						[
+							-5.987528575057151,
+							7.950127000254
+						],
+						[
+							-6.937541275082552,
+							7.950127000254
+						]
+					],
+					"diameter": null
+				},
+				"e87": {
+					"number": "37",
+					"layers": [
+						1
+					],
+					"location": [
+						-7.7325,
+						9.0001
+					],
+					"path": [
+						[
+							-8.20754381508763,
+							7.950127000254
+						],
+						[
+							-8.20754381508763,
+							10.050127000254001
+						],
+						[
+							-7.257531115062231,
+							10.050127000254001
+						],
+						[
+							-7.257531115062231,
+							7.950127000254
+						],
+						[
+							-8.20754381508763,
+							7.950127000254
+						]
+					],
+					"diameter": null
+				},
+				"e88": {
+					"number": "38",
+					"layers": [
+						1
+					],
+					"location": [
+						-9.0025,
+						9.0001
+					],
+					"path": [
+						[
+							-9.477546355092711,
+							7.950127000254
+						],
+						[
+							-9.477546355092711,
+							10.050127000254001
+						],
+						[
+							-8.52753365506731,
+							10.050127000254001
+						],
+						[
+							-8.52753365506731,
+							7.950127000254
+						],
+						[
+							-9.477546355092711,
+							7.950127000254
+						]
+					],
+					"diameter": null
+				},
+				"e89": {
+					"number": "39",
+					"layers": [
+						1
+					],
+					"location": [
+						-1.3216,
+						-1.5003
+					],
+					"path": [
+						[
+							-0.8715646431292866,
+							-1.0502540005080012
+						],
+						[
+							-0.8715646431292866,
+							-1.9502540005080014
+						],
+						[
+							-1.771564643129287,
+							-1.9502540005080011
+						],
+						[
+							-1.7715646431292869,
+							-1.050254000508001
+						],
+						[
+							-0.8715646431292866,
+							-1.0502540005080012
+						]
+					],
+					"diameter": null
+				},
+				"e90": {
+					"number": "39",
+					"layers": [
+						1
+					],
+					"location": [
+						-1.3216,
+						-2.9001
+					],
+					"path": [
+						[
+							-0.8715646431292864,
+							-2.4500508001016006
+						],
+						[
+							-0.8715646431292866,
+							-3.3500508001016005
+						],
+						[
+							-1.7715646431292866,
+							-3.3500508001016005
+						],
+						[
+							-1.7715646431292866,
+							-2.4500508001016006
+						],
+						[
+							-0.8715646431292864,
+							-2.4500508001016006
+						]
+					],
+					"diameter": null
+				},
+				"e91": {
+					"number": "39",
+					"layers": [
+						1
+					],
+					"location": [
+						-1.3216,
+						-0.0999
+					],
+					"path": [
+						[
+							-0.8715646431292864,
+							0.35005080010160017
+						],
+						[
+							-0.8715646431292864,
+							-0.5499491998984
+						],
+						[
+							-1.7715646431292866,
+							-0.5499491998983997
+						],
+						[
+							-1.7715646431292866,
+							0.3500508001016003
+						],
+						[
+							-0.8715646431292864,
+							0.35005080010160017
+						]
+					],
+					"diameter": null
+				},
+				"e92": {
+					"number": "39",
+					"layers": [
+						1
+					],
+					"location": [
+						-2.7216,
+						-0.0999
+					],
+					"path": [
+						[
+							-2.271615443230887,
+							0.3500508001016003
+						],
+						[
+							-2.271615443230887,
+							-0.5499491998983999
+						],
+						[
+							-3.1716154432308867,
+							-0.5499491998983997
+						],
+						[
+							-3.1716154432308867,
+							0.3500508001016004
+						],
+						[
+							-2.271615443230887,
+							0.3500508001016003
+						]
+					],
+					"diameter": null
+				},
+				"e93": {
+					"number": "39",
+					"layers": [
+						1
+					],
+					"location": [
+						-2.7216,
+						-1.5
+					],
+					"path": [
+						[
+							-2.2716154432308864,
+							-1.0500000000000005
+						],
+						[
+							-2.271615443230887,
+							-1.9500000000000008
+						],
+						[
+							-3.1716154432308867,
+							-1.9500000000000004
+						],
+						[
+							-3.1716154432308863,
+							-1.0500000000000003
+						],
+						[
+							-2.2716154432308864,
+							-1.0500000000000005
+						]
+					],
+					"diameter": null
+				},
+				"e94": {
+					"number": "39",
+					"layers": [
+						1
+					],
+					"location": [
+						-2.7216,
+						-2.9001
+					],
+					"path": [
+						[
+							-2.2716154432308864,
+							-2.4500508001016015
+						],
+						[
+							-2.2716154432308864,
+							-3.350050800101601
+						],
+						[
+							-3.1716154432308863,
+							-3.350050800101601
+						],
+						[
+							-3.1716154432308863,
+							-2.4500508001016015
+						],
+						[
+							-2.2716154432308864,
+							-2.4500508001016015
+						]
+					],
+					"diameter": null
+				},
+				"e95": {
+					"number": "39",
+					"layers": [
+						1
+					],
+					"location": [
+						0.0785,
+						-2.9001
+					],
+					"path": [
+						[
+							0.528486156972314,
+							-2.4500508001016006
+						],
+						[
+							0.5284861569723138,
+							-3.3500508001016005
+						],
+						[
+							-0.3715138430276861,
+							-3.3500508001016005
+						],
+						[
+							-0.371513843027686,
+							-2.4500508001016006
+						],
+						[
+							0.528486156972314,
+							-2.4500508001016006
+						]
+					],
+					"diameter": null
+				},
+				"e96": {
+					"number": "39",
+					"layers": [
+						1
+					],
+					"location": [
+						0.0785,
+						-1.5
+					],
+					"path": [
+						[
+							0.528486156972314,
+							-1.05
+						],
+						[
+							0.5284861569723138,
+							-1.9500000000000002
+						],
+						[
+							-0.37151384302768614,
+							-1.9500000000000002
+						],
+						[
+							-0.37151384302768603,
+							-1.05
+						],
+						[
+							0.528486156972314,
+							-1.05
+						]
+					],
+					"diameter": null
+				},
+				"e97": {
+					"number": "39",
+					"layers": [
+						1
+					],
+					"location": [
+						0.0785,
+						-0.0999
+					],
+					"path": [
+						[
+							0.528486156972314,
+							0.3500508001016002
+						],
+						[
+							0.5284861569723138,
+							-0.5499491998984
+						],
+						[
+							-0.3715138430276861,
+							-0.5499491998983997
+						],
+						[
+							-0.371513843027686,
+							0.35005080010160033
+						],
+						[
+							0.528486156972314,
+							0.3500508001016002
+						]
+					],
+					"diameter": null
+				}
+			},
+			"bbox": [
+				-16.6036,
+				10.0525,
+				-10.5792,
+				10.0501
+			]
+		},
+		"USPQ-4B04_L1.0-W1.0-P0.65-BL-EP": {
+			"pads": {
+				"e17": {
+					"number": "5",
+					"layers": [
+						1
+					],
+					"location": [
+						0.0001,
+						0
+					],
+					"path": [
+						[
+							-0.003411227734156748,
+							-0.33588021120065087
+						],
+						[
+							-0.3357532109466504,
+							-0.0035382279881572
+						],
+						[
+							0.003665228242157742,
+							0.33588021120065087
+						],
+						[
+							0.3360072114546514,
+							0.0035382279881571777
+						],
+						[
+							-0.003411227734156748,
+							-0.33588021120065087
+						]
+					],
+					"diameter": null
+				},
+				"e18": {
+					"number": "4",
+					"layers": [
+						1
+					],
+					"location": [
+						-0.325,
+						0.415
+					],
+					"path": [
+						[
+							-0.2,
+							0.41496062992125987
+						],
+						[
+							-0.4499872999746,
+							0.17995935991871986
+						],
+						[
+							-0.4499872999746,
+							0.6499618999237999
+						],
+						[
+							-0.2,
+							0.6499618999237999
+						],
+						[
+							-0.2,
+							0.41496062992125987
+						]
+					],
+					"diameter": null
+				},
+				"e19": {
+					"number": "2",
+					"layers": [
+						1
+					],
+					"location": [
+						0.325,
+						-0.415
+					],
+					"path": [
+						[
+							0.20002540005080013,
+							-0.41503683007366016
+						],
+						[
+							0.45001270002540006,
+							-0.18003556007112015
+						],
+						[
+							0.45001270002540006,
+							-0.6500381000762001
+						],
+						[
+							0.20002540005080013,
+							-0.6500381000762001
+						],
+						[
+							0.20002540005080013,
+							-0.41503683007366016
+						]
+					],
+					"diameter": null
+				},
+				"e20": {
+					"number": "3",
+					"layers": [
+						1
+					],
+					"location": [
+						0.325,
+						0.415
+					],
+					"path": [
+						[
+							0.45001270002540006,
+							0.17995935991871986
+						],
+						[
+							0.20002540005080013,
+							0.41496062992125987
+						],
+						[
+							0.20002540005080013,
+							0.6499618999237999
+						],
+						[
+							0.45001270002540006,
+							0.6499618999237999
+						],
+						[
+							0.45001270002540006,
+							0.17995935991871986
+						]
+					],
+					"diameter": null
+				},
+				"e21": {
+					"number": "1",
+					"layers": [
+						1
+					],
+					"location": [
+						-0.325,
+						-0.415
+					],
+					"path": [
+						[
+							-0.4499872999746,
+							-0.18003556007112015
+						],
+						[
+							-0.2,
+							-0.41503683007366016
+						],
+						[
+							-0.2,
+							-0.6500381000762001
+						],
+						[
+							-0.4499872999746,
+							-0.6500381000762001
+						],
+						[
+							-0.4499872999746,
+							-0.18003556007112015
+						]
+					],
+					"diameter": null
+				}
+			},
+			"bbox": [
+				-0.71,
+				0.71,
+				-1.1545,
+				0.71
+			]
+		},
+		"DFN-14_L4.0-W3.0-P0.50-BL-EP": {
+			"pads": {
+				"e11": {
+					"number": "1",
+					"layers": [
+						1
+					],
+					"location": [
+						-1.5,
+						-1.4501
+					],
+					"path": [
+						[
+							-1.6400050800101602,
+							-1.8000889001778009
+						],
+						[
+							-1.6400050800101602,
+							-1.1000889001778005
+						],
+						[
+							-1.3599949199898402,
+							-1.1000889001778005
+						],
+						[
+							-1.3599949199898402,
+							-1.8000889001778009
+						],
+						[
+							-1.6400050800101602,
+							-1.8000889001778009
+						]
+					],
+					"diameter": null
+				},
+				"e12": {
+					"number": "2",
+					"layers": [
+						1
+					],
+					"location": [
+						-1.0001,
+						-1.4501
+					],
+					"path": [
+						[
+							-1.1401320802641606,
+							-1.8000889001778009
+						],
+						[
+							-1.1401320802641606,
+							-1.1000889001778005
+						],
+						[
+							-0.8601219202438407,
+							-1.1000889001778005
+						],
+						[
+							-0.8601219202438407,
+							-1.8000889001778009
+						],
+						[
+							-1.1401320802641606,
+							-1.8000889001778009
+						]
+					],
+					"diameter": null
+				},
+				"e13": {
+					"number": "3",
+					"layers": [
+						1
+					],
+					"location": [
+						-0.5,
+						-1.4501
+					],
+					"path": [
+						[
+							-0.6400050800101601,
+							-1.8000889001778009
+						],
+						[
+							-0.6400050800101601,
+							-1.1000889001778005
+						],
+						[
+							-0.35999491998984,
+							-1.1000889001778005
+						],
+						[
+							-0.35999491998984,
+							-1.8000889001778009
+						],
+						[
+							-0.6400050800101601,
+							-1.8000889001778009
+						]
+					],
+					"diameter": null
+				},
+				"e14": {
+					"number": "4",
+					"layers": [
+						1
+					],
+					"location": [
+						-0.0001,
+						-1.4501
+					],
+					"path": [
+						[
+							-0.14013208026416052,
+							-1.8000889001778009
+						],
+						[
+							-0.14013208026416052,
+							-1.1000889001778005
+						],
+						[
+							0.1398780797561595,
+							-1.1000889001778005
+						],
+						[
+							0.1398780797561595,
+							-1.8000889001778009
+						],
+						[
+							-0.14013208026416052,
+							-1.8000889001778009
+						]
+					],
+					"diameter": null
+				},
+				"e15": {
+					"number": "5",
+					"layers": [
+						1
+					],
+					"location": [
+						0.5,
+						-1.4501
+					],
+					"path": [
+						[
+							0.35999491998984,
+							-1.8000889001778009
+						],
+						[
+							0.35999491998984,
+							-1.1000889001778005
+						],
+						[
+							0.6400050800101601,
+							-1.1000889001778005
+						],
+						[
+							0.6400050800101601,
+							-1.8000889001778009
+						],
+						[
+							0.35999491998984,
+							-1.8000889001778009
+						]
+					],
+					"diameter": null
+				},
+				"e16": {
+					"number": "6",
+					"layers": [
+						1
+					],
+					"location": [
+						0.9999,
+						-1.4501
+					],
+					"path": [
+						[
+							0.8598679197358395,
+							-1.8000889001778009
+						],
+						[
+							0.8598679197358395,
+							-1.1000889001778005
+						],
+						[
+							1.1398780797561596,
+							-1.1000889001778005
+						],
+						[
+							1.1398780797561596,
+							-1.8000889001778009
+						],
+						[
+							0.8598679197358395,
+							-1.8000889001778009
+						]
+					],
+					"diameter": null
+				},
+				"e17": {
+					"number": "7",
+					"layers": [
+						1
+					],
+					"location": [
+						1.5,
+						-1.4501
+					],
+					"path": [
+						[
+							1.3599949199898402,
+							-1.8000889001778009
+						],
+						[
+							1.3599949199898402,
+							-1.1000889001778005
+						],
+						[
+							1.6400050800101602,
+							-1.1000889001778005
+						],
+						[
+							1.6400050800101602,
+							-1.8000889001778009
+						],
+						[
+							1.3599949199898402,
+							-1.8000889001778009
+						]
+					],
+					"diameter": null
+				},
+				"e18": {
+					"number": "8",
+					"layers": [
+						1
+					],
+					"location": [
+						1.5,
+						1.4501
+					],
+					"path": [
+						[
+							1.3599949199898402,
+							1.1000889001778005
+						],
+						[
+							1.3599949199898402,
+							1.8000889001778009
+						],
+						[
+							1.6400050800101602,
+							1.8000889001778009
+						],
+						[
+							1.6400050800101602,
+							1.1000889001778005
+						],
+						[
+							1.3599949199898402,
+							1.1000889001778005
+						]
+					],
+					"diameter": null
+				},
+				"e19": {
+					"number": "9",
+					"layers": [
+						1
+					],
+					"location": [
+						0.9999,
+						1.4501
+					],
+					"path": [
+						[
+							0.8598679197358395,
+							1.1000889001778005
+						],
+						[
+							0.8598679197358395,
+							1.8000889001778009
+						],
+						[
+							1.1398780797561596,
+							1.8000889001778009
+						],
+						[
+							1.1398780797561596,
+							1.1000889001778005
+						],
+						[
+							0.8598679197358395,
+							1.1000889001778005
+						]
+					],
+					"diameter": null
+				},
+				"e20": {
+					"number": "10",
+					"layers": [
+						1
+					],
+					"location": [
+						0.5,
+						1.4501
+					],
+					"path": [
+						[
+							0.35999491998984,
+							1.1000889001778005
+						],
+						[
+							0.35999491998984,
+							1.8000889001778009
+						],
+						[
+							0.6400050800101601,
+							1.8000889001778009
+						],
+						[
+							0.6400050800101601,
+							1.1000889001778005
+						],
+						[
+							0.35999491998984,
+							1.1000889001778005
+						]
+					],
+					"diameter": null
+				},
+				"e21": {
+					"number": "11",
+					"layers": [
+						1
+					],
+					"location": [
+						-0.0001,
+						1.4501
+					],
+					"path": [
+						[
+							-0.14013208026416052,
+							1.1000889001778005
+						],
+						[
+							-0.14013208026416052,
+							1.8000889001778009
+						],
+						[
+							0.1398780797561595,
+							1.8000889001778009
+						],
+						[
+							0.1398780797561595,
+							1.1000889001778005
+						],
+						[
+							-0.14013208026416052,
+							1.1000889001778005
+						]
+					],
+					"diameter": null
+				},
+				"e22": {
+					"number": "12",
+					"layers": [
+						1
+					],
+					"location": [
+						-0.5,
+						1.4501
+					],
+					"path": [
+						[
+							-0.6400050800101601,
+							1.1000889001778005
+						],
+						[
+							-0.6400050800101601,
+							1.8000889001778009
+						],
+						[
+							-0.35999491998984,
+							1.8000889001778009
+						],
+						[
+							-0.35999491998984,
+							1.1000889001778005
+						],
+						[
+							-0.6400050800101601,
+							1.1000889001778005
+						]
+					],
+					"diameter": null
+				},
+				"e23": {
+					"number": "13",
+					"layers": [
+						1
+					],
+					"location": [
+						-1.0001,
+						1.4501
+					],
+					"path": [
+						[
+							-1.1401320802641606,
+							1.1000889001778005
+						],
+						[
+							-1.1401320802641606,
+							1.8000889001778009
+						],
+						[
+							-0.8601219202438407,
+							1.8000889001778009
+						],
+						[
+							-0.8601219202438407,
+							1.1000889001778005
+						],
+						[
+							-1.1401320802641606,
+							1.1000889001778005
+						]
+					],
+					"diameter": null
+				},
+				"e24": {
+					"number": "14",
+					"layers": [
+						1
+					],
+					"location": [
+						-1.5,
+						1.4501
+					],
+					"path": [
+						[
+							-1.6400050800101602,
+							1.1000889001778005
+						],
+						[
+							-1.6400050800101602,
+							1.8000889001778009
+						],
+						[
+							-1.3599949199898402,
+							1.8000889001778009
+						],
+						[
+							-1.3599949199898402,
+							1.1000889001778005
+						],
+						[
+							-1.6400050800101602,
+							1.1000889001778005
+						]
+					],
+					"diameter": null
+				},
+				"e25": {
+					"number": "15",
+					"layers": [
+						1
+					],
+					"location": [
+						-0.0001,
+						0
+					],
+					"path": [
+						[
+							-1.6501270002540005,
+							-0.8500000000000001
+						],
+						[
+							-1.6501270002540005,
+							0.8500000000000001
+						],
+						[
+							1.6498729997459995,
+							0.8500000000000001
+						],
+						[
+							1.6498729997459995,
+							-0.8500000000000001
+						],
+						[
+							-1.6501270002540005,
+							-0.8500000000000001
+						]
+					],
+					"diameter": null
+				}
+			},
+			"bbox": [
+				-2.1525,
+				2.1523,
+				-2.1901,
+				1.8001
+			]
+		},
+		"HTSSOP-28_L9.7-W4.4-P0.65-LS6.4-BL-EP": {
+			"pads": {
+				"e10": {
+					"number": "1",
+					"layers": [
+						1
+					],
+					"location": [
+						-4.225,
+						-2.8658
+					],
+					"path": [
+						[
+							-4.053543307086615,
+							-3.5600076200152406
+						],
+						[
+							-4.3965455930911865,
+							-3.5600076200152406,
+							-180
+						],
+						[
+							-4.3965455930911865,
+							-2.1715138430276864
+						],
+						[
+							-4.053543307086615,
+							-2.1715138430276864,
+							-180
+						],
+						[
+							-4.053543307086615,
+							-3.5600076200152406
+						]
+					],
+					"diameter": null
+				},
+				"e11": {
+					"number": "2",
+					"layers": [
+						1
+					],
+					"location": [
+						-3.5751,
+						-2.8658
+					],
+					"path": [
+						[
+							-3.4035560071120146,
+							-3.5600076200152406
+						],
+						[
+							-3.7465582931165864,
+							-3.5600076200152406,
+							-180
+						],
+						[
+							-3.7465582931165864,
+							-2.1715138430276864
+						],
+						[
+							-3.4035560071120146,
+							-2.1715138430276864,
+							-180
+						],
+						[
+							-3.4035560071120146,
+							-3.5600076200152406
+						]
+					],
+					"diameter": null
+				},
+				"e12": {
+					"number": "3",
+					"layers": [
+						1
+					],
+					"location": [
+						-2.9251,
+						-2.8658
+					],
+					"path": [
+						[
+							-2.7535687071374144,
+							-3.5600076200152406
+						],
+						[
+							-3.0965709931419867,
+							-3.5600076200152406,
+							-180
+						],
+						[
+							-3.0965709931419867,
+							-2.1715138430276864
+						],
+						[
+							-2.7535687071374144,
+							-2.1715138430276864,
+							-180
+						],
+						[
+							-2.7535687071374144,
+							-3.5600076200152406
+						]
+					],
+					"diameter": null
+				},
+				"e13": {
+					"number": "4",
+					"layers": [
+						1
+					],
+					"location": [
+						-2.2751,
+						-2.8658
+					],
+					"path": [
+						[
+							-2.1035814071628143,
+							-3.5600076200152406
+						],
+						[
+							-2.4465836931673866,
+							-3.5600076200152406,
+							-180
+						],
+						[
+							-2.4465836931673866,
+							-2.1715138430276864
+						],
+						[
+							-2.1035814071628143,
+							-2.1715138430276864,
+							-180
+						],
+						[
+							-2.1035814071628143,
+							-3.5600076200152406
+						]
+					],
+					"diameter": null
+				},
+				"e14": {
+					"number": "5",
+					"layers": [
+						1
+					],
+					"location": [
+						-1.6251,
+						-2.8658
+					],
+					"path": [
+						[
+							-1.4535941071882144,
+							-3.5600076200152406
+						],
+						[
+							-1.7965963931927866,
+							-3.5600076200152406,
+							-180
+						],
+						[
+							-1.7965963931927866,
+							-2.1715138430276864
+						],
+						[
+							-1.4535941071882144,
+							-2.1715138430276864,
+							-180
+						],
+						[
+							-1.4535941071882144,
+							-3.5600076200152406
+						]
+					],
+					"diameter": null
+				},
+				"e15": {
+					"number": "6",
+					"layers": [
+						1
+					],
+					"location": [
+						-0.9751,
+						-2.8658
+					],
+					"path": [
+						[
+							-0.8036068072136145,
+							-3.5600076200152406
+						],
+						[
+							-1.1466090932181865,
+							-3.5600076200152406,
+							-180
+						],
+						[
+							-1.1466090932181865,
+							-2.1715138430276864
+						],
+						[
+							-0.8036068072136145,
+							-2.1715138430276864,
+							-180
+						],
+						[
+							-0.8036068072136145,
+							-3.5600076200152406
+						]
+					],
+					"diameter": null
+				},
+				"e16": {
+					"number": "7",
+					"layers": [
+						1
+					],
+					"location": [
+						-0.3249,
+						-2.8658
+					],
+					"path": [
+						[
+							-0.15336550673101346,
+							-3.5600076200152406
+						],
+						[
+							-0.4963677927355855,
+							-3.5600076200152406,
+							-180
+						],
+						[
+							-0.4963677927355855,
+							-2.1715138430276864
+						],
+						[
+							-0.15336550673101346,
+							-2.1715138430276864,
+							-180
+						],
+						[
+							-0.15336550673101346,
+							-3.5600076200152406
+						]
+					],
+					"diameter": null
+				},
+				"e17": {
+					"number": "8",
+					"layers": [
+						1
+					],
+					"location": [
+						0.3251,
+						-2.8658
+					],
+					"path": [
+						[
+							0.4966217932435866,
+							-3.5600076200152406
+						],
+						[
+							0.1536195072390145,
+							-3.5600076200152406,
+							-180
+						],
+						[
+							0.1536195072390145,
+							-2.1715138430276864
+						],
+						[
+							0.4966217932435866,
+							-2.1715138430276864,
+							-180
+						],
+						[
+							0.4966217932435866,
+							-3.5600076200152406
+						]
+					],
+					"diameter": null
+				},
+				"e18": {
+					"number": "9",
+					"layers": [
+						1
+					],
+					"location": [
+						0.9751,
+						-2.8658
+					],
+					"path": [
+						[
+							1.1466090932181865,
+							-3.5600076200152406
+						],
+						[
+							0.8036068072136145,
+							-3.5600076200152406,
+							-180
+						],
+						[
+							0.8036068072136145,
+							-2.1715138430276864
+						],
+						[
+							1.1466090932181865,
+							-2.1715138430276864,
+							-180
+						],
+						[
+							1.1466090932181865,
+							-3.5600076200152406
+						]
+					],
+					"diameter": null
+				},
+				"e19": {
+					"number": "10",
+					"layers": [
+						1
+					],
+					"location": [
+						1.6251,
+						-2.8658
+					],
+					"path": [
+						[
+							1.7965963931927866,
+							-3.5600076200152406
+						],
+						[
+							1.4535941071882144,
+							-3.5600076200152406,
+							-180
+						],
+						[
+							1.4535941071882144,
+							-2.1715138430276864
+						],
+						[
+							1.7965963931927866,
+							-2.1715138430276864,
+							-180
+						],
+						[
+							1.7965963931927866,
+							-3.5600076200152406
+						]
+					],
+					"diameter": null
+				},
+				"e20": {
+					"number": "11",
+					"layers": [
+						1
+					],
+					"location": [
+						2.2751,
+						-2.8658
+					],
+					"path": [
+						[
+							2.4465836931673866,
+							-3.5600076200152406
+						],
+						[
+							2.1035814071628143,
+							-3.5600076200152406,
+							-180
+						],
+						[
+							2.1035814071628143,
+							-2.1715138430276864
+						],
+						[
+							2.4465836931673866,
+							-2.1715138430276864,
+							-180
+						],
+						[
+							2.4465836931673866,
+							-3.5600076200152406
+						]
+					],
+					"diameter": null
+				},
+				"e21": {
+					"number": "12",
+					"layers": [
+						1
+					],
+					"location": [
+						2.9251,
+						-2.8658
+					],
+					"path": [
+						[
+							3.0965709931419867,
+							-3.5600076200152406
+						],
+						[
+							2.7535687071374144,
+							-3.5600076200152406,
+							-180
+						],
+						[
+							2.7535687071374144,
+							-2.1715138430276864
+						],
+						[
+							3.0965709931419867,
+							-2.1715138430276864,
+							-180
+						],
+						[
+							3.0965709931419867,
+							-3.5600076200152406
+						]
+					],
+					"diameter": null
+				},
+				"e22": {
+					"number": "13",
+					"layers": [
+						1
+					],
+					"location": [
+						3.5751,
+						-2.8658
+					],
+					"path": [
+						[
+							3.7465582931165864,
+							-3.5600076200152406
+						],
+						[
+							3.4035560071120146,
+							-3.5600076200152406,
+							-180
+						],
+						[
+							3.4035560071120146,
+							-2.1715138430276864
+						],
+						[
+							3.7465582931165864,
+							-2.1715138430276864,
+							-180
+						],
+						[
+							3.7465582931165864,
+							-3.5600076200152406
+						]
+					],
+					"diameter": null
+				},
+				"e23": {
+					"number": "14",
+					"layers": [
+						1
+					],
+					"location": [
+						4.225,
+						-2.8658
+					],
+					"path": [
+						[
+							4.3965455930911865,
+							-3.5600076200152406
+						],
+						[
+							4.053543307086615,
+							-3.5600076200152406,
+							-180
+						],
+						[
+							4.053543307086615,
+							-2.1715138430276864
+						],
+						[
+							4.3965455930911865,
+							-2.1715138430276864,
+							-180
+						],
+						[
+							4.3965455930911865,
+							-3.5600076200152406
+						]
+					],
+					"diameter": null
+				},
+				"e24": {
+					"number": "28",
+					"layers": [
+						1
+					],
+					"location": [
+						-4.225,
+						2.8658
+					],
+					"path": [
+						[
+							-4.053543307086615,
+							2.1715138430276864
+						],
+						[
+							-4.3965455930911865,
+							2.1715138430276864,
+							-180
+						],
+						[
+							-4.3965455930911865,
+							3.5600076200152406
+						],
+						[
+							-4.053543307086615,
+							3.5600076200152406,
+							-180
+						],
+						[
+							-4.053543307086615,
+							2.1715138430276864
+						]
+					],
+					"diameter": null
+				},
+				"e25": {
+					"number": "27",
+					"layers": [
+						1
+					],
+					"location": [
+						-3.5751,
+						2.8658
+					],
+					"path": [
+						[
+							-3.4035560071120146,
+							2.1715138430276864
+						],
+						[
+							-3.7465582931165864,
+							2.1715138430276864,
+							-180
+						],
+						[
+							-3.7465582931165864,
+							3.5600076200152406
+						],
+						[
+							-3.4035560071120146,
+							3.5600076200152406,
+							-180
+						],
+						[
+							-3.4035560071120146,
+							2.1715138430276864
+						]
+					],
+					"diameter": null
+				},
+				"e26": {
+					"number": "26",
+					"layers": [
+						1
+					],
+					"location": [
+						-2.9251,
+						2.8658
+					],
+					"path": [
+						[
+							-2.7535687071374144,
+							2.1715138430276864
+						],
+						[
+							-3.0965709931419867,
+							2.1715138430276864,
+							-180
+						],
+						[
+							-3.0965709931419867,
+							3.5600076200152406
+						],
+						[
+							-2.7535687071374144,
+							3.5600076200152406,
+							-180
+						],
+						[
+							-2.7535687071374144,
+							2.1715138430276864
+						]
+					],
+					"diameter": null
+				},
+				"e27": {
+					"number": "25",
+					"layers": [
+						1
+					],
+					"location": [
+						-2.2751,
+						2.8658
+					],
+					"path": [
+						[
+							-2.1035814071628143,
+							2.1715138430276864
+						],
+						[
+							-2.4465836931673866,
+							2.1715138430276864,
+							-180
+						],
+						[
+							-2.4465836931673866,
+							3.5600076200152406
+						],
+						[
+							-2.1035814071628143,
+							3.5600076200152406,
+							-180
+						],
+						[
+							-2.1035814071628143,
+							2.1715138430276864
+						]
+					],
+					"diameter": null
+				},
+				"e28": {
+					"number": "24",
+					"layers": [
+						1
+					],
+					"location": [
+						-1.6251,
+						2.8658
+					],
+					"path": [
+						[
+							-1.4535941071882144,
+							2.1715138430276864
+						],
+						[
+							-1.7965963931927866,
+							2.1715138430276864,
+							-180
+						],
+						[
+							-1.7965963931927866,
+							3.5600076200152406
+						],
+						[
+							-1.4535941071882144,
+							3.5600076200152406,
+							-180
+						],
+						[
+							-1.4535941071882144,
+							2.1715138430276864
+						]
+					],
+					"diameter": null
+				},
+				"e29": {
+					"number": "23",
+					"layers": [
+						1
+					],
+					"location": [
+						-0.9751,
+						2.8658
+					],
+					"path": [
+						[
+							-0.8036068072136145,
+							2.1715138430276864
+						],
+						[
+							-1.1466090932181865,
+							2.1715138430276864,
+							-180
+						],
+						[
+							-1.1466090932181865,
+							3.5600076200152406
+						],
+						[
+							-0.8036068072136145,
+							3.5600076200152406,
+							-180
+						],
+						[
+							-0.8036068072136145,
+							2.1715138430276864
+						]
+					],
+					"diameter": null
+				},
+				"e30": {
+					"number": "22",
+					"layers": [
+						1
+					],
+					"location": [
+						-0.3249,
+						2.8658
+					],
+					"path": [
+						[
+							-0.15336550673101346,
+							2.1715138430276864
+						],
+						[
+							-0.4963677927355855,
+							2.1715138430276864,
+							-180
+						],
+						[
+							-0.4963677927355855,
+							3.5600076200152406
+						],
+						[
+							-0.15336550673101346,
+							3.5600076200152406,
+							-180
+						],
+						[
+							-0.15336550673101346,
+							2.1715138430276864
+						]
+					],
+					"diameter": null
+				},
+				"e31": {
+					"number": "21",
+					"layers": [
+						1
+					],
+					"location": [
+						0.3251,
+						2.8658
+					],
+					"path": [
+						[
+							0.4966217932435866,
+							2.1715138430276864
+						],
+						[
+							0.1536195072390145,
+							2.1715138430276864,
+							-180
+						],
+						[
+							0.1536195072390145,
+							3.5600076200152406
+						],
+						[
+							0.4966217932435866,
+							3.5600076200152406,
+							-180
+						],
+						[
+							0.4966217932435866,
+							2.1715138430276864
+						]
+					],
+					"diameter": null
+				},
+				"e32": {
+					"number": "20",
+					"layers": [
+						1
+					],
+					"location": [
+						0.9751,
+						2.8658
+					],
+					"path": [
+						[
+							1.1466090932181865,
+							2.1715138430276864
+						],
+						[
+							0.8036068072136145,
+							2.1715138430276864,
+							-180
+						],
+						[
+							0.8036068072136145,
+							3.5600076200152406
+						],
+						[
+							1.1466090932181865,
+							3.5600076200152406,
+							-180
+						],
+						[
+							1.1466090932181865,
+							2.1715138430276864
+						]
+					],
+					"diameter": null
+				},
+				"e33": {
+					"number": "19",
+					"layers": [
+						1
+					],
+					"location": [
+						1.6251,
+						2.8658
+					],
+					"path": [
+						[
+							1.7965963931927866,
+							2.1715138430276864
+						],
+						[
+							1.4535941071882144,
+							2.1715138430276864,
+							-180
+						],
+						[
+							1.4535941071882144,
+							3.5600076200152406
+						],
+						[
+							1.7965963931927866,
+							3.5600076200152406,
+							-180
+						],
+						[
+							1.7965963931927866,
+							2.1715138430276864
+						]
+					],
+					"diameter": null
+				},
+				"e34": {
+					"number": "18",
+					"layers": [
+						1
+					],
+					"location": [
+						2.2751,
+						2.8658
+					],
+					"path": [
+						[
+							2.4465836931673866,
+							2.1715138430276864
+						],
+						[
+							2.1035814071628143,
+							2.1715138430276864,
+							-180
+						],
+						[
+							2.1035814071628143,
+							3.5600076200152406
+						],
+						[
+							2.4465836931673866,
+							3.5600076200152406,
+							-180
+						],
+						[
+							2.4465836931673866,
+							2.1715138430276864
+						]
+					],
+					"diameter": null
+				},
+				"e35": {
+					"number": "17",
+					"layers": [
+						1
+					],
+					"location": [
+						2.9251,
+						2.8658
+					],
+					"path": [
+						[
+							3.0965709931419867,
+							2.1715138430276864
+						],
+						[
+							2.7535687071374144,
+							2.1715138430276864,
+							-180
+						],
+						[
+							2.7535687071374144,
+							3.5600076200152406
+						],
+						[
+							3.0965709931419867,
+							3.5600076200152406,
+							-180
+						],
+						[
+							3.0965709931419867,
+							2.1715138430276864
+						]
+					],
+					"diameter": null
+				},
+				"e36": {
+					"number": "16",
+					"layers": [
+						1
+					],
+					"location": [
+						3.5751,
+						2.8658
+					],
+					"path": [
+						[
+							3.7465582931165864,
+							2.1715138430276864
+						],
+						[
+							3.4035560071120146,
+							2.1715138430276864,
+							-180
+						],
+						[
+							3.4035560071120146,
+							3.5600076200152406
+						],
+						[
+							3.7465582931165864,
+							3.5600076200152406,
+							-180
+						],
+						[
+							3.7465582931165864,
+							2.1715138430276864
+						]
+					],
+					"diameter": null
+				},
+				"e37": {
+					"number": "15",
+					"layers": [
+						1
+					],
+					"location": [
+						4.225,
+						2.8658
+					],
+					"path": [
+						[
+							4.3965455930911865,
+							2.1715138430276864
+						],
+						[
+							4.053543307086615,
+							2.1715138430276864,
+							-180
+						],
+						[
+							4.053543307086615,
+							3.5600076200152406
+						],
+						[
+							4.3965455930911865,
+							3.5600076200152406,
+							-180
+						],
+						[
+							4.3965455930911865,
+							2.1715138430276864
+						]
+					],
+					"diameter": null
+				},
+				"e38": {
+					"number": "29",
+					"layers": [
+						1
+					],
+					"location": [
+						0,
+						-0.0001
+					],
+					"path": [
+						[
+							-2.8000000000000003,
+							-1.5501270002540004
+						],
+						[
+							-2.8000000000000003,
+							1.5498729997459997
+						],
+						[
+							2.8000000000000003,
+							1.5498729997459997
+						],
+						[
+							2.8000000000000003,
+							-1.5501270002540004
+						],
+						[
+							-2.8000000000000003,
+							-1.5501270002540004
+						]
+					],
+					"diameter": null
+				}
+			},
+			"bbox": [
+				-5.149,
+				5.0024,
+				-3.7315,
+				3.7315
+			]
+		},
+		"LGA-14L_L3.0-W2.5-P0.50-TL": {
+			"pads": {
+				"e9": {
+					"number": "1",
+					"layers": [
+						1
+					],
+					"location": [
+						-1.175,
+						0.7501
+					],
+					"path": [
+						[
+							-1.4249555499111,
+							0.6100584201168404
+						],
+						[
+							-1.4249555499111,
+							0.8900685801371604
+						],
+						[
+							-0.9249555499111,
+							0.8900685801371604
+						],
+						[
+							-0.9249555499111,
+							0.6100584201168404
+						],
+						[
+							-1.4249555499111,
+							0.6100584201168404
+						]
+					],
+					"diameter": null
+				},
+				"e10": {
+					"number": "2",
+					"layers": [
+						1
+					],
+					"location": [
+						-1.175,
+						0.2499
+					],
+					"path": [
+						[
+							-1.4249555499111,
+							0.10993141986283976
+						],
+						[
+							-1.4249555499111,
+							0.3899415798831598
+						],
+						[
+							-0.9249555499111,
+							0.3899415798831598
+						],
+						[
+							-0.9249555499111,
+							0.10993141986283976
+						],
+						[
+							-1.4249555499111,
+							0.10993141986283976
+						]
+					],
+					"diameter": null
+				},
+				"e11": {
+					"number": "3",
+					"layers": [
+						1
+					],
+					"location": [
+						-1.175,
+						-0.2499
+					],
+					"path": [
+						[
+							-1.4249555499111,
+							-0.3899415798831598
+						],
+						[
+							-1.4249555499111,
+							-0.10993141986283976
+						],
+						[
+							-0.9249555499111,
+							-0.10993141986283976
+						],
+						[
+							-0.9249555499111,
+							-0.3899415798831598
+						],
+						[
+							-1.4249555499111,
+							-0.3899415798831598
+						]
+					],
+					"diameter": null
+				},
+				"e12": {
+					"number": "4",
+					"layers": [
+						1
+					],
+					"location": [
+						-1.175,
+						-0.7501
+					],
+					"path": [
+						[
+							-1.4249555499111,
+							-0.8900685801371604
+						],
+						[
+							-1.4249555499111,
+							-0.6100584201168404
+						],
+						[
+							-0.9249555499111,
+							-0.6100584201168404
+						],
+						[
+							-0.9249555499111,
+							-0.8900685801371604
+						],
+						[
+							-1.4249555499111,
+							-0.8900685801371604
+						]
+					],
+					"diameter": null
+				},
+				"e13": {
+					"number": "5",
+					"layers": [
+						1
+					],
+					"location": [
+						-0.4999,
+						-0.925
+					],
+					"path": [
+						[
+							-0.6398780797561595,
+							-1.1750190500381004
+						],
+						[
+							-0.6398780797561595,
+							-0.6750190500381001
+						],
+						[
+							-0.35986791973583954,
+							-0.6750190500381001
+						],
+						[
+							-0.35986791973583954,
+							-1.1750190500381004
+						],
+						[
+							-0.6398780797561595,
+							-1.1750190500381004
+						]
+					],
+					"diameter": null
+				},
+				"e14": {
+					"number": "6",
+					"layers": [
+						1
+					],
+					"location": [
+						0,
+						-0.925
+					],
+					"path": [
+						[
+							-0.14000508001016002,
+							-1.1750190500381004
+						],
+						[
+							-0.14000508001016002,
+							-0.6750190500381001
+						],
+						[
+							0.14000508001016002,
+							-0.6750190500381001
+						],
+						[
+							0.14000508001016002,
+							-1.1750190500381004
+						],
+						[
+							-0.14000508001016002,
+							-1.1750190500381004
+						]
+					],
+					"diameter": null
+				},
+				"e15": {
+					"number": "7",
+					"layers": [
+						1
+					],
+					"location": [
+						0.5001,
+						-0.925
+					],
+					"path": [
+						[
+							0.3601219202438406,
+							-1.1750190500381004
+						],
+						[
+							0.3601219202438406,
+							-0.6750190500381001
+						],
+						[
+							0.6401320802641606,
+							-0.6750190500381001
+						],
+						[
+							0.6401320802641606,
+							-1.1750190500381004
+						],
+						[
+							0.3601219202438406,
+							-1.1750190500381004
+						]
+					],
+					"diameter": null
+				},
+				"e16": {
+					"number": "8",
+					"layers": [
+						1
+					],
+					"location": [
+						1.175,
+						-0.7501
+					],
+					"path": [
+						[
+							0.9249555499111,
+							-0.8900685801371604
+						],
+						[
+							0.9249555499111,
+							-0.6100584201168404
+						],
+						[
+							1.4249555499111,
+							-0.6100584201168404
+						],
+						[
+							1.4249555499111,
+							-0.8900685801371604
+						],
+						[
+							0.9249555499111,
+							-0.8900685801371604
+						]
+					],
+					"diameter": null
+				},
+				"e17": {
+					"number": "9",
+					"layers": [
+						1
+					],
+					"location": [
+						1.175,
+						-0.2499
+					],
+					"path": [
+						[
+							0.9249555499111,
+							-0.3899415798831598
+						],
+						[
+							0.9249555499111,
+							-0.10993141986283976
+						],
+						[
+							1.4249555499111,
+							-0.10993141986283976
+						],
+						[
+							1.4249555499111,
+							-0.3899415798831598
+						],
+						[
+							0.9249555499111,
+							-0.3899415798831598
+						]
+					],
+					"diameter": null
+				},
+				"e18": {
+					"number": "10",
+					"layers": [
+						1
+					],
+					"location": [
+						1.175,
+						0.2499
+					],
+					"path": [
+						[
+							0.9249555499111,
+							0.10993141986283976
+						],
+						[
+							0.9249555499111,
+							0.3899415798831598
+						],
+						[
+							1.4249555499111,
+							0.3899415798831598
+						],
+						[
+							1.4249555499111,
+							0.10993141986283976
+						],
+						[
+							0.9249555499111,
+							0.10993141986283976
+						]
+					],
+					"diameter": null
+				},
+				"e19": {
+					"number": "11",
+					"layers": [
+						1
+					],
+					"location": [
+						1.175,
+						0.7501
+					],
+					"path": [
+						[
+							0.9249555499111,
+							0.6100584201168404
+						],
+						[
+							0.9249555499111,
+							0.8900685801371604
+						],
+						[
+							1.4249555499111,
+							0.8900685801371604
+						],
+						[
+							1.4249555499111,
+							0.6100584201168404
+						],
+						[
+							0.9249555499111,
+							0.6100584201168404
+						]
+					],
+					"diameter": null
+				},
+				"e20": {
+					"number": "12",
+					"layers": [
+						1
+					],
+					"location": [
+						0.5001,
+						0.925
+					],
+					"path": [
+						[
+							0.3601219202438406,
+							0.6750190500381001
+						],
+						[
+							0.3601219202438406,
+							1.1750190500381004
+						],
+						[
+							0.6401320802641606,
+							1.1750190500381004
+						],
+						[
+							0.6401320802641606,
+							0.6750190500381001
+						],
+						[
+							0.3601219202438406,
+							0.6750190500381001
+						]
+					],
+					"diameter": null
+				},
+				"e21": {
+					"number": "13",
+					"layers": [
+						1
+					],
+					"location": [
+						0,
+						0.925
+					],
+					"path": [
+						[
+							-0.14000508001016002,
+							0.6750190500381001
+						],
+						[
+							-0.14000508001016002,
+							1.1750190500381004
+						],
+						[
+							0.14000508001016002,
+							1.1750190500381004
+						],
+						[
+							0.14000508001016002,
+							0.6750190500381001
+						],
+						[
+							-0.14000508001016002,
+							0.6750190500381001
+						]
+					],
+					"diameter": null
+				},
+				"e22": {
+					"number": "14",
+					"layers": [
+						1
+					],
+					"location": [
+						-0.4999,
+						0.925
+					],
+					"path": [
+						[
+							-0.6398780797561595,
+							0.6750190500381001
+						],
+						[
+							-0.6398780797561595,
+							1.1750190500381004
+						],
+						[
+							-0.35986791973583954,
+							1.1750190500381004
+						],
+						[
+							-0.35986791973583954,
+							0.6750190500381001
+						],
+						[
+							-0.6398780797561595,
+							0.6750190500381001
+						]
+					],
+					"diameter": null
+				}
+			},
+			"bbox": [
+				-1.9279,
+				1.6524,
+				-1.4024,
+				1.4024
+			]
+		},
+		"HDR-TH_6P-P2.54-V_Z-211-0611-0021-001": {
+			"pads": {
+				"e14": {
+					"number": "1",
+					"layers": [
+						1,
+						2,
+						15,
+						16
+					],
+					"location": [
+						-6.35,
+						0
+					],
+					"path": [
+						[
+							-7.2500127000254,
+							-0.9000000000000001
+						],
+						[
+							-7.2500127000254,
+							0.9000000000000001
+						],
+						[
+							-5.450012700025401,
+							0.9000000000000001
+						],
+						[
+							-5.450012700025401,
+							-0.9000000000000001
+						],
+						[
+							-7.2500127000254,
+							-0.9000000000000001
+						]
+					],
+					"diameter": null
+				},
+				"e15": {
+					"number": "2",
+					"layers": [
+						1,
+						2,
+						15,
+						16
+					],
+					"location": [
+						-3.81,
+						0
+					],
+					"path": [
+						[
+							-2.9100076200152403,
+							0
+						],
+						[
+							-4.71000762001524,
+							0,
+							-180
+						],
+						[
+							-2.9100076200152403,
+							0,
+							-180
+						]
+					],
+					"diameter": 1.8
+				},
+				"e16": {
+					"number": "3",
+					"layers": [
+						1,
+						2,
+						15,
+						16
+					],
+					"location": [
+						-1.27,
+						0
+					],
+					"path": [
+						[
+							-0.3700025400050801,
+							0
+						],
+						[
+							-2.1700025400050804,
+							0,
+							-180
+						],
+						[
+							-0.3700025400050801,
+							0,
+							-180
+						]
+					],
+					"diameter": 1.8
+				},
+				"e17": {
+					"number": "4",
+					"layers": [
+						1,
+						2,
+						15,
+						16
+					],
+					"location": [
+						1.27,
+						0
+					],
+					"path": [
+						[
+							2.1700025400050804,
+							0
+						],
+						[
+							0.3700025400050801,
+							0,
+							-180
+						],
+						[
+							2.1700025400050804,
+							0,
+							-180
+						]
+					],
+					"diameter": 1.8
+				},
+				"e18": {
+					"number": "5",
+					"layers": [
+						1,
+						2,
+						15,
+						16
+					],
+					"location": [
+						3.81,
+						0
+					],
+					"path": [
+						[
+							4.71000762001524,
+							0
+						],
+						[
+							2.9100076200152403,
+							0,
+							-180
+						],
+						[
+							4.71000762001524,
+							0,
+							-180
+						]
+					],
+					"diameter": 1.8
+				},
+				"e19": {
+					"number": "6",
+					"layers": [
+						1,
+						2,
+						15,
+						16
+					],
+					"location": [
+						6.35,
+						0
+					],
+					"path": [
+						[
+							7.2500127000254,
+							0
+						],
+						[
+							5.450012700025401,
+							0,
+							-180
+						],
+						[
+							7.2500127000254,
+							0,
+							-180
+						]
+					],
+					"diameter": 1.8
+				}
+			},
+			"bbox": [
+				-7.747,
+				7.747,
+				-1.651,
+				1.651
+			]
+		},
+		"USB-C_SMD-TYPE-C-31-M-12_1": {
+			"pads": {
+				"e26": {
+					"number": "B8",
+					"layers": [
+						1
+					],
+					"location": [
+						-1.7501,
+						2.4741
+					],
+					"path": [
+						[
+							-1.9000635001270008,
+							1.8240919481838969
+						],
+						[
+							-1.9000635001270008,
+							3.1240919481838967
+						],
+						[
+							-1.6000635001270005,
+							3.1240919481838967
+						],
+						[
+							-1.6000635001270005,
+							1.8240919481838969
+						],
+						[
+							-1.9000635001270008,
+							1.8240919481838969
+						]
+					],
+					"diameter": null
+				},
+				"e27": {
+					"number": "A5",
+					"layers": [
+						1
+					],
+					"location": [
+						-1.2499,
+						2.4741
+					],
+					"path": [
+						[
+							-1.3999364998730002,
+							1.8240919481838969
+						],
+						[
+							-1.3999364998730002,
+							3.1240919481838967
+						],
+						[
+							-1.099936499873,
+							3.1240919481838967
+						],
+						[
+							-1.099936499873,
+							1.8240919481838969
+						],
+						[
+							-1.3999364998730002,
+							1.8240919481838969
+						]
+					],
+					"diameter": null
+				},
+				"e28": {
+					"number": "B7",
+					"layers": [
+						1
+					],
+					"location": [
+						-0.7501,
+						2.4741
+					],
+					"path": [
+						[
+							-0.9000635001270004,
+							1.8240919481838969
+						],
+						[
+							-0.9000635001270004,
+							3.1240919481838967
+						],
+						[
+							-0.6000635001270004,
+							3.1240919481838967
+						],
+						[
+							-0.6000635001270004,
+							1.8240919481838969
+						],
+						[
+							-0.9000635001270004,
+							1.8240919481838969
+						]
+					],
+					"diameter": null
+				},
+				"e29": {
+					"number": "A6",
+					"layers": [
+						1
+					],
+					"location": [
+						-0.2499,
+						2.4741
+					],
+					"path": [
+						[
+							-0.3999364998729998,
+							1.8240919481838969
+						],
+						[
+							-0.3999364998729998,
+							3.1240919481838967
+						],
+						[
+							-0.09993649987299975,
+							3.1240919481838967
+						],
+						[
+							-0.09993649987299975,
+							1.8240919481838969
+						],
+						[
+							-0.3999364998729998,
+							1.8240919481838969
+						]
+					],
+					"diameter": null
+				},
+				"e30": {
+					"number": "A7",
+					"layers": [
+						1
+					],
+					"location": [
+						0.2499,
+						2.4741
+					],
+					"path": [
+						[
+							0.09993649987299975,
+							1.8240919481838969
+						],
+						[
+							0.09993649987299975,
+							3.1240919481838967
+						],
+						[
+							0.3999364998729998,
+							3.1240919481838967
+						],
+						[
+							0.3999364998729998,
+							1.8240919481838969
+						],
+						[
+							0.09993649987299975,
+							1.8240919481838969
+						]
+					],
+					"diameter": null
+				},
+				"e31": {
+					"number": "B6",
+					"layers": [
+						1
+					],
+					"location": [
+						0.7501,
+						2.4741
+					],
+					"path": [
+						[
+							0.6000635001270004,
+							1.8240919481838969
+						],
+						[
+							0.6000635001270004,
+							3.1240919481838967
+						],
+						[
+							0.9000635001270004,
+							3.1240919481838967
+						],
+						[
+							0.9000635001270004,
+							1.8240919481838969
+						],
+						[
+							0.6000635001270004,
+							1.8240919481838969
+						]
+					],
+					"diameter": null
+				},
+				"e32": {
+					"number": "A8",
+					"layers": [
+						1
+					],
+					"location": [
+						1.2497,
+						2.4741
+					],
+					"path": [
+						[
+							1.0996824993649987,
+							1.8240919481838969
+						],
+						[
+							1.0996824993649987,
+							3.1240919481838967
+						],
+						[
+							1.399682499364999,
+							3.1240919481838967
+						],
+						[
+							1.399682499364999,
+							1.8240919481838969
+						],
+						[
+							1.0996824993649987,
+							1.8240919481838969
+						]
+					],
+					"diameter": null
+				},
+				"e33": {
+					"number": "B5",
+					"layers": [
+						1
+					],
+					"location": [
+						1.7501,
+						2.4741
+					],
+					"path": [
+						[
+							1.6000635001270005,
+							1.8240919481838969
+						],
+						[
+							1.6000635001270005,
+							3.1240919481838967
+						],
+						[
+							1.9000635001270008,
+							3.1240919481838967
+						],
+						[
+							1.9000635001270008,
+							1.8240919481838969
+						],
+						[
+							1.6000635001270005,
+							1.8240919481838969
+						]
+					],
+					"diameter": null
+				},
+				"e34": {
+					"number": "A1B12",
+					"layers": [
+						1
+					],
+					"location": [
+						-3.1999,
+						2.4741
+					],
+					"path": [
+						[
+							-2.8999745999492,
+							1.8241554483108966
+						],
+						[
+							-3.1999491998984,
+							1.8241554483108966
+						],
+						[
+							-3.1999491998984,
+							1.8240030480060965
+						],
+						[
+							-3.4999491998984005,
+							1.8240030480060965
+						],
+						[
+							-3.4999491998984005,
+							3.124028448056896
+						],
+						[
+							-3.1999745999492,
+							3.124028448056896
+						],
+						[
+							-3.1999745999492,
+							3.124180848361697
+						],
+						[
+							-2.8999745999492,
+							3.124180848361697
+						],
+						[
+							-2.8999745999492,
+							1.8241554483108966
+						]
+					],
+					"diameter": null
+				},
+				"e35": {
+					"number": "B1A12",
+					"layers": [
+						1
+					],
+					"location": [
+						3.2002,
+						2.4741
+					],
+					"path": [
+						[
+							2.900000000000001,
+							3.124180848361697
+						],
+						[
+							3.2,
+							3.124180848361697
+						],
+						[
+							3.2000254000508006,
+							3.124180848361697
+						],
+						[
+							3.5000254000508,
+							3.124180848361697
+						],
+						[
+							3.5000254000508,
+							1.8242062484124972
+						],
+						[
+							3.2000254000508006,
+							1.8242062484124972
+						],
+						[
+							3.2,
+							1.8242062484124972
+						],
+						[
+							2.900000000000001,
+							1.8242062484124972
+						],
+						[
+							2.900000000000001,
+							3.124180848361697
+						]
+					],
+					"diameter": null
+				},
+				"e36": {
+					"number": "B4A9",
+					"layers": [
+						1
+					],
+					"location": [
+						2.4003,
+						2.4741
+					],
+					"path": [
+						[
+							2.700177800355601,
+							1.8242062484124972
+						],
+						[
+							2.400177800355601,
+							1.8242062484124972
+						],
+						[
+							2.400152400304801,
+							1.8242062484124972
+						],
+						[
+							2.100152400304801,
+							1.8242062484124972
+						],
+						[
+							2.100152400304801,
+							3.124180848361697
+						],
+						[
+							2.400152400304801,
+							3.124180848361697
+						],
+						[
+							2.400177800355601,
+							3.124180848361697
+						],
+						[
+							2.700177800355601,
+							3.124180848361697
+						],
+						[
+							2.700177800355601,
+							1.8242062484124972
+						]
+					],
+					"diameter": null
+				},
+				"e37": {
+					"number": "A4B9",
+					"layers": [
+						1
+					],
+					"location": [
+						-2.4001,
+						2.4741
+					],
+					"path": [
+						[
+							-2.0999745999492,
+							1.8240538481076964
+						],
+						[
+							-2.3999237998476,
+							1.8240538481076964
+						],
+						[
+							-2.3999237998476,
+							1.8240284480568962
+						],
+						[
+							-2.6999491998984,
+							1.8240284480568962
+						],
+						[
+							-2.6999491998984,
+							3.1240030480060965
+						],
+						[
+							-2.4000000000000004,
+							3.1240030480060965
+						],
+						[
+							-2.4000000000000004,
+							3.124028448056896
+						],
+						[
+							-2.0999745999492,
+							3.124028448056896
+						],
+						[
+							-2.0999745999492,
+							1.8240538481076964
+						]
+					],
+					"diameter": null
+				},
+				"e56": {
+					"number": "2",
+					"layers": [
+						1,
+						2,
+						15,
+						16
+					],
+					"location": [
+						4.3251,
+						-2.4741
+					],
+					"path": [
+						[
+							4.925120650241301,
+							-2.774091948183897
+						],
+						[
+							3.725120650241301,
+							-2.774091948183897,
+							-180
+						],
+						[
+							3.725120650241301,
+							-2.1740919481838965
+						],
+						[
+							4.925120650241301,
+							-2.1740919481838965,
+							-180
+						],
+						[
+							4.925120650241301,
+							-2.774091948183897
+						]
+					],
+					"diameter": null
+				},
+				"e57": {
+					"number": "1",
+					"layers": [
+						1,
+						2,
+						15,
+						16
+					],
+					"location": [
+						4.3251,
+						1.7057
+					],
+					"path": [
+						[
+							4.925120650241301,
+							1.3057404114808233
+						],
+						[
+							3.725120650241301,
+							1.3057404114808233,
+							-180
+						],
+						[
+							3.725120650241301,
+							2.105740411480823
+						],
+						[
+							4.925120650241301,
+							2.105740411480823,
+							-180
+						],
+						[
+							4.925120650241301,
+							1.3057404114808233
+						]
+					],
+					"diameter": null
+				},
+				"e58": {
+					"number": "4",
+					"layers": [
+						1,
+						2,
+						15,
+						16
+					],
+					"location": [
+						-4.3251,
+						1.7057
+					],
+					"path": [
+						[
+							-3.725120650241301,
+							1.3057404114808233
+						],
+						[
+							-4.925120650241301,
+							1.3057404114808233,
+							-180
+						],
+						[
+							-4.925120650241301,
+							2.105740411480823
+						],
+						[
+							-3.725120650241301,
+							2.105740411480823,
+							-180
+						],
+						[
+							-3.725120650241301,
+							1.3057404114808233
+						]
+					],
+					"diameter": null
+				},
+				"e59": {
+					"number": "3",
+					"layers": [
+						1,
+						2,
+						15,
+						16
+					],
+					"location": [
+						-4.3251,
+						-2.4741
+					],
+					"path": [
+						[
+							-3.725120650241301,
+							-2.774091948183897
+						],
+						[
+							-4.925120650241301,
+							-2.774091948183897,
+							-180
+						],
+						[
+							-4.925120650241301,
+							-2.1740919481838965
+						],
+						[
+							-3.725120650241301,
+							-2.1740919481838965,
+							-180
+						],
+						[
+							-3.725120650241301,
+							-2.774091948183897
+						]
+					],
+					"diameter": null
+				}
+			},
+			"bbox": [
+				-4.9277,
+				4.9277,
+				-5.2211,
+				3.1267
+			]
+		}
+	},
+	"constraintRegions": {},
+	"tracks": [],
+	"vias": [
+		{
+			"id": "98527a1b7b48cd14e96",
+			"location": [
+				61.8003,
+				13.8
+			],
+			"size": [
+				0.5000254000508001,
+				0.30002540005080014
+			],
+			"net": "GND"
+		},
+		{
+			"id": "98527a1b7b48cd14e97",
+			"location": [
+				59.4002,
+				14.9999
+			],
+			"size": [
+				0.5000254000508001,
+				0.30002540005080014
+			],
+			"net": "GND"
+		},
+		{
+			"id": "98527a1b7b48cd14e98",
+			"location": [
+				60.6001,
+				13.8
+			],
+			"size": [
+				0.5000254000508001,
+				0.30002540005080014
+			],
+			"net": "GND"
+		},
+		{
+			"id": "98527a1b7b48cd14e99",
+			"location": [
+				59.4002,
+				13.8
+			],
+			"size": [
+				0.5000254000508001,
+				0.30002540005080014
+			],
+			"net": "GND"
+		},
+		{
+			"id": "98527a1b7b48cd14e100",
+			"location": [
+				59.4002,
+				16.2001
+			],
+			"size": [
+				0.5000254000508001,
+				0.30002540005080014
+			],
+			"net": "GND"
+		},
+		{
+			"id": "98527a1b7b48cd14e101",
+			"location": [
+				58.2001,
+				13.8
+			],
+			"size": [
+				0.5000254000508001,
+				0.30002540005080014
+			],
+			"net": "GND"
+		},
+		{
+			"id": "98527a1b7b48cd14e102",
+			"location": [
+				58.2001,
+				14.9999
+			],
+			"size": [
+				0.5000254000508001,
+				0.30002540005080014
+			],
+			"net": "GND"
+		},
+		{
+			"id": "98527a1b7b48cd14e103",
+			"location": [
+				58.2001,
+				16.2001
+			],
+			"size": [
+				0.5000254000508001,
+				0.30002540005080014
+			],
+			"net": "GND"
+		},
+		{
+			"id": "98527a1b7b48cd14e104",
+			"location": [
+				60.6001,
+				14.9999
+			],
+			"size": [
+				0.5000254000508001,
+				0.30002540005080014
+			],
+			"net": "GND"
+		},
+		{
+			"id": "98527a1b7b48cd14e105",
+			"location": [
+				61.7782,
+				14.9999
+			],
+			"size": [
+				0.5000254000508001,
+				0.30002540005080014
+			],
+			"net": "GND"
+		},
+		{
+			"id": "98527a1b7b48cd14e106",
+			"location": [
+				60.6001,
+				16.2001
+			],
+			"size": [
+				0.5000254000508001,
+				0.30002540005080014
+			],
+			"net": "GND"
+		},
+		{
+			"id": "98527a1b7b48cd14e107",
+			"location": [
+				61.8003,
+				16.2001
+			],
+			"size": [
+				0.5000254000508001,
+				0.30002540005080014
+			],
+			"net": "GND"
+		}
+	],
+	"fillRegions": [],
+	"prohibitedRegions": []
+}

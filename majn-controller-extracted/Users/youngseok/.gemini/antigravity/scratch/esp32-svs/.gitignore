@@ -1,0 +1,15 @@
+# PlatformIO compiled files and library dependencies
+.pio
+.pioenvs
+.piolibdeps
+
+# VS Code IDE files
+.vscode/
+.clang_complete
+.gcc-flags.json
+
+# Temporary/OS files
+.DS_Store
+Thumbs.db
+*.bak
+*.tmp

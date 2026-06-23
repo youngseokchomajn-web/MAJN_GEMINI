@@ -23,3 +23,7 @@ __pycache__/
 npm_cache_temp/
 Gerber_Output/
 
+# === 빌드 산출물 / 대용량 바이너리 (재생성 가능) ===
+.pio/
+*.zip
+

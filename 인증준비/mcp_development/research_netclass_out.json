@@ -1,0 +1,29 @@
+{
+  "createNetClass_src": "async createNetClass(t,i,n){return await _.extensionApiMessageBus2.rpcCall(\"extensionApi.PCB_Drc.createNetClass\",{netClassName:t,nets:i,color:n})}",
+  "addNetToNetClass_src": "async addNetToNetClass(t,i){return await _.extensionApiMessageBus2.rpcCall(\"extensionApi.PCB_Drc.addNetToNetClass\",{net:i,netClassName:t})}",
+  "before_classes": [],
+  "after_classes": [],
+  "vbus_rule": {
+    "type": "net",
+    "name": "VBUS_5V",
+    "Safe Spacing": "default",
+    "Copper Safe Spacing": null,
+    "Plane Safe Spacing": null,
+    "Track": "default",
+    "Net Length Range": "default",
+    "Net Length Tolerance": null,
+    "Blind/Buried Via": "default",
+    "Via Size": "default",
+    "Plane Zone": "default",
+    "Copper Zone": "default",
+    "Solder Mask Expansion": "default",
+    "Paste Mask Expansion": "default",
+    "Creepage Distance": "default",
+    "targetNet": null
+  },
+  "classRuleEntries": [],
+  "trackKeys": [
+    "copperThickness1oz",
+    "copperThickness2oz"
+  ]
+}

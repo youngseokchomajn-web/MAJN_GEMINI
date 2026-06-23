@@ -1,0 +1,26 @@
+{
+  "addedTrackRules": [
+    "W_VBUS_5V",
+    "W_PVDD_12V",
+    "W_BOOST_SW",
+    "W_VCC_3V3"
+  ],
+  "assigned": [
+    "VCC_3V3->W_VCC_3V3",
+    "VBUS_5V->W_VBUS_5V",
+    "PVDD_12V->W_PVDD_12V",
+    "BOOST_SW->W_BOOST_SW"
+  ],
+  "verify_rules": {
+    "W_VBUS_5V": "MISSING",
+    "W_PVDD_12V": "MISSING",
+    "W_BOOST_SW": "MISSING",
+    "W_VCC_3V3": "MISSING"
+  },
+  "verify_assign": {
+    "VCC_3V3": "W_VCC_3V3",
+    "VBUS_5V": "W_VBUS_5V",
+    "PVDD_12V": "W_PVDD_12V",
+    "BOOST_SW": "W_BOOST_SW"
+  }
+}
