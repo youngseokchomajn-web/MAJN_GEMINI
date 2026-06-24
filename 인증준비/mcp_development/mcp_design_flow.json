@@ -522,6 +522,26 @@
       "y": 38.0,
       "angle": 0,
       "_note": "추가(2026-06-24 fresh-eye): TAS5805M ADR은 DVDD 풀업저항으로 I2C주소 설정(Table7-5). GND직결→주소미정. 4.7k→0x2C(FW일치)."
+    },
+    {
+      "designator": "R13",
+      "name": "AMP_PDN Pullup 10k",
+      "lcsc_id": "C25804",
+      "package": "0603",
+      "x": 47.0,
+      "y": 40.0,
+      "angle": 0,
+      "_note": "추가(fresh-eye): GPIO15(MTDO 스트래핑)+PDN 공유넷 부트상태 고정. pull-up=부트로그유지+PDN high(부팅시 PVDD없어 무해)."
+    },
+    {
+      "designator": "R14",
+      "name": "SPI_CS Pullup 10k",
+      "lcsc_id": "C25804",
+      "package": "0603",
+      "x": 58.0,
+      "y": 19.0,
+      "angle": 0,
+      "_note": "추가(fresh-eye): GPIO5 스트래핑핀 HIGH 고정 + IMU 부팅시 deselect."
     }
   ],
   "nets": {
@@ -626,6 +646,14 @@
       ],
       [
         "R12",
+        "2"
+      ],
+      [
+        "R13",
+        "2"
+      ],
+      [
+        "R14",
         "2"
       ]
     ],
@@ -809,6 +837,10 @@
       [
         "U5",
         "12"
+      ],
+      [
+        "R14",
+        "1"
       ]
     ],
     "SENSOR_INT1": [
@@ -887,6 +919,10 @@
       [
         "U4",
         "12"
+      ],
+      [
+        "R13",
+        "1"
       ]
     ],
     "AVDD": [
