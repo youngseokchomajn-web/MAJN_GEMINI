@@ -103,6 +103,6 @@ EasyEDA **"new start" 프로젝트 Schematic1**에 회로도 자동생성(53부�
 
 ## 8. 진행 상황 / 다음 액션
 - ✅ **A0(BOM동결)·A1(설계검증)·Phase B(회로도 ERC0)** 완료.
-- 🔄 **Phase C 진행 중**: 회로도→PCB1 Import(53부품/43넷) ✓ · **4층 설정**(Inner1/Inner2) ✓ · 전원-우선 **초기배치**(design_flow 플로어플랜, apply_placement.py) ✓ · 저장.
-- ⏭ 남은 Phase C: **보드 외곽선(수동 ~88×60mm)** → 배치 미세조정(부스트 핫루프·디커플·EMI) → GND평면(Inner1) → **전원 pour**(VBUS3A/PVDD/BOOST_SW/AMP_OUT, [전원배선계획](인증준비/mcp_development/MAJN_전원배선계획_2026-06-24.md)) → 신호 오토라우트 → GND·써멀비아 → **권위 DRC 0** → 거버.
+- 🔄 **Phase C 진행 중**: Import(53부품/43넷)✓ · 4층(Inner1/Inner2)✓ · 전원-우선 배치✓ · **보드외곽선 83.8×62.2mm**✓ · **C6 GND평면(Inner1)**✓ · **C7 전원 pour(VBUS/PVDD Top)**✓ · **배치 클리어런스 28→0**✓.
+- ⏭ 남은 Phase C: **C8 신호 오토라우트** → C9 GND·EP써멀비아 → **C10 권위 DRC 0** → 거버. (현재 Connection 186 = 신호 미라우팅 + GND/전원 SMD패드→평면 비아 미설치, 예정작업)
 - 펌웨어 TODO: TAS5805M Fsw=384kHz+Spread Spectrum(비드 EMC) / **2채널 합산출력 ~12W 제한**(USB-C 3A 천장).
