@@ -101,7 +101,8 @@ EasyEDA **"new start" 프로젝트 Schematic1**에 회로도 자동생성(53부�
 - **v1.4.0**: U2→AP2112K-3.3(600mA) + C1 22µF 벌크 + C3 25V + D2 삭제.
 - **v1.3.0**: LCSC 번호 전면 정정(이전엔 엉뚱한 저항 지칭).
 
-## 8. 다음 액션
-1. **회로도 생성(run_draw_schematic.py) → ERC 0** — 여기서 심볼 핀번호·EP패드·극성이 자동 대조됨(A1 잔여 자동확정).
-2. **펌웨어**: TAS5805M Fsw=384kHz + Spread Spectrum 레지스터 설정(비드 필터 EMC 통과).
-3. ERC 0 후 **PCB 생성 → 전원-우선 배치/라우팅 → 권위 DRC 0 → 제작**.
+## 8. 진행 상황 / 다음 액션
+- ✅ **A0(BOM동결)·A1(설계검증)·Phase B(회로도 ERC0)** 완료.
+- 🔄 **Phase C 진행 중**: 회로도→PCB1 Import(53부품/43넷) ✓ · **4층 설정**(Inner1/Inner2) ✓ · 전원-우선 **초기배치**(design_flow 플로어플랜, apply_placement.py) ✓ · 저장.
+- ⏭ 남은 Phase C: **보드 외곽선(수동 ~88×60mm)** → 배치 미세조정(부스트 핫루프·디커플·EMI) → GND평면(Inner1) → **전원 pour**(VBUS3A/PVDD/BOOST_SW/AMP_OUT, [전원배선계획](인증준비/mcp_development/MAJN_전원배선계획_2026-06-24.md)) → 신호 오토라우트 → GND·써멀비아 → **권위 DRC 0** → 거버.
+- 펌웨어 TODO: TAS5805M Fsw=384kHz+Spread Spectrum(비드 EMC) / **2채널 합산출력 ~12W 제한**(USB-C 3A 천장).
