@@ -8,6 +8,11 @@
 
 ## 2. Development Timeline & Methodology
 
+### Phase 0: Schematic Design & Netlist Synchronization
+- **Circuit Design**: The project originated from a logical schematic design involving power converters (e.g., U1, U3, U4), USB Type-C PD interfaces (VBUS_5V, USB_CC1/2), and various passive components.
+- **Symbol & Footprint Association**: Each schematic symbol was strictly mapped to its corresponding LCSC physical footprint (e.g., 0402/0603 packages, specific IC packages) to ensure manufacturability.
+- **Netlist Generation**: The schematic was converted into a netlist, which was then forward-annotated (`Design -> Update PCB`) into the PCB environment. This populated the PCB canvas with the physical components and logical ratlines (unrouted connections) representing the circuit's intent, setting the stage for the layout and routing phases.
+
 ### Phase 1: API Discovery & Diagnostic Probing
 - We created several diagnostic scripts (`check_pcb4.py`, `drc_check_all.py`, `inspect_via_track.py`) to map out the undocumented EasyEDA Pro JS API objects like `eda.pcb_PrimitiveLine`, `eda.pcb_PrimitiveVia`, and `eda.pcb_Drc`.
 - Discovered that the 329 errors were primarily composed of completely tangled, auto-routed tracks that were locked in unroutable configurations.
