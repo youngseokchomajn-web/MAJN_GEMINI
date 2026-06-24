@@ -49,3 +49,12 @@
 ## 4. Final Status
 - **Current State**: 22 unrouted nets remain due to tight clearance limits.
 - **Next Steps**: The user will either manually route (`W` / `V`) the remaining traces or run the Auto Router with loosened 0.15mm design rules on the newly pasted PCB file.
+
+## 5. Schematic Recovery & Cross-Computer Migration
+- **Challenge**: The user attempted to migrate the project to a new computer by exporting the current file (`File -> Export -> EasyEDA`). However, because they selected "Current Document" instead of "Project", the resulting `.epro2` file completely lacked the Schematic file, causing panic on the new computer.
+- **Investigation**: We scoured the original computer's local auto-backup folder (`/Users/youngseok/Documents/EasyEDA-Pro/projects/...`) and discovered 6 historical `.epro2` backups dating back to the project's inception (June 17).
+- **Reverse Engineering `.epro2` & `.epru`**:
+  - The `.epro2` file is a standard ZIP archive.
+  - Inside, the `.epru` file is a proprietary EasyEDA database format that separates multiple JSON documents using a `||` string delimiter.
+- **Execution**: Wrote a custom Python script (`parse_epru.py` / `extract_sch.py`) to crack open the June 17 backup, parse the `||` delimiter, isolate the JSON object with `"docType":"SCH"`, and dump it directly into a standard format (`Recovered_Schematic.json`).
+- **Resolution**: The raw schematic JSON was successfully uploaded to GitHub. The user can now seamlessly import this JSON file into their active PCB project on any computer, fully merging the lost schematic with the routed PCB.
