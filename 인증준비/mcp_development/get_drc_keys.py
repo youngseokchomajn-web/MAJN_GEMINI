@@ -12,15 +12,5 @@ def execute_js(code):
     except Exception as e:
         return {"error": str(e)}
 
-JS = """
-try {
-    let out = [];
-    if (eda.pcb_Route) {
-        for (let k in eda.pcb_Route) {
-            out.push(k);
-        }
-    }
-    return out;
-} catch(e) { return e.message; }
-"""
-print(execute_js(JS))
+JS = "return Object.keys(eda.pcb_Drc || {});"
+print(json.dumps(execute_js(JS), indent=2))

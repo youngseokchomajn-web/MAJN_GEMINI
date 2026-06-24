@@ -1,11 +1,10 @@
-import json
-import urllib.request
+import json, urllib.request
 def execute_js(code):
     url = "http://127.0.0.1:49620/execute"
     payload = json.dumps({"code": code}).encode("utf-8")
     req = urllib.request.Request(url, data=payload, headers={"Content-Type": "application/json"}, method="POST")
     try:
-        with urllib.request.urlopen(req, timeout=45) as response:
+        with urllib.request.urlopen(req, timeout=90) as response:
             res = json.loads(response.read().decode("utf-8"))
             if res.get("success"): return res.get("result")
             return {"error": res.get("error")}
@@ -14,13 +13,15 @@ def execute_js(code):
 
 JS = """
 try {
-    let out = [];
-    if (eda.pcb_Route) {
-        for (let k in eda.pcb_Route) {
-            out.push(k);
-        }
+    let keys = [];
+    if (eda && eda.sys_Project) {
+        keys = Object.keys(eda.sys_Project);
     }
-    return out;
-} catch(e) { return e.message; }
+    let dmt_keys = [];
+    if (eda && eda.dmt_Project) {
+        dmt_keys = Object.keys(eda.dmt_Project);
+    }
+    return { sys_Project: keys, dmt_Project: dmt_keys };
+} catch(e) { return { error: e.message }; }
 """
-print(execute_js(JS))
+print(json.dumps(execute_js(JS), indent=2))

@@ -5,7 +5,7 @@ def execute_js(code):
     payload = json.dumps({"code": code}).encode("utf-8")
     req = urllib.request.Request(url, data=payload, headers={"Content-Type": "application/json"}, method="POST")
     try:
-        with urllib.request.urlopen(req, timeout=45) as response:
+        with urllib.request.urlopen(req, timeout=90) as response:
             res = json.loads(response.read().decode("utf-8"))
             if res.get("success"): return res.get("result")
             return {"error": res.get("error")}
@@ -14,13 +14,15 @@ def execute_js(code):
 
 JS = """
 try {
-    let out = [];
-    if (eda.pcb_Route) {
-        for (let k in eda.pcb_Route) {
-            out.push(k);
-        }
+    let projs = await eda.dmt_Project.getAllProjectsInfo();
+    let tp = projs ? projs.find(p => p.name === "Test_Tangled_Board_Project") : null;
+    
+    if (tp) {
+        await eda.dmt_Project.openProject(tp.uuid);
+        return { status: "Project found and opened", uuid: tp.uuid };
     }
-    return out;
-} catch(e) { return e.message; }
+    
+    return { status: "Project not found" };
+} catch(e) { return { error: e.message }; }
 """
-print(execute_js(JS))
+print(json.dumps(execute_js(JS), indent=2))

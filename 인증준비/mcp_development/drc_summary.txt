@@ -1,0 +1,23 @@
+[Clearance Error] Device to Prohibited Region (Rule: otherClearance) - {obj1} and {obj2} overlap | act: None, req: None
+[Clearance Error] SMD Pad to SMD Pad (Rule: copperThickness1oz) - {obj1} to {obj2} distance is {minDistance}, should be {shouldBe} | act: None, req: None
+[Clearance Error] SMD Pad to SMD Pad (Rule: copperThickness1oz) - {obj1} to {obj2} distance is {minDistance}, should be {shouldBe} | act: None, req: None
+[Clearance Error] Hole to Hole (Rule: otherClearance) - {obj1} to {obj2} distance is {minDistance}, should be {shouldBe} | act: None, req: None
+[Clearance Error] Hole to Hole (Rule: otherClearance) - {obj1} to {obj2} distance is {minDistance}, should be {shouldBe} | act: None, req: None
+[Clearance Error] Hole to Hole (Rule: otherClearance) - {obj1} to {obj2} distance is {minDistance}, should be {shouldBe} | act: None, req: None
+[Clearance Error] Hole to Hole (Rule: otherClearance) - {obj1} to {obj2} distance is {minDistance}, should be {shouldBe} | act: None, req: None
+[Clearance Error] Slot Region to Slot Region (Rule: copperThickness1oz) - {obj1} to {obj2} distance is {minDistance}, should be {shouldBe} | act: None, req: None
+[Clearance Error] Slot Region to Slot Region (Rule: copperThickness1oz) - {obj1} to {obj2} distance is {minDistance}, should be {shouldBe} | act: None, req: None
+[Connection Error] NET_X1 (Rule: Common) - {obj1} is disconnected from other objects of the same network | act: None, req: None
+[Connection Error] NET_X1 (Rule: Common) - {obj1} is disconnected from other objects of the same network | act: None, req: None
+[Connection Error] NET_X2 (Rule: Common) - {obj1} is disconnected from other objects of the same network | act: None, req: None
+[Connection Error] NET_X2 (Rule: Common) - {obj1} is disconnected from other objects of the same network | act: None, req: None
+[Connection Error] NET_VBUS (Rule: Common) - {obj1} is disconnected from other objects of the same network | act: None, req: None
+[Connection Error] NET_VBUS (Rule: Common) - {obj1} is disconnected from other objects of the same network | act: None, req: None
+[Connection Error] NET_VBUS (Rule: Common) - {obj1} is disconnected from other objects of the same network | act: None, req: None
+[Connection Error] GND (Rule: Common) - {obj1} is disconnected from other objects of the same network | act: None, req: None
+[Connection Error] GND (Rule: Common) - {obj1} is disconnected from other objects of the same network | act: None, req: None
+[Connection Error] GND (Rule: Common) - {obj1} is disconnected from other objects of the same network | act: None, req: None
+[Connection Error] NET_CC1 (Rule: Common) - {obj1} is disconnected from other objects of the same network | act: None, req: None
+[Connection Error] NET_CC1 (Rule: Common) - {obj1} is disconnected from other objects of the same network | act: None, req: None
+[Connection Error] NET_CC2 (Rule: Common) - {obj1} is disconnected from other objects of the same network | act: None, req: None
+[Connection Error] NET_CC2 (Rule: Common) - {obj1} is disconnected from other objects of the same network | act: None, req: None

@@ -14,13 +14,9 @@ def execute_js(code):
 
 JS = """
 try {
-    let out = [];
-    if (eda.pcb_Route) {
-        for (let k in eda.pcb_Route) {
-            out.push(k);
-        }
-    }
-    return out;
+    let rules = await eda.sys_Config.get('pcb_designRule');
+    if (!rules) return "No design rules found";
+    return rules;
 } catch(e) { return e.message; }
 """
-print(execute_js(JS))
+print(json.dumps(execute_js(JS), indent=2))

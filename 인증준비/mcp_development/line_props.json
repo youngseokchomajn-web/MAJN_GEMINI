@@ -1,0 +1,15 @@
+{
+  "props": {
+    "async": true,
+    "primitiveType": "Line",
+    "net": "BOOST_SW",
+    "layer": 1,
+    "startX": 6239.665,
+    "startY": 3626.8,
+    "endX": 6220,
+    "endY": 3626.8,
+    "lineWidth": 10,
+    "primitiveLock": true,
+    "primitiveId": "2fbfd3b33e6db6e9"
+  }
+}

@@ -5,7 +5,7 @@ def execute_js(code):
     payload = json.dumps({"code": code}).encode("utf-8")
     req = urllib.request.Request(url, data=payload, headers={"Content-Type": "application/json"}, method="POST")
     try:
-        with urllib.request.urlopen(req, timeout=45) as response:
+        with urllib.request.urlopen(req, timeout=90) as response:
             res = json.loads(response.read().decode("utf-8"))
             if res.get("success"): return res.get("result")
             return {"error": res.get("error")}
@@ -14,13 +14,8 @@ def execute_js(code):
 
 JS = """
 try {
-    let out = [];
-    if (eda.pcb_Route) {
-        for (let k in eda.pcb_Route) {
-            out.push(k);
-        }
-    }
-    return out;
-} catch(e) { return e.message; }
+    let proj = await eda.dmt_Project.getCurrentProjectInfo();
+    return { name: proj ? proj.name : null, uuid: proj ? proj.uuid : null };
+} catch(e) { return { error: e.message }; }
 """
-print(execute_js(JS))
+print(json.dumps(execute_js(JS), indent=2))

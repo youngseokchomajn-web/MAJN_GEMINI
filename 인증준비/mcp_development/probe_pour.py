@@ -15,10 +15,8 @@ def execute_js(code):
 JS = """
 try {
     let out = [];
-    if (eda.pcb_Route) {
-        for (let k in eda.pcb_Route) {
-            out.push(k);
-        }
+    for (let k in eda.pcb_PrimitivePour) {
+        if (typeof eda.pcb_PrimitivePour[k] === 'function') out.push(k);
     }
     return out;
 } catch(e) { return e.message; }

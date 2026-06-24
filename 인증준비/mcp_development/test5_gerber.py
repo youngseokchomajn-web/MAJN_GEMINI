@@ -14,13 +14,16 @@ def execute_js(code):
 
 JS = """
 try {
-    let out = [];
-    if (eda.pcb_Route) {
-        for (let k in eda.pcb_Route) {
-            out.push(k);
-        }
+    let file = await eda.pcb_ManufactureData.getGerberFile("Test_Gerber", false, 0); // 0 = mm
+    if (file) {
+        return {
+            status: "Success",
+            fileName: file.name,
+            fileSize: file.size,
+            fileType: file.type
+        };
     }
-    return out;
-} catch(e) { return e.message; }
+    return { status: "Failed", message: "Failed to generate gerber" };
+} catch(e) { return { error: e.message }; }
 """
-print(execute_js(JS))
+print(json.dumps(execute_js(JS), indent=2))

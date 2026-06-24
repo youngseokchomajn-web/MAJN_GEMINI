@@ -12,15 +12,5 @@ def execute_js(code):
     except Exception as e:
         return {"error": str(e)}
 
-JS = """
-try {
-    let out = [];
-    if (eda.pcb_Route) {
-        for (let k in eda.pcb_Route) {
-            out.push(k);
-        }
-    }
-    return out;
-} catch(e) { return e.message; }
-"""
+JS = "return eda.pcb_Drc.getRealTimeDrcStatus ? eda.pcb_Drc.getRealTimeDrcStatus() : 'Method not found';"
 print(execute_js(JS))

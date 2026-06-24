@@ -1,0 +1,27 @@
+Clearance Error -> Net Track to Track: 18 errors
+Clearance Error -> Net Track to Via: 14 errors
+Clearance Error -> Net Hole to Track: 10 errors
+Clearance Error -> Net SMD Pad to Track: 42 errors
+Clearance Error -> Net SMD Pad to Via: 7 errors
+Clearance Error -> Net Hole to SMD Pad: 6 errors
+Clearance Error -> Net TH Pad to Track: 4 errors
+Clearance Error -> Net Slot Region to Track: 1 errors
+Clearance Error -> Net Via to Via: 2 errors
+Clearance Error -> Net SMD Pad to TH Pad: 2 errors
+Clearance Error -> Net TH Pad to Via: 1 errors
+Clearance Error -> Net Hole to Hole: 1 errors
+Clearance Error -> Net Hole to Via: 1 errors
+Clearance Error -> Net Hole to TH Pad: 1 errors
+Clearance Error in the same footprint -> Net SMD Pad to Via: 12 errors
+Physical Error -> Net Via Diameter: 35 errors
+Connection Error -> Net VBUS_5V: 5 errors
+Connection Error -> Net PVDD_12V: 8 errors
+Connection Error -> Net GND: 44 errors
+Connection Error -> Net VCC_3V3: 5 errors
+Connection Error -> Net AMP_PDN: 2 errors
+Connection Error -> Net USB_CC2: 2 errors
+Connection Error -> Net BOOST_FB: 2 errors
+Connection Error -> Net BST_A+: 2 errors
+Connection Error -> Net AMP_OUT_A+: 2 errors
+Connection Error -> Net BST_B+: 2 errors
+Connection Error -> Net AMP_OUT_B+: 2 errors

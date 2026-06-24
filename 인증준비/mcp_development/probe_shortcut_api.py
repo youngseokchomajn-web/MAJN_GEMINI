@@ -14,13 +14,12 @@ def execute_js(code):
 
 JS = """
 try {
-    let out = [];
-    if (eda.pcb_Route) {
-        for (let k in eda.pcb_Route) {
-            out.push(k);
-        }
-    }
-    return out;
+    let obj = eda.sys_ShortcutKey;
+    let props = [];
+    do {
+        props = props.concat(Object.getOwnPropertyNames(obj));
+    } while (obj = Object.getPrototypeOf(obj));
+    return [...new Set(props)];
 } catch(e) { return e.message; }
 """
 print(execute_js(JS))

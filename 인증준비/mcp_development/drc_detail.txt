@@ -1,0 +1,33 @@
+Track to Track: (BOOST_SW): e2907 <-> (GND): e2958
+Track to Track: (GND): e2958 <-> (BOOST_SW): e2905
+Track to Track: (PVDD_12V): e2913 <-> (GND): e2959
+SMD Pad to Track: (GND): e2958 <-> (BOOST_SW): U3_5
+SMD Pad to Track: (GND): e2958 <-> (BOOST_SW): U3_4
+SMD Pad to Track: (GND): e2958 <-> (VBUS_5V): U3_3
+Track to Via: (PVDD_12V): e2913 <-> (GND): e1123
+Track to Via: (VBUS_5V): e2922 <-> (GND): e1105
+Track to Via: (VBUS_5V): e2924 <-> (GND): e1097
+Hole to Track: (PVDD_12V): e2913 <-> (GND): e1123
+Hole to Track: (VBUS_5V): e2922 <-> (GND): e1105
+Hole to Track: (VBUS_5V): e2925 <-> (GND): e1097
+TH Pad to Track: (VBUS_5V): e2921 <-> : D2_11
+TH Pad to Track: (VBUS_5V): e2921 <-> : USB_C_2
+TH Pad to Track: (GND): e2951 <-> : D2_14
+Slot Region to Track: (VBUS_5V): e2921 <-> : e55
+SMD Pad to Via: (VBUS_5V): e14 <-> (GND): e1097
+SMD Pad to Via: (VCC_3V3): U5_5 <-> (GND): e1098
+SMD Pad to Via: (VCC_3V3): U5_8 <-> (GND): e1099
+Hole to Hole: (GND): e1096 <-> (GND): e1097
+Hole to Hole: (GND): e1098 <-> (GND): e1099
+Hole to Hole: (GND): e1129 <-> : e104
+Via to Via: (GND): e1129 <-> : e97
+Via to Via: (GND): e1129 <-> : e104
+Hole to Via: (GND): e1129 <-> : e97
+Hole to Via: (GND): e1129 <-> : e104
+SMD Pad to TH Pad: (GND): R4_2 <-> : D2_14
+SMD Pad to TH Pad: (USB_CC2): R4_1 <-> : D2_15
+TH Pad to Via: : D2_14 <-> (GND): e1115
+Hole to SMD Pad: (USB_CC2): R4_1 <-> : D2_15
+SMD Pad to Via: (GND): U4_29 <-> : e96
+SMD Pad to Via: (GND): U4_29 <-> : e97
+SMD Pad to Via: (GND): U4_29 <-> : e98

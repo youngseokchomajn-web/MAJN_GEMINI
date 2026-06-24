@@ -87,7 +87,7 @@ def main():
         })
     else:
         # If it still fails, check if it's the known API topic error string
-        err_msg = native_drc.get('error') if native_drc else '알 수 없는 응답'
+        err_msg = str(native_drc.get('error')) if native_drc and native_drc.get('error') is not None else '알 수 없는 응답'
         if "没有相关订阅" in err_msg or "Cannot read properties" in err_msg:
              drc_report.append({
                 "rule": "EasyEDA Pro 에디터 내장 DRC 연동",

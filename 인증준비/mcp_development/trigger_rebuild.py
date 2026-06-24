@@ -14,13 +14,22 @@ def execute_js(code):
 
 JS = """
 try {
-    let out = [];
-    if (eda.pcb_Route) {
-        for (let k in eda.pcb_Route) {
-            out.push(k);
-        }
+    let result = "Failed";
+    
+    // Attempt 1: Common command names
+    let cmds = [
+        'pcb_rebuildAllCopperPour', 'rebuildAllCopperPour', 'pcb_rebuildCopperPour',
+        'rebuildCopperPour', 'menu_pcb_rebuildAllCopperPour', 'pcb_pour_rebuildAll'
+    ];
+    for (let c of cmds) {
+        try {
+            if (eda.sys_Command.execute(c)) {
+                result = "Executed command: " + c;
+                break;
+            }
+        } catch(e) {}
     }
-    return out;
+    return result;
 } catch(e) { return e.message; }
 """
 print(execute_js(JS))

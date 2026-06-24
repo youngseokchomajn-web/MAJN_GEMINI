@@ -14,13 +14,13 @@ def execute_js(code):
 
 JS = """
 try {
-    let out = [];
-    if (eda.pcb_Route) {
-        for (let k in eda.pcb_Route) {
-            out.push(k);
-        }
+    let title = document.title;
+    let trackCount = 0;
+    if (eda && eda.pcb_PrimitiveLine) {
+        let tracks = eda.pcb_PrimitiveLine.getAllPrimitiveId();
+        if (tracks) trackCount = tracks.length;
     }
-    return out;
+    return { title: title, trackCount: trackCount };
 } catch(e) { return e.message; }
 """
 print(execute_js(JS))

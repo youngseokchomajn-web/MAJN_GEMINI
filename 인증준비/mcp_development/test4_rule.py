@@ -14,13 +14,18 @@ def execute_js(code):
 
 JS = """
 try {
-    let out = [];
-    if (eda.pcb_Route) {
-        for (let k in eda.pcb_Route) {
-            out.push(k);
-        }
+    let configName = await eda.pcb_Drc.getCurrentRuleConfigurationName();
+    let config = await eda.pcb_Drc.getCurrentRuleConfiguration();
+    
+    if (config) {
+        let clearance = config.config.Spacing["Safe Spacing"].copperThickness1oz.tables["1"].content[0][0];
+        return {
+            status: "Success",
+            name: configName,
+            clearance: clearance
+        };
     }
-    return out;
-} catch(e) { return e.message; }
+    return { status: "Failed", message: "Config not found" };
+} catch(e) { return { error: e.message }; }
 """
-print(execute_js(JS))
+print(json.dumps(execute_js(JS), indent=2))

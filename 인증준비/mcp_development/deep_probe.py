@@ -15,12 +15,24 @@ def execute_js(code):
 JS = """
 try {
     let out = [];
-    if (eda.pcb_Route) {
-        for (let k in eda.pcb_Route) {
-            out.push(k);
+    for (let k in eda) {
+        if (typeof eda[k] === 'object' && eda[k] !== null) {
+            let obj = eda[k];
+            let props = [];
+            try {
+                do {
+                    props = props.concat(Object.getOwnPropertyNames(obj));
+                } while (obj = Object.getPrototypeOf(obj));
+            } catch(e) {}
+            
+            for (let p of props) {
+                if (p.toLowerCase().includes('pour') || p.toLowerCase().includes('rebuild')) {
+                    out.push(k + '.' + p);
+                }
+            }
         }
     }
-    return out;
+    return [...new Set(out)];
 } catch(e) { return e.message; }
 """
 print(execute_js(JS))

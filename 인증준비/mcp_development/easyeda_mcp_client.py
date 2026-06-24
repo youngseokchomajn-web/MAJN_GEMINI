@@ -229,7 +229,7 @@ class EasyEDAMCPClient:
             }} catch(e) {{}}
         }}
         if (!pcbUuid) {{
-            pcbUuid = "c9f1fdba7e0a3f4c"; // Fallback to current PCB UUID
+            pcbUuid = null; // Removed fallback
         }}
         if (pcbUuid) {{
             await eda.dmt_EditorControl.openDocument(pcbUuid);

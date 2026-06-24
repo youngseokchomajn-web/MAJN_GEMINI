@@ -14,13 +14,11 @@ def execute_js(code):
 
 JS = """
 try {
-    let out = [];
-    if (eda.pcb_Route) {
-        for (let k in eda.pcb_Route) {
-            out.push(k);
-        }
-    }
-    return out;
+    const config = await eda.pcb_Drc.getCurrentRuleConfiguration();
+    return config;
 } catch(e) { return e.message; }
 """
-print(execute_js(JS))
+res = execute_js(JS)
+with open("current_rule.json", "w") as f:
+    json.dump(res, f, indent=2)
+print("Saved to current_rule.json")

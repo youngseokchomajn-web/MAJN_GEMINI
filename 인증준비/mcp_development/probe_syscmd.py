@@ -15,9 +15,11 @@ def execute_js(code):
 JS = """
 try {
     let out = [];
-    if (eda.pcb_Route) {
-        for (let k in eda.pcb_Route) {
-            out.push(k);
+    if (eda.sys_Command && eda.sys_Command.commands) {
+        for (let k in eda.sys_Command.commands) {
+            if (k.toLowerCase().includes('pour') || k.toLowerCase().includes('drc') || k.toLowerCase().includes('rebuild')) {
+                out.push(k);
+            }
         }
     }
     return out;

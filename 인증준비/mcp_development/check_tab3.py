@@ -14,13 +14,15 @@ def execute_js(code):
 
 JS = """
 try {
-    let out = [];
-    if (eda.pcb_Route) {
-        for (let k in eda.pcb_Route) {
-            out.push(k);
-        }
-    }
-    return out;
+    let tracks = eda.pcb_PrimitiveLine.getAll();
+    let trackCount = tracks ? tracks.length : 0;
+    
+    let vias = eda.pcb_PrimitiveVia.getAll();
+    let viaCount = vias ? vias.length : 0;
+    
+    return { trackCount: trackCount, viaCount: viaCount };
 } catch(e) { return e.message; }
 """
-print(execute_js(JS))
+res = execute_js(JS)
+print(f"Track count: {res.get('trackCount')}")
+print(f"Via count: {res.get('viaCount')}")

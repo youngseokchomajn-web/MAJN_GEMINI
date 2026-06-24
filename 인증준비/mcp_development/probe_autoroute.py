@@ -14,13 +14,15 @@ def execute_js(code):
 
 JS = """
 try {
-    let out = [];
-    if (eda.pcb_Route) {
-        for (let k in eda.pcb_Route) {
-            out.push(k);
+    let result = [];
+    if (eda.sys_Command && eda.sys_Command.commands) {
+        for (let k in eda.sys_Command.commands) {
+            if (k.toLowerCase().includes('auto')) {
+                result.push(k);
+            }
         }
     }
-    return out;
+    return result.length > 0 ? result : "No commands found in .commands";
 } catch(e) { return e.message; }
 """
 print(execute_js(JS))

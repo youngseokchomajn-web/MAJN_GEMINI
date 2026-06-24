@@ -12,15 +12,15 @@ def execute_js(code):
     except Exception as e:
         return {"error": str(e)}
 
-JS = """
-try {
-    let out = [];
-    if (eda.pcb_Route) {
-        for (let k in eda.pcb_Route) {
-            out.push(k);
-        }
-    }
-    return out;
-} catch(e) { return e.message; }
-"""
-print(execute_js(JS))
+JS = "return await eda.pcb_Drc.check(true, false, true);"
+res = execute_js(JS)
+total = 0
+summary = []
+if isinstance(res, list):
+    for cat in res:
+        for item in cat.get('list', []):
+            total += item.get('count', 0)
+            summary.append(f"{cat.get('title')[0]} -> {item.get('name')}: {item.get('count')}")
+with open("drc_true.txt", "w") as f:
+    f.write(f"Total: {total}\n" + "\n".join(summary))
+print("Total DRC Errors:", total)

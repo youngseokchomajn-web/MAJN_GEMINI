@@ -14,13 +14,11 @@ def execute_js(code):
 
 JS = """
 try {
-    let out = [];
-    if (eda.pcb_Route) {
-        for (let k in eda.pcb_Route) {
-            out.push(k);
-        }
+    if (eda.pcb_Document && eda.pcb_Document.save) {
+        await eda.pcb_Document.save();
+        return "Saved";
     }
-    return out;
+    return "No save method";
 } catch(e) { return e.message; }
 """
 print(execute_js(JS))

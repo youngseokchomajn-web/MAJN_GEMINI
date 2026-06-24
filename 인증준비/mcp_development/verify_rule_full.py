@@ -1,5 +1,6 @@
 import json
 import urllib.request
+
 def execute_js(code):
     url = "http://127.0.0.1:49620/execute"
     payload = json.dumps({"code": code}).encode("utf-8")
@@ -14,13 +15,13 @@ def execute_js(code):
 
 JS = """
 try {
-    let out = [];
-    if (eda.pcb_Route) {
-        for (let k in eda.pcb_Route) {
-            out.push(k);
-        }
-    }
-    return out;
-} catch(e) { return e.message; }
+    let config = await eda.pcb_Drc.getCurrentRuleConfiguration();
+    if (!config) return "No config found";
+
+    let tables = config.config.Spacing["Safe Spacing"].copperThickness1oz.tables["1"].content;
+    return tables;
+} catch(e) {
+    return e.message;
+}
 """
-print(execute_js(JS))
+print(json.dumps(execute_js(JS), indent=2))

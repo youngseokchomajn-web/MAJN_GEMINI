@@ -14,13 +14,21 @@ def execute_js(code):
 
 JS = """
 try {
-    let out = [];
-    if (eda.pcb_Route) {
-        for (let k in eda.pcb_Route) {
-            out.push(k);
+    // Open Dialog
+    eda.sys_Command.execute('pcb_route_autoRoute');
+    
+    // Wait a bit, then click the primary button
+    setTimeout(() => {
+        let btns = document.querySelectorAll('.el-button--primary, .dialog-btn-confirm, button');
+        for (let b of btns) {
+            let text = b.innerText ? b.innerText.toLowerCase() : '';
+            if (text.includes('run') || text.includes('start') || text.includes('실행') || text.includes('확인')) {
+                b.click();
+                break;
+            }
         }
-    }
-    return out;
+    }, 1000);
+    return "Dialog opened and click scheduled";
 } catch(e) { return e.message; }
 """
 print(execute_js(JS))

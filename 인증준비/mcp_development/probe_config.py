@@ -15,8 +15,8 @@ def execute_js(code):
 JS = """
 try {
     let out = [];
-    if (eda.pcb_Route) {
-        for (let k in eda.pcb_Route) {
+    if (eda.sys_Config) {
+        for (let k in eda.sys_Config) {
             out.push(k);
         }
     }

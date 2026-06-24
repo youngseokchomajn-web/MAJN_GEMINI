@@ -14,13 +14,10 @@ def execute_js(code):
 
 JS = """
 try {
-    let out = [];
-    if (eda.pcb_Route) {
-        for (let k in eda.pcb_Route) {
-            out.push(k);
-        }
-    }
-    return out;
+    const keys = Object.keys(eda).filter(k => k.toLowerCase().includes('route'));
+    const sysCmds = await eda.sys_Command.getAll();
+    const routeCmds = sysCmds.filter(c => c.toLowerCase().includes('route'));
+    return { keys, routeCmds };
 } catch(e) { return e.message; }
 """
-print(execute_js(JS))
+print(json.dumps(execute_js(JS), indent=2))

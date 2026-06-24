@@ -12,15 +12,17 @@ def execute_js(code):
     except Exception as e:
         return {"error": str(e)}
 
-JS = """
-try {
-    let out = [];
-    if (eda.pcb_Route) {
-        for (let k in eda.pcb_Route) {
-            out.push(k);
-        }
-    }
-    return out;
-} catch(e) { return e.message; }
-"""
-print(execute_js(JS))
+JS = "return await eda.pcb_Drc.check(false, false, true);"
+res = execute_js(JS)
+summary = []
+total = 0
+if isinstance(res, list):
+    for cat in res:
+        cat_name = cat.get('title', ['Unknown'])[0]
+        for item in cat.get('list', []):
+            name = item.get('name')
+            count = item.get('count')
+            total += count
+            summary.append(f"{cat_name} -> {name}: {count} errors")
+print(f"Total: {total}")
+print("\n".join(summary))
