@@ -1,7 +1,7 @@
 {
   "project_name": "Majung_Smart_Bassinet_v1.1",
-  "version": "1.7.0",
-  "_revision_note": "v1.7.0 (2026-06-24): ★★MP3426 핀 정정(라이브 EasyEDA 심볼 a1_symbol_verify.json 기준) — v1.5에서 alldatasheet OCR(핀순서 역전)을 믿고 FSET/FB/SS를 8/9/10으로 잘못 바꿨던 것을 심볼 실측(8/9/10=PGND, 11=AGND, 12=SS, 13=FB, 14=FSET, 15=EP)대로 원복+정정: FB→13, FSET→14, SS→12(C23캡), GND→8/9/10/11/15. ★교훈: 데이터시트 OCR보다 라이브 심볼이 권위. 전 넷 이름기반 재검증 통과. | v1.6.0 (2026-06-24): ★AMP_OUT 출력 EMI 필터 추가(TAS5805M filterless+2m케이블, KC EMC) — 레그4개에 페라이트비드 FB1~4(C154119 Sunlord UPZ2012E221-3R0TF 220R@100MHz 3A 0805) 직렬 + 캡 C24~27(C16033 2.2nF 50V, TI Table8-3 2200pF)→GND, SPK_A+/A-/B+/B- 넷 신설. 부트스트랩캡(C12~15)은 U4쪽 유지. + C20 VR_DIG 100nF→1µF(C106858). ★펌웨어: 비드필터 사용 시 Fsw=384kHz+Spread Spectrum 설정(TI 권고). | v1.5.0 (2026-06-24): ★★MP3426 핀배치 치명결함 수정(alldatasheet 데이터시트 2회 교차확인) — FSET 14→8, FB 13→9, GND를 11/12/13/14/EP(15)로(기존엔 8/9/10=FSET·FB·SS를 GND에 단락시켜 부스트 동작불능이었음), SS(핀10)에 소프트스타트 캡 C23 신설(BOOST_SS 넷). + C19 AVDD 100nF→1µF(C106858, 내부LDO 안정화). ⚠️미반영(다음): AMP_OUT 출력 페라이트비드/LC필터(EMC), C20 VR_DIG값·C23 SS값·풋프린트 EP/패드번호 라이브확정. | v1.4.0 (2026-06-24): ★A1 부품검증 반영 — U2 SGM2036(300mA)→AP2112K-3.3(C51118, 600mA, SOT-23-5 핀:1VIN/2GND/3EN/4NC/5VOUT) [ESP32 WiFi피크 500mA 대응] + C1 10µF→22µF(C784585) ESP32 벌크 + C3 10V→25V(C96446) [TVS클램프 9.2V 여유] + D2 삭제[USB충전전용 고아부품, 45→44]. ⚠️미반영(다음): AMP_OUT 페라이트비드/LC필터(EMC 필수), MP3426 핀번호 미확정(데이터시트/라이브심볼 확인要), L1 Isat 확인, C19 AVDD값 확인. | v1.3.0 (2026-06-24): ★LCSC 번호 전면 정정 — 기존 lcsc_id들이 이름과 다른 엉뚱한 부품(전부 저항)을 가리켜 PCB가 비동작 상태였음. 정정: L1=C78804(SWPA6045S4R7MT 4.7uH 6x6x4.5mm 인덕터 Isat~5A; ★MP3426=6A스위치한계 확인됨, 실사용peak~3.2A라 5A충분·최대여유원하면 SRP6540-4R7M C1329351 7x7 Isat~8A), D3=C2905650(1N5819W 쇼트키 SOD-123 40V/1A), R1=C22807(150k), R2=C22818(16k), R3/R4/R7/R8=C23186(5.1k), R5/R6=C25804(10k). 재실행(run_draw_schematic.py) 필요. | v1.2.0 (2026-06-19): 데이터시트 기준 핀맵 전면 정정. U4(TAS5805M) I2C/I2S 핀번호·전원(DVDD/PVDD 4핀/PGND/EP→GND) 정정, U5(LSM6DSOX) VDD/VDDIO/CS 정정, U3(MP3426) 핀이름 참조로 전환, I2C 풀업(R7/R8)·앰프 디커플(C18/C19/C20) 추가. 상세: pinmap_master.md / 검증리포트_엄밀_2026-06-19.md. ⚠️ U3 정확한 핀이름/번호와 COMP 보상망은 S4 라이브 심볼 덤프에서 확정.",
+  "version": "1.8.0",
+  "_revision_note": "v1.8.0 (2026-06-24): ★fresh-eye Phase B 점검 반영 — ①U5(LSM6DSOX) 미사용 보조핀 SDX(2)/SCX(3)/OCS_AUX(10)/SDO_AUX(11)→GND (ST 데이터시트 종단요구, 부유=노이즈) ②USB-C 쉴드/마운팅 EH(1~4)→GND(ESD/EMC) ③C17 EN캡 100nF→1uF(C106858, Espressif POR). 검증: TAS5805M주소 FW0x2C=HW일치, 전 서브시스템 연결 정확(라이브 심볼 기준). | v1.7.0 (2026-06-24): ★★MP3426 핀 정정(라이브 EasyEDA 심볼 a1_symbol_verify.json 기준) — v1.5에서 alldatasheet OCR(핀순서 역전)을 믿고 FSET/FB/SS를 8/9/10으로 잘못 바꿨던 것을 심볼 실측(8/9/10=PGND, 11=AGND, 12=SS, 13=FB, 14=FSET, 15=EP)대로 원복+정정: FB→13, FSET→14, SS→12(C23캡), GND→8/9/10/11/15. ★교훈: 데이터시트 OCR보다 라이브 심볼이 권위. 전 넷 이름기반 재검증 통과. | v1.6.0 (2026-06-24): ★AMP_OUT 출력 EMI 필터 추가(TAS5805M filterless+2m케이블, KC EMC) — 레그4개에 페라이트비드 FB1~4(C154119 Sunlord UPZ2012E221-3R0TF 220R@100MHz 3A 0805) 직렬 + 캡 C24~27(C16033 2.2nF 50V, TI Table8-3 2200pF)→GND, SPK_A+/A-/B+/B- 넷 신설. 부트스트랩캡(C12~15)은 U4쪽 유지. + C20 VR_DIG 100nF→1µF(C106858). ★펌웨어: 비드필터 사용 시 Fsw=384kHz+Spread Spectrum 설정(TI 권고). | v1.5.0 (2026-06-24): ★★MP3426 핀배치 치명결함 수정(alldatasheet 데이터시트 2회 교차확인) — FSET 14→8, FB 13→9, GND를 11/12/13/14/EP(15)로(기존엔 8/9/10=FSET·FB·SS를 GND에 단락시켜 부스트 동작불능이었음), SS(핀10)에 소프트스타트 캡 C23 신설(BOOST_SS 넷). + C19 AVDD 100nF→1µF(C106858, 내부LDO 안정화). ⚠️미반영(다음): AMP_OUT 출력 페라이트비드/LC필터(EMC), C20 VR_DIG값·C23 SS값·풋프린트 EP/패드번호 라이브확정. | v1.4.0 (2026-06-24): ★A1 부품검증 반영 — U2 SGM2036(300mA)→AP2112K-3.3(C51118, 600mA, SOT-23-5 핀:1VIN/2GND/3EN/4NC/5VOUT) [ESP32 WiFi피크 500mA 대응] + C1 10µF→22µF(C784585) ESP32 벌크 + C3 10V→25V(C96446) [TVS클램프 9.2V 여유] + D2 삭제[USB충전전용 고아부품, 45→44]. ⚠️미반영(다음): AMP_OUT 페라이트비드/LC필터(EMC 필수), MP3426 핀번호 미확정(데이터시트/라이브심볼 확인要), L1 Isat 확인, C19 AVDD값 확인. | v1.3.0 (2026-06-24): ★LCSC 번호 전면 정정 — 기존 lcsc_id들이 이름과 다른 엉뚱한 부품(전부 저항)을 가리켜 PCB가 비동작 상태였음. 정정: L1=C78804(SWPA6045S4R7MT 4.7uH 6x6x4.5mm 인덕터 Isat~5A; ★MP3426=6A스위치한계 확인됨, 실사용peak~3.2A라 5A충분·최대여유원하면 SRP6540-4R7M C1329351 7x7 Isat~8A), D3=C2905650(1N5819W 쇼트키 SOD-123 40V/1A), R1=C22807(150k), R2=C22818(16k), R3/R4/R7/R8=C23186(5.1k), R5/R6=C25804(10k). 재실행(run_draw_schematic.py) 필요. | v1.2.0 (2026-06-19): 데이터시트 기준 핀맵 전면 정정. U4(TAS5805M) I2C/I2S 핀번호·전원(DVDD/PVDD 4핀/PGND/EP→GND) 정정, U5(LSM6DSOX) VDD/VDDIO/CS 정정, U3(MP3426) 핀이름 참조로 전환, I2C 풀업(R7/R8)·앰프 디커플(C18/C19/C20) 추가. 상세: pinmap_master.md / 검증리포트_엄밀_2026-06-19.md. ⚠️ U3 정확한 핀이름/번호와 COMP 보상망은 S4 라이브 심볼 덤프에서 확정.",
   "board_dimensions": {
     "width_mm": 80.0,
     "height_mm": 60.0,
@@ -241,12 +241,13 @@
     },
     {
       "designator": "C17",
-      "name": "ESP EN RC Cap 100nF",
-      "lcsc_id": "C14663",
+      "name": "ESP EN RC Cap 1uF",
+      "lcsc_id": "C106858",
       "package": "0603",
       "x": 32.0,
       "y": 40.0,
-      "angle": 0
+      "angle": 0,
+      "_note": "v1.8: 100nF->1uF (Espressif EN POR RC 10k+1uF 기준, 부팅안정)"
     },
     {
       "designator": "R6",
@@ -1244,6 +1245,38 @@
       [
         "U3",
         "10"
+      ],
+      [
+        "U5",
+        "2"
+      ],
+      [
+        "U5",
+        "3"
+      ],
+      [
+        "U5",
+        "10"
+      ],
+      [
+        "U5",
+        "11"
+      ],
+      [
+        "USB_C",
+        "1"
+      ],
+      [
+        "USB_C",
+        "2"
+      ],
+      [
+        "USB_C",
+        "3"
+      ],
+      [
+        "USB_C",
+        "4"
       ]
     ],
     "SPK_A+": [

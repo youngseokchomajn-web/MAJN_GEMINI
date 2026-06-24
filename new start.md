@@ -19,7 +19,7 @@ ESP32 + TAS5805M(Class-D, I2S) + LSM6DSOX(IMU 폐루프) 로 **8Ω·10W급 진�
 3. **도구 역할 분담(브릿지=읽기/이동, UI=무거운작업) + 수정 즉시 동기화**(회로도↔PCB↔design_flow.json).
 - 순서: **A0 SSOT동결 → A1 전도메인검증 → B 회로도(ERC0) → C 보드+Import → D 규칙 → E GND평면 → F 전원우선배치 → G 전원 pour+LOCK → H 신호 → I GND비아 → J 권위 DRC0 → K 제작.**
 
-## 3. 확정 BOM (design_flow.json v1.7.0, 53부품 / 43넷)
+## 3. 확정 BOM (design_flow.json v1.8.0, 53부품 / 43넷)
 
 ### 능동/핵심
 | 지정 | 부품 | LCSC | 검증 |
@@ -76,8 +76,16 @@ EasyEDA **"new start" 프로젝트 Schematic1**에 회로도 자동생성(53부�
 - **EMI 필터**(v1.6): 비드 FB1~4(C154119) + 캡 C24~27(C16033)→GND, SPK 넷. **펌웨어: Fsw=384kHz+Spread Spectrum**.
 - **C19 AVDD·C20 VR_DIG → 1µF**. **BTL=Stereo 확정**(펌웨어 I2S RIGHT_LEFT, J1·J2=2채널).
 
-### ⚠️ 잔여 (ERC에서 최종확정)
-- 회로도 ERC 0 확인 후 A1 종료. C23 SS 4.7nF = 시작거동 보고 미세조정 가능.
+### ✅ fresh-eye Phase B 전체 점검 (v1.8.0)
+넷리스트를 라이브 심볼 이름 기준으로 전수 재감사(서브시스템별) → 연결 정확 확인 + 3건 개선:
+- **★U5(LSM6DSOX) 미사용 보조핀 → GND**: SDX(2)/SCX(3)/OCS_AUX(10)/SDO_AUX(11). ST 데이터시트가 "Mode1에서 VDDIO/GND 종단" 명시(부유=노이즈/불안정) → **실질 결함 수정**.
+- **USB-C 쉴드/마운팅(EH 1~4) → GND**: ESD/EMC 접지(KC EMC 대비).
+- **C17(ESP32 EN 캡) 100nF → 1µF**: Espressif EN POR 기준 RC(10k+1µF), 부팅 안정.
+- 교차검증 통과: **TAS5805M I2C 주소 FW=0x2C = HW ADR풀다운(0x2C) 일치** / IMU SPI WHO_AM_I 0x6C / 부스트·LDO·앰프·MCU·IMU·USB 전 연결 정확.
+
+### ⚠️ 잔여 (양성)
+- 부유핀(ESP32 미사용 GPIO ~18, U2.4 NC, U4.9 SDOUT, U5.9 INT2, USB 데이터핀) = 의도적 미사용 → ERC 경고(0 에러). **No-Connect 플래그는 브릿지 API 부재 + 코스메틱이라 보류**(미사용 의도는 문서로 명시).
+- C23 SS 4.7nF·C5 입력캡 4.7µF = 시작거동/리플 보고 미세조정 가능(선택).
 
 ## 6. 인증 경로 (액세서리 / 국내)
 - **어린이제품 공통안전기준**(공급자적합성확인 추정) + 전파 **적합등록**(WROOM 모듈인증 활용) + 동봉 어댑터 **KC 안전인증품**.
@@ -86,6 +94,7 @@ EasyEDA **"new start" 프로젝트 Schematic1**에 회로도 자동생성(53부�
 - 설계반영: 케이블 200cm(목졸림) 재검토, U4 발열(EP 써멀비아), EMC(부스트 루프+출력필터), OTA 안전파라미터 잠금+서명.
 
 ## 7. 변경 이력
+- **v1.8.0**: fresh-eye Phase B 점검 — U5 미사용 보조핀(SDX/SCX/OCS_AUX/SDO_AUX)→GND(ST 종단요구) + USB-C 쉴드(EH)→GND + C17 EN캡 100nF→1µF.
 - **v1.7.0**: ★MP3426 핀 정정(라이브 심볼 기준 — v1.5 alldatasheet OCR 역전오류 원복: FB=13/FSET=14/SS=12/GND=8/9/10/11/15). A1 라이브 검증 완료.
 - **v1.6.0**: AMP_OUT EMI 출력필터(페라이트비드4 FB1~4 + 캡4 C24~27) + C20 VR_DIG 1µF + 펌웨어 Fsw 384kHz/SS 노트.
 - **v1.5.0**: MP3426 핀배치 치명결함 수정(FSET/FB/GND/SS) + C19 AVDD 1µF + C23 SS 신설.
