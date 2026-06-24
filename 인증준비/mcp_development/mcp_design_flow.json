@@ -235,28 +235,30 @@
       "name": "ESP EN Pullup 10k",
       "lcsc_id": "C25804",
       "package": "0603",
-      "x": 32.0,
+      "x": 28.0,
       "y": 43.0,
-      "angle": 0
+      "angle": 0,
+      "_note": "v1.8 C5: U1 풋프린트 겹침 해소 위해 모듈 밖으로 이동"
     },
     {
       "designator": "C17",
       "name": "ESP EN RC Cap 1uF",
       "lcsc_id": "C106858",
       "package": "0603",
-      "x": 32.0,
+      "x": 28.0,
       "y": 40.0,
       "angle": 0,
-      "_note": "v1.8: 100nF->1uF (Espressif EN POR RC 10k+1uF 기준, 부팅안정)"
+      "_note": "v1.8: 100nF->1uF (Espressif EN POR RC 10k+1uF 기준, 부팅안정) | v1.8 C5: U1 풋프린트 겹침 해소 위해 모듈 밖으로 이동"
     },
     {
       "designator": "R6",
       "name": "ESP IO0 Pullup 10k",
       "lcsc_id": "C25804",
       "package": "0603",
-      "x": 48.0,
+      "x": 52.0,
       "y": 43.0,
-      "angle": 0
+      "angle": 0,
+      "_note": "v1.8 C5: U1 풋프린트 겹침 해소 위해 모듈 밖으로 이동"
     },
     {
       "designator": "C11",
