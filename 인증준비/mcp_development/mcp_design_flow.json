@@ -89,8 +89,8 @@
       "name": "MCU Bulk 22uF 25V",
       "lcsc_id": "C784585",
       "package": "0805",
-      "x": 32.0,
-      "y": 32.0,
+      "x": 37.0,
+      "y": 7.0,
       "angle": 0,
       "_note": "v1.4: 10µF→22µF (Espressif: ESP32 WiFi 트랜지언트 벌크 22-100µF 권장)"
     },
@@ -99,8 +99,8 @@
       "name": "MCU Bypass 100nF",
       "lcsc_id": "C14663",
       "package": "0603",
-      "x": 35.99,
-      "y": 32.0,
+      "x": 33.0,
+      "y": 7.0,
       "angle": 0
     },
     {
@@ -274,8 +274,8 @@
       "name": "BST A+ Cap 100nF",
       "lcsc_id": "C14663",
       "package": "0603",
-      "x": 30.99,
-      "y": 40.0,
+      "x": 35.0,
+      "y": 48.5,
       "angle": 0
     },
     {
@@ -283,8 +283,8 @@
       "name": "BST A- Cap 100nF",
       "lcsc_id": "C14663",
       "package": "0603",
-      "x": 30.99,
-      "y": 43.99,
+      "x": 38.0,
+      "y": 48.5,
       "angle": 0
     },
     {
@@ -292,8 +292,8 @@
       "name": "BST B+ Cap 100nF",
       "lcsc_id": "C14663",
       "package": "0603",
-      "x": 49.0,
-      "y": 40.0,
+      "x": 44.0,
+      "y": 48.5,
       "angle": 0
     },
     {
@@ -301,8 +301,8 @@
       "name": "BST B- Cap 100nF",
       "lcsc_id": "C14663",
       "package": "0603",
-      "x": 49.0,
-      "y": 43.99,
+      "x": 41.0,
+      "y": 48.5,
       "angle": 0
     },
     {
@@ -368,8 +368,8 @@
       "name": "Amp VR_DIG Cap 1uF 25V",
       "lcsc_id": "C106858",
       "package": "0603",
-      "x": 35.0,
-      "y": 48.01,
+      "x": 40.0,
+      "y": 38.0,
       "angle": 0,
       "_note": "v1.6: 100nF->1uF (TAS5805M VR_DIG=내부1.5V LDO 출력, Table8-3 C9/C10=1uF)"
     },
