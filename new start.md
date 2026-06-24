@@ -19,7 +19,7 @@ ESP32 + TAS5805M(Class-D, I2S) + LSM6DSOX(IMU 폐루프) 로 **8Ω·10W급 진�
 3. **도구 역할 분담(브릿지=읽기/이동, UI=무거운작업) + 수정 즉시 동기화**(회로도↔PCB↔design_flow.json).
 - 순서: **A0 SSOT동결 → A1 전도메인검증 → B 회로도(ERC0) → C 보드+Import → D 규칙 → E GND평면 → F 전원우선배치 → G 전원 pour+LOCK → H 신호 → I GND비아 → J 권위 DRC0 → K 제작.**
 
-## 3. 확정 BOM (design_flow.json v1.6.0, 53부품 / 43넷)
+## 3. 확정 BOM (design_flow.json v1.7.0, 53부품 / 43넷)
 
 ### 능동/핵심
 | 지정 | 부품 | LCSC | 검증 |
@@ -69,16 +69,15 @@ ESP32 + TAS5805M(Class-D, I2S) + LSM6DSOX(IMU 폐루프) 로 **8Ω·10W급 진�
 
 > ★MP3426는 기존에 FSET·FB·SS(핀8·9·10)를 GND에 묶고 FB·FSET를 13·14로 배정 → **피드백이 접지 단락 = 부스트가 12V를 못 만듦.** A1 검증으로 회로 그리기 전에 차단.
 
-### ✅ 추가 해결 (v1.5.0 → v1.6.0)
-- **★MP3426 핀배치 수정**(데이터시트 2회 + 라이브 풋프린트 DFN-14+EP 확인): FSET 14→8, FB 13→9, GND=11~15, SS(10)→캡 C23.
-- **AMP_OUT EMI 출력필터 추가**: 비드 FB1~4(C154119) + 캡 C24~27(C16033)→GND, SPK 넷 신설. **펌웨어: 비드필터 사용 시 Fsw=384kHz + Spread Spectrum**(TI 권고).
-- **C19 AVDD·C20 VR_DIG → 1µF**(TI Table8-3 C9/C10=1µF).
-- **BTL vs PBTL = Stereo BTL 확정**(펌웨어 I2S RIGHT_LEFT·PBTL 미설정 → J1·J2 = 2채널).
-- **라이브 심볼(브릿지)**: MP3426=DFN-14+EP / AP2112K=SOT-25-5 풋프린트 확인 ✓.
+### ✅ A1 라이브 심볼 검증 완료 (v1.6.0 → v1.7.0) — "new start" 프로젝트
+EasyEDA **"new start" 프로젝트 Schematic1**에 회로도 자동생성(53부품/**216핀**) → 모든 핀을 **실제 심볼**과 대조:
+- **★MP3426 핀 정정(중대)**: 라이브 심볼이 alldatasheet OCR(핀순서 역전)과 **반대**임을 폭로 → v1.5의 "FSET=8/FB=9" 수정이 틀렸음을 발견. **심볼 실측(8/9/10=PGND, 11=AGND, 12=SS, 13=FB, 14=FSET, 15=EP)대로 정정**: FB→13, FSET→14, SS→12, GND→8/9/10/11/15. **교훈: 데이터시트 OCR보다 라이브 심볼이 권위.**
+- **전 IC 기능핀 이름검증 통과**: U3·U4(PVDD/AVDD/VR_DIG/I2S/I2C/PDN) + U2(AP2112K 1VIN/2GND/3EN/5VOUT) + **D1(1=C→VBUS)·D3(1=K→PVDD/2=A→SW 정류 정상)** + EP패드(U3.15/U4.29) 전부 심볼 일치. 산출물 a1_symbol_verify.json(216핀맵).
+- **EMI 필터**(v1.6): 비드 FB1~4(C154119) + 캡 C24~27(C16033)→GND, SPK 넷. **펌웨어: Fsw=384kHz+Spread Spectrum**.
+- **C19 AVDD·C20 VR_DIG → 1µF**. **BTL=Stereo 확정**(펌웨어 I2S RIGHT_LEFT, J1·J2=2채널).
 
-### ⚠️ 잔여 (회로도 ERC 단계에서 자동 확정)
-- 심볼 핀번호↔넷 / **EP 패드번호(15)** / 극성(D1 음극) — 회로도 생성 + Import Changes가 불일치를 자동 플래그(유저 EasyEDA doc전환=크래시 위험이라 강제 안 함).
-- C23 SS 4.7nF = 데이터시트 시작거동 보고 미세조정 가능.
+### ⚠️ 잔여 (ERC에서 최종확정)
+- 회로도 ERC 0 확인 후 A1 종료. C23 SS 4.7nF = 시작거동 보고 미세조정 가능.
 
 ## 6. 인증 경로 (액세서리 / 국내)
 - **어린이제품 공통안전기준**(공급자적합성확인 추정) + 전파 **적합등록**(WROOM 모듈인증 활용) + 동봉 어댑터 **KC 안전인증품**.
@@ -87,6 +86,7 @@ ESP32 + TAS5805M(Class-D, I2S) + LSM6DSOX(IMU 폐루프) 로 **8Ω·10W급 진�
 - 설계반영: 케이블 200cm(목졸림) 재검토, U4 발열(EP 써멀비아), EMC(부스트 루프+출력필터), OTA 안전파라미터 잠금+서명.
 
 ## 7. 변경 이력
+- **v1.7.0**: ★MP3426 핀 정정(라이브 심볼 기준 — v1.5 alldatasheet OCR 역전오류 원복: FB=13/FSET=14/SS=12/GND=8/9/10/11/15). A1 라이브 검증 완료.
 - **v1.6.0**: AMP_OUT EMI 출력필터(페라이트비드4 FB1~4 + 캡4 C24~27) + C20 VR_DIG 1µF + 펌웨어 Fsw 384kHz/SS 노트.
 - **v1.5.0**: MP3426 핀배치 치명결함 수정(FSET/FB/GND/SS) + C19 AVDD 1µF + C23 SS 신설.
 - **v1.4.0**: U2→AP2112K-3.3(600mA) + C1 22µF 벌크 + C3 25V + D2 삭제.

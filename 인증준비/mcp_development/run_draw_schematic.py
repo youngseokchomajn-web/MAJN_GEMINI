@@ -180,7 +180,18 @@ def main():
         "C19": {"x": 880, "y": 790},
         "C20": {"x": 880, "y": 870},
         "J1": {"x": 1000, "y": 550},
-        "J2": {"x": 1000, "y": 650}
+        "J2": {"x": 1000, "y": 650},
+
+        # 6. 신규(v1.5/1.6): 부스트 SS 캡 + 출력 EMI 필터(페라이트비드+캡)
+        "C23": {"x": 600, "y": 390},
+        "FB1": {"x": 920, "y": 470},
+        "FB2": {"x": 920, "y": 560},
+        "FB3": {"x": 920, "y": 650},
+        "FB4": {"x": 920, "y": 740},
+        "C24": {"x": 1120, "y": 470},
+        "C25": {"x": 1120, "y": 560},
+        "C26": {"x": 1120, "y": 650},
+        "C27": {"x": 1120, "y": 740}
     }
     grid_map_js = json.dumps(grid_map)
 
@@ -440,6 +451,15 @@ def main():
         print("")
     else:
         print("[OK] 모든 스펙 핀이 심볼 핀과 매칭 확인됨")
+
+    # A1 라이브 검증 산출물 저장 (심볼 핀맵 + 미매칭)
+    try:
+        json.dump({"pins_by_designator": sym_by_des, "unmatched_spec": unmatched_spec,
+                   "component_count": len(placed_components), "pin_count": len(pins)},
+                  open("a1_symbol_verify.json", "w", encoding="utf-8"), ensure_ascii=False, indent=1)
+        print("[A1] a1_symbol_verify.json 저장됨")
+    except Exception as _e:
+        print("[A1] 저장 실패:", _e)
 
     print(f"그려야 할 와이어: {len(all_wires)}개, 배치할 네트 포트/플래그: {len(net_tasks)}개")
 
