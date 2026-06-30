@@ -27,3 +27,7 @@ Gerber_Output/
 .pio/
 *.zip
 
+# === PCB 작업용 데이터 덤프 / 로그 (브릿지에서 재생성) ===
+debug.log
+인증준비/mcp_development/_*.pkl
+
