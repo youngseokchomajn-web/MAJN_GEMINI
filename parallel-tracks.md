@@ -3,6 +3,8 @@
 > 갱신: 2026-07-12. majn 루트 repo(MAJN_GEMINI)를 세션 여러 개로 병렬 작업하기 위한 분할 기준.
 > 각 트랙은 새 Claude Code 세션(작업 폴더: `/Users/youngseok/Desktop/majn`)에서 `/track-<이름>` 커맨드로 시작한다.
 > 플랫폼(웹) 트랙 4개는 별도 repo — `platform/docs/parallel-tracks.md` 참조.
+> ⚠️ **분리 예정**: platform은 하드웨어와 무관한 프로젝트라 `/Users/youngseok/Desktop/majn-platform`으로
+> 이동해 완전 분리한다 — 절차는 `platform/docs/folder-separation-runbook.md`. 이동 후 이 문서의 platform 경로 갱신 필요.
 
 ## 철칙 (모든 트랙 공통)
 
