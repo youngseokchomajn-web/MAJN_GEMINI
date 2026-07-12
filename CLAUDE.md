@@ -1,5 +1,10 @@
 # CLAUDE.md — 프로젝트 작업 규칙
 
+## ⚠️ 병렬 트랙 세션
+이 repo는 세션을 나눠 병렬 개발한다 — **[parallel-tracks.md](parallel-tracks.md)(철칙·소유권)를 먼저 읽을 것.**
+루트 트랙: `/track-pcb`(메인 체크아웃 전용) · `/track-cert` · `/track-biz` · `/track-ai`(워크트리).
+플랫폼(웹)은 별도 repo — `platform/docs/parallel-tracks.md`의 4트랙(`/track-infra` 등) 사용.
+
 ## 프로젝트: 마중(MAJN) 스마트 요람/배시넷 PCB
 USB-C 5V → MP3426 부스트 12.12V(PVDD) → TAS5805M Class-D 앰프 → 2×8Ω 진동 트랜스듀서.
 ESP32-WROOM(BLE), LSM6DSOX(IMU), AP2112K-3.3(LDO). 80×60mm 4층. KC 국내인증. EasyEDA Pro `new start`/PCB1.
