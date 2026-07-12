@@ -2,9 +2,8 @@
 
 > 갱신: 2026-07-12. majn 루트 repo(MAJN_GEMINI)를 세션 여러 개로 병렬 작업하기 위한 분할 기준.
 > 각 트랙은 새 Claude Code 세션(작업 폴더: `/Users/youngseok/Desktop/majn`)에서 `/track-<이름>` 커맨드로 시작한다.
-> 플랫폼(웹) 트랙 4개는 별도 repo — `platform/docs/parallel-tracks.md` 참조.
-> ⚠️ **분리 예정**: platform은 하드웨어와 무관한 프로젝트라 `/Users/youngseok/Desktop/majn-platform`으로
-> 이동해 완전 분리한다 — 절차는 `platform/docs/folder-separation-runbook.md`. 이동 후 이 문서의 platform 경로 갱신 필요.
+> 플랫폼(웹)은 **2026-07-12 완전 분리됨** → `/Users/youngseok/Desktop/majn-platform` (별도 repo, 트랙 4개는 그쪽 docs/parallel-tracks.md 참조).
+> 이 repo(하드웨어·인증·사업)와 플랫폼은 서로 참조·수정하지 않는다.
 
 ## 철칙 (모든 트랙 공통)
 
@@ -41,4 +40,4 @@
 - **인증**: compliance_guide.md·feasibility_report.md 초안 존재. 어린이제품 공통안전기준(고시 2022-220호)·부속서6 PDF 확보.
 - **사업**: 예비창업패키지 사업계획서 작성 중([작성중] docx, 루트), 초안·원가산정은 사업계획서/. 프라이머 29기 지원서 제출본 보관.
 - **AI**: Majn_AI_Workspace TODO.md Phase 1 진행 중(데이터 로거·mock 생성기 완료, AudioSet 다운로드·ADXL355 수집 미착수).
-- **플랫폼(별도 repo)**: 4트랙 운영 중, 2026-07-12 프로덕션 배포 성공(R2 활성). platform/docs/parallel-tracks.md 참조.
+- **플랫폼**: /Users/youngseok/Desktop/majn-platform 으로 분리됨(2026-07-12). 이 repo와 무관.

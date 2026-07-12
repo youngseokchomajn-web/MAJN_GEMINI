@@ -3,7 +3,8 @@
 ## ⚠️ 병렬 트랙 세션
 이 repo는 세션을 나눠 병렬 개발한다 — **[parallel-tracks.md](parallel-tracks.md)(철칙·소유권)를 먼저 읽을 것.**
 루트 트랙: `/track-pcb`(메인 체크아웃 전용) · `/track-cert` · `/track-biz` · `/track-ai`(워크트리).
-플랫폼(웹)은 별도 repo — `platform/docs/parallel-tracks.md`의 4트랙(`/track-infra` 등) 사용.
+플랫폼(웹)은 **별도 폴더의 별도 repo** — `/Users/youngseok/Desktop/majn-platform` (이 repo와 완전 무관, 참조·수정 금지).
+플랫폼 작업은 그 폴더에서 세션을 열어 `/track-infra` 등 4트랙 사용.
 
 ## 프로젝트: 마중(MAJN) 스마트 요람/배시넷 PCB
 USB-C 5V → MP3426 부스트 12.12V(PVDD) → TAS5805M Class-D 앰프 → 2×8Ω 진동 트랜스듀서.
