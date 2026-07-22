@@ -16,6 +16,7 @@ class CADAssemblyViewer {
 
     // Component Layer Groups for 6-Directional Explosion Offsets
     this.layers = {
+      washableSleeve: { group: new THREE.Group(), baseZ: 0.048, name: '원터치 세탁 방수 슬리브 커버 (Washable Sleeve)', cost: '$2.5 (소모품)', spec: 'Waterproof Fabric, 10s Snap-on' },
       topPlate: { group: new THREE.Group(), baseZ: 0.032, name: '상판 자작합판 (4mm Birch Plywood)', cost: '$1.2', spec: '800x450x4mm Top Panel' },
       evaGasket: { group: new THREE.Group(), baseZ: 0.026, name: 'EVA 폼 완충 차음 가스켓', cost: '$0.6', spec: 'Density 45kg/m³, High Damping' },
       exciters: { group: new THREE.Group(), baseZ: 0.010, name: 'TEAX14C02-8 익사이터 (4개 유닛)', cost: '$20.0 (4개)', spec: '8Ω 10W Transducers, 3M VHB Tape' },
@@ -94,6 +95,13 @@ class CADAssemblyViewer {
 
     const woodMat = new THREE.MeshStandardMaterial({ color: 0xd97706, roughness: 0.55, metalness: 0.1 });
     const sideWoodMat = new THREE.MeshStandardMaterial({ color: 0xb45309, roughness: 0.6, metalness: 0.1 });
+
+    // 0. Washable Fabric Sleeve Cover (10s Snap-on)
+    const sleeveMat = new THREE.MeshStandardMaterial({ color: 0x38bdf8, roughness: 0.7, opacity: 0.85, transparent: true });
+    const sleeveGeom = new THREE.BoxGeometry(pW + 0.008, pH + 0.008, 0.003);
+    const sleeveMesh = new THREE.Mesh(sleeveGeom, sleeveMat);
+    sleeveMesh.userData = { layerKey: 'washableSleeve' };
+    this.layers.washableSleeve.group.add(sleeveMesh);
 
     // 1. Top Plate (800x450x4mm)
     const topGeom = new THREE.BoxGeometry(pW, pH, pT);
@@ -269,6 +277,7 @@ class CADAssemblyViewer {
     const expandStepXY = 0.18; // Horizontal 4 side wall offset
 
     // Vertical Top/Bottom Layers
+    this.layers.washableSleeve.group.position.z = this.layers.washableSleeve.baseZ + this.explodedFactor * (expandStepZ * 3.2);
     this.layers.topPlate.group.position.z = this.layers.topPlate.baseZ + this.explodedFactor * (expandStepZ * 2.5);
     this.layers.evaGasket.group.position.z = this.layers.evaGasket.baseZ + this.explodedFactor * (expandStepZ * 1.6);
     this.layers.exciters.group.position.z = this.layers.exciters.baseZ + this.explodedFactor * (expandStepZ * 0.8);
