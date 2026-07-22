@@ -1,0 +1,125 @@
+{
+  "metadata": {
+    "project": "MAJN Smart Bassinet 3D Box Enclosure Spec",
+    "version": "3.0.0",
+    "description": "Full 3D Box Assembly Specification with Top, Bottom, and 4 Side Walls"
+  },
+  "geometry": {
+    "shape": "box_enclosure",
+    "width_mm": 800,
+    "height_mm": 450,
+    "depth_mm": 60,
+    "thickness_mm": 4.0,
+    "wall_thickness_mm": 4.0
+  },
+  "material": {
+    "key": "birch_4mm",
+    "name": "자작합판 4mm (Birch Plywood)",
+    "E_Pa": 9150000000.0,
+    "nu": 0.33,
+    "density_kg_m3": 680.0,
+    "yield_strength_Pa": 48000000.0
+  },
+  "side_wall_material": {
+    "key": "birch_4mm",
+    "name": "자작합판 4mm 측판 (Side Walls)"
+  },
+  "joint_boundary": {
+    "type": "bolted_box_clamped",
+    "bolt_count": 8,
+    "corner_brackets": 4,
+    "stress_concentration_Kt": 2.8,
+    "eva_foam_k_N_m3": 22500000.0,
+    "box_rigidity_Kbox": 6.5,
+    "bolts": [
+      {
+        "id": 1,
+        "xNorm": 0.08,
+        "yNorm": 0.08
+      },
+      {
+        "id": 2,
+        "xNorm": 0.5,
+        "yNorm": 0.08
+      },
+      {
+        "id": 3,
+        "xNorm": 0.92,
+        "yNorm": 0.08
+      },
+      {
+        "id": 4,
+        "xNorm": 0.08,
+        "yNorm": 0.92
+      },
+      {
+        "id": 5,
+        "xNorm": 0.5,
+        "yNorm": 0.92
+      },
+      {
+        "id": 6,
+        "xNorm": 0.92,
+        "yNorm": 0.92
+      },
+      {
+        "id": 7,
+        "xNorm": 0.08,
+        "yNorm": 0.5
+      },
+      {
+        "id": 8,
+        "xNorm": 0.92,
+        "yNorm": 0.5
+      }
+    ]
+  },
+  "exciters": [
+    {
+      "id": 1,
+      "name": "Exciter #1",
+      "xNorm": 0.22,
+      "yNorm": 0.28,
+      "force_N": 5.0,
+      "freq_Hz": 40.0,
+      "phase_rad": 0.0
+    },
+    {
+      "id": 2,
+      "name": "Exciter #2",
+      "xNorm": 0.78,
+      "yNorm": 0.28,
+      "force_N": 5.0,
+      "freq_Hz": 40.0,
+      "phase_rad": 0.0
+    },
+    {
+      "id": 3,
+      "name": "Exciter #3",
+      "xNorm": 0.22,
+      "yNorm": 0.72,
+      "force_N": 5.0,
+      "freq_Hz": 40.0,
+      "phase_rad": 0.0
+    },
+    {
+      "id": 4,
+      "name": "Exciter #4",
+      "xNorm": 0.78,
+      "yNorm": 0.72,
+      "force_N": 5.0,
+      "freq_Hz": 40.0,
+      "phase_rad": 0.0
+    }
+  ],
+  "payload": {
+    "baby_weight_kg": 5.0,
+    "pos_xNorm": 0.5,
+    "pos_yNorm": 0.5
+  },
+  "excitation": {
+    "mode": "sine",
+    "sweep_freq_Hz": 40.0
+  },
+  "concept_selection": "l_bracket"
+}

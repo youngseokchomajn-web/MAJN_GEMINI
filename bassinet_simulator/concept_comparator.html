@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MAJN - 마중 스마트 배시넷 하우징 결합 컨셉 다기준 비교 & AI 추천</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+  <style>
+    .comparator-grid {
+      display: grid;
+      grid-template-columns: 380px 1fr;
+      gap: 24px;
+    }
+    .radar-box {
+      height: 380px;
+      position: relative;
+    }
+    .recommend-box {
+      background: linear-gradient(135deg, rgba(56, 189, 248, 0.15), rgba(168, 85, 247, 0.15));
+      border: 1px solid var(--accent-blue);
+      border-radius: 14px;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+    .recommend-box h4 { font-size: 16px; color: var(--accent-blue); display: flex; align-items: center; gap: 8px; }
+    .recommend-box p { font-size: 13px; color: var(--text-main); margin-top: 8px; }
+    .tradeoff-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+      margin-top: 10px;
+    }
+    .tradeoff-table th, .tradeoff-table td {
+      border: 1px solid var(--border-color);
+      padding: 10px;
+      text-align: center;
+    }
+    .tradeoff-table th { background: rgba(255,255,255,0.05); color: var(--accent-blue); }
+    .param-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+    .param-label {
+      font-size: 12px;
+      color: var(--text-muted);
+      display: flex;
+      justify-content: space-between;
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="logo-icon"><i class="fa-solid fa-scale-balanced"></i></div>
+        <div class="brand-text">
+          <h1>MAJN Concept</h1>
+          <span>Trade-off Matrix</span>
+        </div>
+      </div>
+      <nav class="nav-menu">
+        <a href="index.html" class="nav-item"><i class="fa-solid fa-baby-carriage"></i> 배시넷 실시간 관제</a>
+        <a href="fem_simulator.html" class="nav-item"><i class="fa-solid fa-draw-polygon"></i> FEM 정밀 해석 시뮬레이터</a>
+        <a href="cad_viewer.html" class="nav-item"><i class="fa-solid fa-cube"></i> 3D 상자 CAD & 6방향 분해도</a>
+        <a href="concept_comparator.html" class="nav-item active"><i class="fa-solid fa-sliders"></i> 하우징 컨셉 비교 & AI 추천</a>
+      </nav>
+    </aside>
+
+    <main class="main-content">
+      <header class="top-header">
+        <div class="header-title">
+          <h2>마중 스마트 배시넷 하우징 결합 컨셉 다기준 비교 & AI 추천</h2>
+          <p>순수 나무 짜맞춤 vs EVA 폼 완충 vs L-브래킷 체결 vs 하이브리드 컨셉 5대 지표 분석</p>
+        </div>
+      </header>
+
+      <div class="comparator-grid">
+        <!-- 좌측: 가중치 조정 & AI 추천 카드 -->
+        <div class="card">
+          <h3><i class="fa-solid fa-sliders"></i> 의사결정 가중치 (Weights)</h3>
+          
+          <div class="param-group">
+            <div class="param-label"><span>원가 절감 우선도 (Cost)</span><strong id="lbl-w-cost">25%</strong></div>
+            <input type="range" id="rng-w-cost" min="0" max="50" value="25" class="range-slider">
+          </div>
+
+          <div class="param-group">
+            <div class="param-label"><span>가공 용이성 (Easy Machining)</span><strong id="lbl-w-machining">20%</strong></div>
+            <input type="range" id="rng-w-machining" min="0" max="50" value="20" class="range-slider">
+          </div>
+
+          <div class="param-group">
+            <div class="param-label"><span>조립 공수 단축 (Easy Assembly)</span><strong id="lbl-w-assembly">20%</strong></div>
+            <input type="range" id="rng-w-assembly" min="0" max="50" value="20" class="range-slider">
+          </div>
+
+          <div class="param-group">
+            <div class="param-label"><span>구조 내구성 (Durability)</span><strong id="lbl-w-durability">20%</strong></div>
+            <input type="range" id="rng-w-durability" min="0" max="50" value="20" class="range-slider">
+          </div>
+
+          <div class="param-group">
+            <div class="param-label"><span>진동/소음 억제 (Vibration)</span><strong id="lbl-w-vibration">15%</strong></div>
+            <input type="range" id="rng-w-vibration" min="0" max="50" value="15" class="range-slider">
+          </div>
+
+          <!-- AI 추천 카드 -->
+          <div class="recommend-box">
+            <h4><i class="fa-solid fa-robot"></i> AI 파레토 최적 추천 컨셉</h4>
+            <p id="rec-title" style="font-weight:700; color:white; font-size:14px;"></p>
+            <p id="rec-desc"></p>
+            <div style="margin-top:10px; font-size:12px; color:var(--accent-green);" id="rec-score"></div>
+          </div>
+        </div>
+
+        <!-- 우측: 5축 레이더 차트 & 종합 비교 테이블 -->
+        <div class="card">
+          <div class="card-header">
+            <h3><i class="fa-solid fa-chart-pie"></i> 4대 하우징 결합 컨셉 5축 레이더 평가 (Spider Chart)</h3>
+          </div>
+
+          <div class="radar-box">
+            <canvas id="radarChart"></canvas>
+          </div>
+
+          <h3 style="margin-top:20px;"><i class="fa-solid fa-table"></i> 4대 결합 컨셉 정량 수치 트레이드오프 표</h3>
+          <table class="tradeoff-table">
+            <thead>
+              <tr>
+                <th>결합 컨셉</th>
+                <th>개당 원가</th>
+                <th>가공 난이도</th>
+                <th>조립 시간</th>
+                <th>내구성</th>
+                <th>최대 휨</th>
+                <th>장점 / 단점</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="text-align:left; font-weight:600; color:#f59e0b;">A. 순수 나무 짜맞춤</td>
+                <td>$41.2</td>
+                <td>4.8 (어려움)</td>
+                <td>45분</td>
+                <td>3.6 / 5.0</td>
+                <td>0.22 mm</td>
+                <td style="text-align:left; font-size:11px;">부자재비 없음 / 가공/조립 공수 큼</td>
+              </tr>
+              <tr>
+                <td style="text-align:left; font-weight:600; color:#ec4899;">B. 목재 + EVA 폼</td>
+                <td>$45.4</td>
+                <td>2.1 (쉬움)</td>
+                <td>18분</td>
+                <td>4.1 / 5.0</td>
+                <td>0.18 mm</td>
+                <td style="text-align:left; font-size:11px;">진동 차음 우수 / 폼 경화 가능성</td>
+              </tr>
+              <tr>
+                <td style="text-align:left; font-weight:600; color:#38bdf8;">C. 목재 + L-브래킷</td>
+                <td>$46.8</td>
+                <td>1.5 (매우 쉬움)</td>
+                <td>12분</td>
+                <td>4.8 / 5.0</td>
+                <td>0.15 mm</td>
+                <td style="text-align:left; font-size:11px;">조립/유지보수 최고 / 브래킷비 추가</td>
+              </tr>
+              <tr>
+                <td style="text-align:left; font-weight:600; color:#10b981;">D. 하이브리드 (복합)</td>
+                <td>$48.4</td>
+                <td>2.2 (보통)</td>
+                <td>15분</td>
+                <td>5.0 / 5.0</td>
+                <td>0.14 mm</td>
+                <td style="text-align:left; font-size:11px;">내구성/진동 최고 / 원가 최고 ($48.4)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="concept_evaluator.js"></script>
+  <script>
+    let evaluator = null;
+    let radarChart = null;
+
+    document.addEventListener('DOMContentLoaded', () => {
+      evaluator = new ConceptEvaluator();
+      initRadarChart();
+      initWeightControls();
+      updateRecommendation();
+    });
+
+    function initRadarChart() {
+      const ctx = document.getElementById('radarChart').getContext('2d');
+      radarChart = new Chart(ctx, {
+        type: 'radar',
+        data: {
+          labels: ['원가 절감성', '가공 용이성', '조립 속도', '구조 내구성', '진동/소음 억제'],
+          datasets: [
+            {
+              label: 'A. 순수 나무 짜맞춤',
+              data: [95, 20, 25, 72, 60],
+              borderColor: '#f59e0b',
+              backgroundColor: 'rgba(245, 158, 11, 0.15)',
+              borderWidth: 2
+            },
+            {
+              label: 'B. 목재 + EVA 폼',
+              data: [75, 78, 70, 82, 85],
+              borderColor: '#ec4899',
+              backgroundColor: 'rgba(236, 72, 153, 0.15)',
+              borderWidth: 2
+            },
+            {
+              label: 'C. 목재 + L-브래킷',
+              data: [68, 90, 92, 96, 90],
+              borderColor: '#38bdf8',
+              backgroundColor: 'rgba(56, 189, 248, 0.15)',
+              borderWidth: 2
+            },
+            {
+              label: 'D. 하이브리드 (복합)',
+              data: [58, 76, 85, 100, 96],
+              borderColor: '#10b981',
+              backgroundColor: 'rgba(16, 185, 129, 0.15)',
+              borderWidth: 2
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            r: {
+              min: 0, max: 100,
+              grid: { color: 'rgba(255,255,255,0.1)' },
+              pointLabels: { color: '#f8fafc', font: { size: 12 } },
+              ticks: { display: false }
+            }
+          },
+          plugins: {
+            legend: { labels: { color: '#f8fafc', font: { size: 11 } } }
+          }
+        }
+      });
+    }
+
+    function initWeightControls() {
+      ['cost', 'machining', 'assembly', 'durability', 'vibration'].forEach(key => {
+        document.getElementById(`rng-w-${key}`).addEventListener('input', (e) => {
+          document.getElementById(`lbl-w-${key}`).innerText = `${e.target.value}%`;
+          updateRecommendation();
+        });
+      });
+    }
+
+    function updateRecommendation() {
+      if (!evaluator) return;
+
+      const wCost = parseInt(document.getElementById('rng-w-cost').value) / 100.0;
+      const wMachining = parseInt(document.getElementById('rng-w-machining').value) / 100.0;
+      const wAssembly = parseInt(document.getElementById('rng-w-assembly').value) / 100.0;
+      const wDurability = parseInt(document.getElementById('rng-w-durability').value) / 100.0;
+      const wVibration = parseInt(document.getElementById('rng-w-vibration').value) / 100.0;
+
+      const result = evaluator.recommendBestConcept(wCost, wMachining, wAssembly, wDurability, wVibration);
+      const best = result.recommendedConcept;
+
+      document.getElementById('rec-title').innerText = best.name;
+      document.getElementById('rec-desc').innerText = `장점: ${best.pros} | 단점: ${best.cons}`;
+      document.getElementById('rec-score').innerText = `종합 평가점수: ${result.scores[best.id]} / 100점 (개당 원가 ${best.costUSD})`;
+    }
+  </script>
+</body>
+</html>

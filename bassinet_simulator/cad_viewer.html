@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MAJN - 마중 스마트 배시넷 3D 상자(Box Enclosure) 상세 CAD & 6방향 분해도</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+  <style>
+    .cad-grid {
+      display: grid;
+      grid-template-columns: 380px 1fr;
+      gap: 24px;
+    }
+    .cad-viewport-box {
+      width: 100%;
+      height: 540px;
+      background: #060913;
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      position: relative;
+      overflow: hidden;
+    }
+    .cad-viewport-box canvas { width: 100%; height: 100%; }
+    .cad-toolbar {
+      position: absolute;
+      top: 16px;
+      left: 16px;
+      right: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 10;
+      pointer-events: none;
+    }
+    .cad-toolbar * { pointer-events: auto; }
+    .exploded-control-bar {
+      background: rgba(15, 23, 42, 0.85);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--border-color);
+      padding: 10px 18px;
+      border-radius: 30px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      font-size: 13px;
+    }
+    .part-info-card {
+      position: absolute;
+      bottom: 20px;
+      left: 20px;
+      background: rgba(15, 23, 42, 0.9);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--accent-blue);
+      border-radius: 14px;
+      padding: 16px 20px;
+      width: 320px;
+      z-index: 10;
+    }
+    .part-info-card h4 { font-size: 14px; color: var(--accent-blue); margin-bottom: 6px; }
+    .part-info-card .detail-row { display: flex; justify-content: space-between; font-size: 12px; margin-top: 4px; color: var(--text-muted); }
+    .part-info-card .detail-row strong { color: white; }
+    .layer-checkbox-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-top: 10px;
+      max-height: 220px;
+      overflow-y: auto;
+    }
+    .layer-chk-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 12px;
+      color: var(--text-muted);
+      cursor: pointer;
+    }
+    .bom-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 11px;
+      margin-top: 10px;
+    }
+    .bom-table th, .bom-table td {
+      border: 1px solid var(--border-color);
+      padding: 6px;
+      text-align: left;
+    }
+    .bom-table th { background: rgba(255,255,255,0.05); color: var(--accent-blue); }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="logo-icon"><i class="fa-solid fa-box"></i></div>
+        <div class="brand-text">
+          <h1>MAJN 3D BOX</h1>
+          <span>Box Enclosure & BOM</span>
+        </div>
+      </div>
+      <nav class="nav-menu">
+        <a href="index.html" class="nav-item"><i class="fa-solid fa-baby-carriage"></i> 배시넷 실시간 관제</a>
+        <a href="fem_simulator.html" class="nav-item"><i class="fa-solid fa-draw-polygon"></i> FEM 정밀 해석 시뮬레이터</a>
+        <a href="cad_viewer.html" class="nav-item active"><i class="fa-solid fa-cube"></i> 3D 상자 CAD & 6방향 분해도</a>
+      </nav>
+    </aside>
+
+    <main class="main-content">
+      <header class="top-header">
+        <div class="header-title">
+          <h2>마중 스마트 배시넷 3D 상자(Box Enclosure) 상세 CAD & 6방향 분해도</h2>
+          <p>상판(800x450mm) + 하판 + 4면 측판(높이 60mm) + L-브래킷 + 익사이터 4개 3D 조립체</p>
+        </div>
+      </header>
+
+      <div class="cad-grid">
+        <!-- 좌측: 조립 레이어 제어 & BOM 원가표 -->
+        <div class="card">
+          <h3><i class="fa-solid fa-list-check"></i> 상자 조립 레이어 (Box Layers)</h3>
+          
+          <div class="layer-checkbox-list">
+            <label class="layer-chk-item">
+              <input type="checkbox" checked onchange="toggleLayer('topPlate', this.checked)">
+              <span><i class="fa-solid fa-square" style="color:#d97706"></i> 상판 자작합판 (4mm)</span>
+            </label>
+            <label class="layer-chk-item">
+              <input type="checkbox" checked onchange="toggleLayer('evaGasket', this.checked)">
+              <span><i class="fa-solid fa-square" style="color:#334155"></i> EVA 폼 완충 가스켓</span>
+            </label>
+            <label class="layer-chk-item">
+              <input type="checkbox" checked onchange="toggleLayer('exciters', this.checked)">
+              <span><i class="fa-solid fa-square" style="color:#ec4899"></i> TEAX14C02 익사이터 (4개)</span>
+            </label>
+            <label class="layer-chk-item">
+              <input type="checkbox" checked onchange="toggleLayer('controlBox', this.checked)">
+              <span><i class="fa-solid fa-square" style="color:#10b981"></i> 컨트롤박스 & ESP32 PCB</span>
+            </label>
+            <label class="layer-chk-item">
+              <input type="checkbox" checked onchange="toggleLayer('frontWall', this.checked)">
+              <span><i class="fa-solid fa-square" style="color:#b45309"></i> 전면 측판 (Front Wall 60mm)</span>
+            </label>
+            <label class="layer-chk-item">
+              <input type="checkbox" checked onchange="toggleLayer('backWall', this.checked)">
+              <span><i class="fa-solid fa-square" style="color:#b45309"></i> 후면 측판 (Back Wall 60mm)</span>
+            </label>
+            <label class="layer-chk-item">
+              <input type="checkbox" checked onchange="toggleLayer('leftWall', this.checked)">
+              <span><i class="fa-solid fa-square" style="color:#b45309"></i> 좌측 측판 (Left Wall 60mm)</span>
+            </label>
+            <label class="layer-chk-item">
+              <input type="checkbox" checked onchange="toggleLayer('rightWall', this.checked)">
+              <span><i class="fa-solid fa-square" style="color:#b45309"></i> 우측 측판 (Right Wall 60mm)</span>
+            </label>
+            <label class="layer-chk-item">
+              <input type="checkbox" checked onchange="toggleLayer('cornerBrackets', this.checked)">
+              <span><i class="fa-solid fa-square" style="color:#94a3b8"></i> 코너 L-자 강철 브래킷 (4개)</span>
+            </label>
+            <label class="layer-chk-item">
+              <input type="checkbox" checked onchange="toggleLayer('bottomPlate', this.checked)">
+              <span><i class="fa-solid fa-square" style="color:#d97706"></i> 하판 자작합판 (4mm)</span>
+            </label>
+            <label class="layer-chk-item">
+              <input type="checkbox" checked onchange="toggleLayer('bolts', this.checked)">
+              <span><i class="fa-solid fa-square" style="color:#f59e0b"></i> M3 체결 볼트 & 황동 스페이서</span>
+            </label>
+          </div>
+
+          <h3 style="margin-top:16px;"><i class="fa-solid fa-file-invoice-dollar"></i> 제품 BOM 원가표</h3>
+          <table class="bom-table">
+            <thead>
+              <tr><th>항목</th><th>부품 명칭</th><th>원가 (USD)</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>진동</td><td>TEAX14C02-8 익사이터 ×4</td><td>$20.0</td></tr>
+              <tr><td>전자</td><td>조립 PCB ("칩")</td><td>$10.0</td></tr>
+              <tr><td>전원</td><td>KC 5V/2A 어댑터 + Cable</td><td>$3.7</td></tr>
+              <tr><td>구조</td><td>컨트롤박스 하우징</td><td>$3.0</td></tr>
+              <tr><td>목재</td><td>상/하/4면 측판 자작합판 패널</td><td>$3.8</td></tr>
+              <tr><td>완충</td><td>EVA폼 프레임 + 테이프</td><td>$0.6</td></tr>
+              <tr><td>체결</td><td>나사·L브래킷·스페이서</td><td>$1.7</td></tr>
+              <tr><th colspan="2">개당 총 원가</th><th>$48.4</th></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- 우측: 3D Box CAD Viewport & 6-Way Exploded View Slider -->
+        <div class="card" style="padding:0; overflow:hidden;">
+          <div class="cad-viewport-box">
+            <div class="cad-toolbar">
+              <div class="exploded-control-bar">
+                <span><i class="fa-solid fa-up-down-left-right"></i> 3D 상자 6방향 입체 분해도 (6-Way Exploded):</span>
+                <input type="range" id="rng-exploded" min="0" max="100" value="0" class="range-slider" style="width:160px;">
+                <strong id="lbl-exploded-pct">0% (상자 조립 상태)</strong>
+              </div>
+            </div>
+
+            <div id="cad-container" style="width:100%; height:100%;"></div>
+
+            <!-- 파트 클릭 시 세부 정보 팝업 -->
+            <div class="part-info-card" id="part-info-card">
+              <h4 id="part-title">상자 부품을 클릭하여 세부 스펙 확인</h4>
+              <p id="part-desc" style="font-size:12px; color:var(--text-muted)">3D 상자 뷰포트에서 개별 패널/부품을 선택하세요.</p>
+              <div class="detail-row"><span>단가 (Cost):</span><strong id="part-cost">-</strong></div>
+              <div class="detail-row"><span>규격 (Spec):</span><strong id="part-spec">-</strong></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="cad_assembler.js"></script>
+  <script>
+    let cadViewer = null;
+
+    document.addEventListener('DOMContentLoaded', () => {
+      cadViewer = new CADAssemblyViewer('cad-container');
+
+      document.getElementById('rng-exploded').addEventListener('input', (e) => {
+        let val = parseInt(e.target.value);
+        let factor = val / 100.0;
+        document.getElementById('lbl-exploded-pct').innerText = `${val}% ${val === 0 ? '(상자 조립 상태)' : '(6방향 분해 상태)'}`;
+        if (cadViewer) cadViewer.setExplodedFactor(factor);
+      });
+
+      window.onCADPartSelect = (partInfo) => {
+        if (!partInfo) return;
+        document.getElementById('part-title').innerText = partInfo.name;
+        document.getElementById('part-desc').innerText = '마중 3D 상자 하우징 조립 구성 요소';
+        document.getElementById('part-cost').innerText = partInfo.cost;
+        document.getElementById('part-spec').innerText = partInfo.spec;
+      };
+    });
+
+    function toggleLayer(layerKey, checked) {
+      if (cadViewer) {
+        cadViewer.setLayerVisibility(layerKey, checked);
+      }
+    }
+  </script>
+</body>
+</html>
