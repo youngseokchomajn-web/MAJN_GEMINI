@@ -109,22 +109,22 @@
         </div>
       </div>
 
-      <div class="metrics-row">
+      <div class="metrics-row" style="margin-top:14px;">
         <div class="metric-card">
-          <span class="lbl">최대 휨 변형 (Max Deflection)</span>
-          <div class="val" id="val-deflect" style="color:var(--accent-blue)">0.146 mm</div>
+          <span class="lbl">진동 전달 효율 (Vibration Efficiency)</span>
+          <div class="val" id="val-vib-eff" style="color:var(--accent-purple)">88.5 %</div>
         </div>
         <div class="metric-card">
-          <span class="lbl">볼트 노치 Von Mises 최고 응력</span>
-          <div class="val" id="val-stress" style="color:var(--accent-rose)">0.71 MPa</div>
+          <span class="lbl">전체 하우징 중량 (Lightweight Mass)</span>
+          <div class="val" id="val-housing-weight" style="color:var(--accent-green)">1.75 kg</div>
         </div>
         <div class="metric-card">
-          <span class="lbl">구조 안전율 (Safety Factor)</span>
-          <div class="val" id="val-sf" style="color:var(--accent-green)">67.7 (안전)</div>
+          <span class="lbl">렌탈 회수 정비시간 (Turnaround)</span>
+          <div class="val" id="val-rental-time" style="color:var(--accent-blue)">3.5 분</div>
         </div>
         <div class="metric-card">
-          <span class="lbl">1차 고유 주파수 (Natural Freq)</span>
-          <div class="val" id="val-freq" style="color:var(--accent-amber)">48.5 Hz</div>
+          <span class="lbl">세탁 커버 교체비 (Sleeve Cost)</span>
+          <div class="val" id="val-sleeve-cost" style="color:var(--accent-amber)">$2.5 (소모품)</div>
         </div>
       </div>
     </div>
@@ -134,6 +134,7 @@
   <script src="fem_visualizer.js"></script>
   <script src="cad_assembler.js"></script>
   <script src="concept_evaluator.js"></script>
+  <script src="rental_manager.js"></script>
   <script src="pro_cad_exporter.js"></script>
   <script src="pro_report_generator.js"></script>
   <script>
