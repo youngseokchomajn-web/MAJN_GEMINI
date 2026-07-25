@@ -113,9 +113,13 @@ class CAEReportGenerator {
 </html>
     `;
 
-    const reportWindow = window.open('', '_blank');
-    reportWindow.document.write(reportHTML);
-    reportWindow.document.close();
+    const win = window.open('', '_blank');
+    if (!win) {
+      alert('⚠️ 브라우저 팝업이 차단되었습니다. 팝업 허용 후 다시 시도해 주세요.');
+      return;
+    }
+    win.document.write(reportHTML);
+    win.document.close();
   }
 }
 

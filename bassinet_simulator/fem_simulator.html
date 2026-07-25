@@ -185,25 +185,25 @@
         </div>
       </header>
 
-      <!-- 시뮬레이터 계산 가이드 배너 -->
+      <!-- 시뮬레이터 공학 모델 가이드 배너 -->
       <div class="guide-banner">
-        <h4><i class="fa-solid fa-circle-info"></i> 💡 이 시뮬레이터가 계산 및 검증해주는 핵심 지표가 무엇인가요?</h4>
+        <h4><i class="fa-solid fa-circle-info"></i> 💡 마중 3D 상자 간이 공학 시뮬레이터 (Simplified Engineering Estimate)</h4>
         <div class="guide-grid">
           <div class="guide-item">
-            <strong>1. 📐 최대 휨 변형량 (Deflection)</strong>
-            <span>아기 체중(5kg)과 익사이터 진동 시 하우징이 얼마나 꺼지는지 측정 (기준: 0.5mm 이하 양호).</span>
+            <strong>1. 📐 정적 휨 변형량 (Deflection)</strong>
+            <span>아기 체중(5kg)과 가진 진동 시 상판 꺼짐 산출 (간이 휨 수식 기반).</span>
           </div>
           <div class="guide-item">
             <strong>2. ⚡ Von Mises 응력 (Stress)</strong>
-            <span>볼트 체결 구멍 주변 노치에 물리적 하중이 얼마나 집중되는지 렌더링.</span>
+            <span>볼트 노치(Kt=2.8) 주변 물리적 응력 집중 렌더링.</span>
           </div>
           <div class="guide-item">
             <strong>3. 🛡️ 구조 안전율 (Safety Factor)</strong>
-            <span>자작합판/플라스틱 소재가 항복 파괴되지 않는 내구성 안전 배수 (기준: 3.0 이상 안전).</span>
+            <span>소재 항복강도 대비 추정 안전 배수 (기준 > 3.0 이상 안전).</span>
           </div>
           <div class="guide-item">
             <strong>4. 🎵 1차 고유 주파수 (Natural Freq)</strong>
-            <span>40Hz 진동 구동 시 하우징이 소음/공진을 일으키는지 계산.</span>
+            <span>3D 박스 강성 보정 계수(Kbox=6.5) 기반 모달 주파수 산출.</span>
           </div>
         </div>
       </div>

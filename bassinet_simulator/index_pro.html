@@ -109,29 +109,40 @@
         </div>
       </div>
 
-      <div class="metrics-row" style="margin-top:14px;">
-        <div class="metric-card">
-          <span class="lbl">진동 전달 효율 (Vibration Efficiency)</span>
-          <div class="val" id="val-vib-eff" style="color:var(--accent-purple)">88.5 %</div>
-        </div>
-        <div class="metric-card">
-          <span class="lbl">전체 하우징 중량 (Lightweight Mass)</span>
-          <div class="val" id="val-housing-weight" style="color:var(--accent-green)">1.75 kg</div>
-        </div>
-        <div class="metric-card">
-          <span class="lbl">렌탈 회수 정비시간 (Turnaround)</span>
-          <div class="val" id="val-rental-time" style="color:var(--accent-blue)">3.5 분</div>
-        </div>
-        <div class="metric-card">
-          <span class="lbl">세탁 커버 교체비 (Sleeve Cost)</span>
-          <div class="val" id="val-sleeve-cost" style="color:var(--accent-amber)">$2.5 (소모품)</div>
-        </div>
-      </div>
-    </div>
-  </div>
+          <div class="metrics-summary">
+            <div class="metric-card">
+              <span class="title">정적 휨 변위량 (Deflection)</span>
+              <span class="val" id="val-deflect" style="color:var(--accent-blue)">0.14 mm</span>
+              <span class="sub">✓ 기준 0.5mm 이하 양호</span>
+            </div>
+            <div class="metric-card">
+              <span class="title">Von Mises 최대 응력</span>
+              <span class="val" id="val-stress" style="color:var(--accent-pink)">0.71 MPa</span>
+              <span class="sub">✓ 볼트 노치 주변 집중</span>
+            </div>
+            <div class="metric-card">
+              <span class="title">구조 파괴 안전율 (Safety Factor)</span>
+              <span class="val" id="val-sf" style="color:var(--accent-green)">67.7</span>
+              <span class="sub">✓ 내구성 파괴 안전 (기준>3.0)</span>
+            </div>
+            <div class="metric-card">
+              <span class="title">1차 고유 주파수 (Natural Freq)</span>
+              <span class="val" id="val-freq" style="color:var(--accent-purple)">48.5 Hz</span>
+              <span class="sub">✓ 40Hz 구동 시 공진 안전</span>
+            </div>
+          </div>
 
   <script src="fem_engine.js"></script>
   <script src="fem_visualizer.js"></script>
+  <script src="pro_cad_exporter.js"></script>
+  <script src="rental_manager.js"></script>
+  <script>
+    let rentalMgr = null;
+    document.addEventListener('DOMContentLoaded', () => {
+      rentalMgr = typeof RentalManager !== 'undefined' ? new RentalManager() : null;
+      console.log('🏬 MAJN Pro B2B Rental Manager initialized successfully.');
+    });
+  </script>
   <script src="cad_assembler.js"></script>
   <script src="concept_evaluator.js"></script>
   <script src="rental_manager.js"></script>
