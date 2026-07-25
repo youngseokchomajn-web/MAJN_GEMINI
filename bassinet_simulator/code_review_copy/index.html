@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MAJN - 마중 스마트 배시넷 통합 시뮬레이터 & 관제 센터</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+</head>
+<body>
+  <div class="app-container">
+    <!-- 사이드바 / 헤더 Navigation -->
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="logo-icon">
+          <i class="fa-solid fa-baby-carriage"></i>
+        </div>
+        <div class="brand-text">
+          <h1>MAJN</h1>
+          <span>Smart Bassinet v2.4</span>
+        </div>
+      </div>
+
+      <nav class="nav-menu">
+        <a href="#dashboard" class="nav-item active"><i class="fa-solid fa-chart-line"></i> 대시보드</a>
+        <a href="#simulation" class="nav-item"><i class="fa-solid fa-sliders"></i> 모션 & 달래기 제어</a>
+        <a href="#hardware" class="nav-item"><i class="fa-solid fa-microchip"></i> 하드웨어 텔레메트리</a>
+        <a href="#ai-logs" class="nav-item"><i class="fa-solid fa-brain"></i> AI 수면 분석 로그</a>
+      </nav>
+
+      <div class="device-status-card">
+        <div class="status-header">
+          <span class="status-indicator online"></span>
+          <span class="status-title">ESP32-S3 Connected</span>
+        </div>
+        <div class="status-details">
+          <div class="stat-row">
+            <span>Wi-Fi RSSI</span>
+            <strong id="wifi-rssi">-64 dBm</strong>
+          </div>
+          <div class="stat-row">
+            <span>PVDD (MP3426)</span>
+            <strong id="pvdd-val" class="highlight">12.12V</strong>
+          </div>
+          <div class="stat-row">
+            <span>VDD_3V3 (AP2112)</span>
+            <strong id="vdd3v3-val">3.31V</strong>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- 메인 컨텐츠 영역 -->
+    <main class="main-content">
+      <!-- 상단 헤더 -->
+      <header class="top-header">
+        <div class="header-title">
+          <h2>마중 스마트 배시넷 실시간 관제 & 시뮬레이터</h2>
+          <p>LSM6DSOX IMU 폐루프 제어 및 TAS5805M 스마트 사운드 엔진 실시간 테스트</p>
+        </div>
+        <div class="header-actions">
+          <div class="mode-badge">
+            <i class="fa-solid fa-shield-halved"></i> 안전 폐루프 가동 중
+          </div>
+          <button class="btn btn-primary" id="btn-emergency-stop">
+            <i class="fa-solid fa-octagon-exclamation"></i> 비상 정지
+          </button>
+        </div>
+      </header>
+
+      <!-- Dashboard Grid -->
+      <div class="dashboard-grid">
+        <!-- 1. 메인 가상 배시넷 인터랙티브 View -->
+        <div class="card bassinet-view-card">
+          <div class="card-header">
+            <h3><i class="fa-solid fa-baby"></i> 배시넷 실시간 모션 뷰어</h3>
+            <div class="status-pill" id="baby-state-pill">
+              <span class="dot sleeping"></span> 수면 중 (Deep Sleep)
+            </div>
+          </div>
+          <div class="bassinet-visual-wrapper">
+            <!-- 3D/2D Bassinet Motion Canvas Simulation -->
+            <div class="bassinet-frame" id="bassinet-frame">
+              <div class="bassinet-cradle" id="bassinet-cradle">
+                <div class="baby-avatar" id="baby-avatar">
+                  <div class="baby-head"></div>
+                  <div class="baby-body"></div>
+                  <div class="sleep-zzz" id="sleep-zzz">zzz...</div>
+                  <div class="cry-waves" id="cry-waves">
+                    <span>⚡</span><span>😭</span><span>⚡</span>
+                  </div>
+                </div>
+                <div class="motion-vectors">
+                  <div class="vector-arrow axis-x" id="arrow-x"></div>
+                  <div class="vector-arrow axis-y" id="arrow-y"></div>
+                </div>
+              </div>
+              <div class="actuator-base">
+                <div class="vibration-ring ring-1"></div>
+                <div class="vibration-ring ring-2"></div>
+                <span class="transducer-label">8Ω 10W Transducer (TAS5805M)</span>
+              </div>
+            </div>
+
+            <!-- 시뮬레이션 이벤트 트리어 컨트롤 -->
+            <div class="simulation-controls">
+              <h4>상태 트리거 시뮬레이션</h4>
+              <div class="btn-group">
+                <button class="btn btn-outline" onclick="triggerBabyState('sleep')">😴 깊은 수면</button>
+                <button class="btn btn-outline" onclick="triggerBabyState('light_sleep')">🥱 얕은 수면</button>
+                <button class="btn btn-outline" onclick="triggerBabyState('fussing')">🥺 징징거림</button>
+                <button class="btn btn-outline btn-danger" onclick="triggerBabyState('crying')">😭 심한 울음</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. AI Soothing Logic & Control -->
+        <div class="card soothing-control-card">
+          <div class="card-header">
+            <h3><i class="fa-solid fa-wand-magic-sparkles"></i> AI 자동 달래기 (Soothing Engine)</h3>
+            <label class="switch">
+              <input type="checkbox" id="auto-soothing-toggle" checked>
+              <span class="slider round"></span>
+            </label>
+          </div>
+          <div class="soothing-panel">
+            <div class="control-group">
+              <div class="control-label">
+                <span>진동 바운싱 강도 (Motion Level)</span>
+                <strong id="bounce-level-txt">Level 2 (Soft Gentle)</strong>
+              </div>
+              <input type="range" id="bounce-slider" min="0" max="5" value="2" class="range-slider">
+              <div class="range-labels">
+                <span>Off</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5 (Max)</span>
+              </div>
+            </div>
+
+            <div class="control-group">
+              <div class="control-label">
+                <span>백색소음/음향 모드 (TAS5805M Sound)</span>
+                <strong id="sound-mode-txt">바이오리듬 핑크 노이즈</strong>
+              </div>
+              <div class="sound-presets">
+                <button class="preset-btn active" onclick="setSoundPreset('pink')"><i class="fa-solid fa-wind"></i> 핑크 노이즈</button>
+                <button class="preset-btn" onclick="setSoundPreset('heartbeat')"><i class="fa-solid fa-heart-pulse"></i> 심장소리</button>
+                <button class="preset-btn" onclick="setSoundPreset('lullaby')"><i class="fa-solid fa-music"></i> 바이오 자장가</button>
+                <button class="preset-btn" onclick="setSoundPreset('off')"><i class="fa-solid fa-volume-xmark"></i> 음소거</button>
+              </div>
+            </div>
+
+            <div class="control-group">
+              <div class="control-label">
+                <span>음량 제어 (Volume)</span>
+                <strong id="volume-txt">45 dB</strong>
+              </div>
+              <input type="range" id="volume-slider" min="0" max="100" value="45" class="range-slider">
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. IMU (LSM6DSOX) 센서 실시간 그래프 -->
+        <div class="card graph-card">
+          <div class="card-header">
+            <h3><i class="fa-solid fa-wave-square"></i> LSM6DSOX IMU 모션 센서 텔레메트리 (Acc & Gyro)</h3>
+            <span class="rate-badge">100 Hz Sampling</span>
+          </div>
+          <div class="chart-container">
+            <canvas id="imuChart"></canvas>
+          </div>
+        </div>
+
+        <!-- 4. 전원 & 하드웨어 진단 (Power & Thermal) -->
+        <div class="card hardware-card">
+          <div class="card-header">
+            <h3><i class="fa-solid fa-bolt"></i> MP3426 Boost & AP2112 LDO 전원 실시간 레일</h3>
+          </div>
+          <div class="power-metrics">
+            <div class="metric-box">
+              <div class="metric-icon pvdd"><i class="fa-solid fa-car-battery"></i></div>
+              <div class="metric-info">
+                <span class="label">PVDD Boost Output</span>
+                <span class="value" id="pvdd-voltage">12.12 V</span>
+                <span class="subtext">Amp Peak 1.5A Max</span>
+              </div>
+            </div>
+            <div class="metric-box">
+              <div class="metric-icon vdd33"><i class="fa-solid fa-microchip"></i></div>
+              <div class="metric-info">
+                <span class="label">Logic 3.3V Rail</span>
+                <span class="value" id="vdd-voltage">3.31 V</span>
+                <span class="subtext">AP2112K (600mA Rating)</span>
+              </div>
+            </div>
+            <div class="metric-box">
+              <div class="metric-icon temp"><i class="fa-solid fa-temperature-half"></i></div>
+              <div class="metric-info">
+                <span class="label">Amplifier Temp</span>
+                <span class="value" id="amp-temp">41.8 °C</span>
+                <span class="subtext">TAS5805M Thermal Normal</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 5. AI 수면 알고리즘 실시간 분석 파이프라인 로그 -->
+        <div class="card log-card">
+          <div class="card-header">
+            <h3><i class="fa-solid fa-terminal"></i> AI Soothing Engine Execution Logs</h3>
+            <button class="btn btn-sm btn-outline" onclick="clearLogs()">Clear Log</button>
+          </div>
+          <div class="log-terminal" id="log-terminal">
+            <div class="log-line info">[SYSTEM] MAJN Smart Bassinet Simulator Initialized.</div>
+            <div class="log-line success">[HW_CHECK] MP3426 Boost DC-DC 12.12V Stable.</div>
+            <div class="log-line success">[HW_CHECK] AP2112K 3.3V Logic Rail Regulated.</div>
+            <div class="log-line info">[IMU] LSM6DSOX Closed-loop Motion Sensing Active.</div>
+            <div class="log-line info">[AI] AI Sleep Pattern Detection Engine Standing By.</div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
