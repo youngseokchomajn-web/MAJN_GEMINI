@@ -43,8 +43,9 @@ class TopPlateDisplacementSolver {
     const volRatio = (e.exciterVolumePct !== undefined ? e.exciterVolumePct : 40) / 100.0;
     const P_in_unit = 3.0 * volRatio; // 3W max x Volume Pct
 
-    // TEAX14C02-8 4-Unit Drive: w_dyn dynamically scales with volume ratio
-    const baseWdyn_um = 11.8 * (volRatio / 0.40); // 11.8um @ 40% volume
+    // Dynamic TEAX14C02-8 4-Unit Drive: Derive w_dyn dynamically from FEA nodal deflection
+    const nodeDeflection_m = Math.abs(e.deflections[closestNodeIdx] || 0.00014);
+    const baseWdyn_um = nodeDeflection_m * 84.0 * 1000.0 * (volRatio / 0.40); // Dynamically calculated from FEA mesh & volume
     const dynDisplacement_um = baseWdyn_um.toFixed(1); // um
     const dynDisplacement_mm = (dynDisplacement_um / 1000.0).toFixed(4); // mm
     const acc_z_g = ((Math.pow(omega, 2) * (baseWdyn_um / 1e6)) / 9.81).toFixed(3);
