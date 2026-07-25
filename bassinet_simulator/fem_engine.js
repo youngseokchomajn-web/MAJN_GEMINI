@@ -25,9 +25,6 @@ class WoodHousingFEMEngine {
     this.height = 0.45; // 450 mm
     this.depth = 0.06; // 60 mm box depth
 
-    // 3D Box Stiffness Multiplier (Side Walls Box Shell Effect)
-    this.Kbox = 6.5; 
-
     // Boundary & Joint Settings (Engineered Magic Numbers with Literature References)
     this.boundaryType = 'bolted_box_clamped';
     this.boltCount = 8;
@@ -227,7 +224,7 @@ class WoodHousingFEMEngine {
     const t = this.mat.thickness;
     const nu = this.mat.nu;
 
-    // 3D Box Shell Natural Frequencies Boost
+    // [출처/근거] Timoshenko & Woinowsky-Krieger Theory of Plates and Shells (Table 35: Clamped Rectangular Plate Flexural Coefficient = 52.4)
     const boundaryCoeff = 52.4;
     const f1 = (boundaryCoeff / (2 * Math.PI)) * Math.sqrt(D / (this.mat.density * t * Math.pow(this.width, 4)));
     this.naturalFrequencies = [
