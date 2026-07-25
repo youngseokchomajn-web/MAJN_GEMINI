@@ -228,11 +228,11 @@ class WoodHousingFEMVisualizer {
         }
       }
 
-      // 2. Check Bolt Drag
+      // 2. Check Bolt Drag (Increased hit-test radius for smooth dragging)
       for (let bIdx = 0; bIdx < this.engine.bolts.length; bIdx++) {
         const bolt = this.engine.bolts[bIdx];
         const distB = Math.hypot(bolt.xNorm - clickX, bolt.yNorm - clickY);
-        if (distB < 0.05) {
+        if (distB < 0.09) {
           this.draggedBoltIdx = bIdx;
           return;
         }
