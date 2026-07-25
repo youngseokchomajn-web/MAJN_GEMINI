@@ -219,6 +219,7 @@ class WoodHousingFEMVisualizer {
       const clickX = (e.clientX - rect.left) / rect.width;
       const clickY = (e.clientY - rect.top) / rect.height;
 
+      // 1. Check Exciter Drag
       for (const exciter of this.engine.exciters) {
         const dist = Math.hypot(exciter.x - clickX, exciter.y - clickY);
         if (dist < 0.06) {
@@ -227,6 +228,27 @@ class WoodHousingFEMVisualizer {
         }
       }
 
+      // 2. Check Bolt Drag
+      for (let bIdx = 0; bIdx < this.engine.bolts.length; bIdx++) {
+        const bolt = this.engine.bolts[bIdx];
+        const distB = Math.hypot(bolt.xNorm - clickX, bolt.yNorm - clickY);
+        if (distB < 0.05) {
+          this.draggedBoltIdx = bIdx;
+          return;
+        }
+      }
+
+      // 3. Check LSM6DSOX Sensor Drag
+      if (this.dispSolver) {
+        const sPos = this.dispSolver.sensorPos;
+        const distS = Math.hypot(sPos.xNorm - clickX, sPos.yNorm - clickY);
+        if (distS < 0.07) {
+          this.draggedSensor = true;
+          return;
+        }
+      }
+
+      // 4. Check Baby Payload Drag
       const distBaby = Math.hypot(this.engine.babyPosX - clickX, this.engine.babyPosY - clickY);
       if (distBaby < 0.08) {
         this.draggedBaby = true;
@@ -235,22 +257,32 @@ class WoodHousingFEMVisualizer {
     });
 
     this.canvas2D.addEventListener('mousemove', (e) => {
+      const rect = this.canvas2D.getBoundingClientRect();
+      const normX = (e.clientX - rect.left) / rect.width;
+      const normY = (e.clientY - rect.top) / rect.height;
+
       if (this.draggedExciterId !== null) {
-        const rect = this.canvas2D.getBoundingClientRect();
-        const normX = (e.clientX - rect.left) / rect.width;
-        const normY = (e.clientY - rect.top) / rect.height;
         this.engine.updateExciterPos(this.draggedExciterId, normX, normY);
         this.rebuild3DMesh();
+      } else if (this.draggedBoltIdx !== undefined && this.draggedBoltIdx !== null) {
+        this.engine.bolts[this.draggedBoltIdx].xNorm = Math.max(0.02, Math.min(0.98, normX));
+        this.engine.bolts[this.draggedBoltIdx].yNorm = Math.max(0.02, Math.min(0.98, normY));
+        this.engine.generateMesh();
+        this.engine.solve();
+        this.rebuild3DMesh();
+      } else if (this.draggedSensor && this.dispSolver) {
+        this.dispSolver.setSensorPosition(normX, normY);
       } else if (this.draggedBaby) {
-        const rect = this.canvas2D.getBoundingClientRect();
-        this.engine.babyPosX = Math.max(0.1, Math.min(0.9, (e.clientX - rect.left) / rect.width));
-        this.engine.babyPosY = Math.max(0.1, Math.min(0.9, (e.clientY - rect.top) / rect.height));
+        this.engine.babyPosX = Math.max(0.1, Math.min(0.9, normX));
+        this.engine.babyPosY = Math.max(0.1, Math.min(0.9, normY));
         this.engine.solve();
       }
     });
 
     window.addEventListener('mouseup', () => {
       this.draggedExciterId = null;
+      this.draggedBoltIdx = null;
+      this.draggedSensor = false;
       this.draggedBaby = false;
     });
   }
