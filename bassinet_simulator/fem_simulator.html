@@ -469,8 +469,10 @@
         let w = parseInt(e.target.value);
         document.getElementById('lbl-size').innerText = `${w} mm`;
         engine.width = w / 1000.0;
+        engine.height = (w * 0.5625) / 1000.0; // Maintain 16:9 ratio
+        engine.generateMesh();
         engine.solve();
-        visualizer.rebuild3DMesh();
+        if (visualizer) visualizer.rebuild3DMesh();
       });
 
       document.getElementById('rng-baby-weight').addEventListener('input', (e) => {
