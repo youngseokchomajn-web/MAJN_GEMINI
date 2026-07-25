@@ -84,6 +84,14 @@ class TopPlateDisplacementSolver {
     const T_surface = (T_amb + parseFloat(deltaT_exciter)).toFixed(1);
     const iecSafetyMargin = (48.0 - parseFloat(T_surface)).toFixed(1);
 
+    // Internal Volume Helmholtz & Acoustic Pressure SPL (dB) Calculation
+    const volLiters = e.internalVolumeLiters || 21.6;
+    const V_m3 = parseFloat(volLiters) / 1000.0;
+    const c_sound = 343.0; // m/s
+    const f_helmholtz = ((c_sound / (2 * Math.PI)) * Math.sqrt(0.005 / (V_m3 * 0.05))).toFixed(1); // Hz
+    const p_acoustic_Pa = (1.2 * c_sound * (dynDisplacement_mm / 1000.0) * (2 * Math.PI * e.sweepFreq));
+    const spl_dB = Math.max(30.0, (20 * Math.log10(p_acoustic_Pa / 2e-5 + 1e-6))).toFixed(1);
+
     return {
       sensorXPct: (this.sensorPos.xNorm * 100).toFixed(1),
       sensorYPct: (this.sensorPos.yNorm * 100).toFixed(1),
@@ -100,7 +108,10 @@ class TopPlateDisplacementSolver {
       iecSafetyMargin: iecSafetyMargin,
       F_preload_kgf: F_preload_kgf,
       slipIndex_S: slipIndex_S,
-      fatigueLifeMonths: fatigueBaseMonths > 100 ? '99+' : `${fatigueBaseMonths} (${fatigueMinMonths}~${fatigueMaxMonths})`
+      fatigueLifeMonths: fatigueBaseMonths > 100 ? '99+' : `${fatigueBaseMonths} (${fatigueMinMonths}~${fatigueMaxMonths})`,
+      internalVolumeLiters: volLiters,
+      f_helmholtz: f_helmholtz,
+      spl_dB: spl_dB
     };
   }
 

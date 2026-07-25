@@ -98,12 +98,20 @@ class WoodHousingFEMEngine {
     if (config.geometry) {
       this.shape = config.geometry.shape || this.shape;
       this.width = (config.geometry.width_mm || 800) / 1000.0;
-      this.height = (config.geometry.height_mm || 450) / 1000.0;
-      this.depth = (config.geometry.depth_mm || 60) / 1000.0;
+      this.height = (config.geometry.height_mm || 450) / 1000.0; // Length
+      this.depth = (config.geometry.depth_mm || 60) / 1000.0;  // Height
     }
     if (config.material && config.material.key) {
       this.setMaterial(config.material.key);
     }
+    // Calculate Internal Air Spring Stiffness K_air = (gamma * P0 * A^2) / Volume
+    const V_internal = Math.max(0.001, this.width * this.height * this.depth); // m^3
+    const gamma = 1.4; // Air adiabatic index
+    const P0 = 101325; // Atmospheric pressure Pa
+    const A_plate = this.width * this.height;
+    this.K_air = (gamma * P0 * Math.pow(A_plate, 2)) / V_internal; // Air spring Pa/m
+    this.internalVolumeLiters = (V_internal * 1000.0).toFixed(1);
+
     if (config.joint_boundary && config.joint_boundary.box_rigidity_Kbox) {
       this.Kbox = config.joint_boundary.box_rigidity_Kbox;
     }
