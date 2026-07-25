@@ -341,11 +341,15 @@
               <button class="btn btn-sm btn-outline" id="btn-mode-4" onclick="switchModeShape(4)">4차 대각 (291.0Hz)</button>
             </div>
             <div style="display:flex; gap:6px; align-items:center;">
-              <span style="font-size:12px; font-weight:600; color:var(--text-muted); margin-right:4px;">👁️ 3D 뷰:</span>
+              <span style="font-size:12px; font-weight:600; color:var(--text-muted); margin-right:4px;">🎨 3D 컨투어 모드:</span>
+              <button class="btn btn-sm btn-outline active" id="btn-contour-stress" onclick="setContourMode('stress')">⚡ 응력</button>
+              <button class="btn btn-sm btn-outline" id="btn-contour-disp" onclick="setContourMode('displacement')">🌊 변위</button>
+              <button class="btn btn-sm btn-outline" id="btn-contour-thermal" onclick="setContourMode('thermal')">🔥 온도</button>
+              <button class="btn btn-sm btn-outline" id="btn-contour-wood" onclick="setContourMode('wood')">🪵 목재</button>
+              <span style="font-size:12px; font-weight:600; color:var(--text-muted); margin-left:8px; margin-right:4px;">👁️ 뷰:</span>
               <button class="btn btn-sm btn-outline" onclick="setCameraView('iso')">📐 사시</button>
               <button class="btn btn-sm btn-outline" onclick="setCameraView('front')">👁️ 정면</button>
               <button class="btn btn-sm btn-outline" onclick="setCameraView('top')">🔝 평면</button>
-              <button class="btn btn-sm btn-primary" id="btn-toggle-render" onclick="toggleRenderMode()"><i class="fa-solid fa-fire-flame-curved"></i> 🔥 온도 컨투어</button>
             </div>
           </div>
 
@@ -484,20 +488,21 @@
       }
     }
 
+    function setContourMode(modeKey) {
+      if (!visualizer) return;
+      visualizer.renderMode = modeKey;
+      ['stress', 'disp', 'thermal', 'wood'].forEach(key => {
+        const btn = document.getElementById(`btn-contour-${key}`);
+        if (btn) {
+          if ((key === 'disp' && modeKey === 'displacement') || key === modeKey) btn.classList.add('active');
+          else btn.classList.remove('active');
+        }
+      });
+    }
+
     function toggleRenderMode() {
       if (!visualizer) return;
-      const btn = document.getElementById('btn-toggle-render');
-      if (visualizer.renderMode === 'thermal') {
-        visualizer.renderMode = 'stress';
-        btn.innerHTML = '<i class="fa-solid fa-fire-flame-curved"></i> 🔥 2D/3D 온도분포 컨투어 보기';
-        btn.classList.remove('btn-danger');
-        btn.classList.add('btn-primary');
-      } else {
-        visualizer.renderMode = 'thermal';
-        btn.innerHTML = '<i class="fa-solid fa-cube"></i> 🌊 2D/3D 응력/변형 뷰 보기';
-        btn.classList.remove('btn-primary');
-        btn.classList.add('btn-danger');
-      }
+      setContourMode(visualizer.renderMode === 'thermal' ? 'stress' : 'thermal');
     }
 
     function exportFEMToCAD() {
