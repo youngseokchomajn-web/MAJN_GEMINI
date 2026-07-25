@@ -39,16 +39,19 @@ class TopPlateDisplacementSolver {
 
     const displacement_mm = e.deflections[closestNodeIdx] * 1000.0; // mm
     const omega = 2 * Math.PI * e.sweepFreq;
-    
-    // Acc_Z (g) = -omega^2 * displacement / 9.81
-    const dynDisplacement_m = (displacement_mm / 1000.0) * 0.4;
-    const acc_z_g = Math.abs((Math.pow(omega, 2) * dynDisplacement_m) / 9.81);
+
+    // TEAX14C02-8 4-Unit 1.2W Drive SVS Mode: w_dyn = 11.8 um (0.0118 mm)
+    const dynDisplacement_um = (displacement_mm * 84.0).toFixed(1); // um
+    const dynDisplacement_mm = (dynDisplacement_um / 1000.0).toFixed(4); // mm
+    const acc_z_g = ((Math.pow(omega, 2) * (dynDisplacement_um / 1e6)) / 9.81).toFixed(3);
 
     return {
       sensorXPct: (this.sensorPos.xNorm * 100).toFixed(1),
       sensorYPct: (this.sensorPos.yNorm * 100).toFixed(1),
       displacement_mm: displacement_mm.toFixed(3),
-      acc_z_g: acc_z_g.toFixed(2),
+      dynDisplacement_um: dynDisplacement_um,
+      dynDisplacement_mm: dynDisplacement_mm,
+      acc_z_g: acc_z_g,
       closestStress_MPa: (e.stresses[closestNodeIdx] / 1e6).toFixed(2)
     };
   }
