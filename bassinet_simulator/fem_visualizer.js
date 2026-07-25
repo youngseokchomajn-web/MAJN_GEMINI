@@ -184,6 +184,26 @@ class WoodHousingFEMVisualizer {
     const scaleDeflect = 30.0;
     const maxSt = Math.max(0.5, this.engine.maxStress);
 
+    // Update 3D Bolt Pins Position continuously
+    for (let bIdx = 0; bIdx < this.engine.bolts.length; bIdx++) {
+      if (this.boltPins3D[bIdx]) {
+        const bolt = this.engine.bolts[bIdx];
+        let px = (bolt.xNorm - 0.5) * this.engine.width;
+        let py = (bolt.yNorm - 0.5) * this.engine.height;
+        this.boltPins3D[bIdx].position.set(px, py, 0.01);
+      }
+    }
+
+    // Update 3D Exciter Meshes Position continuously
+    for (let exIdx = 0; exIdx < this.engine.exciters.length; exIdx++) {
+      if (this.exciterMeshes3D[exIdx]) {
+        const exciter = this.engine.exciters[exIdx];
+        let exX = (exciter.x - 0.5) * this.engine.width;
+        let exY = (exciter.y - 0.5) * this.engine.height;
+        this.exciterMeshes3D[exIdx].position.set(exX, exY, -0.010);
+      }
+    }
+
     for (let idx = 0; idx < pos.count; idx++) {
       if (idx < this.engine.nodes.length) {
         let w = this.engine.deflections[idx] || 0;
