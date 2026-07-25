@@ -209,21 +209,43 @@ class WoodHousingFEMVisualizer {
         let w = this.engine.deflections[idx] || 0;
         let sig = this.engine.stresses[idx] || 0;
 
-        pos.setZ(idx, -w * scaleDeflect);
-
-        let ratio = Math.min(1.0, sig / (maxSt * 1.1));
-        
-        let r = 0.96;
-        let g = 0.81;
-        let b = 0.66;
-
-        if (ratio > 0.05) {
-          r = 0.96 + (1.0 - 0.96) * ratio;
-          g = 0.81 * (1.0 - ratio * 0.7);
-          b = 0.66 * (1.0 - ratio * 0.9);
+        // Mode Shape 3D Deformation Override
+        if (this.activeModeIdx && this.activeModeIdx > 0) {
+          const node = this.engine.nodes[idx];
+          const m = this.activeModeIdx === 1 ? 1 : (this.activeModeIdx === 2 ? 2 : (this.activeModeIdx === 3 ? 1 : 2));
+          const n = this.activeModeIdx === 1 ? 1 : (this.activeModeIdx === 2 ? 1 : (this.activeModeIdx === 3 ? 2 : 2));
+          const modeAmp = Math.sin(m * Math.PI * node.xNorm) * Math.sin(n * Math.PI * node.yNorm);
+          const omegaM = 2 * Math.PI * (this.engine.naturalFrequencies ? this.engine.naturalFrequencies[this.activeModeIdx - 1] : 48.5);
+          w = modeAmp * 0.003 * Math.sin(omegaM * (time / 1000.0));
         }
 
-        col.setXYZ(idx, r, g, b);
+        pos.setZ(idx, -w * scaleDeflect);
+
+        if (this.renderMode === 'thermal' && typeof TopPlateDisplacementSolver !== 'undefined') {
+          // Thermal Contour Heatmap Rendering (25.0°C Blue -> 41.7°C Red)
+          const node = this.engine.nodes[idx];
+          let dT = 0;
+          const volRatio = (this.engine.exciterVolumePct !== undefined ? this.engine.exciterVolumePct : 40) / 100.0;
+          for (const ex of this.engine.exciters) {
+            const dSq = Math.pow(node.xNorm - ex.x, 2) + Math.pow(node.yNorm - ex.y, 2);
+            dT += 16.7 * (volRatio / 0.40) * Math.exp(-dSq * 20.0);
+          }
+          let tRatio = Math.min(1.0, dT / 16.7);
+          col.setXYZ(idx, tRatio, 0.2 * (1 - tRatio), 1 - tRatio); // Blue -> Red Thermal Map
+        } else {
+          // Standard Stress Heatmap Rendering
+          let ratio = Math.min(1.0, sig / (maxSt * 1.1));
+          let r = 0.96;
+          let g = 0.81;
+          let b = 0.66;
+
+          if (ratio > 0.05) {
+            r = 0.2 + 0.8 * ratio;
+            g = 0.8 * (1.0 - ratio);
+            b = 0.2;
+          }
+          col.setXYZ(idx, r, g, b);
+        }
       }
     }
 

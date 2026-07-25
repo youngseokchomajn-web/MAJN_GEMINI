@@ -311,16 +311,27 @@
             </div>
           </div>
 
-          <div class="visualizer-split">
-            <!-- 3D Viewport with Orbit Controls -->
-            <div class="canvas-box">
-              <span class="box-title">Three.js 3D Box Mesh (상판/측판/볼트/익사이터)</span>
-              <div id="container-3d" style="width:100%; height:100%;"></div>
+          <!-- 시뮬레이션 모드 선택 리본 탭 (Mode Shape & Thermal Contour UI) -->
+          <div style="display:flex; justify-content:space-between; align-items:center; background:rgba(15,23,42,0.8); padding:12px 18px; border-radius:12px; margin-bottom:16px; border:1px solid var(--border-color);">
+            <div style="display:flex; gap:8px; align-items:center;">
+              <span style="font-size:12px; font-weight:600; color:var(--text-muted); margin-right:6px;">🎀 3D 진동 모드형상:</span>
+              <button class="btn btn-sm btn-outline active" id="btn-mode-0" onclick="switchModeShape(0)">정상 변형</button>
+              <button class="btn btn-sm btn-outline" id="btn-mode-1" onclick="switchModeShape(1)">1차 휨 (48.5Hz)</button>
+              <button class="btn btn-sm btn-outline" id="btn-mode-2" onclick="switchModeShape(2)">2차 토션 (111.5Hz)</button>
+              <button class="btn btn-sm btn-outline" id="btn-mode-3" onclick="switchModeShape(3)">3차 휨 (223.1Hz)</button>
+              <button class="btn btn-sm btn-outline" id="btn-mode-4" onclick="switchModeShape(4)">4차 대각 (291.0Hz)</button>
             </div>
+            <div>
+              <button class="btn btn-sm btn-primary" id="btn-toggle-render" onclick="toggleRenderMode()"><i class="fa-solid fa-fire-flame-curved"></i> 🔥 2D/3D 온도분포 컨투어 보기</button>
+            </div>
+          </div>
 
-            <!-- 2D Canvas with Color Legend -->
-            <div class="canvas-box">
-              <span class="box-title">2D Position & Stress Heatmap (Drag Elements)</span>
+          <div class="visualizer-split">
+            <div class="canvas-box" id="container-3d">
+              <div class="canvas-badge">Three.js 3D Box Mesh (상판/측판/볼트/익사이터)</div>
+            </div>
+            <div class="canvas-box" style="position:relative;">
+              <div class="canvas-badge">2D Position & Stress Heatmap (Drag Elements)</div>
               <canvas id="canvas-2d"></canvas>
               
               <div class="color-legend">
@@ -379,6 +390,8 @@
     let exporter = null;
     let dispSolver = null;
 
+    let frfChart = null;
+
     document.addEventListener('DOMContentLoaded', () => {
       engine = new WoodHousingFEMEngine();
       dispSolver = new TopPlateDisplacementSolver(engine);
@@ -386,9 +399,67 @@
       exporter = new CommercialCADExporter(visualizer);
 
       initUIControls();
+      initFRFChart();
       updateMetricsUI();
       renderExciterListUI();
     });
+
+    function initFRFChart() {
+      const ctx = document.getElementById('chart-frf').getContext('2d');
+      const frfData = dispSolver ? dispSolver.calculateSensorFRF() : { freqs: [], responseAccG: [] };
+      frfChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: frfData.freqs,
+          datasets: [{
+            label: '가속도 응답 Acc_Z (g)',
+            data: frfData.responseAccG,
+            borderColor: '#a855f7',
+            backgroundColor: 'rgba(168, 85, 247, 0.15)',
+            borderWidth: 2,
+            fill: true,
+            tension: 0.3
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { display: false } },
+          scales: {
+            x: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#94a3b8', font: { size: 9 } } },
+            y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#94a3b8', font: { size: 9 } } }
+          }
+        }
+      });
+    }
+
+    function switchModeShape(modeIdx) {
+      if (!visualizer) return;
+      visualizer.activeModeIdx = modeIdx;
+      for (let i = 0; i <= 4; i++) {
+        const btn = document.getElementById(`btn-mode-${i}`);
+        if (btn) {
+          if (i === modeIdx) btn.classList.add('active');
+          else btn.classList.remove('active');
+        }
+      }
+    }
+
+    function toggleRenderMode() {
+      if (!visualizer) return;
+      const btn = document.getElementById('btn-toggle-render');
+      if (visualizer.renderMode === 'thermal') {
+        visualizer.renderMode = 'stress';
+        btn.innerHTML = '<i class="fa-solid fa-fire-flame-curved"></i> 🔥 2D/3D 온도분포 컨투어 보기';
+        btn.classList.remove('btn-danger');
+        btn.classList.add('btn-primary');
+      } else {
+        visualizer.renderMode = 'thermal';
+        btn.innerHTML = '<i class="fa-solid fa-cube"></i> 🌊 2D/3D 응력/변형 뷰 보기';
+        btn.classList.remove('btn-primary');
+        btn.classList.add('btn-danger');
+      }
+    }
 
     function exportFEMToCAD() {
       if (exporter) {

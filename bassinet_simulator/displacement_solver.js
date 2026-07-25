@@ -103,6 +103,66 @@ class TopPlateDisplacementSolver {
       fatigueLifeMonths: fatigueBaseMonths > 100 ? '99+' : `${fatigueBaseMonths} (${fatigueMinMonths}~${fatigueMaxMonths})`
     };
   }
+
+  // Calculate FRF H(w) Spectrum Curve (10Hz to 200Hz) at Sensor Location dynamically
+  calculateSensorFRF() {
+    const e = this.engine;
+    const freqs = [];
+    const responseAccG = [];
+    const f1 = e.naturalFrequencies ? e.naturalFrequencies[0] : 48.5;
+    const f2 = e.naturalFrequencies ? e.naturalFrequencies[1] : 111.5;
+
+    // Get closest node deflection dynamically from FEA mesh
+    let min_dist = 99.0;
+    let closestNodeIdx = 0;
+    for (let idx = 0; idx < e.nodes.length; idx++) {
+      const node = e.nodes[idx];
+      const dist = Math.hypot(node.xNorm - this.sensorPos.xNorm, node.yNorm - this.sensorPos.yNorm);
+      if (dist < min_dist) {
+        min_dist = dist;
+        closestNodeIdx = idx;
+      }
+    }
+    const nodeDeflection_m = Math.abs(e.deflections[closestNodeIdx] || 0.00014);
+
+    for (let f = 10; f <= 200; f += 5) {
+      freqs.push(`${f}Hz`);
+      const omega = 2 * Math.PI * f;
+      // 2-Mode FRF Superposition Model H(w)
+      const term1 = 1.0 / Math.sqrt(Math.pow(1 - Math.pow(f / f1, 2), 2) + Math.pow(2 * 0.024 * (f / f1), 2));
+      const term2 = 0.4 / Math.sqrt(Math.pow(1 - Math.pow(f / f2, 2), 2) + Math.pow(2 * 0.024 * (f / f2), 2));
+      const accG = ((Math.pow(omega, 2) * (nodeDeflection_m * (term1 + term2))) / 9.81);
+      responseAccG.push(accG.toFixed(3));
+    }
+    return { freqs, responseAccG };
+  }
+
+  // Calculate Node-by-Node 2D/3D Thermal Contour Temperature Array dynamically
+  calculateThermalContourNodes() {
+    const e = this.engine;
+    const temps = new Float32Array(e.nodes.length);
+    const T_amb = 25.0;
+    const k_wood = e.mat ? (e.mat.k_thermal || 0.15) : 0.15;
+    const t_wall = e.mat ? e.mat.thickness : 0.004;
+    const A_exciter = 1.54e-4;
+    const R_contact = (0.0011 / (0.18 * A_exciter)) + (t_wall / (k_wood * A_exciter));
+    
+    const volRatio = (e.exciterVolumePct !== undefined ? e.exciterVolumePct : 40) / 100.0;
+    const P_in_unit = 3.0 * volRatio;
+    const P_heat_unit = P_in_unit * 0.88;
+    const deltaT_exciter_calc = P_heat_unit * R_contact * 0.75; // Dynamic 1st Conduction
+
+    for (let idx = 0; idx < e.nodes.length; idx++) {
+      const node = e.nodes[idx];
+      let dT = 0;
+      for (const ex of e.exciters) {
+        const dSq = Math.pow(node.xNorm - ex.x, 2) + Math.pow(node.yNorm - ex.y, 2);
+        dT += deltaT_exciter_calc * Math.exp(-dSq * 20.0);
+      }
+      temps[idx] = T_amb + dT;
+    }
+    return temps;
+  }
 }
 
 if (typeof window !== 'undefined') {
