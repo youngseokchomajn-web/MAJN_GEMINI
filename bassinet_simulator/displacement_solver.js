@@ -40,10 +40,14 @@ class TopPlateDisplacementSolver {
     const displacement_mm = e.deflections[closestNodeIdx] * 1000.0; // mm
     const omega = 2 * Math.PI * e.sweepFreq;
 
-    // TEAX14C02-8 4-Unit 1.2W Drive SVS Mode: w_dyn = 11.8 um (0.0118 mm)
-    const dynDisplacement_um = (displacement_mm * 84.0).toFixed(1); // um
+    const volRatio = (e.exciterVolumePct !== undefined ? e.exciterVolumePct : 40) / 100.0;
+    const P_in_unit = 3.0 * volRatio; // 3W max x Volume Pct
+
+    // TEAX14C02-8 4-Unit Drive: w_dyn dynamically scales with volume ratio
+    const baseWdyn_um = 11.8 * (volRatio / 0.40); // 11.8um @ 40% volume
+    const dynDisplacement_um = baseWdyn_um.toFixed(1); // um
     const dynDisplacement_mm = (dynDisplacement_um / 1000.0).toFixed(4); // mm
-    const acc_z_g = ((Math.pow(omega, 2) * (dynDisplacement_um / 1e6)) / 9.81).toFixed(3);
+    const acc_z_g = ((Math.pow(omega, 2) * (baseWdyn_um / 1e6)) / 9.81).toFixed(3);
 
     // Dynamic Thermal Solver: 1st Conduction & Box Thermal Dissipation Equations
     const k_wood = e.mat ? (e.mat.k_thermal || 0.15) : 0.15; // W/mK
@@ -53,8 +57,6 @@ class TopPlateDisplacementSolver {
     const R_wood = t_wall / (k_wood * A_exciter);
     const R_contact = R_VHB + R_wood;
 
-    const volRatio = (e.exciterVolumePct || 40) / 100.0;
-    const P_in_unit = 3.0 * volRatio; // 3W max x Volume Pct
     const P_heat_unit = P_in_unit * 0.88; // 88% Joule Heating
     const deltaT_exciter = (P_heat_unit * R_contact * 0.75).toFixed(1); // deg C
 

@@ -445,6 +445,8 @@
         document.getElementById('lbl-volume').innerText = `${v} % (${(3.0 * v / 100).toFixed(1)}W)`;
         engine.exciterVolumePct = v;
         engine.solve();
+        updateMetricsUI();
+        if (visualizer) visualizer.rebuild3DMesh();
       });
 
       document.getElementById('sel-damping-type').addEventListener('change', (e) => {
