@@ -1,6 +1,6 @@
 /**
  * Three.js 3D Deformed Box Shell Viewer & 2D Interactive Exciter positioning canvas renderer.
- * Features 3D Box Enclosure Mesh (Top Plate & 4 Side Walls) and Bolted Joint Pins.
+ * Clean & Realistic 3D Box Rendering with Clear Color Heatmap & Smooth Deformation.
  */
 
 class WoodHousingFEMVisualizer {
@@ -16,6 +16,7 @@ class WoodHousingFEMVisualizer {
     this.mesh3D = null;
     this.sideWallMeshes = [];
     this.boltPins3D = [];
+    this.exciterMeshes3D = [];
 
     this.draggedExciterId = null;
     this.draggedBaby = false;
@@ -32,18 +33,22 @@ class WoodHousingFEMVisualizer {
     const height = this.container3D.clientHeight || 350;
 
     this.scene = new THREE.Scene();
-    this.scene.background = new THREE.Color(0x060913);
+    this.scene.background = new THREE.Color(0x0a0e1a);
 
     this.camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 100);
-    this.camera.position.set(0, -1.3, 1.0);
+    this.camera.position.set(0, -1.2, 0.9);
     this.camera.lookAt(0, 0, 0);
 
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.85);
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.9);
     this.scene.add(ambientLight);
 
-    const dirLight = new THREE.DirectionalLight(0x38bdf8, 1.3);
-    dirLight.position.set(2, 2, 4);
-    this.scene.add(dirLight);
+    const dirLight1 = new THREE.DirectionalLight(0x38bdf8, 1.2);
+    dirLight1.position.set(2, 3, 4);
+    this.scene.add(dirLight1);
+
+    const dirLight2 = new THREE.DirectionalLight(0xffffff, 0.5);
+    dirLight2.position.set(-2, -2, 2);
+    this.scene.add(dirLight2);
 
     this.renderer = new THREE.WebGLRenderer({ antialias: true });
     this.renderer.setSize(width, height);
@@ -54,6 +59,7 @@ class WoodHousingFEMVisualizer {
       this.controls = new THREE.OrbitControls(this.camera, this.renderer.domElement);
       this.controls.enableDamping = true;
       this.controls.dampingFactor = 0.05;
+      this.controls.maxPolarAngle = Math.PI / 2 + 0.2;
     }
 
     const grid = new THREE.GridHelper(2.5, 25, 0x1e293b, 0x0f172a);
@@ -79,13 +85,16 @@ class WoodHousingFEMVisualizer {
     this.boltPins3D.forEach(pin => this.scene.remove(pin));
     this.boltPins3D = [];
 
-    // Top Plate 3D Mesh with Vertex Colors
+    this.exciterMeshes3D.forEach(ex => this.scene.remove(ex));
+    this.exciterMeshes3D = [];
+
+    // Top Plate 3D Mesh with Vertex Colors (Birch Wood Base)
     const geom = new THREE.PlaneGeometry(this.engine.width, this.engine.height, this.engine.nx, this.engine.ny);
     const count = geom.attributes.position.count;
     const colors = new Float32Array(count * 3);
 
     for (let i = 0; i < count; i++) {
-      colors[i * 3 + 0] = 0.2; colors[i * 3 + 1] = 0.6; colors[i * 3 + 2] = 1.0;
+      colors[i * 3 + 0] = 0.2; colors[i * 3 + 1] = 0.5; colors[i * 3 + 2] = 0.9;
     }
     geom.setAttribute('color', new THREE.BufferAttribute(colors, 3));
 
@@ -93,18 +102,18 @@ class WoodHousingFEMVisualizer {
       vertexColors: true,
       wireframe: false,
       side: THREE.DoubleSide,
-      roughness: 0.3,
-      metalness: 0.2
+      roughness: 0.4,
+      metalness: 0.1
     });
 
     this.mesh3D = new THREE.Mesh(geom, mat);
     this.scene.add(this.mesh3D);
 
-    // 4 Side Walls to complete 3D Box Enclosure Shape
+    // 4 Side Walls to complete 3D Box Enclosure Shape (Warm Wood Texture Tone)
     const pW = this.engine.width;
     const pH = this.engine.height;
     const pD = this.engine.depth || 0.06;
-    const sideMat = new THREE.MeshStandardMaterial({ color: 0x334155, roughness: 0.7, side: THREE.DoubleSide });
+    const sideMat = new THREE.MeshStandardMaterial({ color: 0x9a3412, roughness: 0.6, side: THREE.DoubleSide });
 
     // Front / Back Walls
     const fbGeom = new THREE.PlaneGeometry(pW, pD);
@@ -136,9 +145,9 @@ class WoodHousingFEMVisualizer {
     this.scene.add(rightWall);
     this.sideWallMeshes.push(rightWall);
 
-    // 3D Bolted Pins (8 Points)
+    // 3D Bolted Joint Pins (8 Pins)
     for (const bolt of this.engine.bolts) {
-      const pinGeom = new THREE.CylinderGeometry(0.010, 0.010, 0.04, 16);
+      const pinGeom = new THREE.CylinderGeometry(0.008, 0.008, 0.035, 16);
       const pinMat = new THREE.MeshStandardMaterial({ color: 0xf59e0b, metalness: 0.8, roughness: 0.2 });
       const pinMesh = new THREE.Mesh(pinGeom, pinMat);
 
@@ -149,6 +158,20 @@ class WoodHousingFEMVisualizer {
       this.scene.add(pinMesh);
       this.boltPins3D.push(pinMesh);
     }
+
+    // 3D Exciter Transducer Units (4 Units)
+    for (const exciter of this.engine.exciters) {
+      const exGeom = new THREE.CylinderGeometry(0.02, 0.02, 0.015, 20);
+      const exMat = new THREE.MeshStandardMaterial({ color: 0xec4899, metalness: 0.7, roughness: 0.3 });
+      const exMesh = new THREE.Mesh(exGeom, exMat);
+
+      let exX = (exciter.x - 0.5) * this.engine.width;
+      let exY = (exciter.y - 0.5) * this.engine.height;
+      exMesh.position.set(exX, exY, 0.01);
+      exMesh.rotation.x = Math.PI / 2;
+      this.scene.add(exMesh);
+      this.exciterMeshes3D.push(exMesh);
+    }
   }
 
   update3DMesh(time = 0) {
@@ -157,8 +180,9 @@ class WoodHousingFEMVisualizer {
     const pos = this.mesh3D.geometry.attributes.position;
     const col = this.mesh3D.geometry.attributes.color;
 
-    const scaleDeflect = 60.0;
-    const maxSt = Math.max(1.0, this.engine.maxStress);
+    // Smooth Deflection Scaling (Avoid Extreme Distortion)
+    const scaleDeflect = 30.0;
+    const maxSt = Math.max(0.5, this.engine.maxStress);
 
     for (let idx = 0; idx < pos.count; idx++) {
       if (idx < this.engine.nodes.length) {
@@ -167,10 +191,20 @@ class WoodHousingFEMVisualizer {
 
         pos.setZ(idx, -w * scaleDeflect);
 
+        // Smooth Natural Color Gradient:
+        // Blue (Safe 0MPa) -> Cyan -> Green -> Yellow -> Red (Max Stress Concentration)
         let ratio = Math.min(1.0, sig / (maxSt * 1.1));
-        let r = Math.min(1.0, ratio * 2.2);
-        let g = ratio < 0.5 ? ratio * 2.0 : 2.0 - ratio * 2.0;
-        let b = Math.max(0, 1.0 - ratio * 2.2);
+        
+        let r = 0, g = 0, b = 0;
+        if (ratio < 0.25) {
+          r = 0.1; g = 0.4 + ratio * 2.0; b = 0.9;
+        } else if (ratio < 0.5) {
+          r = 0.1; g = 0.9; b = 0.9 - (ratio - 0.25) * 3.6;
+        } else if (ratio < 0.75) {
+          r = (ratio - 0.5) * 3.6; g = 0.9; b = 0.1;
+        } else {
+          r = 1.0; g = Math.max(0, 0.9 - (ratio - 0.75) * 3.6); b = 0.1;
+        }
 
         col.setXYZ(idx, r, g, b);
       }
@@ -209,6 +243,7 @@ class WoodHousingFEMVisualizer {
         const normX = (e.clientX - rect.left) / rect.width;
         const normY = (e.clientY - rect.top) / rect.height;
         this.engine.updateExciterPos(this.draggedExciterId, normX, normY);
+        this.rebuild3DMesh();
       } else if (this.draggedBaby) {
         const rect = this.canvas2D.getBoundingClientRect();
         this.engine.babyPosX = Math.max(0.1, Math.min(0.9, (e.clientX - rect.left) / rect.width));
@@ -237,15 +272,16 @@ class WoodHousingFEMVisualizer {
     const hw = w - margin * 2;
     const hh = h - margin * 2;
 
-    this.ctx2D.lineWidth = 3;
+    this.ctx2D.lineWidth = 2.5;
     this.ctx2D.strokeStyle = '#38bdf8';
-    this.ctx2D.fillStyle = 'rgba(56, 189, 248, 0.05)';
+    this.ctx2D.fillStyle = 'rgba(56, 189, 248, 0.04)';
 
     this.ctx2D.beginPath();
     this.ctx2D.rect(margin, margin, hw, hh);
     this.ctx2D.fill();
     this.ctx2D.stroke();
 
+    // Render FEA Stress Heatmap Nodes
     for (const node of this.engine.nodes) {
       if (!node.inside) continue;
       const px = margin + node.xNorm * hw;
@@ -253,14 +289,16 @@ class WoodHousingFEMVisualizer {
 
       const idx = node.id;
       const sig = this.engine.stresses[idx] || 0;
-      const ratio = Math.min(1.0, sig / (Math.max(1, this.engine.maxStress) * 1.1));
+      const ratio = Math.min(1.0, sig / (Math.max(0.5, this.engine.maxStress) * 1.1));
 
-      this.ctx2D.fillStyle = `hsl(${220 - ratio * 220}, 90%, 55%)`;
+      let hue = 220 - ratio * 220;
+      this.ctx2D.fillStyle = `hsl(${hue}, 90%, 55%)`;
       this.ctx2D.beginPath();
       this.ctx2D.arc(px, py, 3, 0, Math.PI * 2);
       this.ctx2D.fill();
     }
 
+    // Render 8 Bolts
     for (const bolt of this.engine.bolts) {
       const bx = margin + bolt.xNorm * hw;
       const by = margin + bolt.yNorm * hh;
@@ -269,11 +307,12 @@ class WoodHousingFEMVisualizer {
       this.ctx2D.strokeStyle = '#fff';
       this.ctx2D.lineWidth = 1.5;
       this.ctx2D.beginPath();
-      this.ctx2D.arc(bx, by, 7, 0, Math.PI * 2);
+      this.ctx2D.arc(bx, by, 6, 0, Math.PI * 2);
       this.ctx2D.fill();
       this.ctx2D.stroke();
     }
 
+    // Render Baby Payload Center
     const bx = margin + this.engine.babyPosX * hw;
     const by = margin + this.engine.babyPosY * hh;
 
@@ -287,20 +326,21 @@ class WoodHousingFEMVisualizer {
     this.ctx2D.font = 'bold 11px sans-serif';
     this.ctx2D.fillText('Baby', bx - 12, by + 4);
 
+    // Render 4 Exciters
     for (let idx = 0; idx < this.engine.exciters.length; idx++) {
       const exciter = this.engine.exciters[idx];
       const ex = margin + exciter.x * hw;
       const ey = margin + exciter.y * hh;
 
-      this.ctx2D.strokeStyle = 'rgba(236, 72, 153, 0.6)';
+      this.ctx2D.strokeStyle = 'rgba(236, 72, 153, 0.7)';
       this.ctx2D.lineWidth = 2;
       this.ctx2D.beginPath();
-      this.ctx2D.arc(ex, ey, 16 + Math.sin(Date.now() / 150 + idx) * 4, 0, Math.PI * 2);
+      this.ctx2D.arc(ex, ey, 14 + Math.sin(Date.now() / 150 + idx) * 3, 0, Math.PI * 2);
       this.ctx2D.stroke();
 
       this.ctx2D.fillStyle = '#ec4899';
       this.ctx2D.beginPath();
-      this.ctx2D.arc(ex, ey, 10, 0, Math.PI * 2);
+      this.ctx2D.arc(ex, ey, 9, 0, Math.PI * 2);
       this.ctx2D.fill();
 
       this.ctx2D.fillStyle = '#fff';

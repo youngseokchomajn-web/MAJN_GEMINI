@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MAJN - 정밀 물리 목재/플라스틱 하우징 FEM & 볼팅 접합 시뮬레이터</title>
+  <title>MAJN - 정밀 물리 목재/플라스틱 하우징 FEM 시뮬레이터</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
@@ -18,16 +18,47 @@
       grid-template-columns: 380px 1fr;
       gap: 24px;
     }
+    .guide-banner {
+      background: linear-gradient(135deg, rgba(56, 189, 248, 0.12), rgba(168, 85, 247, 0.12));
+      border: 1px solid var(--accent-blue);
+      border-radius: 14px;
+      padding: 18px 24px;
+      margin-bottom: 24px;
+    }
+    .guide-banner h4 {
+      font-size: 15px;
+      color: var(--accent-blue);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+    .guide-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-top: 10px;
+    }
+    .guide-item {
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 12px;
+      font-size: 12px;
+    }
+    .guide-item strong { color: white; display: block; margin-bottom: 4px; }
+    .guide-item span { color: var(--text-muted); font-size: 11px; }
+
     .visualizer-split {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 20px;
-      height: 400px;
+      height: 420px;
     }
     .canvas-box {
       width: 100%;
       height: 100%;
-      background: #090d16;
+      background: #060913;
       border: 1px solid var(--border-color);
       border-radius: 14px;
       position: relative;
@@ -46,6 +77,31 @@
       border-radius: 6px;
       z-index: 10;
     }
+    
+    /* Heatmap Color Legend Bar Overlay */
+    .color-legend {
+      position: absolute;
+      bottom: 12px;
+      left: 14px;
+      right: 14px;
+      background: rgba(15, 23, 42, 0.85);
+      backdrop-filter: blur(8px);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 6px 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 11px;
+      z-index: 10;
+    }
+    .legend-bar {
+      flex: 1;
+      height: 8px;
+      border-radius: 4px;
+      background: linear-gradient(to right, #1d4ed8, #06b6d4, #10b981, #eab308, #ef4444);
+    }
+
     .param-group {
       display: flex;
       flex-direction: column;
@@ -58,7 +114,7 @@
       display: flex;
       justify-content: space-between;
     }
-    .input-select, .input-text {
+    .input-select {
       width: 100%;
       padding: 8px 12px;
       background: rgba(255,255,255,0.05);
@@ -84,6 +140,7 @@
     }
     .metric-card .title { font-size: 11px; color: var(--text-muted); }
     .metric-card .val { font-size: 18px; font-weight: 700; color: white; margin-top: 4px; }
+    .metric-card .sub { font-size: 10px; color: var(--accent-green); margin-top: 2px; }
     .exciter-list-box {
       max-height: 140px;
       overflow-y: auto;
@@ -109,55 +166,70 @@
         <div class="logo-icon"><i class="fa-solid fa-microchip"></i></div>
         <div class="brand-text">
           <h1>MAJN FEM</h1>
-          <span>Engineering Structural FEA</span>
+          <span>Structural FEA Engine</span>
         </div>
       </div>
       <nav class="nav-menu">
         <a href="index.html" class="nav-item"><i class="fa-solid fa-baby-carriage"></i> 배시넷 실시간 관제</a>
         <a href="fem_simulator.html" class="nav-item active"><i class="fa-solid fa-draw-polygon"></i> FEM 정밀 해석 시뮬레이터</a>
+        <a href="cad_viewer.html" class="nav-item"><i class="fa-solid fa-cube"></i> 3D 상자 CAD & 6방향 분해도</a>
+        <a href="concept_comparator.html" class="nav-item"><i class="fa-solid fa-sliders"></i> 하우징 컨셉 비교 & AI 추천</a>
       </nav>
     </aside>
 
     <main class="main-content">
       <header class="top-header">
         <div class="header-title">
-          <h2>정밀 물리 목재/플라스틱 하우징 FEM & 볼팅 접합 해석기</h2>
-          <p>Kirchhoff-Love 모멘트 텐서 응력, 실측 물성치 DB, 볼트 체결 구속(Clamped BC) 및 응력집중 반영</p>
+          <h2>정밀 물리 목재/플라스틱 3D 상자 하우징 FEM 해석기</h2>
+          <p>Kirchhoff-Love 모멘트 텐서 수치 해석 및 3D 입체 변형 & 응력 집중(Hotspot) 렌더링</p>
         </div>
       </header>
 
+      <!-- 시뮬레이터 계산 가이드 배너 -->
+      <div class="guide-banner">
+        <h4><i class="fa-solid fa-circle-info"></i> 💡 이 시뮬레이터가 계산 및 검증해주는 핵심 지표가 무엇인가요?</h4>
+        <div class="guide-grid">
+          <div class="guide-item">
+            <strong>1. 📐 최대 휨 변형량 (Deflection)</strong>
+            <span>아기 체중(5kg)과 익사이터 진동 시 하우징이 얼마나 꺼지는지 측정 (기준: 0.5mm 이하 양호).</span>
+          </div>
+          <div class="guide-item">
+            <strong>2. ⚡ Von Mises 응력 (Stress)</strong>
+            <span>볼트 체결 구멍 주변 노치에 물리적 하중이 얼마나 집중되는지 렌더링.</span>
+          </div>
+          <div class="guide-item">
+            <strong>3. 🛡️ 구조 안전율 (Safety Factor)</strong>
+            <span>자작합판/플라스틱 소재가 항복 파괴되지 않는 내구성 안전 배수 (기준: 3.0 이상 안전).</span>
+          </div>
+          <div class="guide-item">
+            <strong>4. 🎵 1차 고유 주파수 (Natural Freq)</strong>
+            <span>40Hz 진동 구동 시 하우징이 소음/공진을 일으키는지 계산.</span>
+          </div>
+        </div>
+      </div>
+
       <div class="fem-grid">
-        <!-- 좌측: 정밀 물성치 & 경계조건 파라미터 패널 -->
+        <!-- 좌측: 컨트롤 파라미터 패널 -->
         <div class="card">
-          <h3><i class="fa-solid fa-gear"></i> 물성치 & 접합 경계조건</h3>
+          <h3><i class="fa-solid fa-gear"></i> 물성치 & 가진 설정</h3>
           
           <div class="param-group">
             <div class="param-label"><span>실제 소재 선택 (Real Material DB)</span></div>
             <select id="sel-material" class="input-select">
-              <option value="birch_4mm">자작합판 4mm (Birch Plywood - E=9.15 GPa, σy=48 MPa)</option>
-              <option value="birch_6mm">자작합판 6mm (Birch Plywood - E=10.5 GPa, σy=52 MPa)</option>
-              <option value="mdf_5mm">MDF 5mm (Fiberboard - E=3.6 GPa, σy=22 MPa)</option>
-              <option value="abs_3mm">ABS 플라스틱 3mm (E=2.3 GPa, σy=45 MPa)</option>
-              <option value="abs_4mm">ABS 플라스틱 4mm (E=2.3 GPa, σy=45 MPa)</option>
-              <option value="pc_4mm">폴리카보네이트 4mm (PC - E=3.1 GPa, σy=65 MPa)</option>
+              <option value="birch_4mm">자작합판 4mm (Birch Plywood - E=9.15 GPa)</option>
+              <option value="birch_6mm">자작합판 6mm (Birch Plywood - E=10.5 GPa)</option>
+              <option value="mdf_5mm">MDF 5mm (Fiberboard - E=3.6 GPa)</option>
+              <option value="abs_3mm">ABS 플라스틱 3mm (E=2.3 GPa)</option>
+              <option value="abs_4mm">ABS 플라스틱 4mm (E=2.3 GPa)</option>
+              <option value="pc_4mm">폴리카보네이트 4mm (PC - E=3.1 GPa)</option>
             </select>
           </div>
 
           <div class="param-group">
-            <div class="param-label"><span>볼트 체결 접합부 (Bolted Joint BC)</span></div>
+            <div class="param-label"><span>볼트 체결 접합부 (Bolted Joints)</span></div>
             <select id="sel-bolts" class="input-select">
               <option value="4">볼트 4개 체결 (4-Corner Clamped BC)</option>
-              <option value="6">볼트 6개 체결 (6-Point Reinforced BC)</option>
-              <option value="8">볼트 8개 체결 (8-Point High-Rigidity BC)</option>
-            </select>
-          </div>
-
-          <div class="param-group">
-            <div class="param-label"><span>하우징 기하 형상 (Geometry)</span></div>
-            <select id="sel-shape" class="input-select">
-              <option value="rectangle">직사각형 (Rectangle)</option>
-              <option value="oval">타원형 (Oval / Egg Shape)</option>
-              <option value="rounded">라운드 엣지형 (Rounded Rect)</option>
+              <option value="8" selected>볼트 8개 체결 (8-Point High-Rigidity BC)</option>
             </select>
           </div>
 
@@ -194,40 +266,53 @@
           </div>
         </div>
 
-        <!-- 우측: 3D/2D Visualizer & Metric Summary -->
+        <!-- 우측: 3D/2D visualizer & FEA metrics -->
         <div class="card">
           <div class="card-header">
-            <h3><i class="fa-solid fa-cube"></i> Kirchhoff FEA 3D Strain & 2D Bolted Heatmap</h3>
-            <span class="rate-badge">🔩 Bolted Joint Clamped BC (w=0) & Kt=2.8</span>
+            <h3><i class="fa-solid fa-cube"></i> 3D 상자 변형 & 2D 응력 집중 (Hotspot)</h3>
+            <span class="rate-badge">🔩 360° Mouse Orbit & Drag Exciters</span>
           </div>
 
           <div class="visualizer-split">
+            <!-- 3D Viewport with Orbit Controls -->
             <div class="canvas-box">
-              <span class="box-title">Three.js 3D Strain Mesh & Bolted Pins</span>
+              <span class="box-title">Three.js 3D Box Mesh (상판/측판/볼트/익사이터)</span>
               <div id="container-3d" style="width:100%; height:100%;"></div>
             </div>
+
+            <!-- 2D Canvas with Color Legend -->
             <div class="canvas-box">
-              <span class="box-title">2D Bolted Layout & Stress Concentration (Hotspots)</span>
+              <span class="box-title">2D Position & Stress Heatmap (Drag Elements)</span>
               <canvas id="canvas-2d"></canvas>
+              
+              <div class="color-legend">
+                <span>0 MPa (안전)</span>
+                <div class="legend-bar"></div>
+                <span>Max MPa (집중)</span>
+              </div>
             </div>
           </div>
 
           <div class="metrics-summary">
             <div class="metric-card">
               <span class="title">최대 휨 변형 (Max Deflection)</span>
-              <span class="val" id="metric-deflect" style="color:var(--accent-blue)">0.38 mm</span>
+              <span class="val" id="metric-deflect" style="color:var(--accent-blue)">0.14 mm</span>
+              <span class="sub">✓ 판재 변형 거의 없음 (우수)</span>
             </div>
             <div class="metric-card">
               <span class="title">볼트 노치 Von Mises 최고 응력</span>
-              <span class="val" id="metric-stress" style="color:var(--accent-rose)">4.12 MPa</span>
+              <span class="val" id="metric-stress" style="color:var(--accent-purple)">0.71 MPa</span>
+              <span class="sub">✓ 볼트 주변 응력 완화</span>
             </div>
             <div class="metric-card">
               <span class="title">구조 안전율 (Safety Factor)</span>
-              <span class="val" id="metric-sf" style="color:var(--accent-green)">11.6</span>
+              <span class="val" id="metric-sf" style="color:var(--accent-green)">67.7</span>
+              <span class="sub">✓ 내구성 파괴 안전 (기준>3.0)</span>
             </div>
             <div class="metric-card">
               <span class="title">1차 고유 주파수 (Natural Freq)</span>
-              <span class="val" id="metric-freq" style="color:var(--accent-amber)">28.4 Hz</span>
+              <span class="val" id="metric-freq" style="color:var(--accent-amber)">48.5 Hz</span>
+              <span class="sub">✓ 40Hz 구동 시 공진 회피</span>
             </div>
           </div>
         </div>
@@ -249,12 +334,13 @@
       updateMetricsUI();
       renderExciterListUI();
 
-      setInterval(updateMetricsUI, 200);
+      setInterval(updateMetricsUI, 250);
     });
 
     function initUIControls() {
       document.getElementById('sel-material').addEventListener('change', (e) => {
         engine.setMaterial(e.target.value);
+        visualizer.rebuild3DMesh();
       });
 
       document.getElementById('sel-bolts').addEventListener('change', (e) => {
@@ -266,14 +352,12 @@
         visualizer.rebuild3DMesh();
       });
 
-      document.getElementById('sel-shape').addEventListener('change', (e) => {
-        updateEngineHousing();
-      });
-
       document.getElementById('rng-width').addEventListener('input', (e) => {
         let w = parseInt(e.target.value);
         document.getElementById('lbl-size').innerText = `${w} mm`;
-        updateEngineHousing();
+        engine.width = w / 1000.0;
+        engine.solve();
+        visualizer.rebuild3DMesh();
       });
 
       document.getElementById('rng-baby-weight').addEventListener('input', (e) => {
@@ -289,16 +373,6 @@
         engine.sweepFreq = f;
         engine.solve();
       });
-    }
-
-    function updateEngineHousing() {
-      let shape = document.getElementById('sel-shape').value;
-      let mat = document.getElementById('sel-material').value;
-      let width = parseInt(document.getElementById('rng-width').value);
-      let boltCount = parseInt(document.getElementById('sel-bolts').value);
-
-      engine.setHousingParams(shape, width, 450, mat, 'bolted', boltCount);
-      visualizer.rebuild3DMesh();
     }
 
     function updateMetricsUI() {
@@ -327,11 +401,13 @@
     function addExciter() {
       engine.addExciter(0.5 + (Math.random()-0.5)*0.4, 0.5 + (Math.random()-0.5)*0.4);
       renderExciterListUI();
+      visualizer.rebuild3DMesh();
     }
 
     function removeExciter(id) {
       engine.removeExciter(id);
       renderExciterListUI();
+      visualizer.rebuild3DMesh();
     }
   </script>
 </body>
