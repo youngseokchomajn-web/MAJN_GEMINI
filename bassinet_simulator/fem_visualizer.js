@@ -265,9 +265,24 @@ class WoodHousingFEMVisualizer {
         this.engine.updateExciterPos(this.draggedExciterId, normX, normY);
         this.rebuild3DMesh();
       } else if (this.draggedBoltIdx !== undefined && this.draggedBoltIdx !== null) {
-        // Strict Hard Clamping inside Side Wall Boundary (0.06 to 0.94)
-        this.engine.bolts[this.draggedBoltIdx].xNorm = Math.max(0.06, Math.min(0.94, normX));
-        this.engine.bolts[this.draggedBoltIdx].yNorm = Math.max(0.06, Math.min(0.94, normY));
+        // Snap-to-Wall Perimeter Trajectory: Restrict bolts strictly onto 4 Side Wall Frame Lines
+        let x = Math.max(0.06, Math.min(0.94, normX));
+        let y = Math.max(0.06, Math.min(0.94, normY));
+
+        let distLeft = Math.abs(x - 0.06);
+        let distRight = Math.abs(x - 0.94);
+        let distFront = Math.abs(y - 0.06);
+        let distBack = Math.abs(y - 0.94);
+
+        let minDist = Math.min(distLeft, distRight, distFront, distBack);
+
+        if (minDist === distLeft) x = 0.06;
+        else if (minDist === distRight) x = 0.94;
+        else if (minDist === distFront) y = 0.06;
+        else if (minDist === distBack) y = 0.94;
+
+        this.engine.bolts[this.draggedBoltIdx].xNorm = x;
+        this.engine.bolts[this.draggedBoltIdx].yNorm = y;
         this.engine.generateMesh();
         this.engine.solve();
         this.rebuild3DMesh();
