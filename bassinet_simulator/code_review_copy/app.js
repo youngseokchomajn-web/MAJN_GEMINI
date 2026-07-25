@@ -248,53 +248,72 @@ function startSimulationLoop() {
 
   }, 100);
 }
-
 // Simple Web Audio API Synthesizer for Audio Preview
-function playAudioPreset(preset) {
-  if (preset === 'off') {
+function playAudioPreset(presetKey) {
+  if (presetKey === 'off') {
     stopAudio();
     return;
   }
 
   try {
     if (!audioCtx) {
-      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      const AudioCtxClass = window.AudioContext || window.webkitAudioContext;
+      if (AudioCtxClass) audioCtx = new AudioCtxClass();
     }
+    if (!audioCtx) return;
 
     if (audioCtx.state === 'suspended') {
       audioCtx.resume();
     }
 
-    if (!noiseNode) {
-      const bufferSize = audioCtx.sampleRate * 2;
-      const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
-      const output = buffer.getChannelData(0);
-      for (let i = 0; i < bufferSize; i++) {
-        output[i] = Math.random() * 2 - 1;
-      }
+    const presetMap = {
+      womb: { type: 'lowpass', freq: 250, gain: 4.0 },
+      pink: { type: 'bandpass', freq: 450, gain: 1.5 },
+      white: { type: 'highpass', freq: 800, gain: 0.8 },
+      heartbeat: { type: 'lowpass', freq: 120, gain: 6.0 }
+    };
 
-      noiseNode = audioCtx.createBufferSource();
-      noiseNode.buffer = buffer;
-      noiseNode.loop = true;
+    const cfg = presetMap[presetKey] || presetMap.womb;
 
-      const filter = audioCtx.createBiquadFilter();
-      filter.type = 'lowpass';
-      filter.frequency.setValueAtTime(preset === 'heartbeat' ? 200 : 800, audioCtx.currentTime);
-
-      gainNode = audioCtx.createGain();
-      gainNode.gain.setValueAtTime(volume / 100 * 0.15, audioCtx.currentTime);
-
-      noiseNode.connect(filter);
-      filter.connect(gainNode);
-      gainNode.connect(audioCtx.destination);
-      noiseNode.start();
+    // Reuse filter and gain nodes dynamically if already created
+    if (audioFilterNode && audioGainNode) {
+      audioFilterNode.type = cfg.type;
+      audioFilterNode.frequency.setTargetAtTime(cfg.freq, audioCtx.currentTime, 0.05);
+      audioGainNode.gain.setTargetAtTime(cfg.gain, audioCtx.currentTime, 0.05);
+      console.log(`🎵 Sound Preset Updated dynamically: ${presetKey} (${cfg.freq}Hz)`);
+      return;
     }
+
+    // Create Web Audio Noise Generator Chain once
+    const bufferSize = audioCtx.sampleRate * 2;
+    const noiseBuffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+    const output = noiseBuffer.getChannelData(0);
+    for (let i = 0; i < bufferSize; i++) {
+      output[i] = Math.random() * 2 - 1;
+    }
+
+    const whiteNoise = audioCtx.createBufferSource();
+    whiteNoise.buffer = noiseBuffer;
+    whiteNoise.loop = true;
+
+    audioFilterNode = audioCtx.createBiquadFilter();
+    audioFilterNode.type = cfg.type;
+    audioFilterNode.frequency.value = cfg.freq;
+
+    audioGainNode = audioCtx.createGain();
+    audioGainNode.gain.value = cfg.gain;
+
+    whiteNoise.connect(audioFilterNode);
+    audioFilterNode.connect(audioGainNode);
+    audioGainNode.connect(audioCtx.destination);
+
+    whiteNoise.start();
+    noiseNode = whiteNoise;
+    console.log(`🎵 Sound Generator Started with Preset: ${presetKey}`);
+
   } catch (e) {
     console.log('Audio init skipped or auto-play restricted:', e);
   }
-}
-
-function stopAudio() {
   if (noiseNode) {
     try {
       noiseNode.stop();
