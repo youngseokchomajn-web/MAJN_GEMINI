@@ -381,14 +381,13 @@
 
     document.addEventListener('DOMContentLoaded', () => {
       engine = new WoodHousingFEMEngine();
+      dispSolver = new TopPlateDisplacementSolver(engine);
       visualizer = new WoodHousingFEMVisualizer('container-3d', 'canvas-2d', engine);
       exporter = new CommercialCADExporter(visualizer);
 
       initUIControls();
       updateMetricsUI();
       renderExciterListUI();
-
-      setInterval(updateMetricsUI, 250);
     });
 
     function exportFEMToCAD() {
