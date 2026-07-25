@@ -265,8 +265,9 @@ class WoodHousingFEMVisualizer {
         this.engine.updateExciterPos(this.draggedExciterId, normX, normY);
         this.rebuild3DMesh();
       } else if (this.draggedBoltIdx !== undefined && this.draggedBoltIdx !== null) {
-        this.engine.bolts[this.draggedBoltIdx].xNorm = Math.max(0.02, Math.min(0.98, normX));
-        this.engine.bolts[this.draggedBoltIdx].yNorm = Math.max(0.02, Math.min(0.98, normY));
+        // Strict Hard Clamping inside Side Wall Boundary (0.06 to 0.94)
+        this.engine.bolts[this.draggedBoltIdx].xNorm = Math.max(0.06, Math.min(0.94, normX));
+        this.engine.bolts[this.draggedBoltIdx].yNorm = Math.max(0.06, Math.min(0.94, normY));
         this.engine.generateMesh();
         this.engine.solve();
         this.rebuild3DMesh();

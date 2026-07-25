@@ -226,10 +226,44 @@
           </div>
 
           <div class="param-group">
-            <div class="param-label"><span>볼트 체결 접합부 (Bolted Joints)</span></div>
-            <select id="sel-bolts" class="input-select">
-              <option value="4">볼트 4개 체결 (4-Corner Clamped BC)</option>
-              <option value="8" selected>볼트 8개 체결 (8-Point High-Rigidity BC)</option>
+            <div class="param-label"><span>볼트 규격 & 체결 토크 (Torque & Preload)</span></div>
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+              <select id="sel-bolt-size" class="input-select">
+                <option value="M2">M2 (직경 2mm)</option>
+                <option value="M3" selected>M3 (직경 3mm - 기본)</option>
+                <option value="M4">M4 (직경 4mm)</option>
+                <option value="M5">M5 (직경 5mm)</option>
+              </select>
+              <select id="sel-bolt-torque" class="input-select">
+                <option value="0.4">0.4 N·m (약 68kgf)</option>
+                <option value="0.8" selected>0.8 N·m (표준 136kgf)</option>
+                <option value="1.2">1.2 N·m (강체결 204kgf)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="param-group">
+            <div class="param-label"><span>익사이터 스펙 (Exciter Model)</span></div>
+            <select id="sel-exciter-model" class="input-select">
+              <option value="teax14" selected>Tectonic TEAX14C02-8 (14mm 8Ω #297-210)</option>
+              <option value="daex25">Dayton Audio DAEX25 (25mm 10W 고진동)</option>
+              <option value="custom">커스텀 스펙 직접 입력</option>
+            </select>
+          </div>
+
+          <div class="param-group">
+            <div class="param-label">
+              <span>익사이터 구동 볼륨 / 전력 비율</span>
+              <strong id="lbl-volume">40 % (1.2W SVS)</strong>
+            </div>
+            <input type="range" id="rng-volume" min="0" max="100" value="40" class="range-slider">
+          </div>
+
+          <div class="param-group">
+            <div class="param-label"><span>댐핑 충진재 (Damping Filler)</span></div>
+            <select id="sel-damping-type" class="input-select">
+              <option value="eva_vhb" selected>EVA 폼 가스켓 + VHB 테이프 (η=0.08)</option>
+              <option value="wood_only">순수 목재 접촉만 적용 (η=0.02)</option>
             </select>
           </div>
 
@@ -370,7 +404,29 @@
     function initUIControls() {
       document.getElementById('sel-material').addEventListener('change', (e) => {
         engine.setMaterial(e.target.value);
-        visualizer.rebuild3DMesh();
+        if (visualizer) visualizer.rebuild3DMesh();
+      });
+
+      document.getElementById('rng-volume').addEventListener('input', (e) => {
+        let v = parseInt(e.target.value);
+        document.getElementById('lbl-volume').innerText = `${v} % (${(3.0 * v / 100).toFixed(1)}W)`;
+        engine.exciterVolumePct = v;
+        engine.solve();
+      });
+
+      document.getElementById('sel-exciter-model').addEventListener('change', (e) => {
+        let model = e.target.value;
+        if (model === 'daex25') {
+          alert('Dayton DAEX25 10W 고진동 모드로 스펙이 변경되었습니다.');
+        }
+        engine.solve();
+      });
+
+      document.getElementById('sel-bolt-torque').addEventListener('change', (e) => {
+        let tq = parseFloat(e.target.value);
+        let preloadKg = Math.round(tq / (0.2 * 0.003) / 9.81);
+        alert(`볼트 체결 토크가 ${tq} N·m (초기 축력 약 ${preloadKg}kgf)로 갱신되었습니다.`);
+        engine.solve();
       });
 
       document.getElementById('sel-bolts').addEventListener('change', (e) => {
