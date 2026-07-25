@@ -86,7 +86,7 @@ class C3D10SolidSolver {
 
       // C3D10 2-Layer 3D Solid Deflection
       const D_solid = (E * Math.pow(t, 3) * Kbox) / (12.0 * (1.0 - Math.pow(nu, 2)));
-      let wStatic = (babyForceN * Math.pow(Math.min(e.width, e.height), 2) / (D_solid * 192.0)) * babyLoadFactor * boltProxFactor;
+      let wStatic = (babyForceN * Math.pow(e.width, 3) / (D_solid * 48.0)) * babyLoadFactor * boltProxFactor;
 
       let wDynamic = 0;
       for (const exciter of e.exciters) {
@@ -102,7 +102,7 @@ class C3D10SolidSolver {
       e.deflections[idx] = totalW;
 
       // 3D Solid Stress Gradient across Top/Bottom 2-Layers
-      let curvature = (totalW / Math.pow(Math.min(e.width, e.height), 2)) * 36.0;
+      let curvature = (totalW / Math.pow(e.width, 2)) * 12.0;
       let M_xx = D_solid * curvature * (1.0 + nu);
       let sigma_xx = (6.0 * Math.abs(M_xx)) / (Math.pow(t, 2) * Kbox);
 
