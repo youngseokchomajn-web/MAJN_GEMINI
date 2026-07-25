@@ -348,6 +348,16 @@
               <span class="sub" id="metric-thermal-sub">✓ 상판 전도 16.7°C / 상자 내부 +0.92°C</span>
             </div>
             <div class="metric-card">
+              <span class="title">🔩 볼트 풀림 위험 지수 (Slip Index S)</span>
+              <span class="val" id="metric-bolt-slip" style="color:var(--accent-amber)">S = 0.42</span>
+              <span class="sub" id="metric-bolt-slip-sub">✓ 체결 안착 상태 (기준 S < 1.0)</span>
+            </div>
+            <div class="metric-card">
+              <span class="title">⏳ 자작합판 나사산 피로 수명 (Fatigue)</span>
+              <span class="val" id="metric-fatigue" style="color:var(--accent-green)">24.8 개월</span>
+              <span class="sub">✓ 8시간/일 가동 시 2.0년 내구</span>
+            </div>
+            <div class="metric-card">
               <span class="title">LSM6DSOX 센서 100Hz 가속도 Acc_Z</span>
               <span class="val" id="metric-sensor-acc" style="color:var(--accent-purple)">0.076 g</span>
               <span class="sub" id="metric-sensor-pos">📍 센서 위치: (50.0%, 50.0%)</span>
@@ -487,6 +497,13 @@
       if (document.getElementById('metric-thermal')) {
         document.getElementById('metric-thermal').innerText = `+${telem.deltaT_exciter} °C`;
         document.getElementById('metric-thermal-sub').innerText = `✓ 상판 전도 +${telem.deltaT_exciter}°C / 상자 내부 +${telem.deltaT_box_internal}°C`;
+      }
+      if (document.getElementById('metric-bolt-slip')) {
+        document.getElementById('metric-bolt-slip').innerText = `S = ${telem.slipIndex_S}`;
+        document.getElementById('metric-bolt-slip-sub').innerText = telem.slipIndex_S < 1.0 ? '✓ 체결 안착 상태 (기준 S < 1.0)' : '⚠️ 볼트 자가 풀림 주의!';
+      }
+      if (document.getElementById('metric-fatigue')) {
+        document.getElementById('metric-fatigue').innerText = `${telem.fatigueLifeMonths} 개월`;
       }
     }
 

@@ -61,6 +61,17 @@ class TopPlateDisplacementSolver {
     const A_box_surface = 2 * (e.width * e.height + e.width * 0.06 + e.height * 0.06);
     const deltaT_box_internal = ((P_heat_unit * 4.0) / (k_wood * A_box_surface / t_wall + 5.0 * A_box_surface)).toFixed(2);
 
+    // Junker Self-Loosening Criterion & Basquin Thread Fatigue Life
+    const boltTorque = e.boltTorque || 0.8; // N.m
+    const boltSizeMm = e.boltSize === 'M2' ? 2 : (e.boltSize === 'M4' ? 4 : (e.boltSize === 'M5' ? 5 : 3));
+    const F_preload_N = boltTorque / (0.2 * boltSizeMm * 0.001); // N
+    const F_transverse_vib = 4.60; // N total dynamic force
+    const mu_thread = 0.20;
+    const slipIndex_S = (F_transverse_vib / (mu_thread * F_preload_N)).toFixed(2); // S < 1.0 safe
+
+    // Basquin S-N Fatigue Life (Months assuming 8 hrs/day @ 40Hz)
+    const fatigueLifeMonths = (Math.pow(48e6 / (e.maxStress * 1e6 + 1e-3), 8.5) / (40 * 3600 * 8 * 30 * 1e6)).toFixed(1);
+
     return {
       sensorXPct: (this.sensorPos.xNorm * 100).toFixed(1),
       sensorYPct: (this.sensorPos.yNorm * 100).toFixed(1),
@@ -70,7 +81,9 @@ class TopPlateDisplacementSolver {
       acc_z_g: acc_z_g,
       closestStress_MPa: (e.stresses[closestNodeIdx] / 1e6).toFixed(2),
       deltaT_exciter: deltaT_exciter,
-      deltaT_box_internal: deltaT_box_internal
+      deltaT_box_internal: deltaT_box_internal,
+      slipIndex_S: slipIndex_S,
+      fatigueLifeMonths: fatigueLifeMonths > 100 ? '99+' : fatigueLifeMonths
     };
   }
 }
