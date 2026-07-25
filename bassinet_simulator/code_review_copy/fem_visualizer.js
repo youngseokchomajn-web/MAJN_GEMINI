@@ -79,10 +79,13 @@ class WoodHousingFEMVisualizer {
     if (viewType === 'front') {
       this.camera.position.set(0, -1.8, centerZ);
     } else if (viewType === 'top') {
-      this.camera.position.set(0, 0.01, 1.8);
+      // Offset Y slightly to (0, 0.001, 1.8) to prevent OrbitControls Gimbal Lock
+      this.camera.position.set(0, 0.001, 1.8);
+      this.camera.up.set(0, 1, 0);
     } else {
       // Isometric view
       this.camera.position.set(0, -1.2, 0.9 + centerZ);
+      this.camera.up.set(0, 0, 1);
     }
     this.camera.lookAt(0, 0, centerZ);
     if (this.controls) this.controls.update();
