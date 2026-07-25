@@ -406,7 +406,7 @@
     document.addEventListener('DOMContentLoaded', () => {
       engine = new WoodHousingFEMEngine();
       dispSolver = new TopPlateDisplacementSolver(engine);
-      visualizer = new WoodHousingFEMVisualizer('container-3d', 'canvas-2d', engine);
+      visualizer = new WoodHousingFEMVisualizer('container-3d', 'canvas-2d', engine, dispSolver);
       exporter = new CommercialCADExporter(visualizer);
 
       initUIControls();
