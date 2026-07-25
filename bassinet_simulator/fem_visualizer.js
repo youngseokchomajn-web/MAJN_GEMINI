@@ -401,6 +401,9 @@ class WoodHousingFEMVisualizer {
       this.renderer.render(this.scene, this.camera);
     }
     this.render2D();
+    if (typeof updateMetricsUI === 'function') {
+      updateMetricsUI();
+    }
     requestAnimationFrame((t) => this.render(t));
   }
 }
