@@ -1,6 +1,6 @@
 /**
  * Three.js 3D Deformed Box Shell Viewer & 2D Interactive Exciter positioning canvas renderer.
- * Features Clean White Background, Warm Birch Plywood Wood Texture Colors, and Smooth Heatmap.
+ * Features Enclosed Box, Internal Exciters mounted under the top plate, and Clean No-Grid View.
  */
 
 class WoodHousingFEMVisualizer {
@@ -33,15 +33,14 @@ class WoodHousingFEMVisualizer {
     const height = this.container3D.clientHeight || 350;
 
     this.scene = new THREE.Scene();
-    // Bright Clean White / Light Studio Background
+    // Bright Clean White Studio Background
     this.scene.background = new THREE.Color(0xf8fafc);
 
     this.camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 100);
     this.camera.position.set(0, -1.2, 0.9);
     this.camera.lookAt(0, 0, 0);
 
-    // Studio Lights suited for Light Background
-    const ambientLight = new THREE.AmbientLight(0xffffff, 1.1);
+    const ambientLight = new THREE.AmbientLight(0xffffff, 1.2);
     this.scene.add(ambientLight);
 
     const dirLight1 = new THREE.DirectionalLight(0x0284c7, 0.8);
@@ -64,11 +63,7 @@ class WoodHousingFEMVisualizer {
       this.controls.maxPolarAngle = Math.PI / 2 + 0.2;
     }
 
-    // Soft Light Grid
-    const grid = new THREE.GridHelper(2.5, 25, 0xcbd5e1, 0xe2e8f0);
-    grid.rotation.x = Math.PI / 2;
-    grid.position.z = -0.12;
-    this.scene.add(grid);
+    // Grid helper completely removed for clean 3D view
 
     this.rebuild3DMesh();
   }
@@ -91,12 +86,11 @@ class WoodHousingFEMVisualizer {
     this.exciterMeshes3D.forEach(ex => this.scene.remove(ex));
     this.exciterMeshes3D = [];
 
-    // Top Plate 3D Mesh with Natural Birch Plywood Wood Colors
+    // Top Plate 3D Mesh (Birch Wood with Slight Translucency for Inner Exciter View)
     const geom = new THREE.PlaneGeometry(this.engine.width, this.engine.height, this.engine.nx, this.engine.ny);
     const count = geom.attributes.position.count;
     const colors = new Float32Array(count * 3);
 
-    // Warm Birch Plywood Base Tone (#f5d0a9 -> R:0.96, G:0.81, B:0.66)
     for (let i = 0; i < count; i++) {
       colors[i * 3 + 0] = 0.96; colors[i * 3 + 1] = 0.81; colors[i * 3 + 2] = 0.66;
     }
@@ -107,13 +101,15 @@ class WoodHousingFEMVisualizer {
       wireframe: false,
       side: THREE.DoubleSide,
       roughness: 0.45,
-      metalness: 0.05
+      metalness: 0.05,
+      transparent: true,
+      opacity: 0.88 // Slightly translucent to reveal inner exciters
     });
 
     this.mesh3D = new THREE.Mesh(geom, mat);
     this.scene.add(this.mesh3D);
 
-    // 4 Side Walls (Realistic Darker Wood Edge Tone - Birch Plywood Edge: #c58f59)
+    // 4 Side Walls (Enclosed Box Shell: Birch Plywood Edge Tone #c58f59)
     const pW = this.engine.width;
     const pH = this.engine.height;
     const pD = this.engine.depth || 0.06;
@@ -163,15 +159,16 @@ class WoodHousingFEMVisualizer {
       this.boltPins3D.push(pinMesh);
     }
 
-    // 3D Exciter Transducer Units (4 Units)
+    // 3D Exciter Units - Mounted INSIDE Under the Top Plate (Z = -0.010)
     for (const exciter of this.engine.exciters) {
-      const exGeom = new THREE.CylinderGeometry(0.02, 0.02, 0.015, 20);
-      const exMat = new THREE.MeshStandardMaterial({ color: 0xec4899, metalness: 0.7, roughness: 0.3 });
+      const exGeom = new THREE.CylinderGeometry(0.022, 0.022, 0.014, 24);
+      const exMat = new THREE.MeshStandardMaterial({ color: 0xec4899, metalness: 0.8, roughness: 0.2 });
       const exMesh = new THREE.Mesh(exGeom, exMat);
 
       let exX = (exciter.x - 0.5) * this.engine.width;
       let exY = (exciter.y - 0.5) * this.engine.height;
-      exMesh.position.set(exX, exY, 0.01);
+      // Position Z = -0.010 (Mounted under top plate inside box)
+      exMesh.position.set(exX, exY, -0.010);
       exMesh.rotation.x = Math.PI / 2;
       this.scene.add(exMesh);
       this.exciterMeshes3D.push(exMesh);
@@ -194,8 +191,6 @@ class WoodHousingFEMVisualizer {
 
         pos.setZ(idx, -w * scaleDeflect);
 
-        // Heatmap Tint Blend over Natural Wood Color:
-        // Base Wood (#f5d0a9: R0.96, G0.81, B0.66) -> Green -> Yellow -> Red Hotspot
         let ratio = Math.min(1.0, sig / (maxSt * 1.1));
         
         let r = 0.96;
@@ -267,7 +262,6 @@ class WoodHousingFEMVisualizer {
     const h = this.canvas2D.height = this.canvas2D.clientHeight;
 
     this.ctx2D.clearRect(0, 0, w, h);
-    // Light Canvas Background
     this.ctx2D.fillStyle = '#f8fafc';
     this.ctx2D.fillRect(0, 0, w, h);
 
@@ -293,7 +287,7 @@ class WoodHousingFEMVisualizer {
       const sig = this.engine.stresses[idx] || 0;
       const ratio = Math.min(1.0, sig / (Math.max(0.5, this.engine.maxStress) * 1.1));
 
-      let hue = 35 - ratio * 35; // Natural Wood Red Shift
+      let hue = 35 - ratio * 35;
       let light = 70 - ratio * 20;
       this.ctx2D.fillStyle = `hsl(${hue}, 85%, ${light}%)`;
       this.ctx2D.beginPath();
