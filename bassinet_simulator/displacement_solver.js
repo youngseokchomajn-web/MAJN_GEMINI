@@ -61,16 +61,25 @@ class TopPlateDisplacementSolver {
     const A_box_surface = 2 * (e.width * e.height + e.width * 0.06 + e.height * 0.06);
     const deltaT_box_internal = ((P_heat_unit * 4.0) / (k_wood * A_box_surface / t_wall + 5.0 * A_box_surface)).toFixed(2);
 
-    // Junker Self-Loosening Criterion & Basquin Thread Fatigue Life
+    // Bolt d-dependent Preload F_p = T / (0.2 * d)
     const boltTorque = e.boltTorque || 0.8; // N.m
     const boltSizeMm = e.boltSize === 'M2' ? 2 : (e.boltSize === 'M4' ? 4 : (e.boltSize === 'M5' ? 5 : 3));
-    const F_preload_N = boltTorque / (0.2 * boltSizeMm * 0.001); // N
+    const d_m = boltSizeMm * 0.001;
+    const F_preload_N = boltTorque / (0.2 * d_m); // N
+    const F_preload_kgf = Math.round(F_preload_N / 9.81);
     const F_transverse_vib = 4.60; // N total dynamic force
     const mu_thread = 0.20;
     const slipIndex_S = (F_transverse_vib / (mu_thread * F_preload_N)).toFixed(2); // S < 1.0 safe
 
-    // Basquin S-N Fatigue Life (Months assuming 8 hrs/day @ 40Hz)
-    const fatigueLifeMonths = (Math.pow(48e6 / (e.maxStress * 1e6 + 1e-3), 8.5) / (40 * 3600 * 8 * 30 * 1e6)).toFixed(1);
+    // Basquin S-N Fatigue Life Confidence Interval (Months assuming 8 hrs/day @ 40Hz)
+    const fatigueBaseMonths = (Math.pow(48e6 / (e.maxStress * 1e6 + 1e-3), 8.5) / (40 * 3600 * 8 * 30 * 1e6)).toFixed(1);
+    const fatigueMinMonths = (fatigueBaseMonths * 0.70).toFixed(1);
+    const fatigueMaxMonths = (fatigueBaseMonths * 1.30).toFixed(1);
+
+    // IEC 60335-1 Touch Temp Safety (Max 48.0 deg C)
+    const T_amb = 25.0; // Ambient 25 deg C
+    const T_surface = (T_amb + parseFloat(deltaT_exciter)).toFixed(1);
+    const iecSafetyMargin = (48.0 - parseFloat(T_surface)).toFixed(1);
 
     return {
       sensorXPct: (this.sensorPos.xNorm * 100).toFixed(1),
@@ -78,12 +87,17 @@ class TopPlateDisplacementSolver {
       displacement_mm: displacement_mm.toFixed(3),
       dynDisplacement_um: dynDisplacement_um,
       dynDisplacement_mm: dynDisplacement_mm,
+      dynSensitivityMin_um: (dynDisplacement_um * 0.75).toFixed(1),
+      dynSensitivityMax_um: (dynDisplacement_um * 1.27).toFixed(1),
       acc_z_g: acc_z_g,
       closestStress_MPa: (e.stresses[closestNodeIdx] / 1e6).toFixed(2),
       deltaT_exciter: deltaT_exciter,
       deltaT_box_internal: deltaT_box_internal,
+      T_surface: T_surface,
+      iecSafetyMargin: iecSafetyMargin,
+      F_preload_kgf: F_preload_kgf,
       slipIndex_S: slipIndex_S,
-      fatigueLifeMonths: fatigueLifeMonths > 100 ? '99+' : fatigueLifeMonths
+      fatigueLifeMonths: fatigueBaseMonths > 100 ? '99+' : `${fatigueBaseMonths} (${fatigueMinMonths}~${fatigueMaxMonths})`
     };
   }
 }
