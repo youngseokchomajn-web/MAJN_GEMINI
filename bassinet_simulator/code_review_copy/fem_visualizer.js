@@ -70,6 +70,20 @@ class WoodHousingFEMVisualizer {
     this.rebuild3DMesh();
   }
 
+  setCameraPreset(viewType) {
+    if (!this.camera) return;
+    if (viewType === 'front') {
+      this.camera.position.set(0, -1.8, 0.05);
+    } else if (viewType === 'top') {
+      this.camera.position.set(0, 0.01, 1.8);
+    } else {
+      // Isometric view
+      this.camera.position.set(0, -1.2, 0.9);
+    }
+    this.camera.lookAt(0, 0, 0);
+    if (this.controls) this.controls.update();
+  }
+
   rebuild3DMesh() {
     if (!this.scene || typeof THREE === 'undefined') return;
 

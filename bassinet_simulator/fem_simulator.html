@@ -268,11 +268,30 @@
           </div>
 
           <div class="param-group">
-            <div class="param-label">
-              <span>하우징 가로 치수</span>
-              <strong id="lbl-size">800 mm</strong>
+            <label>📐 상자 하우징 3축 치수 (Width x Length x Height)</label>
+            <div style="display:flex; flex-direction:column; gap:8px;">
+              <div>
+                <div style="display:flex; justify-content:space-between; font-size:11px; color:var(--text-muted);">
+                  <span>가로 (Width W)</span>
+                  <span id="lbl-width" style="color:var(--accent-blue)">800 mm</span>
+                </div>
+                <input type="range" id="rng-width" min="400" max="1200" step="10" value="800">
+              </div>
+              <div>
+                <div style="display:flex; justify-content:space-between; font-size:11px; color:var(--text-muted);">
+                  <span>세로 (Length L)</span>
+                  <span id="lbl-length" style="color:var(--accent-pink)">450 mm</span>
+                </div>
+                <input type="range" id="rng-length" min="300" max="800" step="10" value="450">
+              </div>
+              <div>
+                <div style="display:flex; justify-content:space-between; font-size:11px; color:var(--text-muted);">
+                  <span>높이 (Height H - 깊이)</span>
+                  <span id="lbl-height" style="color:var(--accent-purple)">60 mm</span>
+                </div>
+                <input type="range" id="rng-height" min="30" max="300" step="5" value="60">
+              </div>
             </div>
-            <input type="range" id="rng-width" min="400" max="1200" value="800" class="range-slider">
           </div>
 
           <div class="param-group">
@@ -311,18 +330,22 @@
             </div>
           </div>
 
-          <!-- 시뮬레이션 모드 선택 리본 탭 (Mode Shape & Thermal Contour UI) -->
+          <!-- 시뮬레이션 모드 선택 리본 탭 (Mode Shape & Thermal Contour & 3D Quick View UI) -->
           <div style="display:flex; justify-content:space-between; align-items:center; background:rgba(15,23,42,0.8); padding:12px 18px; border-radius:12px; margin-bottom:16px; border:1px solid var(--border-color);">
             <div style="display:flex; gap:8px; align-items:center;">
-              <span style="font-size:12px; font-weight:600; color:var(--text-muted); margin-right:6px;">🎀 3D 진동 모드형상:</span>
+              <span style="font-size:12px; font-weight:600; color:var(--text-muted); margin-right:6px;">🎀 3D 모드형상:</span>
               <button class="btn btn-sm btn-outline active" id="btn-mode-0" onclick="switchModeShape(0)">정상 변형</button>
               <button class="btn btn-sm btn-outline" id="btn-mode-1" onclick="switchModeShape(1)">1차 휨 (48.5Hz)</button>
               <button class="btn btn-sm btn-outline" id="btn-mode-2" onclick="switchModeShape(2)">2차 토션 (111.5Hz)</button>
               <button class="btn btn-sm btn-outline" id="btn-mode-3" onclick="switchModeShape(3)">3차 휨 (223.1Hz)</button>
               <button class="btn btn-sm btn-outline" id="btn-mode-4" onclick="switchModeShape(4)">4차 대각 (291.0Hz)</button>
             </div>
-            <div>
-              <button class="btn btn-sm btn-primary" id="btn-toggle-render" onclick="toggleRenderMode()"><i class="fa-solid fa-fire-flame-curved"></i> 🔥 2D/3D 온도분포 컨투어 보기</button>
+            <div style="display:flex; gap:6px; align-items:center;">
+              <span style="font-size:12px; font-weight:600; color:var(--text-muted); margin-right:4px;">👁️ 3D 뷰:</span>
+              <button class="btn btn-sm btn-outline" onclick="setCameraView('iso')">📐 사시</button>
+              <button class="btn btn-sm btn-outline" onclick="setCameraView('front')">👁️ 정면</button>
+              <button class="btn btn-sm btn-outline" onclick="setCameraView('top')">🔝 평면</button>
+              <button class="btn btn-sm btn-primary" id="btn-toggle-render" onclick="toggleRenderMode()"><i class="fa-solid fa-fire-flame-curved"></i> 🔥 온도 컨투어</button>
             </div>
           </div>
 
@@ -367,6 +390,11 @@
               <span class="title">⏳ 자작합판 나사산 피로 수명 신뢰구간</span>
               <span class="val" id="metric-fatigue" style="color:var(--accent-green)">24.8 개월 (17.4~32.2)</span>
               <span class="sub">✓ USDA 목재 S-N 피로 수식 기반</span>
+            </div>
+            <div class="metric-card">
+              <span class="title">🔊 박스 내부 부피 & 공기 스프링 음압</span>
+              <span class="val" id="metric-volume-spl" style="color:var(--accent-teal)">21.6 L (58.4 dBA)</span>
+              <span class="sub" id="metric-volume-spl-sub">✓ 헬름홀츠 공명 (f = 112.4 Hz)</span>
             </div>
             <div class="metric-card">
               <span class="title">LSM6DSOX 센서 100Hz 가속도 Acc_Z</span>
@@ -556,9 +584,26 @@
 
       bindInput('rng-width', (e) => {
         let w = parseInt(e.target.value);
-        document.getElementById('lbl-size').innerText = `${w} mm`;
+        document.getElementById('lbl-width').innerText = `${w} mm`;
         engine.width = w / 1000.0;
-        engine.height = (w * 0.5625) / 1000.0; // Maintain 16:9 ratio
+        engine.generateMesh();
+        engine.solve();
+        if (visualizer) visualizer.rebuild3DMesh();
+      });
+
+      bindInput('rng-length', (e) => {
+        let l = parseInt(e.target.value);
+        document.getElementById('lbl-length').innerText = `${l} mm`;
+        engine.height = l / 1000.0;
+        engine.generateMesh();
+        engine.solve();
+        if (visualizer) visualizer.rebuild3DMesh();
+      });
+
+      bindInput('rng-height', (e) => {
+        let h = parseInt(e.target.value);
+        document.getElementById('lbl-height').innerText = `${h} mm`;
+        engine.depth = h / 1000.0;
         engine.generateMesh();
         engine.solve();
         if (visualizer) visualizer.rebuild3DMesh();
@@ -587,6 +632,10 @@
       document.getElementById('metric-dyn-amp').innerText = `${telem.dynDisplacement_um} μm [${telem.dynSensitivityMin_um}~${telem.dynSensitivityMax_um}μm]`;
       document.getElementById('metric-sensor-acc').innerText = `${telem.acc_z_g} g`;
       document.getElementById('metric-sensor-pos').innerText = `📍 센서 위치: (${telem.sensorXPct}%, ${telem.sensorYPct}%)`;
+      if (document.getElementById('metric-volume-spl')) {
+        document.getElementById('metric-volume-spl').innerText = `${telem.internalVolumeLiters} L (${telem.spl_dB} dBA)`;
+        document.getElementById('metric-volume-spl-sub').innerText = `✓ 헬름홀츠 공명 (f = ${telem.f_helmholtz} Hz)`;
+      }
       if (document.getElementById('metric-thermal')) {
         document.getElementById('metric-thermal').innerText = `${telem.T_surface} °C (안전마진 +${telem.iecSafetyMargin}°C)`;
         document.getElementById('metric-thermal-sub').innerText = `✓ IEC 60335 한계(48.0°C) 대비 안전 (상자 내부 +${telem.deltaT_box_internal}°C)`;
