@@ -411,35 +411,43 @@
     }
 
     function initUIControls() {
-      document.getElementById('sel-material').addEventListener('change', (e) => {
+      const bindChange = (id, fn) => {
+        const el = document.getElementById(id);
+        if (el) el.addEventListener('change', fn);
+      };
+      const bindInput = (id, fn) => {
+        const el = document.getElementById(id);
+        if (el) el.addEventListener('input', fn);
+      };
+
+      bindChange('sel-material', (e) => {
         engine.setMaterial(e.target.value);
         engine.solve();
         if (visualizer) visualizer.rebuild3DMesh();
       });
 
-      document.getElementById('sel-bolt-size').addEventListener('change', (e) => {
+      bindChange('sel-bolt-size', (e) => {
         let size = e.target.value;
         engine.boltSize = size;
         engine.solve();
         if (visualizer) visualizer.rebuild3DMesh();
       });
 
-      document.getElementById('sel-bolt-torque').addEventListener('change', (e) => {
+      bindChange('sel-bolt-torque', (e) => {
         let tq = parseFloat(e.target.value);
         engine.boltTorque = tq;
-        let preloadKg = Math.round(tq / (0.2 * 0.003) / 9.81);
         engine.solve();
         if (visualizer) visualizer.rebuild3DMesh();
       });
 
-      document.getElementById('sel-exciter-model').addEventListener('change', (e) => {
+      bindChange('sel-exciter-model', (e) => {
         let model = e.target.value;
         engine.exciterModel = model;
         engine.solve();
         if (visualizer) visualizer.rebuild3DMesh();
       });
 
-      document.getElementById('rng-volume').addEventListener('input', (e) => {
+      bindInput('rng-volume', (e) => {
         let v = parseInt(e.target.value);
         document.getElementById('lbl-volume').innerText = `${v} % (${(3.0 * v / 100).toFixed(1)}W)`;
         engine.exciterVolumePct = v;
@@ -448,23 +456,23 @@
         if (visualizer) visualizer.rebuild3DMesh();
       });
 
-      document.getElementById('sel-damping-type').addEventListener('change', (e) => {
+      bindChange('sel-damping-type', (e) => {
         let damp = e.target.value;
         engine.dampingType = damp;
         engine.solve();
         if (visualizer) visualizer.rebuild3DMesh();
       });
 
-      document.getElementById('sel-bolts').addEventListener('change', (e) => {
+      bindChange('sel-bolts', (e) => {
         let count = parseInt(e.target.value);
         engine.boltCount = count;
         engine.updateBolts();
         engine.generateMesh();
         engine.solve();
-        visualizer.rebuild3DMesh();
+        if (visualizer) visualizer.rebuild3DMesh();
       });
 
-      document.getElementById('rng-width').addEventListener('input', (e) => {
+      bindInput('rng-width', (e) => {
         let w = parseInt(e.target.value);
         document.getElementById('lbl-size').innerText = `${w} mm`;
         engine.width = w / 1000.0;
@@ -474,14 +482,14 @@
         if (visualizer) visualizer.rebuild3DMesh();
       });
 
-      document.getElementById('rng-baby-weight').addEventListener('input', (e) => {
+      bindInput('rng-baby-weight', (e) => {
         let wt = parseFloat(e.target.value);
         document.getElementById('lbl-baby-weight').innerText = `${wt.toFixed(1)} kg`;
         engine.babyWeight = wt;
         engine.solve();
       });
 
-      document.getElementById('rng-freq').addEventListener('input', (e) => {
+      bindInput('rng-freq', (e) => {
         let f = parseInt(e.target.value);
         document.getElementById('lbl-freq').innerText = `${f} Hz`;
         engine.sweepFreq = f;
