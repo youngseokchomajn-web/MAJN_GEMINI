@@ -72,20 +72,29 @@ class WoodHousingFEMVisualizer {
 
   setCameraPreset(viewType) {
     if (!this.camera) return;
+    const centerZ = -((this.engine.depth || 0.06) / 2.0);
+    if (this.controls) {
+      this.controls.target.set(0, 0, centerZ);
+    }
     if (viewType === 'front') {
-      this.camera.position.set(0, -1.8, 0.05);
+      this.camera.position.set(0, -1.8, centerZ);
     } else if (viewType === 'top') {
       this.camera.position.set(0, 0.01, 1.8);
     } else {
       // Isometric view
-      this.camera.position.set(0, -1.2, 0.9);
+      this.camera.position.set(0, -1.2, 0.9 + centerZ);
     }
-    this.camera.lookAt(0, 0, 0);
+    this.camera.lookAt(0, 0, centerZ);
     if (this.controls) this.controls.update();
   }
 
   rebuild3DMesh() {
     if (!this.scene || typeof THREE === 'undefined') return;
+    const centerZ = -((this.engine.depth || 0.06) / 2.0);
+    if (this.controls) {
+      this.controls.target.set(0, 0, centerZ);
+      this.controls.update();
+    }
 
     if (this.mesh3D) {
       this.scene.remove(this.mesh3D);
@@ -237,8 +246,14 @@ class WoodHousingFEMVisualizer {
 
         pos.setZ(idx, -w * scaleDeflect);
 
-        if (this.renderMode === 'thermal' && typeof TopPlateDisplacementSolver !== 'undefined') {
-          // Thermal Contour Heatmap Rendering (25.0°C Blue -> 41.7°C Red)
+        if (this.renderMode === 'displacement') {
+          // 1. Displacement Color Contour (0mm Blue -> Green -> Red Max Deflection)
+          let wRatio = Math.min(1.0, Math.abs(w) / (Math.max(0.0001, this.engine.maxDeflection / 1000.0) * 1.2));
+          let hue = (1.0 - wRatio) * 240; // 240 (Blue) -> 0 (Red)
+          let rgb = hslToRgb(hue / 360, 0.85, 0.50);
+          col.setXYZ(idx, rgb[0], rgb[1], rgb[2]);
+        } else if (this.renderMode === 'thermal' && typeof TopPlateDisplacementSolver !== 'undefined') {
+          // 2. Thermal Heatmap Contour (25.0°C Blue -> 41.7°C Red)
           const node = this.engine.nodes[idx];
           let dT = 0;
           const volRatio = (this.engine.exciterVolumePct !== undefined ? this.engine.exciterVolumePct : 40) / 100.0;
@@ -247,14 +262,16 @@ class WoodHousingFEMVisualizer {
             dT += 16.7 * (volRatio / 0.40) * Math.exp(-dSq * 20.0);
           }
           let tRatio = Math.min(1.0, dT / 16.7);
-          col.setXYZ(idx, tRatio, 0.2 * (1 - tRatio), 1 - tRatio); // Blue -> Red Thermal Map
+          col.setXYZ(idx, tRatio, 0.2 * (1 - tRatio), 1 - tRatio);
+        } else if (this.renderMode === 'wood') {
+          // 3. Natural Birch Wood Texture Tone
+          col.setXYZ(idx, 0.96, 0.81, 0.66);
         } else {
-          // Standard Stress Heatmap Rendering
+          // 4. Von Mises Stress Heatmap Contour (Default)
           let ratio = Math.min(1.0, sig / (maxSt * 1.1));
           let r = 0.96;
           let g = 0.81;
           let b = 0.66;
-
           if (ratio > 0.05) {
             r = 0.2 + 0.8 * ratio;
             g = 0.8 * (1.0 - ratio);
@@ -483,6 +500,29 @@ class WoodHousingFEMVisualizer {
     }
     requestAnimationFrame((t) => this.render(t));
   }
+}
+
+function hslToRgb(h, s, l) {
+  let r, g, b;
+  if (s === 0) {
+    r = g = b = l;
+  } else {
+    const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+    const p = 2 * l - q;
+    r = hue2rgb(p, q, h + 1/3);
+    g = hue2rgb(p, q, h);
+    b = hue2rgb(p, q, h - 1/3);
+  }
+  return [r, g, b];
+}
+
+function hue2rgb(p, q, t) {
+  if (t < 0) t += 1;
+  if (t > 1) t -= 1;
+  if (t < 1/6) return p + (q - p) * 6 * t;
+  if (t < 1/2) return q;
+  if (t < 2/3) return p + (q - p) * (2/3 - t) * 6;
+  return p;
 }
 
 if (typeof window !== 'undefined') {
