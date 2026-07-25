@@ -4,11 +4,12 @@
  */
 
 class WoodHousingFEMVisualizer {
-  constructor(container3DId, canvas2DId, femEngine) {
+  constructor(container3DId, canvas2DId, femEngine, dispSolver = null) {
     this.container3D = document.getElementById(container3DId);
     this.canvas2D = document.getElementById(canvas2DId);
     this.ctx2D = this.canvas2D ? this.canvas2D.getContext('2d') : null;
     this.engine = femEngine;
+    this.dispSolver = dispSolver;
 
     this.scene = null;
     this.camera = null;
@@ -20,6 +21,7 @@ class WoodHousingFEMVisualizer {
 
     this.draggedExciterId = null;
     this.draggedBaby = false;
+    this.draggedSensor = false;
 
     this.init3D();
     this.init2DEvents();
@@ -330,9 +332,10 @@ class WoodHousingFEMVisualizer {
         this.rebuild3DMesh();
       } else if (this.draggedSensor && this.dispSolver) {
         this.dispSolver.setSensorPosition(normX, normY);
+        if (typeof initFRFChart === 'function') initFRFChart();
       } else if (this.draggedBaby) {
-        this.engine.babyPosX = Math.max(0.1, Math.min(0.9, normX));
-        this.engine.babyPosY = Math.max(0.1, Math.min(0.9, normY));
+        this.engine.babyPosX = Math.max(0.05, Math.min(0.95, normX));
+        this.engine.babyPosY = Math.max(0.05, Math.min(0.95, normY));
         this.engine.solve();
       }
     });
@@ -340,8 +343,8 @@ class WoodHousingFEMVisualizer {
     window.addEventListener('mouseup', () => {
       this.draggedExciterId = null;
       this.draggedBoltIdx = null;
-      this.draggedSensor = false;
       this.draggedBaby = false;
+      this.draggedSensor = false;
     });
   }
 
@@ -430,6 +433,24 @@ class WoodHousingFEMVisualizer {
       this.ctx2D.fillStyle = '#fff';
       this.ctx2D.font = 'bold 10px sans-serif';
       this.ctx2D.fillText(`E${idx+1}`, ex - 6, ey + 3);
+    }
+
+    // Render LSM6DSOX Virtual Sensor Pin (📍 Purple Pin Marker)
+    if (this.dispSolver) {
+      const sx = margin + this.dispSolver.sensorPos.xNorm * hw;
+      const sy = margin + this.dispSolver.sensorPos.yNorm * hh;
+
+      this.ctx2D.fillStyle = '#a855f7';
+      this.ctx2D.strokeStyle = '#ffffff';
+      this.ctx2D.lineWidth = 2;
+      this.ctx2D.beginPath();
+      this.ctx2D.arc(sx, sy, 11, 0, Math.PI * 2);
+      this.ctx2D.fill();
+      this.ctx2D.stroke();
+
+      this.ctx2D.fillStyle = '#ffffff';
+      this.ctx2D.font = 'bold 10px sans-serif';
+      this.ctx2D.fillText('S1', sx - 6, sy + 3);
     }
   }
 
