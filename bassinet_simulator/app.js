@@ -16,6 +16,8 @@ let maxPoints = 30;
 let audioCtx = null;
 let noiseNode = null;
 let gainNode = null;
+let audioFilterNode = null;
+let audioGainNode = null;
 
 document.addEventListener('DOMContentLoaded', () => {
   initIMUChart();
@@ -314,6 +316,9 @@ function playAudioPreset(presetKey) {
   } catch (e) {
     console.log('Audio init skipped or auto-play restricted:', e);
   }
+}
+
+function stopAudio() {
   if (noiseNode) {
     try {
       noiseNode.stop();
@@ -321,6 +326,9 @@ function playAudioPreset(presetKey) {
     } catch (e) {}
     noiseNode = null;
   }
+  audioFilterNode = null;
+  audioGainNode = null;
+  console.log('🎵 Sound Generator Stopped');
 }
 
 function logMessage(type, msg) {
