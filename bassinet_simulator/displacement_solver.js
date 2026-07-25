@@ -53,7 +53,8 @@ class TopPlateDisplacementSolver {
     const R_wood = t_wall / (k_wood * A_exciter);
     const R_contact = R_VHB + R_wood;
 
-    const P_in_unit = 1.2; // 1.2W SVS Drive
+    const volRatio = (e.exciterVolumePct || 40) / 100.0;
+    const P_in_unit = 3.0 * volRatio; // 3W max x Volume Pct
     const P_heat_unit = P_in_unit * 0.88; // 88% Joule Heating
     const deltaT_exciter = (P_heat_unit * R_contact * 0.75).toFixed(1); // deg C
 
