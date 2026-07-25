@@ -335,27 +335,27 @@
             <div class="metric-card">
               <span class="title">정적 휨 변위 w_static (5kg 하중)</span>
               <span class="val" id="metric-deflect" style="color:var(--accent-blue)">0.14 mm</span>
-              <span class="sub">✓ C3D10 2-Layer 3D Solid 연산</span>
+              <span class="sub">✓ C3D10 2-Layer 선형 응력 구배 보간</span>
             </div>
             <div class="metric-card">
-              <span class="title">🎵 SVS 동적 진동 변폭 w_dyn</span>
-              <span class="val" id="metric-dyn-amp" style="color:var(--accent-pink)">11.8 μm</span>
-              <span class="sub" id="metric-dyn-sub">✓ SVS 임상 규격 (10~12μm 100% 충족)</span>
+              <span class="title">🎵 SVS 동적 변폭 (민감도 범주)</span>
+              <span class="val" id="metric-dyn-amp" style="color:var(--accent-pink)">11.8 μm [8.9~15.0μm]</span>
+              <span class="sub" id="metric-dyn-sub">✓ SVS 임상 규격 (10~12μm 범주 매칭)</span>
             </div>
             <div class="metric-card">
-              <span class="title">🔥 동적 열전달 온도 상승 (Thermal Solver)</span>
-              <span class="val" id="metric-thermal" style="color:var(--accent-rose)">+16.7 °C</span>
-              <span class="sub" id="metric-thermal-sub">✓ 상판 전도 16.7°C / 상자 내부 +0.92°C</span>
+              <span class="title">🔥 표면 온도 & IEC 60335 안전 여유</span>
+              <span class="val" id="metric-thermal" style="color:var(--accent-rose)">41.7 °C (안전마진 +6.3°C)</span>
+              <span class="sub" id="metric-thermal-sub">✓ IEC 60335 한계(48.0°C) 대비 안전</span>
             </div>
             <div class="metric-card">
-              <span class="title">🔩 볼트 풀림 위험 지수 (Slip Index S)</span>
-              <span class="val" id="metric-bolt-slip" style="color:var(--accent-amber)">S = 0.42</span>
-              <span class="sub" id="metric-bolt-slip-sub">✓ 체결 안착 상태 (기준 S < 1.0)</span>
+              <span class="title">🔩 볼트 축력 & 자가 풀림 지수 (S)</span>
+              <span class="val" id="metric-bolt-slip" style="color:var(--accent-amber)">S = 0.42 (136kgf)</span>
+              <span class="sub" id="metric-bolt-slip-sub">✓ d별 축력 분기 / 체결 안착(S < 1.0)</span>
             </div>
             <div class="metric-card">
-              <span class="title">⏳ 자작합판 나사산 피로 수명 (Fatigue)</span>
-              <span class="val" id="metric-fatigue" style="color:var(--accent-green)">24.8 개월</span>
-              <span class="sub">✓ 8시간/일 가동 시 2.0년 내구</span>
+              <span class="title">⏳ 자작합판 나사산 피로 수명 신뢰구간</span>
+              <span class="val" id="metric-fatigue" style="color:var(--accent-green)">24.8 개월 (17.4~32.2)</span>
+              <span class="sub">✓ USDA 목재 S-N 피로 수식 기반</span>
             </div>
             <div class="metric-card">
               <span class="title">LSM6DSOX 센서 100Hz 가속도 Acc_Z</span>
@@ -491,16 +491,16 @@
       const telem = dispSolver.getSensorTelemetry(Date.now() / 1000.0);
 
       document.getElementById('metric-deflect').innerText = `${telem.displacement_mm} mm`;
-      document.getElementById('metric-dyn-amp').innerText = `${telem.dynDisplacement_um} μm (${telem.dynDisplacement_mm}mm)`;
+      document.getElementById('metric-dyn-amp').innerText = `${telem.dynDisplacement_um} μm [${telem.dynSensitivityMin_um}~${telem.dynSensitivityMax_um}μm]`;
       document.getElementById('metric-sensor-acc').innerText = `${telem.acc_z_g} g`;
       document.getElementById('metric-sensor-pos').innerText = `📍 센서 위치: (${telem.sensorXPct}%, ${telem.sensorYPct}%)`;
       if (document.getElementById('metric-thermal')) {
-        document.getElementById('metric-thermal').innerText = `+${telem.deltaT_exciter} °C`;
-        document.getElementById('metric-thermal-sub').innerText = `✓ 상판 전도 +${telem.deltaT_exciter}°C / 상자 내부 +${telem.deltaT_box_internal}°C`;
+        document.getElementById('metric-thermal').innerText = `${telem.T_surface} °C (안전마진 +${telem.iecSafetyMargin}°C)`;
+        document.getElementById('metric-thermal-sub').innerText = `✓ IEC 60335 한계(48.0°C) 대비 안전 (상자 내부 +${telem.deltaT_box_internal}°C)`;
       }
       if (document.getElementById('metric-bolt-slip')) {
-        document.getElementById('metric-bolt-slip').innerText = `S = ${telem.slipIndex_S}`;
-        document.getElementById('metric-bolt-slip-sub').innerText = telem.slipIndex_S < 1.0 ? '✓ 체결 안착 상태 (기준 S < 1.0)' : '⚠️ 볼트 자가 풀림 주의!';
+        document.getElementById('metric-bolt-slip').innerText = `S = ${telem.slipIndex_S} (${telem.F_preload_kgf}kgf)`;
+        document.getElementById('metric-bolt-slip-sub').innerText = telem.slipIndex_S < 1.0 ? '✓ d별 축력 분기 / 체결 안착 (S < 1.0)' : '⚠️ 볼트 자가 풀림 주의!';
       }
       if (document.getElementById('metric-fatigue')) {
         document.getElementById('metric-fatigue').innerText = `${telem.fatigueLifeMonths} 개월`;
