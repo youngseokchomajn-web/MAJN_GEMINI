@@ -404,6 +404,29 @@
     function initUIControls() {
       document.getElementById('sel-material').addEventListener('change', (e) => {
         engine.setMaterial(e.target.value);
+        engine.solve();
+        if (visualizer) visualizer.rebuild3DMesh();
+      });
+
+      document.getElementById('sel-bolt-size').addEventListener('change', (e) => {
+        let size = e.target.value;
+        engine.boltSize = size;
+        engine.solve();
+        if (visualizer) visualizer.rebuild3DMesh();
+      });
+
+      document.getElementById('sel-bolt-torque').addEventListener('change', (e) => {
+        let tq = parseFloat(e.target.value);
+        engine.boltTorque = tq;
+        let preloadKg = Math.round(tq / (0.2 * 0.003) / 9.81);
+        engine.solve();
+        if (visualizer) visualizer.rebuild3DMesh();
+      });
+
+      document.getElementById('sel-exciter-model').addEventListener('change', (e) => {
+        let model = e.target.value;
+        engine.exciterModel = model;
+        engine.solve();
         if (visualizer) visualizer.rebuild3DMesh();
       });
 
@@ -414,19 +437,11 @@
         engine.solve();
       });
 
-      document.getElementById('sel-exciter-model').addEventListener('change', (e) => {
-        let model = e.target.value;
-        if (model === 'daex25') {
-          alert('Dayton DAEX25 10W 고진동 모드로 스펙이 변경되었습니다.');
-        }
+      document.getElementById('sel-damping-type').addEventListener('change', (e) => {
+        let damp = e.target.value;
+        engine.dampingType = damp;
         engine.solve();
-      });
-
-      document.getElementById('sel-bolt-torque').addEventListener('change', (e) => {
-        let tq = parseFloat(e.target.value);
-        let preloadKg = Math.round(tq / (0.2 * 0.003) / 9.81);
-        alert(`볼트 체결 토크가 ${tq} N·m (초기 축력 약 ${preloadKg}kgf)로 갱신되었습니다.`);
-        engine.solve();
+        if (visualizer) visualizer.rebuild3DMesh();
       });
 
       document.getElementById('sel-bolts').addEventListener('change', (e) => {
