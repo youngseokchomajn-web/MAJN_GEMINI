@@ -46,7 +46,7 @@ class WasmCalculiXBridge {
         console.log('✨ [CalculiX Automated FEA Engine] 100% True FEA Solving completed in background.');
         resolve({
           status: 'SUCCESS',
-          solver: 'CalculiX v2.20 Wasm Engine',
+          solver: 'CalculiX .INP Generator & Benchmark Preview',
           nodesSolved: this.engine.nodes.length,
           maxStress_MPa: (parseFloat(this.engine.maxStress) * 1.02).toFixed(2),
           maxDeflect_mm: (parseFloat(this.engine.maxDeflection) * 0.99).toFixed(3)

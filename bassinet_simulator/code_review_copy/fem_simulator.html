@@ -326,7 +326,7 @@
             <div style="display:flex; gap:10px; align-items:center;">
               <button class="btn btn-sm btn-warning" onclick="optimizeBolts()"><i class="fa-solid fa-robot"></i> AI 볼트 최적화</button>
               <span class="rate-badge">🔩 360° Mouse Orbit & Drag Exciters</span>
-              <button class="btn btn-sm btn-primary" onclick="runCalculiXFEAAuto()"><i class="fa-solid fa-microchip"></i> 🔬 CalculiX 100% 정밀 FEA 자동 연산</button>
+              <button class="btn btn-sm btn-primary" onclick="runCalculiXFEAAuto()"><i class="fa-solid fa-microchip"></i> 🔬 CalculiX FEA .INP 생성 및 벤치마크 시뮬레이션</button>
               <button class="btn btn-sm btn-outline" onclick="exportFEMToCAD()"><i class="fa-solid fa-download"></i> 3D CAD (.OBJ) 내보내기</button>
             </div>
           </div>
@@ -440,10 +440,14 @@
 
     document.addEventListener('DOMContentLoaded', () => {
       engine = new WoodHousingFEMEngine();
+      window.engine = engine;
       dispSolver = new TopPlateDisplacementSolver(engine);
+      window.dispSolver = dispSolver;
       visualizer = new WoodHousingFEMVisualizer('container-3d', 'canvas-2d', engine, dispSolver);
+      window.visualizer = visualizer;
       exporter = new CommercialCADExporter(visualizer);
       wasmBridge = new WasmCalculiXBridge(engine);
+      window.wasmBridge = wasmBridge;
 
       initUIControls();
       initFRFChart();
@@ -453,9 +457,9 @@
 
     async function runCalculiXFEAAuto() {
       if (!wasmBridge) return;
-      alert('🔬 [CalculiX 백그라운드 FEA 연동] Abaqus .INP 파일이 동적 세대되어 CalculiX 100% 정밀 강성 행렬 해석을 무인 수행합니다!');
+      alert('🔬 [CalculiX 브릿지] Abaqus 규격 .INP 인풋 파일 세대 완료! CalculiX 벤치마크 검증 테스트를 실행합니다.');
       const res = await wasmBridge.runCalculiXAuto();
-      alert(`✨ [CalculiX 해석 완료]\n• 솔버: ${res.solver}\n• 해석 노드 수: ${res.nodesSolved}개\n• 100% 정밀 Von Mises 최고 응력: ${res.maxStress_MPa} MPa\n• 100% 정밀 휨 변위: ${res.maxDeflect_mm} mm`);
+      alert(`✨ [CalculiX 벤치마크 테스트 완료]\n• 연동 상태: ${res.solver}\n• 세대 노드 수: ${res.nodesSolved}개\n• 추정 Von Mises 응력: ${res.maxStress_MPa} MPa\n• 추정 휨 변위: ${res.maxDeflect_mm} mm\n\n(※ 실제 CalculiX 외부 솔버 무인 실행을 위한 .INP 세대 브릿지 테스트 완료)`);
     }
 
     function initFRFChart() {

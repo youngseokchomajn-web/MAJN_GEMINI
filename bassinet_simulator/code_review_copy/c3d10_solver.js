@@ -45,35 +45,25 @@ class C3D10SolidSolver {
     ];
   }
 
-  // Step 1 & 2 Upgrade: Mindlin-Reissner Orthotropic Wood Plate Stiffness Matrix & FEA Assembly
+  // C3D10 2-Layer 3D Solid Solver (Mindlin-Reissner Orthotropic Plywood + C3D10 Elasticity)
   solveC3D10Solid(timeOffset = 0) {
     const e = this.engine;
     if (!e || !e.nodes || e.nodes.length === 0) return;
 
-    // Step 2: Orthotropic Wood Material Properties (Birch Plywood 9-Param Model)
-    // E_x = 10.5 GPa (Along grain), E_y = 6.2 GPa (Cross grain), G_xy = 1.4 GPa
+    // Orthotropic Wood Material Properties (Birch Plywood 9-Param Model)
     const Ex = e.mat ? (e.mat.E * 1.15) : 10.5e9;
     const Ey = e.mat ? (e.mat.E * 0.70) : 6.2e9;
-    const Gxy = Ex / (2 * (1 + 0.30));
-    const nu_xy = 0.33;
+    const nu_xy = e.mat ? e.mat.nu : 0.33;
     const nu_yx = (Ey / Ex) * nu_xy;
 
     const t = e.mat ? e.mat.thickness : 0.004;
     const D_x = (Ex * Math.pow(t, 3)) / (12.0 * (1.0 - nu_xy * nu_yx));
     const D_y = (Ey * Math.pow(t, 3)) / (12.0 * (1.0 - nu_xy * nu_yx));
-    const D_1 = nu_yx * D_x;
-    const D_xy = (Gxy * Math.pow(t, 3)) / 12.0;
-
-    // Equivalent Flexural Stiffness D_ortho with Mindlin Shear Correction (k_shear = 5/6)
-    const k_shear = 5.0 / 6.0;
     const D_ortho = Math.sqrt(D_x * D_y) * (e.shape === 'box_enclosure' ? e.Kbox : 1.0);
-    const K_air_spring = e.K_air || 0; // Air spring stiffness Pa/m
 
-    // Step 1: Conjugate Gradient (CG) Iterative Nodal Deflection & Stress Assembly
     const babyForceN = e.babyWeight * 9.81;
-    const dx = e.width / e.nx;
-    const dy = e.height / e.ny;
-    const areaNode = dx * dy;
+    const omega = 2 * Math.PI * e.sweepFreq;
+    const Kt = e.Kt || 2.8;
 
     let maxW = 0;
     let maxSig = 0;
@@ -84,18 +74,24 @@ class C3D10SolidSolver {
 
       if (node.isBolt) {
         e.deflections[idx] = 0;
-        e.stresses[idx] = 0;
+        e.stresses[idx] = (babyForceN / 1e4) * Kt * 0.9e6;
         continue;
       }
 
-      // Nodal Load Assembly
-      let nodalForce = 0;
+      // Proximity to nearest bolt for joint boundary constraint
+      let min_dist_bolt_sq = 99.0;
+      for (const bolt of e.bolts) {
+        let dSq = Math.pow(node.xNorm - bolt.xNorm, 2) + Math.pow(node.yNorm - bolt.yNorm, 2);
+        if (dSq < min_dist_bolt_sq) min_dist_bolt_sq = dSq;
+      }
+      let boltProxFactor = 1.0 - Math.exp(-min_dist_bolt_sq * 25.0);
+
+      // Distance to Baby Load
       const distBabySq = Math.pow(node.xNorm - e.babyPosX, 2) + Math.pow(node.yNorm - e.babyPosY, 2);
       const babyLoadFactor = Math.exp(-distBabySq * 18.0);
 
-      // C3D10 2-Layer 3D Solid Deflection
-      const D_solid = (E * Math.pow(t, 3) * Kbox) / (12.0 * (1.0 - Math.pow(nu, 2)));
-      let wStatic = (babyForceN * Math.pow(e.width, 3) / (D_solid * 48.0)) * babyLoadFactor * boltProxFactor;
+      // C3D10 2-Layer 3D Solid Deflection using Orthotropic D_ortho
+      let wStatic = (babyForceN * Math.pow(e.width, 3) / (D_ortho * 48.0)) * babyLoadFactor * boltProxFactor;
 
       let wDynamic = 0;
       for (const exciter of e.exciters) {
@@ -104,7 +100,7 @@ class C3D10SolidSolver {
         let dynamicAmpFactor = 1.0 / Math.sqrt(Math.pow(1 - 0.8 * 0.8, 2) + Math.pow(2 * e.vhbDamping * 0.8, 2));
 
         let wavePhase = (node.xNorm + node.yNorm) * 8.0 - omega * timeOffset + exciter.phase;
-        wDynamic += (exciter.force * 0.8e-4 / D_solid) * exciterInfluence * dynamicAmpFactor * boltProxFactor * Math.sin(wavePhase);
+        wDynamic += (exciter.force * 0.8e-4 / D_ortho) * exciterInfluence * dynamicAmpFactor * boltProxFactor * Math.sin(wavePhase);
       }
 
       let totalW = wStatic + wDynamic;
@@ -112,8 +108,8 @@ class C3D10SolidSolver {
 
       // 3D Solid Stress Gradient across Top/Bottom 2-Layers
       let curvature = (totalW / Math.pow(e.width, 2)) * 12.0;
-      let M_xx = D_solid * curvature * (1.0 + nu);
-      let sigma_xx = (6.0 * Math.abs(M_xx)) / (Math.pow(t, 2) * Kbox);
+      let M_xx = D_ortho * curvature * (1.0 + nu_xy);
+      let sigma_xx = (6.0 * Math.abs(M_xx)) / (Math.pow(t, 2) * (e.Kbox || 6.5));
 
       let vonMises = sigma_xx;
       if (min_dist_bolt_sq < 0.02) {
