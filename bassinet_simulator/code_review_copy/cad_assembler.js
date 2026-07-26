@@ -29,6 +29,7 @@ class CADAssemblyViewer {
       rightWall: { group: new THREE.Group(), baseX: 0.400, name: '우측 측판 자작합판 (Right Wall)', cost: '$0.5', spec: '442x60x4mm Right Panel' },
 
       cornerBrackets: { group: new THREE.Group(), baseZ: 0.0, name: '코너 L-자 강철 체결 브래킷 (4개)', cost: '$1.0', spec: 'Steel L-Bracket 20x20mm' },
+      internalRibs: { group: new THREE.Group(), baseZ: 0.0, name: '내부 격자보 보강 리브 (Cross Reinforcement Ribs)', cost: '$0.8', spec: '12x20mm Birch Rib Grid (Center Cross)' },
       bottomPlate: { group: new THREE.Group(), baseZ: -0.032, name: '하판 자작합판 (4mm Birch Plywood)', cost: '$1.2', spec: '800x450x4mm Bottom Base' },
       bolts: { group: new THREE.Group(), baseZ: -0.045, name: 'M3 체결 볼트 & 황동 스페이서 (8개)', cost: '$0.7', spec: 'M3x12 Stainless Bolts + H6 Standoffs' }
     };
@@ -168,6 +169,21 @@ class CADAssemblyViewer {
       bMesh.userData = { layerKey: 'cornerBrackets' };
       this.layers.cornerBrackets.group.add(bMesh);
     });
+
+    // 6.5 Internal Cross Reinforcement Ribs (Center Rib Grid)
+    const ribMat = new THREE.MeshStandardMaterial({ color: 0x38bdf8, roughness: 0.4, metalness: 0.2 });
+    const ribXGeom = new THREE.BoxGeometry(pW * 0.70, 0.012, 0.020);
+    const ribYGeom = new THREE.BoxGeometry(0.012, pH * 0.70, 0.020);
+    
+    const ribXMesh = new THREE.Mesh(ribXGeom, ribMat);
+    ribXMesh.position.set(0, 0, 0);
+    ribXMesh.userData = { layerKey: 'internalRibs' };
+    this.layers.internalRibs.group.add(ribXMesh);
+
+    const ribYMesh = new THREE.Mesh(ribYGeom, ribMat.clone());
+    ribYMesh.position.set(0, 0, 0);
+    ribYMesh.userData = { layerKey: 'internalRibs' };
+    this.layers.internalRibs.group.add(ribYMesh);
 
     // 7. Bottom Plate (800x450x4mm)
     const botMesh = new THREE.Mesh(topGeom, woodMat.clone());
