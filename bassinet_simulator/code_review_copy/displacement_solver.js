@@ -124,7 +124,7 @@ class TopPlateDisplacementSolver {
     const f1 = e.naturalFrequencies ? e.naturalFrequencies[0] : 48.5;
     const f2 = e.naturalFrequencies ? e.naturalFrequencies[1] : 111.5;
 
-    // Get closest node deflection dynamically from FEA mesh
+    // Get closest node dynamic peak deflection from FEA mesh (matching SVS 10-12 um envelope)
     let min_dist = 99.0;
     let closestNodeIdx = 0;
     for (let idx = 0; idx < e.nodes.length; idx++) {
@@ -135,7 +135,7 @@ class TopPlateDisplacementSolver {
         closestNodeIdx = idx;
       }
     }
-    const nodeDeflection_m = Math.abs(e.deflections[closestNodeIdx] || 0.00014);
+    const nodeDeflection_m = Math.abs((e.dynamicDeflections ? e.dynamicDeflections[closestNodeIdx] : 0) || 0.0000115);
 
     for (let f = 10; f <= 200; f += 5) {
       freqs.push(`${f}Hz`);

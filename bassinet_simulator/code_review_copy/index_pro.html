@@ -77,8 +77,8 @@
       </div>
 
       <div class="param-group">
-        <div class="param-label"><span>하우징 치수 (가로 x 깊이)</span><strong id="lbl-size">800 x 60 mm</strong></div>
-        <input type="range" id="rng-width" min="400" max="1200" value="800" class="range-slider">
+        <div class="param-label"><span>하우징 치수 (가로 x 깊이)</span><strong id="lbl-size">720 x 45 mm</strong></div>
+        <input type="range" id="rng-width" min="400" max="1200" value="720" class="range-slider">
       </div>
 
       <div class="param-group">
@@ -134,6 +134,11 @@
               <span class="val" id="val-freq" style="color:var(--accent-purple)">48.5 Hz</span>
               <span class="sub">✓ 40Hz 구동 시 공진 안전</span>
             </div>
+            <div class="metric-card">
+              <span class="title">♻️ B2B 렌탈 리퍼비시 원가/시간</span>
+              <span class="val" id="val-rental-cost" style="color:var(--accent-teal)">$2.50 (0.2분)</span>
+              <span class="sub">✓ 원터치 방수 슬리브 10초 교체</span>
+            </div>
           </div>
 
   <script src="fem_engine.js"></script>
@@ -179,7 +184,8 @@
 
       document.getElementById('rng-width').addEventListener('input', (e) => {
         let w = parseInt(e.target.value);
-        document.getElementById('lbl-size').innerText = `${w} x 60 mm`;
+        let h_mm = Math.round((femEngine ? femEngine.depth : 0.045) * 1000);
+        document.getElementById('lbl-size').innerText = `${w} x ${h_mm} mm`;
         femEngine.width = w / 1000.0;
         femEngine.solve();
       });
@@ -205,6 +211,11 @@
       document.getElementById('val-stress').innerText = `${femEngine.maxStress.toFixed(2)} MPa`;
       document.getElementById('val-sf').innerText = femEngine.safetyFactor > 50 ? '50+' : femEngine.safetyFactor.toFixed(1);
       document.getElementById('val-freq').innerText = `${femEngine.naturalFrequencies[0]} Hz`;
+
+      if (rentalMgr && document.getElementById('val-rental-cost')) {
+        const refurb = rentalMgr.calculateRefurbishment(true, false);
+        document.getElementById('val-rental-cost').innerText = `$${refurb.refurbishCostUSD} (${refurb.turnaroundTimeMin}분 소요)`;
+      }
     }
 
     function exportCADMesh() {

@@ -15,7 +15,6 @@ let maxPoints = 30;
 // Web Audio Synth for White Noise & Heartbeat Simulation
 let audioCtx = null;
 let noiseNode = null;
-let gainNode = null;
 let audioFilterNode = null;
 let audioGainNode = null;
 
