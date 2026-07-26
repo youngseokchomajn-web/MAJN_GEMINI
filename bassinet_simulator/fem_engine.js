@@ -19,11 +19,11 @@ class WoodHousingFEMEngine {
     this.activeMaterialKey = 'birch_4mm';
     this.mat = this.materials[this.activeMaterialKey];
 
-    // 3D Box Housing Geometry
+    // 3D Box Housing Geometry (Optimized for Postpartum Care Center Acrylic Bassinet Cart 750x420mm)
     this.shape = 'box_enclosure'; // 'box_enclosure', 'rectangle', 'oval'
-    this.width = 0.80; // 800 mm
-    this.height = 0.45; // 450 mm
-    this.depth = 0.06; // 60 mm box depth
+    this.width = 0.72; // 720 mm (Fits Standard 750mm Acrylic Basket)
+    this.height = 0.39; // 390 mm (Fits Standard 420mm Acrylic Basket)
+    this.depth = 0.045; // 45 mm Slim Profile Box Depth
 
     // Boundary & Joint Settings (Engineered Magic Numbers with Literature References)
     this.boundaryType = 'bolted_box_clamped';
