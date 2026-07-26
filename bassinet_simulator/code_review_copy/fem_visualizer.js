@@ -500,7 +500,11 @@ class WoodHousingFEMVisualizer {
     }
     this.render2D();
     if (typeof updateMetricsUI === 'function') {
-      updateMetricsUI();
+      const now = Date.now();
+      if (!this.lastMetricsUpdate || now - this.lastMetricsUpdate > 200) { // Throttle UI text updates to 5Hz (200ms)
+        this.lastMetricsUpdate = now;
+        updateMetricsUI();
+      }
     }
     requestAnimationFrame((t) => this.render(t));
   }
