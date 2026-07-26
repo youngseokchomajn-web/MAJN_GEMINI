@@ -187,7 +187,9 @@
         let h_mm = Math.round((femEngine ? femEngine.depth : 0.045) * 1000);
         document.getElementById('lbl-size').innerText = `${w} x ${h_mm} mm`;
         femEngine.width = w / 1000.0;
+        femEngine.generateMesh();
         femEngine.solve();
+        if (femVisualizer) femVisualizer.rebuild3DMesh();
       });
 
       document.getElementById('rng-baby-weight').addEventListener('input', (e) => {
@@ -231,7 +233,54 @@
     }
 
     function runAIOptimizer() {
-      alert('AI 파이썬 자동 최적화 루프가 동기화되었습니다. (Deflection: 0.146mm, SF: 67.7)');
+      if (!femEngine) return;
+      const candidateMaterials = ['birch_6mm', 'pc_4mm', 'birch_4mm', 'abs_4mm'];
+      let bestScore = -999999;
+      let bestConfig = null;
+
+      for (const matKey of candidateMaterials) {
+        for (let boltsCount of [8, 12]) {
+          const oldMat = femEngine.activeMaterialKey;
+          const oldBoltCount = femEngine.boltCount;
+
+          femEngine.setMaterial(matKey);
+          femEngine.boltCount = boltsCount;
+          femEngine.updateBolts();
+          femEngine.generateMesh();
+          femEngine.solve();
+
+          const w_static = femEngine.maxDeflection;
+          const stress = femEngine.maxStress;
+          const sf = femEngine.safetyFactor;
+
+          let score = 100.0;
+          score -= w_static * 20.0;
+          score -= stress * 5.0;
+          score += sf * 2.0;
+
+          if (score > bestScore) {
+            bestScore = score;
+            bestConfig = { matKey, matName: femEngine.mat.name, boltsCount, w_static, stress, sf };
+          }
+
+          femEngine.setMaterial(oldMat);
+          femEngine.boltCount = oldBoltCount;
+        }
+      }
+
+      if (bestConfig) {
+        femEngine.setMaterial(bestConfig.matKey);
+        femEngine.boltCount = bestConfig.boltsCount;
+        femEngine.updateBolts();
+        femEngine.generateMesh();
+        femEngine.solve();
+
+        document.getElementById('sel-material').value = bestConfig.matKey;
+        updateMetricsUI();
+        if (femVisualizer) femVisualizer.rebuild3DMesh();
+
+        alert(`🤖 [MAJN AI 실소재/구조 다목적 탐색 완료]\n\n• 최적 선택 소재: ${bestConfig.matName}\n• 최적 볼트 체결: ${bestConfig.boltsCount}개 링 배열\n• 정적 휨 변위: ${bestConfig.w_static.toFixed(3)} mm\n• Von Mises 피크 응력: ${bestConfig.stress.toFixed(2)} MPa\n• 구조 안전율(SF): ${bestConfig.sf.toFixed(1)}`);
+      }
     }
   </script>
 </body>

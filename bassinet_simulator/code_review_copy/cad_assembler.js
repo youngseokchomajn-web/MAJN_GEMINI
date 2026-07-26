@@ -156,14 +156,18 @@ class CADAssemblyViewer {
     rightWallMesh.userData = { layerKey: 'rightWall' };
     this.layers.rightWall.group.add(rightWallMesh);
 
-    // 6. Corner L-Brackets (4 Corners)
+    // 6. Corner L-Brackets (4 Corners - Scaled to 720x390mm Box Inner Corners)
     const bracketMat = new THREE.MeshStandardMaterial({ color: 0x94a3b8, metalness: 0.95, roughness: 0.15 });
     const bracketPos = [
-      { x: -0.38, y: -0.21 }, { x: 0.38, y: -0.21 },
-      { x: -0.38, y: 0.21 }, { x: 0.38, y: 0.21 }
+      { x: -0.34, y: -0.175 }, { x: 0.34, y: -0.175 },
+      { x: -0.38, y: 0.0 }, { x: 0.0, y: 0.0 }
     ];
-    bracketPos.forEach(bpos => {
-      const bGeom = new THREE.BoxGeometry(0.02, 0.02, 0.04);
+    const realBracketPos = [
+      { x: -0.34, y: -0.175 }, { x: 0.34, y: -0.175 },
+      { x: -0.34, y: 0.175 }, { x: 0.34, y: 0.175 }
+    ];
+    realBracketPos.forEach(bpos => {
+      const bGeom = new THREE.BoxGeometry(0.02, 0.02, 0.035);
       const bMesh = new THREE.Mesh(bGeom, bracketMat);
       bMesh.position.set(bpos.x, bpos.y, 0);
       bMesh.userData = { layerKey: 'cornerBrackets' };
@@ -185,16 +189,16 @@ class CADAssemblyViewer {
     ribYMesh.userData = { layerKey: 'internalRibs' };
     this.layers.internalRibs.group.add(ribYMesh);
 
-    // 7. Bottom Plate (800x450x4mm)
+    // 7. Bottom Plate (720x390x4mm)
     const botMesh = new THREE.Mesh(topGeom, woodMat.clone());
     botMesh.userData = { layerKey: 'bottomPlate' };
     this.layers.bottomPlate.group.add(botMesh);
 
-    // 8. M3 Bolts & Brass Standoffs (8 Points)
+    // 8. M3 Bolts & Brass Standoffs (8 Points - Scaled Inside 720x390mm Margins)
     const boltPositions = [
-      { x: -0.36, y: -0.19 }, { x: 0.0, y: -0.19 }, { x: 0.36, y: -0.19 },
-      { x: -0.36, y: 0.19 }, { x: 0.0, y: 0.19 }, { x: 0.36, y: 0.19 },
-      { x: -0.36, y: 0.0 }, { x: 0.36, y: 0.0 }
+      { x: -0.32, y: -0.165 }, { x: 0.0, y: -0.165 }, { x: 0.32, y: -0.165 },
+      { x: -0.32, y: 0.165 }, { x: 0.0, y: 0.165 }, { x: 0.32, y: 0.165 },
+      { x: -0.32, y: 0.0 }, { x: 0.32, y: 0.0 }
     ];
 
     boltPositions.forEach(bpos => {
