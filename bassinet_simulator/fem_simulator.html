@@ -227,18 +227,23 @@
           </div>
 
           <div class="param-group">
-            <div class="param-label"><span>볼트 규격 & 체결 토크 (Torque & Preload)</span></div>
-            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+            <div class="param-label"><span>볼트 수량 & 규격 (Bolt Pattern & Preload)</span></div>
+            <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap:8px;">
+              <select id="sel-bolts" class="input-select">
+                <option value="4">4개 체결</option>
+                <option value="8" selected>8개 체결 (기본)</option>
+                <option value="12">12개 체결 (강체결)</option>
+              </select>
               <select id="sel-bolt-size" class="input-select">
-                <option value="M2">M2 (직경 2mm)</option>
-                <option value="M3" selected>M3 (직경 3mm - 기본)</option>
-                <option value="M4">M4 (직경 4mm)</option>
-                <option value="M5">M5 (직경 5mm)</option>
+                <option value="M2">M2 (2mm)</option>
+                <option value="M3" selected>M3 (3mm)</option>
+                <option value="M4">M4 (4mm)</option>
+                <option value="M5">M5 (5mm)</option>
               </select>
               <select id="sel-bolt-torque" class="input-select">
-                <option value="0.4">0.4 N·m (약 68kgf)</option>
-                <option value="0.8" selected>0.8 N·m (표준 136kgf)</option>
-                <option value="1.2">1.2 N·m (강체결 204kgf)</option>
+                <option value="0.4">0.4 N·m</option>
+                <option value="0.8" selected>0.8 N·m</option>
+                <option value="1.2">1.2 N·m</option>
               </select>
             </div>
           </div>
