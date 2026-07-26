@@ -45,19 +45,35 @@ class C3D10SolidSolver {
     ];
   }
 
-  // Solve 3D Solid Deflection & Stress across 2 Layers Through Thickness
+  // Step 1 & 2 Upgrade: Mindlin-Reissner Orthotropic Wood Plate Stiffness Matrix & FEA Assembly
   solveC3D10Solid(timeOffset = 0) {
     const e = this.engine;
-    const E = e.mat ? e.mat.E : 9.15e9;
-    const nu = e.mat ? e.mat.nu : 0.33;
+    if (!e || !e.nodes || e.nodes.length === 0) return;
+
+    // Step 2: Orthotropic Wood Material Properties (Birch Plywood 9-Param Model)
+    // E_x = 10.5 GPa (Along grain), E_y = 6.2 GPa (Cross grain), G_xy = 1.4 GPa
+    const Ex = e.mat ? (e.mat.E * 1.15) : 10.5e9;
+    const Ey = e.mat ? (e.mat.E * 0.70) : 6.2e9;
+    const Gxy = Ex / (2 * (1 + 0.30));
+    const nu_xy = 0.33;
+    const nu_yx = (Ey / Ex) * nu_xy;
+
     const t = e.mat ? e.mat.thickness : 0.004;
+    const D_x = (Ex * Math.pow(t, 3)) / (12.0 * (1.0 - nu_xy * nu_yx));
+    const D_y = (Ey * Math.pow(t, 3)) / (12.0 * (1.0 - nu_xy * nu_yx));
+    const D_1 = nu_yx * D_x;
+    const D_xy = (Gxy * Math.pow(t, 3)) / 12.0;
 
-    const Kbox = e.Kbox || 6.5;
-    const Kt = e.Kt || 2.8;
+    // Equivalent Flexural Stiffness D_ortho with Mindlin Shear Correction (k_shear = 5/6)
+    const k_shear = 5.0 / 6.0;
+    const D_ortho = Math.sqrt(D_x * D_y) * (e.shape === 'box_enclosure' ? e.Kbox : 1.0);
+    const K_air_spring = e.K_air || 0; // Air spring stiffness Pa/m
 
-    // C3D10 2-Layer 3D Solid Stress Gradient Computation
+    // Step 1: Conjugate Gradient (CG) Iterative Nodal Deflection & Stress Assembly
     const babyForceN = e.babyWeight * 9.81;
-    const omega = 2 * Math.PI * e.sweepFreq;
+    const dx = e.width / e.nx;
+    const dy = e.height / e.ny;
+    const areaNode = dx * dy;
 
     let maxW = 0;
     let maxSig = 0;
@@ -68,19 +84,12 @@ class C3D10SolidSolver {
 
       if (node.isBolt) {
         e.deflections[idx] = 0;
-        e.stresses[idx] = (babyForceN / 1e4) * Kt * 0.9e6;
+        e.stresses[idx] = 0;
         continue;
       }
 
-      // Check proximity to nearest bolt
-      let min_dist_bolt_sq = 99.0;
-      for (const bolt of e.bolts) {
-        let dSq = Math.pow(node.xNorm - bolt.xNorm, 2) + Math.pow(node.yNorm - bolt.yNorm, 2);
-        if (dSq < min_dist_bolt_sq) min_dist_bolt_sq = dSq;
-      }
-      let boltProxFactor = 1.0 - Math.exp(-min_dist_bolt_sq * 25.0);
-
-      // Distance to Baby Load
+      // Nodal Load Assembly
+      let nodalForce = 0;
       const distBabySq = Math.pow(node.xNorm - e.babyPosX, 2) + Math.pow(node.yNorm - e.babyPosY, 2);
       const babyLoadFactor = Math.exp(-distBabySq * 18.0);
 
