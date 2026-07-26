@@ -56,14 +56,24 @@ class C3D10SolidSolver {
     const nu_xy = e.mat ? e.mat.nu : 0.33;
     const nu_yx = (Ey / Ex) * nu_xy;
 
-    const t = e.mat ? e.mat.thickness : 0.004;
-    const D_x = (Ex * Math.pow(t, 3)) / (12.0 * (1.0 - nu_xy * nu_yx));
-    const D_y = (Ey * Math.pow(t, 3)) / (12.0 * (1.0 - nu_xy * nu_yx));
+    const thickness_m = e.mat ? e.mat.thickness : 0.004;
+    const D_x = (Ex * Math.pow(thickness_m, 3)) / (12.0 * (1.0 - nu_xy * nu_yx));
+    const D_y = (Ey * Math.pow(thickness_m, 3)) / (12.0 * (1.0 - nu_xy * nu_yx));
     const D_ortho = Math.sqrt(D_x * D_y) * (e.shape === 'box_enclosure' ? e.Kbox : 1.0);
 
     const babyForceN = e.babyWeight * 9.81;
     const omega = 2 * Math.PI * e.sweepFreq;
     const Kt = e.Kt || 2.8;
+
+    // ESP32 Firmware SVS Clinical Multi-Tone Synthesis Match (30Hz, 14.2Hz, 22.7Hz, 7.4Hz, 33.1Hz) Hoisted Once
+    const tNow = timeOffset;
+    const svsMultiTone = (
+      1.00 * Math.sin(2.0 * Math.PI * 30.0 * tNow) +
+      0.35 * Math.sin(2.0 * Math.PI * 14.2 * tNow + 0.5) +
+      0.25 * Math.sin(2.0 * Math.PI * 22.7 * tNow + 1.2) +
+      0.40 * Math.sin(2.0 * Math.PI *  7.4 * tNow + 2.8) +
+      0.20 * Math.sin(2.0 * Math.PI * 33.1 * tNow + 4.1)
+    ) / 2.20;
 
     if (!e.dynamicDeflections || e.dynamicDeflections.length !== e.nodes.length) {
       e.dynamicDeflections = new Float32Array(e.nodes.length);
@@ -105,17 +115,7 @@ class C3D10SolidSolver {
         const exciterInfluence = Math.exp(-distExciterSq * 14.0);
         let dynamicAmpFactor = 1.0 / Math.sqrt(Math.pow(1 - 0.8 * 0.8, 2) + Math.pow(2 * e.vhbDamping * 0.8, 2));
 
-        // ESP32 Firmware SVS Clinical Multi-Tone Synthesis Match (30Hz, 14.2Hz, 22.7Hz, 7.4Hz, 33.1Hz)
-        const t = timeOffset;
-        const svsMultiTone = (
-          1.00 * Math.sin(2.0 * Math.PI * 30.0 * t) +
-          0.35 * Math.sin(2.0 * Math.PI * 14.2 * t + 0.5) +
-          0.25 * Math.sin(2.0 * Math.PI * 22.7 * t + 1.2) +
-          0.40 * Math.sin(2.0 * Math.PI *  7.4 * t + 2.8) +
-          0.20 * Math.sin(2.0 * Math.PI * 33.1 * t + 4.1)
-        ) / 2.20;
-
-        let wavePhase = (node.xNorm + node.yNorm) * 8.0 - omega * timeOffset + exciter.phase;
+        let wavePhase = (node.xNorm + node.yNorm) * 8.0 - omega * tNow + exciter.phase;
         const baseAmp = (exciter.force * 5.0e-4 / D_ortho) * exciterInfluence * dynamicAmpFactor * boltProxFactor;
         wDynamic += baseAmp * svsMultiTone * Math.sin(wavePhase);
         wDynamicPeak += Math.abs(baseAmp);
@@ -128,7 +128,7 @@ class C3D10SolidSolver {
       // 3D Solid Stress Gradient across Top/Bottom 2-Layers
       let curvature = (totalW / Math.pow(e.width, 2)) * 12.0;
       let M_xx = D_ortho * curvature * (1.0 + nu_xy);
-      let sigma_xx = (6.0 * Math.abs(M_xx)) / (Math.pow(t, 2) * (e.Kbox || 6.5));
+      let sigma_xx = (6.0 * Math.abs(M_xx)) / (Math.pow(thickness_m, 2) * (e.Kbox || 6.5));
 
       let vonMises = sigma_xx;
       if (min_dist_bolt_sq < 0.02) {
