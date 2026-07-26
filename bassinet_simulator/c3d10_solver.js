@@ -65,6 +65,10 @@ class C3D10SolidSolver {
     const omega = 2 * Math.PI * e.sweepFreq;
     const Kt = e.Kt || 2.8;
 
+    if (!e.dynamicDeflections || e.dynamicDeflections.length !== e.nodes.length) {
+      e.dynamicDeflections = new Float32Array(e.nodes.length);
+    }
+
     let maxW = 0;
     let maxSig = 0;
 
@@ -74,6 +78,7 @@ class C3D10SolidSolver {
 
       if (node.isBolt) {
         e.deflections[idx] = 0;
+        e.dynamicDeflections[idx] = 0;
         e.stresses[idx] = (babyForceN / 1e4) * Kt * 0.9e6;
         continue;
       }
@@ -100,11 +105,12 @@ class C3D10SolidSolver {
         let dynamicAmpFactor = 1.0 / Math.sqrt(Math.pow(1 - 0.8 * 0.8, 2) + Math.pow(2 * e.vhbDamping * 0.8, 2));
 
         let wavePhase = (node.xNorm + node.yNorm) * 8.0 - omega * timeOffset + exciter.phase;
-        wDynamic += (exciter.force * 0.8e-4 / D_ortho) * exciterInfluence * dynamicAmpFactor * boltProxFactor * Math.sin(wavePhase);
+        wDynamic += (exciter.force * 5.0e-4 / D_ortho) * exciterInfluence * dynamicAmpFactor * boltProxFactor * Math.sin(wavePhase);
       }
 
       let totalW = wStatic + wDynamic;
       e.deflections[idx] = totalW;
+      e.dynamicDeflections[idx] = wDynamic;
 
       // 3D Solid Stress Gradient across Top/Bottom 2-Layers
       let curvature = (totalW / Math.pow(e.width, 2)) * 12.0;
