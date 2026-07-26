@@ -156,13 +156,13 @@ class TopPlateDisplacementSolver {
     const T_amb = 25.0;
     const k_wood = e.mat ? (e.mat.k_thermal || 0.15) : 0.15;
     const t_wall = e.mat ? e.mat.thickness : 0.004;
-    const A_exciter = 1.54e-4;
-    const R_contact = (0.0011 / (0.18 * A_exciter)) + (t_wall / (k_wood * A_exciter));
+    const A_exciter_contact = 0.0028; // 28 cm^2 Aluminum Ring Flange Contact Area
+    const R_contact = (0.0011 / (0.18 * A_exciter_contact)) + (t_wall / (k_wood * A_exciter_contact));
     
     const volRatio = (e.exciterVolumePct !== undefined ? e.exciterVolumePct : 40) / 100.0;
     const P_in_unit = 3.0 * volRatio;
-    const P_heat_unit = P_in_unit * 0.88;
-    const deltaT_exciter_calc = P_heat_unit * R_contact * 0.75; // Dynamic 1st Conduction
+    const P_heat_per_unit = P_in_unit * 0.35; // 35% Heat Loss per exciter unit
+    const deltaT_exciter_calc = P_heat_per_unit * R_contact; // Dynamic 1st Conduction (~12°C to 20°C)
 
     for (let idx = 0; idx < e.nodes.length; idx++) {
       const node = e.nodes[idx];
