@@ -160,13 +160,9 @@ class CADAssemblyViewer {
     const bracketMat = new THREE.MeshStandardMaterial({ color: 0x94a3b8, metalness: 0.95, roughness: 0.15 });
     const bracketPos = [
       { x: -0.34, y: -0.175 }, { x: 0.34, y: -0.175 },
-      { x: -0.38, y: 0.0 }, { x: 0.0, y: 0.0 }
-    ];
-    const realBracketPos = [
-      { x: -0.34, y: -0.175 }, { x: 0.34, y: -0.175 },
       { x: -0.34, y: 0.175 }, { x: 0.34, y: 0.175 }
     ];
-    realBracketPos.forEach(bpos => {
+    bracketPos.forEach(bpos => {
       const bGeom = new THREE.BoxGeometry(0.02, 0.02, 0.035);
       const bMesh = new THREE.Mesh(bGeom, bracketMat);
       bMesh.position.set(bpos.x, bpos.y, 0);
