@@ -81,9 +81,9 @@ class WoodHousingFEMEngine {
   }
 
   loadConfig() {
-    // Default synchronous config initialization (prevents 404 fetch errors)
+    // Default synchronous config initialization (Optimized for Postpartum Care Center Acrylic Bassinet Cart 750x420mm)
     const defaultConfig = {
-      geometry: { shape: 'box_enclosure', width_mm: 800, height_mm: 450, depth_mm: 60 },
+      geometry: { shape: 'box_enclosure', width_mm: 720, height_mm: 390, depth_mm: 45 },
       material: { key: 'birch_4mm' },
       joint_boundary: { box_rigidity_Kbox: 6.5 },
       payload: { baby_weight_kg: 5.0, pos_xNorm: 0.5, pos_yNorm: 0.5 }
@@ -94,9 +94,9 @@ class WoodHousingFEMEngine {
   applyConfig(config) {
     if (config.geometry) {
       this.shape = config.geometry.shape || this.shape;
-      this.width = (config.geometry.width_mm || 800) / 1000.0;
-      this.height = (config.geometry.height_mm || 450) / 1000.0; // Length
-      this.depth = (config.geometry.depth_mm || 60) / 1000.0;  // Height
+      this.width = (config.geometry.width_mm || 720) / 1000.0;
+      this.height = (config.geometry.height_mm || 390) / 1000.0; // Length
+      this.depth = (config.geometry.depth_mm || 45) / 1000.0;  // Height
     }
     if (config.material && config.material.key) {
       this.setMaterial(config.material.key);
