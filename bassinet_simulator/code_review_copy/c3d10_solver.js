@@ -105,9 +105,19 @@ class C3D10SolidSolver {
         const exciterInfluence = Math.exp(-distExciterSq * 14.0);
         let dynamicAmpFactor = 1.0 / Math.sqrt(Math.pow(1 - 0.8 * 0.8, 2) + Math.pow(2 * e.vhbDamping * 0.8, 2));
 
+        // ESP32 Firmware SVS Clinical Multi-Tone Synthesis Match (30Hz, 14.2Hz, 22.7Hz, 7.4Hz, 33.1Hz)
+        const t = timeOffset;
+        const svsMultiTone = (
+          1.00 * Math.sin(2.0 * Math.PI * 30.0 * t) +
+          0.35 * Math.sin(2.0 * Math.PI * 14.2 * t + 0.5) +
+          0.25 * Math.sin(2.0 * Math.PI * 22.7 * t + 1.2) +
+          0.40 * Math.sin(2.0 * Math.PI *  7.4 * t + 2.8) +
+          0.20 * Math.sin(2.0 * Math.PI * 33.1 * t + 4.1)
+        ) / 2.20;
+
         let wavePhase = (node.xNorm + node.yNorm) * 8.0 - omega * timeOffset + exciter.phase;
         const baseAmp = (exciter.force * 5.0e-4 / D_ortho) * exciterInfluence * dynamicAmpFactor * boltProxFactor;
-        wDynamic += baseAmp * Math.sin(wavePhase);
+        wDynamic += baseAmp * svsMultiTone * Math.sin(wavePhase);
         wDynamicPeak += Math.abs(baseAmp);
       }
 
