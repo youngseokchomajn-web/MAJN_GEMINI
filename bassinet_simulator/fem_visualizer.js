@@ -62,7 +62,8 @@ class WoodHousingFEMVisualizer {
       this.controls = new THREE.OrbitControls(this.camera, this.renderer.domElement);
       this.controls.enableDamping = true;
       this.controls.dampingFactor = 0.05;
-      this.controls.maxPolarAngle = Math.PI / 2 + 0.2;
+      this.controls.minPolarAngle = 0.001; // Allow top-to-bottom rotation freely
+      this.controls.maxPolarAngle = Math.PI - 0.001; // Allow full 360 sphere rotation
     }
 
     // Grid helper completely removed for clean 3D view
