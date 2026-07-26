@@ -99,18 +99,21 @@ class C3D10SolidSolver {
       let wStatic = (babyForceN * Math.pow(e.width, 3) / (D_ortho * 48.0)) * babyLoadFactor * boltProxFactor;
 
       let wDynamic = 0;
+      let wDynamicPeak = 0;
       for (const exciter of e.exciters) {
         const distExciterSq = Math.pow(node.xNorm - exciter.x, 2) + Math.pow(node.yNorm - exciter.y, 2);
         const exciterInfluence = Math.exp(-distExciterSq * 14.0);
         let dynamicAmpFactor = 1.0 / Math.sqrt(Math.pow(1 - 0.8 * 0.8, 2) + Math.pow(2 * e.vhbDamping * 0.8, 2));
 
         let wavePhase = (node.xNorm + node.yNorm) * 8.0 - omega * timeOffset + exciter.phase;
-        wDynamic += (exciter.force * 5.0e-4 / D_ortho) * exciterInfluence * dynamicAmpFactor * boltProxFactor * Math.sin(wavePhase);
+        const baseAmp = (exciter.force * 5.0e-4 / D_ortho) * exciterInfluence * dynamicAmpFactor * boltProxFactor;
+        wDynamic += baseAmp * Math.sin(wavePhase);
+        wDynamicPeak += Math.abs(baseAmp);
       }
 
       let totalW = wStatic + wDynamic;
       e.deflections[idx] = totalW;
-      e.dynamicDeflections[idx] = wDynamic;
+      e.dynamicDeflections[idx] = wDynamicPeak; // Store Peak Envelope Amplitude for steady metric display
 
       // 3D Solid Stress Gradient across Top/Bottom 2-Layers
       let curvature = (totalW / Math.pow(e.width, 2)) * 12.0;
