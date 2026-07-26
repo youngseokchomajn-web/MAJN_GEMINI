@@ -109,8 +109,8 @@ function initEventListeners() {
   volumeSlider.addEventListener('input', (e) => {
     volume = parseInt(e.target.value);
     document.getElementById('volume-txt').innerText = `${volume} dB`;
-    if (gainNode) {
-      gainNode.gain.setValueAtTime(volume / 100 * 0.2, audioCtx.currentTime);
+    if (audioGainNode && audioCtx) {
+      audioGainNode.gain.setValueAtTime(volume / 100 * 2.0, audioCtx.currentTime);
     }
   });
 
