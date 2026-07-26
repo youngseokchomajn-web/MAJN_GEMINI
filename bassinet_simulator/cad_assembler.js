@@ -17,20 +17,20 @@ class CADAssemblyViewer {
     // Component Layer Groups for 6-Directional Explosion Offsets
     this.layers = {
       washableSleeve: { group: new THREE.Group(), baseZ: 0.048, name: '원터치 세탁 방수 슬리브 커버 (Washable Sleeve)', cost: '$2.5 (소모품)', spec: 'Waterproof Fabric, 10s Snap-on' },
-      topPlate: { group: new THREE.Group(), baseZ: 0.032, name: '상판 자작합판 (4mm Birch Plywood)', cost: '$1.2', spec: '800x450x4mm Top Panel' },
+      topPlate: { group: new THREE.Group(), baseZ: 0.032, name: '상판 자작합판 (4mm Birch Plywood)', cost: '$1.2', spec: '720x390x4mm Top Panel' },
       evaGasket: { group: new THREE.Group(), baseZ: 0.026, name: 'EVA 폼 완충 차음 가스켓', cost: '$0.6', spec: 'Density 45kg/m³, High Damping' },
       exciters: { group: new THREE.Group(), baseZ: 0.010, name: 'TEAX14C02-8 익사이터 (4개 유닛)', cost: '$20.0 (4개)', spec: '8Ω 10W Transducers, 3M VHB Tape' },
       controlBox: { group: new THREE.Group(), baseZ: -0.005, name: '컨트롤박스 하우징 & PCB', cost: '$13.0 (PCB+케이스)', spec: 'ESP32-S3 + TAS5805M + MP3426 12.12V' },
       
       // 4 Side Walls for 3D Box Enclosure
-      frontWall: { group: new THREE.Group(), baseY: -0.225, name: '전면 측판 자작합판 (Front Wall)', cost: '$0.8', spec: '800x60x4mm Front Panel' },
-      backWall: { group: new THREE.Group(), baseY: 0.225, name: '후면 측판 자작합판 (Back Wall)', cost: '$0.8', spec: '800x60x4mm Back Panel' },
-      leftWall: { group: new THREE.Group(), baseX: -0.400, name: '좌측 측판 자작합판 (Left Wall)', cost: '$0.5', spec: '442x60x4mm Left Panel' },
-      rightWall: { group: new THREE.Group(), baseX: 0.400, name: '우측 측판 자작합판 (Right Wall)', cost: '$0.5', spec: '442x60x4mm Right Panel' },
+      frontWall: { group: new THREE.Group(), baseY: -0.195, name: '전면 측판 자작합판 (Front Wall)', cost: '$0.8', spec: '720x45x4mm Front Panel' },
+      backWall: { group: new THREE.Group(), baseY: 0.195, name: '후면 측판 자작합판 (Back Wall)', cost: '$0.8', spec: '720x45x4mm Back Panel' },
+      leftWall: { group: new THREE.Group(), baseX: -0.360, name: '좌측 측판 자작합판 (Left Wall)', cost: '$0.5', spec: '382x45x4mm Left Panel' },
+      rightWall: { group: new THREE.Group(), baseX: 0.360, name: '우측 측판 자작합판 (Right Wall)', cost: '$0.5', spec: '382x45x4mm Right Panel' },
 
       cornerBrackets: { group: new THREE.Group(), baseZ: 0.0, name: '코너 L-자 강철 체결 브래킷 (4개)', cost: '$1.0', spec: 'Steel L-Bracket 20x20mm' },
       internalRibs: { group: new THREE.Group(), baseZ: 0.0, name: '내부 격자보 보강 리브 (Cross Reinforcement Ribs)', cost: '$0.8', spec: '12x20mm Birch Rib Grid (Center Cross)' },
-      bottomPlate: { group: new THREE.Group(), baseZ: -0.032, name: '하판 자작합판 (4mm Birch Plywood)', cost: '$1.2', spec: '800x450x4mm Bottom Base' },
+      bottomPlate: { group: new THREE.Group(), baseZ: -0.032, name: '하판 자작합판 (4mm Birch Plywood)', cost: '$1.2', spec: '720x390x4mm Bottom Base' },
       bolts: { group: new THREE.Group(), baseZ: -0.045, name: 'M3 체결 볼트 & 황동 스페이서 (8개)', cost: '$0.7', spec: 'M3x12 Stainless Bolts + H6 Standoffs' }
     };
 
@@ -89,9 +89,9 @@ class CADAssemblyViewer {
   }
 
   buildAssembly() {
-    const pW = 0.80; // 800mm
-    const pH = 0.45; // 450mm
-    const pD = 0.06; // 60mm Box Depth
+    const pW = 0.72; // 720mm (Fits Standard 750mm Acrylic Basket)
+    const pH = 0.39; // 390mm (Fits Standard 420mm Acrylic Basket)
+    const pD = 0.045; // 45mm Box Depth
     const pT = 0.004; // 4mm Thickness
 
     const woodMat = new THREE.MeshStandardMaterial({ color: 0xd97706, roughness: 0.55, metalness: 0.1 });
