@@ -128,7 +128,7 @@ class C3D10SolidSolver {
       // 3D Solid Stress Gradient across Top/Bottom 2-Layers
       let curvature = (totalW / Math.pow(e.width, 2)) * 12.0;
       let M_xx = D_ortho * curvature * (1.0 + nu_xy);
-      let sigma_xx = (6.0 * Math.abs(M_xx)) / (Math.pow(thickness_m, 2) * (e.Kbox || 6.5));
+      let sigma_xx = (6.0 * Math.abs(M_xx)) / (Math.pow(thickness_m, 2) * (e.Kbox || 3.2));
 
       let vonMises = sigma_xx;
       if (min_dist_bolt_sq < 0.02) {

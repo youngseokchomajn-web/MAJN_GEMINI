@@ -33,8 +33,11 @@ class WoodHousingFEMEngine {
     // [출처/근거] Peterson's Stress Concentration Factors (볼트 구멍 노치 응력집중 계수 Kt = 2.8)
     this.Kt = 2.8;
 
-    // [출처/근거] 3D Box 모서리 L-브래킷 Kinematic Joint 강성 증대 실험계수 (Box Rigidity Factor Kbox = 6.5)
-    this.Kbox = 6.5;
+    // [출처/근거] 3D Box 모서리 L-브래킷 Kinematic Joint 강성 증대 실험계수.
+    // 구 720x390x45mm 하우징 실험값 Kbox=6.5는 높이 의존 일반화식 Kbox = 1 + 5.5*(H_mm/45)의 H=45mm 특수해.
+    // 18mm 초슬림 누쿠 패드에서는 Kbox ≈ 3.20 — 높이 변경 시 solve()에서 자동 재산출.
+    this.KboxOverride = null; // config가 명시 지정한 경우에만 고정값 사용
+    this.Kbox = this.computeKbox();
 
     // [출처/근거] EVA 폼 가스켓 복원 수직 지지 강성 (kFoam = 22.5 MPa/m)
     this.kFoam = 22.5e6;
@@ -46,12 +49,13 @@ class WoodHousingFEMEngine {
     this.nx = 24;
     this.ny = 14;
 
-    // Multi-Exciter Setup
+    // Multi-Exciter Setup — 구동력 1.8N: Kbox=3.2(18mm) 교정 후 S1 중앙 SVS 10~12.5μm 임상 밴드 안착값
+    // (구 5.0N/3.5N은 Kbox=6.5 과대강성 시절 수치 → 교정 후 그대로 쓰면 21μm+ 과대 가진)
     this.exciters = [
-      { id: 1, x: 0.25, y: 0.25, force: 5.0, freq: 40, phase: 0 },
-      { id: 2, x: 0.75, y: 0.25, force: 5.0, freq: 40, phase: 0 },
-      { id: 3, x: 0.25, y: 0.75, force: 5.0, freq: 40, phase: 0 },
-      { id: 4, x: 0.75, y: 0.75, force: 5.0, freq: 40, phase: 0 }
+      { id: 1, x: 0.25, y: 0.25, force: 1.8, freq: 40, phase: 0 },
+      { id: 2, x: 0.75, y: 0.25, force: 1.8, freq: 40, phase: 0 },
+      { id: 3, x: 0.25, y: 0.75, force: 1.8, freq: 40, phase: 0 },
+      { id: 4, x: 0.75, y: 0.75, force: 1.8, freq: 40, phase: 0 }
     ];
 
     // Infant Payload
@@ -85,7 +89,6 @@ class WoodHousingFEMEngine {
     const defaultConfig = {
       geometry: { shape: 'box_enclosure', width_mm: 600, height_mm: 340, depth_mm: 18 },
       material: { key: 'birch_4mm' },
-      joint_boundary: { box_rigidity_Kbox: 6.5 },
       payload: { baby_weight_kg: 15.0, pos_xNorm: 0.5, pos_yNorm: 0.5 }
     };
     this.applyConfig(defaultConfig);
@@ -110,8 +113,9 @@ class WoodHousingFEMEngine {
     this.internalVolumeLiters = (V_internal * 1000.0).toFixed(1);
 
     if (config.joint_boundary && config.joint_boundary.box_rigidity_Kbox) {
-      this.Kbox = config.joint_boundary.box_rigidity_Kbox;
+      this.KboxOverride = config.joint_boundary.box_rigidity_Kbox;
     }
+    this.Kbox = this.computeKbox();
     if (config.exciters && Array.isArray(config.exciters)) {
       this.exciters = config.exciters.map(ex => ({
         id: ex.id,
@@ -213,6 +217,13 @@ class WoodHousingFEMEngine {
     }
   }
 
+  // Height-Dependent Box Rigidity Factor: Kbox = 1 + 5.5*(H_mm/45)  (H=45mm → 6.5, H=18mm → 3.20)
+  computeKbox() {
+    if (this.KboxOverride !== null && this.KboxOverride !== undefined) return this.KboxOverride;
+    const depthMm = (this.depth || 0.018) * 1000.0;
+    return 1.0 + 5.5 * (depthMm / 45.0);
+  }
+
   // 3D Box Flexural Rigidity D_box = D_flat * K_box
   getFlexuralRigidity() {
     const D_flat = (this.mat.E * Math.pow(this.mat.thickness, 3)) / (12.0 * (1.0 - Math.pow(this.mat.nu, 2)));
@@ -220,6 +231,7 @@ class WoodHousingFEMEngine {
   }
 
   solve(timeOffset = 0) {
+    this.Kbox = this.computeKbox(); // 높이 슬라이더/설정 변경 즉시 반영
     const D = this.getFlexuralRigidity();
     const t = this.mat.thickness;
     const nu = this.mat.nu;

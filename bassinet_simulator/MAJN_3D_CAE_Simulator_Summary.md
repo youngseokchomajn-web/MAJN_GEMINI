@@ -25,6 +25,7 @@
 | **B2B 렌탈** | RentalRefurbishmentManager UI 연동 | B2B 관제 스튜디오(`index_pro.html`)에 렌탈 리퍼비시 원가/시간 메트릭 카드 신설 및 동적 연동 | `rental_manager.js`, `index_pro.html` |
 | **컨셉 비교** | ConceptEvaluator 동적 FEA 스케일 연동 | 실소재 및 하우징 치수 변경 시 4개 컨셉 지표(순수목재, EVA, L-브래킷, 하이브리드)가 FEM 수치에 연동되어 자동 재계산되도록 이식 | `concept_evaluator.js` |
 | **코드클린** | `app.js` 변수 정리 | 안 쓰이던 미사용 변수 `gainNode` 선언 제거 | `app.js` |
+| **Kbox교정** | 높이 의존 박스 강성 일반화 (v2) | 구 45mm 하우징 잔재 `Kbox=6.5` 고정값을 $K_{box}=1+5.5(H/45)$ 높이 의존식으로 교정(18mm→3.20). 임상 밴드 구동력 3.5N→**1.8N** 재산출, `run_ai_optimizer.py`를 웹 솔버와 정합 캘리브레이션 후 설계 제약 4종 하드 제약 탐색으로 최적 사양(자작합판 4mm 600×340×18) 재확증 | `fem_engine.js`, `c3d10_solver.js`, `run_ai_optimizer.py`, `fem_simulator.html` |
 
 ---
 
