@@ -19,10 +19,10 @@ class WoodHousingFEMEngine {
     this.activeMaterialKey = 'birch_4mm';
     this.mat = this.materials[this.activeMaterialKey];
 
-    // Ultra-Slim 24-Month Nucu Pad Geometry (Internal Contains ONLY Exciters)
+    // Ultra-Slim 24-Month Nucu Pad Geometry v3 — Vibration Core + EVA Foam Border Architecture
     this.shape = 'box_enclosure';
-    this.width = 0.60; // 600 mm (24-Month Ergonomic Length)
-    this.height = 0.34; // 340 mm (Compact Mattress Width)
+    this.width = 0.45; // 450 mm (v3 Core — border fits pad to bassinet floor)
+    this.height = 0.25; // 250 mm (v3 Core)
     this.depth = 0.018; // 18 mm Ultra-Slim Box Height (10mm Exciter ONLY inside)
 
     // Boundary & Joint Settings (Engineered Magic Numbers with Literature References)
@@ -85,9 +85,9 @@ class WoodHousingFEMEngine {
   }
 
   loadConfig() {
-    // Default synchronous config initialization (24-Month Ultra-Slim Nucu Pad 600x340x18mm)
+    // Default synchronous config initialization (24-Month Ultra-Slim Nucu Pad v3 Core 450x250x18mm)
     const defaultConfig = {
-      geometry: { shape: 'box_enclosure', width_mm: 600, height_mm: 340, depth_mm: 18 },
+      geometry: { shape: 'box_enclosure', width_mm: 450, height_mm: 250, depth_mm: 18 },
       material: { key: 'birch_4mm' },
       payload: { baby_weight_kg: 15.0, pos_xNorm: 0.5, pos_yNorm: 0.5 }
     };
