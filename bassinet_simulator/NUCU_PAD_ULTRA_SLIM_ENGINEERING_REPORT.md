@@ -54,9 +54,11 @@ $$\text{SVS}(t) = \frac{1.0\sin(2\pi \cdot 30t) + 0.35\sin(2\pi \cdot 14.2t + 0.
 
 * **상판 (Top Panel)**: $600 \times 340 \times \mathbf{4.0\,\text{mm}}$ 자작합판 1장
 * **하판 (Bottom Panel)**: $600 \times 340 \times \mathbf{4.0\,\text{mm}}$ 자작합판 1장
-* **전/후면 측판 (Front/Back Wall)**: $600 \times \mathbf{18.0\,\text{mm}} \times 4.0\,\text{mm}$ 자작합판 2장
-* **좌/우측 측판 (Left/Right Wall)**: $332 \times \mathbf{18.0\,\text{mm}} \times 4.0\,\text{mm}$ 자작합판 2장
+* **전/후면 측판 (Front/Back Wall)**: $600 \times \mathbf{10.0\,\text{mm}} \times 4.0\,\text{mm}$ 자작합판 2장
+* **좌/우측 측판 (Left/Right Wall)**: $332 \times \mathbf{10.0\,\text{mm}} \times 4.0\,\text{mm}$ 자작합판 2장
 * **내부 유효 높이**: $\mathbf{10.0\,\text{mm}}$ (TEAX14C02-8 익사이터 4개 및 VHB 테이프 전용 매립 공간)
+
+> **v2.1 BOM 기하 정정(2026-08-04)**: 구판 측판 높이 18mm는 상하판(4+4mm)과 **이중계상 오류** — 그대로 제작 시 총높이 26mm가 된다. 정정: 측판 높이 = 내부 유효고 **10mm**(상하판 사이 샌드위치), 상하판 600×340이 측판 위아래를 덮어 총높이 $4+10+4=18.0\,\text{mm}$ 정합. 이 구성은 진동판 스팬(600×340)이 솔버 모델과 일치하는 장점이 있다.
 
 ---
 
