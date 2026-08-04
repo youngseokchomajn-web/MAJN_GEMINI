@@ -179,10 +179,15 @@
     </aside>
 
     <main class="main-content">
-      <header class="top-header">
+      <header class="top-header" style="display:flex; justify-content:space-between; align-items:center;">
         <div class="header-title">
           <h2>정밀 물리 목재/플라스틱 3D 상자 하우징 FEM 해석기</h2>
           <p>Kirchhoff-Love 모멘트 텐서 수치 해석 및 3D 입체 변형 & 응력 집중(Hotspot) 렌더링</p>
+        </div>
+        <div class="header-actions">
+          <button class="btn btn-sm btn-primary" onclick="copyShareLink()" style="display:flex; align-items:center; gap:6px; background:linear-gradient(135deg, #0284c7, #3b82f6); color:white; padding:8px 16px; border-radius:8px; font-weight:600; border:none; cursor:pointer;">
+            <i class="fa-solid fa-share-nodes"></i> 최적화 검토 링크 복사 (Share URL)
+          </button>
         </div>
       </header>
 
@@ -763,6 +768,15 @@
       engine.removeExciter(id);
       renderExciterListUI();
       visualizer.rebuild3DMesh();
+    }
+
+    function copyShareLink() {
+      const shareUrl = window.location.href;
+      navigator.clipboard.writeText(shareUrl).then(() => {
+        alert('🔗 [24개월 초슬림 누쿠 패드 600x340x18mm 최적화 시뮬레이터] 링크가 복사되었습니다!\n\n동료에게 전달하여 3D 해석 및 수치를 즉시 공유할 수 있습니다.');
+      }).catch(() => {
+        prompt('아래 공유 링크를 복사(Ctrl+C)하여 전달하세요:', shareUrl);
+      });
     }
   </script>
 </body>
