@@ -19,11 +19,11 @@ class WoodHousingFEMEngine {
     this.activeMaterialKey = 'birch_4mm';
     this.mat = this.materials[this.activeMaterialKey];
 
-    // 3D Box Housing Geometry (Optimized for Postpartum Care Center Acrylic Bassinet Cart 750x420mm)
-    this.shape = 'box_enclosure'; // 'box_enclosure', 'rectangle', 'oval'
-    this.width = 0.72; // 720 mm (Fits Standard 750mm Acrylic Basket)
-    this.height = 0.39; // 390 mm (Fits Standard 420mm Acrylic Basket)
-    this.depth = 0.045; // 45 mm Slim Profile Box Depth
+    // Ultra-Slim 24-Month Nucu Pad Geometry (Internal Contains ONLY Exciters)
+    this.shape = 'box_enclosure';
+    this.width = 0.60; // 600 mm (24-Month Ergonomic Length)
+    this.height = 0.34; // 340 mm (Compact Mattress Width)
+    this.depth = 0.018; // 18 mm Ultra-Slim Box Height (10mm Exciter ONLY inside)
 
     // Boundary & Joint Settings (Engineered Magic Numbers with Literature References)
     this.boundaryType = 'bolted_box_clamped';
@@ -81,12 +81,12 @@ class WoodHousingFEMEngine {
   }
 
   loadConfig() {
-    // Default synchronous config initialization (Optimized for Postpartum Care Center Acrylic Bassinet Cart 750x420mm)
+    // Default synchronous config initialization (24-Month Ultra-Slim Nucu Pad 600x340x18mm)
     const defaultConfig = {
-      geometry: { shape: 'box_enclosure', width_mm: 720, height_mm: 390, depth_mm: 45 },
+      geometry: { shape: 'box_enclosure', width_mm: 600, height_mm: 340, depth_mm: 18 },
       material: { key: 'birch_4mm' },
       joint_boundary: { box_rigidity_Kbox: 6.5 },
-      payload: { baby_weight_kg: 5.0, pos_xNorm: 0.5, pos_yNorm: 0.5 }
+      payload: { baby_weight_kg: 15.0, pos_xNorm: 0.5, pos_yNorm: 0.5 }
     };
     this.applyConfig(defaultConfig);
   }
@@ -94,9 +94,9 @@ class WoodHousingFEMEngine {
   applyConfig(config) {
     if (config.geometry) {
       this.shape = config.geometry.shape || this.shape;
-      this.width = (config.geometry.width_mm || 720) / 1000.0;
-      this.height = (config.geometry.height_mm || 390) / 1000.0; // Length
-      this.depth = (config.geometry.depth_mm || 45) / 1000.0;  // Height
+      this.width = (config.geometry.width_mm || 600) / 1000.0;
+      this.height = (config.geometry.height_mm || 340) / 1000.0; // Length
+      this.depth = (config.geometry.depth_mm || 18) / 1000.0;  // Height
     }
     if (config.material && config.material.key) {
       this.setMaterial(config.material.key);

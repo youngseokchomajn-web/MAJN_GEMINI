@@ -89,81 +89,91 @@ class CADAssemblyViewer {
   }
 
   buildAssembly() {
-    const pW = 0.72; // 720mm (Fits Standard 750mm Acrylic Basket)
-    const pH = 0.39; // 390mm (Fits Standard 420mm Acrylic Basket)
-    const pD = 0.045; // 45mm Box Depth
-    const pT = 0.004; // 4mm Thickness
+    const pW = 0.60; // 600mm (24-Month Ergonomic Length)
+    const pH = 0.34; // 340mm (Compact Mattress Width)
+    const pD = 0.018; // 18mm Ultra-Slim Box Depth (Exciter ONLY inside)
+    const pT = 0.004; // 4mm Birch Plywood Thickness
 
     const woodMat = new THREE.MeshStandardMaterial({ color: 0xd97706, roughness: 0.55, metalness: 0.1 });
     const sideWoodMat = new THREE.MeshStandardMaterial({ color: 0xb45309, roughness: 0.6, metalness: 0.1 });
 
     // 0. Washable Fabric Sleeve Cover (10s Snap-on)
-    const sleeveMat = new THREE.MeshStandardMaterial({ color: 0x38bdf8, roughness: 0.7, opacity: 0.85, transparent: true });
-    const sleeveGeom = new THREE.BoxGeometry(pW + 0.008, pH + 0.008, 0.003);
+    const sleeveGeom = new THREE.BoxGeometry(pW + 0.006, pH + 0.006, pD + 0.006);
+    const sleeveMat = new THREE.MeshStandardMaterial({ color: 0x38bdf8, transparent: true, opacity: 0.25, wireframe: true });
     const sleeveMesh = new THREE.Mesh(sleeveGeom, sleeveMat);
+    sleeveMesh.position.set(0, 0, 0);
     sleeveMesh.userData = { layerKey: 'washableSleeve' };
     this.layers.washableSleeve.group.add(sleeveMesh);
 
-    // 1. Top Plate (800x450x4mm)
+    // 1. Top Plate (600x340x4mm)
     const topGeom = new THREE.BoxGeometry(pW, pH, pT);
     const topMesh = new THREE.Mesh(topGeom, woodMat);
     topMesh.userData = { layerKey: 'topPlate' };
     this.layers.topPlate.group.add(topMesh);
 
-    // 2. EVA Foam Gasket Frame
-    const evaMat = new THREE.MeshStandardMaterial({ color: 0x334155, roughness: 0.9 });
-    const evaGeom = new THREE.BoxGeometry(pW - 0.01, pH - 0.01, 0.006);
+    // 2. EVA Damping Gasket (Edge Seal)
+    const evaGeom = new THREE.BoxGeometry(pW * 0.96, pH * 0.96, 0.003);
+    const evaMat = new THREE.MeshStandardMaterial({ color: 0x334155, roughness: 0.9, metalness: 0.0 });
     const evaMesh = new THREE.Mesh(evaGeom, evaMat);
     evaMesh.userData = { layerKey: 'evaGasket' };
     this.layers.evaGasket.group.add(evaMesh);
 
-    // 3. TEAX14C02 Exciters (4 Units)
-    const exciterPos = [
-      { x: -0.22, y: -0.12 }, { x: 0.22, y: -0.12 },
-      { x: -0.22, y: 0.12 }, { x: 0.22, y: 0.12 }
+    // 3. TEAX14C02 Exciters (4 Units - ONLY Components inside Housing)
+    const exciterMat = new THREE.MeshStandardMaterial({ color: 0xec4899, metalness: 0.8, roughness: 0.2 });
+    const exciterPositions = [
+      { x: -pW * 0.25, y: -pH * 0.25 }, { x: pW * 0.25, y: -pH * 0.25 },
+      { x: -pW * 0.25, y: pH * 0.25 }, { x: pW * 0.25, y: pH * 0.25 }
     ];
-
-    exciterPos.forEach(pos => {
-      const exciterGroup = this.createExciter3DModel();
-      exciterGroup.position.set(pos.x, pos.y, 0);
-      exciterGroup.userData = { layerKey: 'exciters' };
-      this.layers.exciters.group.add(exciterGroup);
+    exciterPositions.forEach(epos => {
+      const eGeom = new THREE.CylinderGeometry(0.022, 0.022, 0.010, 24);
+      const eMesh = new THREE.Mesh(eGeom, exciterMat);
+      eMesh.rotation.x = Math.PI / 2;
+      eMesh.position.set(epos.x, epos.y, 0);
+      eMesh.userData = { layerKey: 'exciters' };
+      this.layers.exciters.group.add(eMesh);
     });
 
-    // 4. Control Box Enclosure & PCB
-    const cboxGroup = this.createControlBox3DModel();
-    cboxGroup.userData = { layerKey: 'controlBox' };
-    this.layers.controlBox.group.add(cboxGroup);
+    // 4. External Control Box Cable Entry Grommet (PCB/Battery Extenalized)
+    const ctrlMat = new THREE.MeshStandardMaterial({ color: 0x10b981, metalness: 0.6, roughness: 0.3 });
+    const ctrlGeom = new THREE.CylinderGeometry(0.008, 0.008, pD, 16);
+    const ctrlMesh = new THREE.Mesh(ctrlGeom, ctrlMat);
+    ctrlMesh.rotation.z = Math.PI / 2;
+    ctrlMesh.position.set(-pW / 2 + 0.01, 0, 0);
+    ctrlMesh.userData = { layerKey: 'controlBox' };
+    this.layers.controlBox.group.add(ctrlMesh);
 
-    // 5. 4 Side Walls (Box Enclosure Walls)
-    // Front & Back Walls (800 x 60 x 4mm)
+    // 5. 4 Side Walls for Ultra-Slim Box Enclosure (Height 18mm)
     const fbWallGeom = new THREE.BoxGeometry(pW, pT, pD);
+    const lrWallGeom = new THREE.BoxGeometry(pT, pH - 2 * pT, pD);
+
     const frontWallMesh = new THREE.Mesh(fbWallGeom, sideWoodMat);
+    frontWallMesh.position.set(0, -pH / 2 + pT / 2, 0);
     frontWallMesh.userData = { layerKey: 'frontWall' };
     this.layers.frontWall.group.add(frontWallMesh);
 
     const backWallMesh = new THREE.Mesh(fbWallGeom, sideWoodMat.clone());
+    backWallMesh.position.set(0, pH / 2 - pT / 2, 0);
     backWallMesh.userData = { layerKey: 'backWall' };
     this.layers.backWall.group.add(backWallMesh);
 
-    // Left & Right Walls (442 x 60 x 4mm)
-    const lrWallGeom = new THREE.BoxGeometry(pT, pH - pT * 2, pD);
     const leftWallMesh = new THREE.Mesh(lrWallGeom, sideWoodMat.clone());
+    leftWallMesh.position.set(-pW / 2 + pT / 2, 0, 0);
     leftWallMesh.userData = { layerKey: 'leftWall' };
     this.layers.leftWall.group.add(leftWallMesh);
 
     const rightWallMesh = new THREE.Mesh(lrWallGeom, sideWoodMat.clone());
+    rightWallMesh.position.set(pW / 2 - pT / 2, 0, 0);
     rightWallMesh.userData = { layerKey: 'rightWall' };
     this.layers.rightWall.group.add(rightWallMesh);
 
-    // 6. Corner L-Brackets (4 Corners - Scaled to 720x390mm Box Inner Corners)
+    // 6. Corner L-Brackets (4 Corners - Scaled to 600x340mm Box Inner Corners)
     const bracketMat = new THREE.MeshStandardMaterial({ color: 0x94a3b8, metalness: 0.95, roughness: 0.15 });
     const bracketPos = [
-      { x: -0.34, y: -0.175 }, { x: 0.34, y: -0.175 },
-      { x: -0.34, y: 0.175 }, { x: 0.34, y: 0.175 }
+      { x: -pW / 2 + 0.02, y: -pH / 2 + 0.02 }, { x: pW / 2 - 0.02, y: -pH / 2 + 0.02 },
+      { x: -pW / 2 + 0.02, y: pH / 2 - 0.02 }, { x: pW / 2 - 0.02, y: pH / 2 - 0.02 }
     ];
     bracketPos.forEach(bpos => {
-      const bGeom = new THREE.BoxGeometry(0.02, 0.02, 0.035);
+      const bGeom = new THREE.BoxGeometry(0.015, 0.015, pD * 0.8);
       const bMesh = new THREE.Mesh(bGeom, bracketMat);
       bMesh.position.set(bpos.x, bpos.y, 0);
       bMesh.userData = { layerKey: 'cornerBrackets' };
