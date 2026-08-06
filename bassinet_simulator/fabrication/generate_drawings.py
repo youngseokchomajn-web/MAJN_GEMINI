@@ -17,7 +17,7 @@ TOTAL_H = T + WALL_H + T      # 20.0
 WALL_FB = (450.0, WALL_H)     # 전/후면 측판 2장
 WALL_LR = (242.0, WALL_H)     # 좌/우 측판 2장 (250 - 2*4)
 EXC = [(112.5, 62.5), (337.5, 62.5), (112.5, 187.5), (337.5, 187.5)]  # 익사이터 중심
-EXC_FOOT = (40.2, 19.5)       # TEAX14C02-8 풋프린트 (⚠발주 전 데이터시트/실측 확정: 40.2x19.5 vs 37x20 상충)
+EXC_FOOT = (40.2, 19.5)       # TEAX14C02-8 VHB 배치 존 (높이 실측 9.85 확정 2026-08-06 / 폭·길이 실측 시 존 갱신)
 HOLE_D = 3.2                  # M3 관통홀
 CSK_D = 6.5                   # 상판 카운터싱크(90°) 참고 지름
 # 체결 블록(각재 20x20x12) 중심: 코너 4 + 변 중앙 4 — 벽 안쪽 밀착(벽 4 + 블록 반폭 10 = 14)
@@ -148,8 +148,8 @@ svg_parts.append(svg_rect(sx, sy + T + WALL_H, sec_w, T, "cut"))          # bott
 svg_parts.append(svg_rect(sx, sy + T, T, WALL_H, "cut"))                  # left wall
 svg_parts.append(svg_rect(sx + T, sy + T, 20, WALL_H, "block"))           # corner block
 svg_parts.append(svg_text(sx + T + 10, sy + T + WALL_H/2 + 1.5, "블록", "small"))
-svg_parts.append(svg_rect(sx + 92.5 - EXC_FOOT[1]/2, sy + T, EXC_FOOT[1], 9.55, "exc"))
-svg_parts.append(svg_text(sx + 92.5, sy + T + 5.5, "EXC 9.55*", "small"))
+svg_parts.append(svg_rect(sx + 92.5 - EXC_FOOT[1]/2, sy + T, EXC_FOOT[1], 9.85, "exc"))
+svg_parts.append(svg_text(sx + 92.5, sy + T + 5.5, "EXC 9.85", "small"))
 svg_parts.append(vdim(sy, sy + T, sx - 8, "4"))
 svg_parts.append(vdim(sy + T, sy + T + WALL_H, sx - 8, "12"))
 svg_parts.append(vdim(sy + T + WALL_H, sy + TOTAL_H, sx - 8, "4"))
@@ -189,7 +189,7 @@ notes = [
     "2. 조립: 완전 접착 밀폐 — E0급 목공본드 전둘레 + 체결블록⑥ 8개소 M3×25 관통볼트(0.8N·m). 밀폐 후 AS 불가.",
     "3. 익사이터 4개 VHB로 [상판 안쪽면] 지정 위치 부착 → 배선 직렬 16Ω/채널, 후면 노치로 인출.",
     "4. 마감: 방수 실링 + 어린이제품 유해물질 기준(E0/E1) 도료. 외곽 모서리 R3 이상 + 사포.",
-    "5. 검수: 총높이 20.0±0.3 · 15kg 중앙 정적 휨 ≤2.3mm · 익사이터 치수 실측 확인(9.55* vs 9.85 상충).",
+    "5. 검수: 총높이 20.0±0.3 · 15kg 중앙 정적 휨 ≤2.3mm · 익사이터 높이 9.85 실측 확정(캐비티 여유 1.85mm).",
     "6. EVA 보더⑨는 배시넷 바닥 내치수 실측 후 별도 도면 (조리원 카트 720×390 기준 예상).",
 ]
 svg_parts.append(svg_text(bx0, ny0, "주기 (NOTES)", "cap2", "start"))

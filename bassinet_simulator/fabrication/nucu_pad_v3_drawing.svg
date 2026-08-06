@@ -58,8 +58,8 @@
 <rect x="96.0" y="566.4" width="6.4" height="19.2" rx="0" class="cut"/>
 <rect x="102.4" y="566.4" width="32.0" height="19.2" rx="0" class="block"/>
 <text x="118.4" y="578.4" class="small" text-anchor="middle">블록</text>
-<rect x="228.4" y="566.4" width="31.2" height="15.3" rx="0" class="exc"/>
-<text x="244.0" y="575.2" class="small" text-anchor="middle">EXC 9.55*</text>
+<rect x="228.4" y="566.4" width="31.2" height="15.8" rx="0" class="exc"/>
+<text x="244.0" y="575.2" class="small" text-anchor="middle">EXC 9.85</text>
 <line x1="83.2" y1="560.0" x2="83.2" y2="566.4" class="dim"/><line x1="79.2" y1="560.0" x2="87.2" y2="560.0" class="dim"/><line x1="79.2" y1="566.4" x2="87.2" y2="566.4" class="dim"/><text x="86.2" y="563.2" class="dt" text-anchor="start">4</text>
 <line x1="83.2" y1="566.4" x2="83.2" y2="585.6" class="dim"/><line x1="79.2" y1="566.4" x2="87.2" y2="566.4" class="dim"/><line x1="79.2" y1="585.6" x2="87.2" y2="585.6" class="dim"/><text x="86.2" y="576.0" class="dt" text-anchor="start">12</text>
 <line x1="83.2" y1="585.6" x2="83.2" y2="592.0" class="dim"/><line x1="79.2" y1="585.6" x2="87.2" y2="585.6" class="dim"/><line x1="79.2" y1="592.0" x2="87.2" y2="592.0" class="dim"/><text x="86.2" y="588.8" class="dt" text-anchor="start">4</text>
@@ -126,7 +126,7 @@
 <text x="400.0" y="801.6" class="note" text-anchor="start">2. 조립: 완전 접착 밀폐 — E0급 목공본드 전둘레 + 체결블록⑥ 8개소 M3×25 관통볼트(0.8N·m). 밀폐 후 AS 불가.</text>
 <text x="400.0" y="819.2" class="note" text-anchor="start">3. 익사이터 4개 VHB로 [상판 안쪽면] 지정 위치 부착 → 배선 직렬 16Ω/채널, 후면 노치로 인출.</text>
 <text x="400.0" y="836.8" class="note" text-anchor="start">4. 마감: 방수 실링 + 어린이제품 유해물질 기준(E0/E1) 도료. 외곽 모서리 R3 이상 + 사포.</text>
-<text x="400.0" y="854.4" class="note" text-anchor="start">5. 검수: 총높이 20.0±0.3 · 15kg 중앙 정적 휨 ≤2.3mm · 익사이터 치수 실측 확인(9.55* vs 9.85 상충).</text>
+<text x="400.0" y="854.4" class="note" text-anchor="start">5. 검수: 총높이 20.0±0.3 · 15kg 중앙 정적 휨 ≤2.3mm · 익사이터 높이 9.85 실측 확정(캐비티 여유 1.85mm).</text>
 <text x="400.0" y="872.0" class="note" text-anchor="start">6. EVA 보더⑨는 배시넷 바닥 내치수 실측 후 별도 도면 (조리원 카트 720×390 기준 예상).</text>
 </g>
 </svg>
