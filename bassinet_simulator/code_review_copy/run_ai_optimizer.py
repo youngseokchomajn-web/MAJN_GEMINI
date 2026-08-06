@@ -17,9 +17,11 @@ import sys
 import json
 import math
 
-# Design constraints (NUCU_PAD_ULTRA_SLIM_ENGINEERING_REPORT.md §1)
-MAX_HEIGHT_MM = 18.0
-MIN_WIDTH_MM = 600
+# Design constraints (NUCU_PAD_ULTRA_SLIM_ENGINEERING_REPORT.md §7-§8, v3.1)
+# v3.1: 높이 상한 18→20 (캐비티 12mm — 15kg 상판 꺼짐 1.8mm + 익사이터 ~9.6mm 바터밍 방지)
+# v3: 폭 하한 600→450 코어 (코어+EVA 보더 아키텍처 — 풀풋프린트는 보더가 담당)
+MAX_HEIGHT_MM = 20.0
+MIN_WIDTH_MM = 450
 SVS_BAND_UM = (10.0, 12.5)
 MIN_SAFETY_FACTOR = 5.0
 
