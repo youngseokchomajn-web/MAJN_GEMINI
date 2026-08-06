@@ -23,7 +23,7 @@ class WoodHousingFEMEngine {
     this.shape = 'box_enclosure';
     this.width = 0.45; // 450 mm (v3 Core — border fits pad to bassinet floor)
     this.height = 0.25; // 250 mm (v3 Core)
-    this.depth = 0.018; // 18 mm Ultra-Slim Box Height (10mm Exciter ONLY inside)
+    this.depth = 0.020; // 20 mm (v3.1: cavity 12mm — 15kg 상판 꺼짐 1.8mm + 익사이터 ~9.6mm 바터밍 방지)
 
     // Boundary & Joint Settings (Engineered Magic Numbers with Literature References)
     this.boundaryType = 'bolted_box_clamped';
@@ -49,13 +49,13 @@ class WoodHousingFEMEngine {
     this.nx = 24;
     this.ny = 14;
 
-    // Multi-Exciter Setup — 구동력 1.8N: Kbox=3.2(18mm) 교정 후 S1 중앙 SVS 10~12.5μm 임상 밴드 안착값
-    // (구 5.0N/3.5N은 Kbox=6.5 과대강성 시절 수치 → 교정 후 그대로 쓰면 21μm+ 과대 가진)
+    // Multi-Exciter Setup — 구동력 2.0N: v3.1(20mm, Kbox=3.44)에서 S1 중앙 SVS 10~12.5μm 임상 밴드 안착값
+    // (구 5.0N/3.5N은 Kbox=6.5 과대강성 시절 수치, 1.8N은 18mm 시절 수치)
     this.exciters = [
-      { id: 1, x: 0.25, y: 0.25, force: 1.8, freq: 40, phase: 0 },
-      { id: 2, x: 0.75, y: 0.25, force: 1.8, freq: 40, phase: 0 },
-      { id: 3, x: 0.25, y: 0.75, force: 1.8, freq: 40, phase: 0 },
-      { id: 4, x: 0.75, y: 0.75, force: 1.8, freq: 40, phase: 0 }
+      { id: 1, x: 0.25, y: 0.25, force: 2.0, freq: 40, phase: 0 },
+      { id: 2, x: 0.75, y: 0.25, force: 2.0, freq: 40, phase: 0 },
+      { id: 3, x: 0.25, y: 0.75, force: 2.0, freq: 40, phase: 0 },
+      { id: 4, x: 0.75, y: 0.75, force: 2.0, freq: 40, phase: 0 }
     ];
 
     // Infant Payload
@@ -87,7 +87,7 @@ class WoodHousingFEMEngine {
   loadConfig() {
     // Default synchronous config initialization (24-Month Ultra-Slim Nucu Pad v3 Core 450x250x18mm)
     const defaultConfig = {
-      geometry: { shape: 'box_enclosure', width_mm: 450, height_mm: 250, depth_mm: 18 },
+      geometry: { shape: 'box_enclosure', width_mm: 450, height_mm: 250, depth_mm: 20 },
       material: { key: 'birch_4mm' },
       payload: { baby_weight_kg: 15.0, pos_xNorm: 0.5, pos_yNorm: 0.5 }
     };
