@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 928 922" font-family="'Noto Sans KR', sans-serif">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 928 992" font-family="'Noto Sans KR', sans-serif">
 <style>
   .cut { fill: none; stroke: #d92b2b; stroke-width: 1.6; }
   .ref { fill: rgba(16,150,80,0.10); stroke: #0d8a4f; stroke-width: 1.1; stroke-dasharray: 5 3; }
@@ -17,116 +17,135 @@
   .dt { font-size: 11px; fill: #222; }
   .small { font-size: 10.5px; fill: #333; }
   .note { font-size: 11px; fill: #333; }
-  text { dominant-baseline: auto; }
 </style>
 <rect width="100%" height="100%" fill="#fdfdfb"/>
 <g>
-<text x="456.0" y="35.2" class="title" text-anchor="middle">MAJN 누쿠 패드 v3.1 — 진동 코어 450×250×20mm 제작 도면 (Rev.B / 2026-08-04)</text>
-<text x="456.0" y="57.6" class="sub" text-anchor="middle">자작합판(Birch Plywood) 4.0mm · 축척 1:1(mm) · 근거: NUCU_PAD_ULTRA_SLIM_ENGINEERING_REPORT.md §4·§7 (d7668df)</text>
-<rect x="96.0" y="88.0" width="720.0" height="400.0" rx="0" class="cut"/>
-<rect x="243.8" y="172.4" width="64.3" height="31.2" rx="0" class="ref"/>
+<text x="456.0" y="35.2" class="title" text-anchor="middle">MAJN 누쿠 패드 v3.2 — 진동 코어 450×250×20mm 제작 도면 (Rev.C / 2026-08-06)</text>
+<text x="456.0" y="57.6" class="sub" text-anchor="middle">자작합판 4.0mm SE0/E0급 · 상판 완전접착(무타공)·R20 / 하판 나사 분리형 6점 · 근거: 보고서 §7~§10 + 발주 의도서</text>
+<rect x="96.0" y="88.0" width="720.0" height="400.0" rx="32.0" class="cut"/>
+<rect x="243.8" y="172.4" width="64.3" height="31.2" rx="0.0" class="ref"/>
 <circle cx="276.0" cy="188.0" r="2.4" class="refc"/>
 <text x="276.0" y="165.6" class="small" text-anchor="middle">EXC (112.5, 62.5)</text>
-<rect x="603.8" y="172.4" width="64.3" height="31.2" rx="0" class="ref"/>
+<rect x="603.8" y="172.4" width="64.3" height="31.2" rx="0.0" class="ref"/>
 <circle cx="636.0" cy="188.0" r="2.4" class="refc"/>
 <text x="636.0" y="165.6" class="small" text-anchor="middle">EXC (337.5, 62.5)</text>
-<rect x="243.8" y="372.4" width="64.3" height="31.2" rx="0" class="ref"/>
+<rect x="243.8" y="372.4" width="64.3" height="31.2" rx="0.0" class="ref"/>
 <circle cx="276.0" cy="388.0" r="2.4" class="refc"/>
 <text x="276.0" y="365.6" class="small" text-anchor="middle">EXC (112.5, 187.5)</text>
-<rect x="603.8" y="372.4" width="64.3" height="31.2" rx="0" class="ref"/>
+<rect x="603.8" y="372.4" width="64.3" height="31.2" rx="0.0" class="ref"/>
 <circle cx="636.0" cy="388.0" r="2.4" class="refc"/>
 <text x="636.0" y="365.6" class="small" text-anchor="middle">EXC (337.5, 187.5)</text>
+<rect x="102.4" y="94.4" width="707.2" height="387.2" rx="0.0" class="wallref"/>
+<path d="M 102.4 94.4 L 150.4 94.4 L 102.4 142.4 Z" class="block"/>
+<path d="M 809.6 94.4 L 761.6 94.4 L 809.6 142.4 Z" class="block"/>
+<path d="M 102.4 481.6 L 150.4 481.6 L 102.4 433.6 Z" class="block"/>
+<path d="M 809.6 481.6 L 761.6 481.6 L 809.6 433.6 Z" class="block"/>
+<rect x="424.0" y="94.4" width="64.0" height="24.0" rx="0.0" class="block"/>
+<rect x="424.0" y="457.6" width="64.0" height="24.0" rx="0.0" class="block"/>
 <circle cx="118.4" cy="110.4" r="2.6" class="hole"/>
 <circle cx="793.6" cy="110.4" r="2.6" class="hole"/>
 <circle cx="118.4" cy="465.6" r="2.6" class="hole"/>
 <circle cx="793.6" cy="465.6" r="2.6" class="hole"/>
-<circle cx="456.0" cy="110.4" r="2.6" class="hole"/>
-<circle cx="456.0" cy="465.6" r="2.6" class="hole"/>
-<circle cx="118.4" cy="288.0" r="2.6" class="hole"/>
-<circle cx="793.6" cy="288.0" r="2.6" class="hole"/>
-<rect x="102.4" y="94.4" width="707.2" height="387.2" rx="0" class="wallref"/>
-<text x="456.0" y="294.4" class="cap" text-anchor="middle">평면도 — 상판 안쪽면 (익사이터 VHB 존 40.2×19.5*, 홀 8×⌀3.2)</text>
+<circle cx="456.0" cy="106.4" r="2.6" class="hole"/>
+<circle cx="456.0" cy="469.6" r="2.6" class="hole"/>
+<circle cx="152.0" cy="484.8" r="6.4" class="hole"/>
+<text x="158.4" y="502.4" class="small" text-anchor="start">배선홀 ⌀8 @35 (후면 측판 중간높이)</text>
+<text x="456.0" y="294.4" class="cap" text-anchor="middle">평면도 — 상판 R20 무타공 / 하판 나사 6×⌀3.2(파랑) / 블록·보스(갈색)</text>
 <line x1="96.0" y1="72.0" x2="816.0" y2="72.0" class="dim"/><line x1="96.0" y1="68.0" x2="96.0" y2="76.0" class="dim"/><line x1="816.0" y1="68.0" x2="816.0" y2="76.0" class="dim"/><text x="456.0" y="68.5" class="dt" text-anchor="middle">450</text>
 <line x1="76.8" y1="88.0" x2="76.8" y2="488.0" class="dim"/><line x1="72.8" y1="88.0" x2="80.8" y2="88.0" class="dim"/><line x1="72.8" y1="488.0" x2="80.8" y2="488.0" class="dim"/><text x="79.8" y="288.0" class="dt" text-anchor="start">250</text>
-<line x1="96.0" y1="507.2" x2="276.0" y2="507.2" class="dim"/><line x1="96.0" y1="503.2" x2="96.0" y2="511.2" class="dim"/><line x1="276.0" y1="503.2" x2="276.0" y2="511.2" class="dim"/><text x="186.0" y="503.7" class="dt" text-anchor="middle">112.5</text>
-<line x1="276.0" y1="507.2" x2="636.0" y2="507.2" class="dim"/><line x1="276.0" y1="503.2" x2="276.0" y2="511.2" class="dim"/><line x1="636.0" y1="503.2" x2="636.0" y2="511.2" class="dim"/><text x="456.0" y="503.7" class="dt" text-anchor="middle">225</text>
+<line x1="96.0" y1="520.0" x2="276.0" y2="520.0" class="dim"/><line x1="96.0" y1="516.0" x2="96.0" y2="524.0" class="dim"/><line x1="276.0" y1="516.0" x2="276.0" y2="524.0" class="dim"/><text x="186.0" y="516.5" class="dt" text-anchor="middle">112.5</text>
+<line x1="276.0" y1="520.0" x2="636.0" y2="520.0" class="dim"/><line x1="276.0" y1="516.0" x2="276.0" y2="524.0" class="dim"/><line x1="636.0" y1="516.0" x2="636.0" y2="524.0" class="dim"/><text x="456.0" y="516.5" class="dt" text-anchor="middle">225</text>
 <line x1="838.4" y1="88.0" x2="838.4" y2="188.0" class="dim"/><line x1="834.4" y1="88.0" x2="842.4" y2="88.0" class="dim"/><line x1="834.4" y1="188.0" x2="842.4" y2="188.0" class="dim"/><text x="841.4" y="138.0" class="dt" text-anchor="start">62.5</text>
 <line x1="838.4" y1="188.0" x2="838.4" y2="388.0" class="dim"/><line x1="834.4" y1="188.0" x2="842.4" y2="188.0" class="dim"/><line x1="834.4" y1="388.0" x2="842.4" y2="388.0" class="dim"/><text x="841.4" y="288.0" class="dt" text-anchor="start">125</text>
-<text x="216.0" y="550.4" class="cap2" text-anchor="middle">단면 A-A (부분, 좌측 150mm)</text>
-<rect x="96.0" y="560.0" width="240.0" height="6.4" rx="0" class="cut"/>
-<rect x="96.0" y="585.6" width="240.0" height="6.4" rx="0" class="cut"/>
-<rect x="96.0" y="566.4" width="6.4" height="19.2" rx="0" class="cut"/>
-<rect x="102.4" y="566.4" width="32.0" height="19.2" rx="0" class="block"/>
-<text x="118.4" y="578.4" class="small" text-anchor="middle">블록</text>
-<rect x="228.4" y="566.4" width="31.2" height="15.8" rx="0" class="exc"/>
-<text x="244.0" y="575.2" class="small" text-anchor="middle">EXC 9.85</text>
-<line x1="83.2" y1="560.0" x2="83.2" y2="566.4" class="dim"/><line x1="79.2" y1="560.0" x2="87.2" y2="560.0" class="dim"/><line x1="79.2" y1="566.4" x2="87.2" y2="566.4" class="dim"/><text x="86.2" y="563.2" class="dt" text-anchor="start">4</text>
-<line x1="83.2" y1="566.4" x2="83.2" y2="585.6" class="dim"/><line x1="79.2" y1="566.4" x2="87.2" y2="566.4" class="dim"/><line x1="79.2" y1="585.6" x2="87.2" y2="585.6" class="dim"/><text x="86.2" y="576.0" class="dt" text-anchor="start">12</text>
-<line x1="83.2" y1="585.6" x2="83.2" y2="592.0" class="dim"/><line x1="79.2" y1="585.6" x2="87.2" y2="585.6" class="dim"/><line x1="79.2" y1="592.0" x2="87.2" y2="592.0" class="dim"/><text x="86.2" y="588.8" class="dt" text-anchor="start">4</text>
-<line x1="60.8" y1="560.0" x2="60.8" y2="592.0" class="dim"/><line x1="56.8" y1="560.0" x2="64.8" y2="560.0" class="dim"/><line x1="56.8" y1="592.0" x2="64.8" y2="592.0" class="dim"/><text x="63.8" y="576.0" class="dt" text-anchor="start">20</text>
-<line x1="118.4" y1="555.2" x2="118.4" y2="596.8" class="bolt"/>
-<text x="118.4" y="606.4" class="small" text-anchor="middle">M3×25 CSK</text>
-<text x="499.2" y="547.2" class="cap2" text-anchor="start">부품표 (BOM)</text>
-<rect x="400.0" y="556.8" width="392.0" height="20.8" class="tbl"/>
-<text x="409.6" y="571.2" class="small" text-anchor="start">①</text>
-<text x="428.8" y="571.2" class="small" text-anchor="start">상판</text>
-<text x="524.8" y="571.2" class="small" text-anchor="start">450 × 250 × 4</text>
-<text x="643.2" y="571.2" class="small" text-anchor="start">×1</text>
-<text x="672.0" y="571.2" class="small" text-anchor="start">홀 8×⌀3.2 + 상면 CSK ⌀6.5</text>
-<rect x="400.0" y="577.6" width="392.0" height="20.8" class="tbl"/>
-<text x="409.6" y="592.0" class="small" text-anchor="start">②</text>
-<text x="428.8" y="592.0" class="small" text-anchor="start">하판</text>
-<text x="524.8" y="592.0" class="small" text-anchor="start">450 × 250 × 4</text>
-<text x="643.2" y="592.0" class="small" text-anchor="start">×1</text>
-<text x="672.0" y="592.0" class="small" text-anchor="start">홀 8×⌀3.2</text>
-<rect x="400.0" y="598.4" width="392.0" height="20.8" class="tbl"/>
-<text x="409.6" y="612.8" class="small" text-anchor="start">③</text>
-<text x="428.8" y="612.8" class="small" text-anchor="start">전면 측판</text>
-<text x="524.8" y="612.8" class="small" text-anchor="start">450 × 12 × 4</text>
-<text x="643.2" y="612.8" class="small" text-anchor="start">×1</text>
-<text x="672.0" y="612.8" class="small" text-anchor="start">결 방향 무관</text>
-<rect x="400.0" y="619.2" width="392.0" height="20.8" class="tbl"/>
-<text x="409.6" y="633.6" class="small" text-anchor="start">④</text>
-<text x="428.8" y="633.6" class="small" text-anchor="start">후면 측판</text>
-<text x="524.8" y="633.6" class="small" text-anchor="start">450 × 12 × 4</text>
-<text x="643.2" y="633.6" class="small" text-anchor="start">×1</text>
-<text x="672.0" y="633.6" class="small" text-anchor="start">케이블 노치 10×6 중앙</text>
-<rect x="400.0" y="640.0" width="392.0" height="20.8" class="tbl"/>
-<text x="409.6" y="654.4" class="small" text-anchor="start">⑤</text>
-<text x="428.8" y="654.4" class="small" text-anchor="start">좌/우 측판</text>
-<text x="524.8" y="654.4" class="small" text-anchor="start">242 × 12 × 4</text>
-<text x="643.2" y="654.4" class="small" text-anchor="start">×2</text>
-<text x="672.0" y="654.4" class="small" text-anchor="start"></text>
-<rect x="400.0" y="660.8" width="392.0" height="20.8" class="tbl"/>
-<text x="409.6" y="675.2" class="small" text-anchor="start">⑥</text>
-<text x="428.8" y="675.2" class="small" text-anchor="start">체결 블록</text>
-<text x="524.8" y="675.2" class="small" text-anchor="start">20 × 20 × 12 각재</text>
-<text x="643.2" y="675.2" class="small" text-anchor="start">×8</text>
-<text x="672.0" y="675.2" class="small" text-anchor="start">⌀3.2 관통, 별도 재단</text>
-<rect x="400.0" y="681.6" width="392.0" height="20.8" class="tbl"/>
-<text x="409.6" y="696.0" class="small" text-anchor="start">⑦</text>
-<text x="428.8" y="696.0" class="small" text-anchor="start">익사이터</text>
-<text x="524.8" y="696.0" class="small" text-anchor="start">TEAX14C02-8</text>
-<text x="643.2" y="696.0" class="small" text-anchor="start">×4</text>
-<text x="672.0" y="696.0" class="small" text-anchor="start">VHB 9473PC, 상판 안쪽면</text>
-<rect x="400.0" y="702.4" width="392.0" height="20.8" class="tbl"/>
-<text x="409.6" y="716.8" class="small" text-anchor="start">⑧</text>
-<text x="428.8" y="716.8" class="small" text-anchor="start">볼트/너트</text>
-<text x="524.8" y="716.8" class="small" text-anchor="start">M3×25 접시 + 너트</text>
-<text x="643.2" y="716.8" class="small" text-anchor="start">×8</text>
-<text x="672.0" y="716.8" class="small" text-anchor="start">0.8 N·m</text>
-<rect x="400.0" y="723.2" width="392.0" height="20.8" class="tbl"/>
-<text x="409.6" y="737.6" class="small" text-anchor="start">⑨</text>
-<text x="428.8" y="737.6" class="small" text-anchor="start">EVA 보더</text>
-<text x="524.8" y="737.6" class="small" text-anchor="start">두께 20, 경도 60~70C</text>
-<text x="643.2" y="737.6" class="small" text-anchor="start">×-</text>
-<text x="672.0" y="737.6" class="small" text-anchor="start">배시넷 바닥 실측 후 재단</text>
-<text x="400.0" y="766.4" class="cap2" text-anchor="start">주기 (NOTES)</text>
-<text x="400.0" y="784.0" class="note" text-anchor="start">1. 소재: 자작합판 4.0mm BB급↑, 결 방향=장변(450) 필수(해석 전제). 레이저 kerf 0.1~0.2 보정.</text>
-<text x="400.0" y="801.6" class="note" text-anchor="start">2. 조립: 완전 접착 밀폐 — E0급 목공본드 전둘레 + 체결블록⑥ 8개소 M3×25 관통볼트(0.8N·m). 밀폐 후 AS 불가.</text>
-<text x="400.0" y="819.2" class="note" text-anchor="start">3. 익사이터 4개 VHB로 [상판 안쪽면] 지정 위치 부착 → 배선 직렬 16Ω/채널, 후면 노치로 인출.</text>
-<text x="400.0" y="836.8" class="note" text-anchor="start">4. 마감: 방수 실링 + 어린이제품 유해물질 기준(E0/E1) 도료. 외곽 모서리 R3 이상 + 사포.</text>
-<text x="400.0" y="854.4" class="note" text-anchor="start">5. 검수: 총높이 20.0±0.3 · 15kg 중앙 정적 휨 ≤2.3mm · 익사이터 높이 9.85 실측 확정(캐비티 여유 1.85mm).</text>
-<text x="400.0" y="872.0" class="note" text-anchor="start">6. EVA 보더⑨는 배시넷 바닥 내치수 실측 후 별도 도면 (조리원 카트 720×390 기준 예상).</text>
+<text x="216.0" y="561.6" class="cap2" text-anchor="middle">단면 A-A (부분, 좌측 150mm)</text>
+<rect x="96.0" y="571.2" width="240.0" height="6.4" rx="0.0" class="cut"/>
+<rect x="96.0" y="596.8" width="240.0" height="6.4" rx="0.0" class="cut"/>
+<rect x="96.0" y="577.6" width="6.4" height="19.2" rx="0.0" class="cut"/>
+<rect x="102.4" y="577.6" width="48.0" height="19.2" rx="0.0" class="block"/>
+<text x="126.4" y="589.6" class="small" text-anchor="middle">블록 3겹</text>
+<rect x="228.4" y="577.6" width="31.2" height="15.8" rx="0.0" class="exc"/>
+<text x="244.0" y="586.4" class="small" text-anchor="middle">EXC 9.85</text>
+<line x1="83.2" y1="571.2" x2="83.2" y2="577.6" class="dim"/><line x1="79.2" y1="571.2" x2="87.2" y2="571.2" class="dim"/><line x1="79.2" y1="577.6" x2="87.2" y2="577.6" class="dim"/><text x="86.2" y="574.4" class="dt" text-anchor="start">4</text>
+<line x1="83.2" y1="577.6" x2="83.2" y2="596.8" class="dim"/><line x1="79.2" y1="577.6" x2="87.2" y2="577.6" class="dim"/><line x1="79.2" y1="596.8" x2="87.2" y2="596.8" class="dim"/><text x="86.2" y="587.2" class="dt" text-anchor="start">12</text>
+<line x1="83.2" y1="596.8" x2="83.2" y2="603.2" class="dim"/><line x1="79.2" y1="596.8" x2="87.2" y2="596.8" class="dim"/><line x1="79.2" y1="603.2" x2="87.2" y2="603.2" class="dim"/><text x="86.2" y="600.0" class="dt" text-anchor="start">4</text>
+<line x1="60.8" y1="571.2" x2="60.8" y2="603.2" class="dim"/><line x1="56.8" y1="571.2" x2="64.8" y2="571.2" class="dim"/><line x1="56.8" y1="603.2" x2="64.8" y2="603.2" class="dim"/><text x="63.8" y="587.2" class="dt" text-anchor="start">20</text>
+<line x1="118.4" y1="582.4" x2="118.4" y2="608.0" class="bolt"/>
+<text x="121.6" y="617.6" class="small" text-anchor="start">⌀3×12 목나사(하판→블록, 파일럿 ⌀2)</text>
+<text x="96.0" y="632.0" class="small" text-anchor="start">상판=E0 본드 완전접착(무타공) / 하판=나사 6점+펠트 개스킷 1mm(무본드)</text>
+<text x="499.2" y="558.4" class="cap2" text-anchor="start">부품표 (BOM)</text>
+<rect x="400.0" y="568.0" width="400.0" height="20.8" class="tbl"/>
+<text x="409.6" y="582.4" class="small" text-anchor="start">①</text>
+<text x="428.8" y="582.4" class="small" text-anchor="start">상판</text>
+<text x="528.0" y="582.4" class="small" text-anchor="start">450 × 250 × 4 · R20</text>
+<text x="668.8" y="582.4" class="small" text-anchor="start">×1</text>
+<text x="707.2" y="582.4" class="small" text-anchor="start">무타공, 익사이터 존=안쪽면</text>
+<rect x="400.0" y="588.8" width="400.0" height="20.8" class="tbl"/>
+<text x="409.6" y="603.2" class="small" text-anchor="start">②</text>
+<text x="428.8" y="603.2" class="small" text-anchor="start">하판</text>
+<text x="528.0" y="603.2" class="small" text-anchor="start">450 × 250 × 4</text>
+<text x="668.8" y="603.2" class="small" text-anchor="start">×1</text>
+<text x="707.2" y="603.2" class="small" text-anchor="start">나사 6×⌀3.2 + 하면 CSK ⌀6.5</text>
+<rect x="400.0" y="609.6" width="400.0" height="20.8" class="tbl"/>
+<text x="409.6" y="624.0" class="small" text-anchor="start">③</text>
+<text x="428.8" y="624.0" class="small" text-anchor="start">전면 측판</text>
+<text x="528.0" y="624.0" class="small" text-anchor="start">450 × 12 × 4</text>
+<text x="668.8" y="624.0" class="small" text-anchor="start">×1</text>
+<text x="707.2" y="624.0" class="small" text-anchor="start">그레인=450 필수</text>
+<rect x="400.0" y="630.4" width="400.0" height="20.8" class="tbl"/>
+<text x="409.6" y="644.8" class="small" text-anchor="start">④</text>
+<text x="428.8" y="644.8" class="small" text-anchor="start">후면 측판</text>
+<text x="528.0" y="644.8" class="small" text-anchor="start">450 × 12 × 4</text>
+<text x="668.8" y="644.8" class="small" text-anchor="start">×1</text>
+<text x="707.2" y="644.8" class="small" text-anchor="start">배선홀 ⌀8 @코너 35mm·그레인=450</text>
+<rect x="400.0" y="651.2" width="400.0" height="20.8" class="tbl"/>
+<text x="409.6" y="665.6" class="small" text-anchor="start">⑤</text>
+<text x="428.8" y="665.6" class="small" text-anchor="start">좌/우 측판</text>
+<text x="528.0" y="665.6" class="small" text-anchor="start">242 × 12 × 4</text>
+<text x="668.8" y="665.6" class="small" text-anchor="start">×2</text>
+<text x="707.2" y="665.6" class="small" text-anchor="start"></text>
+<rect x="400.0" y="672.0" width="400.0" height="20.8" class="tbl"/>
+<text x="409.6" y="686.4" class="small" text-anchor="start">⑥</text>
+<text x="428.8" y="686.4" class="small" text-anchor="start">삼각 코너블록</text>
+<text x="528.0" y="686.4" class="small" text-anchor="start">30×30, 4mm×3겹=12장</text>
+<text x="668.8" y="686.4" class="small" text-anchor="start">×블록4</text>
+<text x="707.2" y="686.4" class="small" text-anchor="start">정식 품목·파일럿 ⌀2</text>
+<rect x="400.0" y="692.8" width="400.0" height="20.8" class="tbl"/>
+<text x="409.6" y="707.2" class="small" text-anchor="start">⑦</text>
+<text x="428.8" y="707.2" class="small" text-anchor="start">스크류보스</text>
+<text x="528.0" y="707.2" class="small" text-anchor="start">40×15, 4mm×3겹=6장</text>
+<text x="668.8" y="707.2" class="small" text-anchor="start">×보스2</text>
+<text x="707.2" y="707.2" class="small" text-anchor="start">장변 중앙·파일럿 ⌀2</text>
+<rect x="400.0" y="713.6" width="400.0" height="20.8" class="tbl"/>
+<text x="409.6" y="728.0" class="small" text-anchor="start">⑧</text>
+<text x="428.8" y="728.0" class="small" text-anchor="start">익사이터</text>
+<text x="528.0" y="728.0" class="small" text-anchor="start">TEAX14C02-8 (H9.85 실측)</text>
+<text x="668.8" y="728.0" class="small" text-anchor="start">×4</text>
+<text x="707.2" y="728.0" class="small" text-anchor="start">VHB 9473PC, 상판 안쪽면</text>
+<rect x="400.0" y="734.4" width="400.0" height="20.8" class="tbl"/>
+<text x="409.6" y="748.8" class="small" text-anchor="start">⑨</text>
+<text x="428.8" y="748.8" class="small" text-anchor="start">목나사</text>
+<text x="528.0" y="748.8" class="small" text-anchor="start">⌀3×12 접시</text>
+<text x="668.8" y="748.8" class="small" text-anchor="start">×6</text>
+<text x="707.2" y="748.8" class="small" text-anchor="start">하판→블록, 개스킷 관통</text>
+<rect x="400.0" y="755.2" width="400.0" height="20.8" class="tbl"/>
+<text x="409.6" y="769.6" class="small" text-anchor="start">⑩</text>
+<text x="428.8" y="769.6" class="small" text-anchor="start">펠트 개스킷</text>
+<text x="528.0" y="769.6" class="small" text-anchor="start">1mm 스트립</text>
+<text x="668.8" y="769.6" class="small" text-anchor="start">×둘레</text>
+<text x="707.2" y="769.6" class="small" text-anchor="start">하판-측판 사이 (래틀 방지)</text>
+<rect x="400.0" y="776.0" width="400.0" height="20.8" class="tbl"/>
+<text x="409.6" y="790.4" class="small" text-anchor="start">⑪</text>
+<text x="428.8" y="790.4" class="small" text-anchor="start">EVA 보더</text>
+<text x="528.0" y="790.4" class="small" text-anchor="start">두께 20, 경도 60~70C</text>
+<text x="668.8" y="790.4" class="small" text-anchor="start">×-</text>
+<text x="707.2" y="790.4" class="small" text-anchor="start">배시넷 바닥 실측 후 재단</text>
+<text x="400.0" y="819.2" class="cap2" text-anchor="start">주기 (NOTES)</text>
+<text x="400.0" y="836.8" class="note" text-anchor="start">1. 소재: 자작합판 4.0mm BB급↑ · SE0/E0(포름알데히드 저방출) 명시. 그레인=장변 방향 필수(해석 전제+측판 파손 방지).</text>
+<text x="400.0" y="854.4" class="note" text-anchor="start">2. 조립: 상판·측판·블록 = E0급 목공본드 완전접착(무타공 매끈 외관). 하판 = 무본드, ⌀3×12 목나사 6점(AS 분리형).</text>
+<text x="400.0" y="872.0" class="note" text-anchor="start">3. 삼각 코너블록(다리 30)은 R20 백킹 조건 — 측판 높이 12mm 전체 충전 + 상단 플러시 접착 필수.</text>
+<text x="400.0" y="889.6" class="note" text-anchor="start">4. 익사이터 4개 VHB로 [상판 안쪽면] 부착 → 직렬 16Ω/채널, 후면 배선홀(⌀8, 코너 35mm 이격)로 인출 + 그로밋.</text>
+<text x="400.0" y="907.2" class="note" text-anchor="start">5. 마감: 방수 실링 + 어린이제품 유해물질 기준(E0/E1) 도료. 조립 후 세로 모서리 후가공 라운드(사포/라우터).</text>
+<text x="400.0" y="924.8" class="note" text-anchor="start">6. 검수: 총높이 20.0±0.3 · 15kg 중앙 정적 휨 ≤2.3mm · 하판 나사 체결 후 래틀 없음(프로토콜 G6).</text>
+<text x="400.0" y="942.4" class="note" text-anchor="start">7. 레이저 kerf 0.1~0.2mm 보정. 블록·보스는 자투리 아닌 정식 수량 품목(누락 금지).</text>
 </g>
 </svg>
