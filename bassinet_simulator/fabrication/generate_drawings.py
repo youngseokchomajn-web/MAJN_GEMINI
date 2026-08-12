@@ -22,14 +22,14 @@ WALL_LR = (242.0, WALL_H)     # 좌/우 측판 2장 (250 - 2*4)
 R_TOP = 20.0                  # 상판 코너 라운딩 (발주 단계 2D 가공)
 EXC = [(112.5, 62.5), (337.5, 62.5), (112.5, 187.5), (337.5, 187.5)]  # 익사이터 중심
 EXC_FOOT = (40.2, 19.5)       # TEAX14C02-8 VHB 배치 존 (높이 실측 9.85 확정 2026-08-06)
-TRI_LEG = 30.0                # 통합 삼각 코너블록 다리 길이 (R20 백킹 조건 ≥25)
-BOSS_W, BOSS_D = 40.0, 15.0   # 장변 중앙 스크류보스 (폭×깊이)
-SCREW_D = 3.2                 # 하판 ⌀3 목나사 관통홀
+TRI_LEG = 12.0                # 통합 삼각 코너블록 다리 (12×12 대각절단 — 빗변=R20 아크 현과 일치, 기하학적 정확 백킹)
+BOSS_W, BOSS_D = 10.0, 10.0   # 장변 중앙 스크류보스 (10×10 단면)
+SCREW_D = 3.2                 # 하판 #4(⌀2.9) 목나사 관통홀
 PILOT_D = 2.0                 # 블록 파일럿 홀
 CSK_D = 6.5                   # 하판 하면 카운터싱크(90°) 참고 지름
-# 하판 나사 6점: 코너 4(삼각블록 물림) + 장변 중앙 2(보스 물림)
-SCREWS = [(14, 14), (436, 14), (14, 236), (436, 236), (225, 11.5), (225, 238.5)]
-CABLE_HOLE = (35.0, 8.0)      # 후면 측판 배선홀: 좌측 코너에서 35mm, ⌀8 (코너블록 30~40mm 이격)
+# 하판 나사 6점: 코너 4 = 7mm 인셋(12×12 블록 빗변 회피, 여유 2.7mm) + 장변 중앙 2 = 10mm 인셋(보스 물림)
+SCREWS = [(7, 7), (443, 7), (7, 243), (443, 243), (225, 10), (225, 240)]
+CABLE_HOLE = (35.0, 5.5)      # 좌측판(242) 배선홀: 코너에서 35mm, ⌀5.5 (그로밋 ⌀5~6)
 
 # ══════════════════════════════ DXF ══════════════════════════════
 doc = ezdxf.new("R2010", setup=True)
@@ -76,12 +76,12 @@ for ex, ey in EXC:
     circle(ex, ey, 2.0, layer="REF")
 label(0, -12, "TOP 450x250x4 R20 — 무타공(완전접착), 익사이터 존=안쪽면 REF")
 
-# ── 하판: R20 (상판과 대칭, 나사 (14,14) 코너홀은 R20 잔존영역 내 — 기하 검증됨) + 나사 6점 ──
+# ── 하판: 사각(최종 발주 리스트 — R20 없음) + 나사 6점 ──
 oy = L + GAP
-rounded_rect(0, oy, W, L, R_TOP)
+rect(0, oy, W, L)
 for sx_, sy_ in SCREWS:
     circle(sx_, oy + sy_, SCREW_D)
-label(0, oy - 12, "BOTTOM 450x250x4 R20 — 나사 6x D3.2 관통, 하면 CSK D6.5x90deg (분리형)")
+label(0, oy - 12, "BOTTOM 450x250x4 — 나사 6x D3.2 관통, 하면 CSK D6.5x90deg (분리형)")
 
 # ── 측판 4장 ──
 wy = 2 * (L + GAP)
@@ -89,34 +89,34 @@ rect(0, wy, *WALL_FB)
 label(0, wy - 12, "WALL-FRONT 450x12x4 (그레인=길이방향 450 필수)")
 y0 = wy + WALL_H + GAP
 rect(0, y0, *WALL_FB)
-circle(CABLE_HOLE[0], y0 + WALL_H/2, CABLE_HOLE[1])
-label(0, y0 - 12, "WALL-REAR 450x12x4 — 배선홀 D8 @좌코너 35mm, 중간높이 (그레인=450)")
+label(0, y0 - 12, "WALL-REAR 450x12x4 (그레인=길이방향 450 필수)")
 wy2 = y0 + WALL_H + GAP
 rect(0, wy2, *WALL_LR)
-label(0, wy2 - 12, "WALL-LEFT 242x12x4")
+circle(CABLE_HOLE[0], wy2 + WALL_H/2, CABLE_HOLE[1])
+label(0, wy2 - 12, "WALL-LEFT 242x12x4 — 배선홀 D5.5 @코너 35mm, 중간높이")
 rect(WALL_LR[0] + GAP, wy2, *WALL_LR)
 label(WALL_LR[0] + GAP, wy2 - 12, "WALL-RIGHT 242x12x4")
 
 # ── 보강 블록 (정식 품목): 삼각 코너블록 4mm x 3겹 = 12장, 보스 3겹 = 6장 ──
 by = wy2 + WALL_H + GAP + 10
-label(0, by + TRI_LEG + 8, "CORNER-TRI 30x30 x12장 (3겹 적층->블록 4개, 파일럿 D2)", h=5)
+label(0, by + TRI_LEG + 8, "CORNER-TRI 12x12 x12장 (3겹 적층->블록 4개, 파일럿 D2)", h=5)
 for i in range(12):
     col, row = i % 6, i // 6
     tx, ty = col * (TRI_LEG + 10), by - row * (TRI_LEG + 10)
     tri(tx, ty, TRI_LEG)
-    circle(tx + 11, ty + 11, PILOT_D)   # 파일럿 (하판 나사 위치 정합: 코너에서 14,14 - 벽 4mm 오프셋)
+    circle(tx + 3, ty + 3, PILOT_D)    # 파일럿 (조립 시 나사 (7,7) = 블록 로컬 (3,3))
 bx = 6 * (TRI_LEG + 10) + 20
-label(bx, by + TRI_LEG + 8, "BOSS 40x15 x6장 (3겹->보스 2개, 파일럿 D2)", h=5)
+label(bx, by + TRI_LEG + 8, "BOSS 10x10 x6장 (3겹->보스 2개, 파일럿 D2)", h=5)
 for i in range(6):
     col, row = i % 3, i // 3
     px, py = bx + col * (BOSS_W + 10), by - row * (BOSS_D + 20)
     rect(px, py, BOSS_W, BOSS_D)
-    circle(px + BOSS_W/2, py + BOSS_D/2, PILOT_D)
+    circle(px + BOSS_W/2, py + 6.0, PILOT_D)
 
 label(0, by + TRI_LEG + 34,
       "MAJN NUCU PAD v3.2 Rev.C CORE 450x250x20 | BIRCH PLY 4mm SE0/E0 | CUT=red DRILL=blue REF=green(NO CUT)", h=7)
 label(0, by + TRI_LEG + 20,
-      "별도자재: D3x12 접시 목나사 x6 / 목공본드(E0) / VHB 9473PC / 펠트 개스킷 1mm(하판 둘레) / EVA보더 별도", h=5)
+      "별도자재: #4(D2.9)x12 접시 목나사 x6 / 타이트본드III / VHB=익사이터 자착 9473PC(4941 금지) / EPDM 개스킷 2mm / 수성PU+식품등급 실란트", h=5)
 
 dxf_path = os.path.join(OUT, "nucu_pad_v3_cnc.dxf")
 doc.saveas(dxf_path)
@@ -152,8 +152,8 @@ def vdim(y1, y2, x, t):
 
 OX, OY = 60, 55
 svg_parts = ['<g>']
-svg_parts.append(svg_text(OX + W/2, 22, "MAJN 누쿠 패드 v3.2 — 진동 코어 450×250×20mm 제작 도면 (Rev.C / 2026-08-06)", "title"))
-svg_parts.append(svg_text(OX + W/2, 36, "자작합판 4.0mm SE0/E0급 · 상판 완전접착(무타공)·R20 / 하판 나사 분리형 6점 · 근거: 보고서 §7~§10 + 발주 의도서", "sub"))
+svg_parts.append(svg_text(OX + W/2, 22, "MAJN 누쿠 패드 v3.2 — 진동 코어 450×250×20mm 제작 도면 (Rev.D 최종 / 2026-08-12)", "title"))
+svg_parts.append(svg_text(OX + W/2, 36, "자작합판 4.0mm SE0/E0급 · 상판 완전접착(무타공)·R20 / 하판 나사 분리형 6점(코너 7mm 인셋) · 최종 발주 리스트 정합", "sub"))
 
 # ── VIEW 1: 평면도(하판 기준 — 나사·블록 배치. 상판 무타공이므로 체결정보는 하판에 집중) ──
 x0, y0 = OX, OY
@@ -173,9 +173,9 @@ svg_parts.append(svg_rect(x0 + 225 - BOSS_W/2, y0 + L - T - BOSS_D, BOSS_W, BOSS
 for sx_, sy_ in SCREWS:
     svg_parts.append(svg_circle(x0 + sx_, y0 + sy_, SCREW_D, "hole"))
 # 배선홀 (후면=아래쪽 변 가정 표시)
-svg_parts.append(svg_circle(x0 + CABLE_HOLE[0], y0 + L - T/2, CABLE_HOLE[1], "hole"))
-svg_parts.append(svg_text(x0 + CABLE_HOLE[0] + 4, y0 + L + 9, "배선홀 ⌀8 @35 (후면 측판 중간높이)", "small", "start"))
-svg_parts.append(svg_text(x0 + W/2, y0 + L/2 + 4, "평면도 — 상판 R20 무타공 / 하판 나사 6×⌀3.2(파랑) / 블록·보스(갈색)", "cap"))
+svg_parts.append(svg_circle(x0 + T/2, y0 + CABLE_HOLE[0], CABLE_HOLE[1], "hole"))
+svg_parts.append(svg_text(x0 - 4, y0 + CABLE_HOLE[0] + 12, "배선홀 ⌀5.5 @35 (좌측판 중간높이·그로밋)", "small", "start"))
+svg_parts.append(svg_text(x0 + W/2, y0 + L/2 + 4, "평면도 — 상판 R20 무타공 / 하판 나사 6×⌀3.2 코너 7mm·중앙 10mm 인셋 / 블록·보스(갈색)", "cap"))
 svg_parts.append(hdim(OX, OX + W, OY - 10, "450"))
 svg_parts.append(vdim(OY, OY + L, OX - 12, "250"))
 svg_parts.append(hdim(OX, OX + EXC[0][0], OY + L + 20, "112.5"))
@@ -191,7 +191,7 @@ svg_parts.append(svg_rect(sx, sy, sec_w, T, "cut"))                       # top 
 svg_parts.append(svg_rect(sx, sy + T + WALL_H, sec_w, T, "cut"))          # bottom (분리형)
 svg_parts.append(svg_rect(sx, sy + T, T, WALL_H, "cut"))                  # left wall
 svg_parts.append(svg_rect(sx + T, sy + T, TRI_LEG, WALL_H, "block"))      # 통합블록(3겹 12mm)
-svg_parts.append(svg_text(sx + T + TRI_LEG/2, sy + T + WALL_H/2 + 1.5, "블록 3겹", "small"))
+svg_parts.append(svg_text(sx + T + TRI_LEG/2 + 8, sy + T + WALL_H/2 + 1.5, "블록 3겹", "small", "start"))
 svg_parts.append(svg_rect(sx + 92.5 - EXC_FOOT[1]/2, sy + T, EXC_FOOT[1], 9.85, "exc"))
 svg_parts.append(svg_text(sx + 92.5, sy + T + 5.5, "EXC 9.85", "small"))
 svg_parts.append(vdim(sy, sy + T, sx - 8, "4"))
@@ -199,23 +199,23 @@ svg_parts.append(vdim(sy + T, sy + T + WALL_H, sx - 8, "12"))
 svg_parts.append(vdim(sy + T + WALL_H, sy + TOTAL_H, sx - 8, "4"))
 svg_parts.append(vdim(sy, sy + TOTAL_H, sx - 22, "20"))
 # 나사: 하판에서 블록으로 (상향 X — 하향 체결 표시)
-svg_parts.append(f'<line x1="{P(sx+T+10):.1f}" y1="{P(sy+T+3):.1f}" x2="{P(sx+T+10):.1f}" y2="{P(sy+TOTAL_H+3):.1f}" class="bolt"/>')
-svg_parts.append(svg_text(sx + T + 12, sy + TOTAL_H + 9, "⌀3×12 목나사(하판→블록, 파일럿 ⌀2)", "small", "start"))
-svg_parts.append(svg_text(sx, sy + TOTAL_H + 18, "상판=E0 본드 완전접착(무타공) / 하판=나사 6점+펠트 개스킷 1mm(무본드)", "small", "start"))
+svg_parts.append(f'<line x1="{P(sx+7):.1f}" y1="{P(sy+T+3):.1f}" x2="{P(sx+7):.1f}" y2="{P(sy+TOTAL_H+3):.1f}" class="bolt"/>')
+svg_parts.append(svg_text(sx + T + 12, sy + TOTAL_H + 9, "#4×12 목나사(하판→블록, 파일럿 ⌀2)", "small", "start"))
+svg_parts.append(svg_text(sx, sy + TOTAL_H + 18, "상판=E0 본드 완전접착(무타공) / 하판=나사 6점+EPDM 개스킷 2mm(무본드·방수)", "small", "start"))
 
 # ── VIEW 3: 부품표 ──
 bx0, by0 = OX + 190, sy - 2
 rows = [
     ("①", "상판", "450 × 250 × 4 · R20", "1", "무타공, 익사이터 존=안쪽면"),
-    ("②", "하판", "450 × 250 × 4 · R20", "1", "나사 6×⌀3.2 + 하면 CSK ⌀6.5"),
+    ("②", "하판", "450 × 250 × 4", "1", "나사 6×⌀3.2 + 하면 CSK ⌀6.5"),
     ("③", "전면 측판", "450 × 12 × 4", "1", "그레인=450 필수"),
-    ("④", "후면 측판", "450 × 12 × 4", "1", "배선홀 ⌀8 @코너 35mm·그레인=450"),
-    ("⑤", "좌/우 측판", "242 × 12 × 4", "2", ""),
-    ("⑥", "삼각 코너블록", "30×30, 4mm×3겹=12장", "블록4", "정식 품목·파일럿 ⌀2"),
-    ("⑦", "스크류보스", "40×15, 4mm×3겹=6장", "보스2", "장변 중앙·파일럿 ⌀2"),
+    ("④", "후면 측판", "450 × 12 × 4", "1", "그레인=450 필수"),
+    ("⑤", "좌/우 측판", "242 × 12 × 4", "2", "1장에 배선홀 ⌀5.5 @코너 35mm"),
+    ("⑥", "삼각 코너블록", "12×12 대각절단, 4mm×3겹=12장", "블록4", "정식 품목·파일럿 ⌀2"),
+    ("⑦", "스크류보스", "10×10, 4mm×3겹=6장", "보스2", "장변 중앙·파일럿 ⌀2"),
     ("⑧", "익사이터", "TEAX14C02-8 (H9.85 실측)", "4", "VHB 9473PC, 상판 안쪽면"),
-    ("⑨", "목나사", "⌀3×12 접시", "6", "하판→블록, 개스킷 관통"),
-    ("⑩", "펠트 개스킷", "1mm 스트립", "둘레", "하판-측판 사이 (래틀 방지)"),
+    ("⑨", "목나사", "#4(⌀2.9)×12 접시", "6", "하판→블록, 개스킷 관통"),
+    ("⑩", "EPDM 개스킷", "2mm 폼테이프", "둘레", "하판 방수·래틀 방지 (총높이 +≈1mm)"),
     ("⑪", "EVA 보더", "두께 20, 경도 60~70C", "-", "배시넷 바닥 실측 후 재단"),
 ]
 svg_parts.append(svg_text(bx0 + 62, by0 - 6, "부품표 (BOM)", "cap2", "start"))
@@ -233,10 +233,10 @@ for i, (no, nm, dim, qty, note) in enumerate(rows):
 ny0 = by0 + len(rows) * rh + 14
 notes = [
     "1. 소재: 자작합판 4.0mm BB급↑ · SE0/E0(포름알데히드 저방출) 명시. 그레인=장변 방향 필수(해석 전제+측판 파손 방지).",
-    "2. 조립: 상판·측판·블록 = E0급 목공본드 완전접착(무타공 매끈 외관). 하판 = 무본드, ⌀3×12 목나사 6점(AS 분리형).",
-    "3. 삼각 코너블록(다리 30)은 R20 백킹 조건 — 측판 높이 12mm 전체 충전 + 상단 플러시 접착 필수.",
-    "4. 익사이터 4개 VHB [9473PC 0.26mm — ⚠4941(1.1mm) 금지: 바터밍 여유 잠식] 상판 안쪽면 부착 → 직렬 16Ω, 후면 배선홀 ⌀8 인출+그로밋.",
-    "5. 마감: 방수 실링 + 어린이제품 유해물질 기준(E0/E1) 도료. 조립 후 세로 모서리 후가공 라운드(사포/라우터).",
+    "2. 조립: 상판·측판·블록 = 타이트본드III 완전접착(무타공). 하판 = 무본드, #4×12 목나사 6점(AS 분리형). 코너 나사 7mm 인셋(블록 빗변 회피).",
+    "3. 삼각 코너블록 12×12 빗변=R20 아크 현과 일치(기하 정확 백킹) — 12mm 전체 충전 + 상단 플러시 접착 필수.",
+    "4. 익사이터는 공장 자착 9473PC(0.26mm)로 부착 — ⚠4941(1.1mm) 별도구매 금지(바터밍 여유 잠식+전달 손실). 직렬 16Ω, 좌측판 ⌀5.5 인출+그로밋.",
+    "5. 마감: 수성 폴리우레탄(무독성/저VOC) 외부 코팅 + 식품등급 실란트(상판 둘레·배선홀). 조립 후 세로 모서리 후가공 라운드.",
     "6. 검수: 총높이 20.0±0.3 · 15kg 중앙 정적 휨 ≤2.3mm · 하판 나사 체결 후 래틀 없음(프로토콜 G6).",
     "7. 레이저 kerf 0.1~0.2mm 보정. 블록·보스는 자투리 아닌 정식 수량 품목(누락 금지).",
 ]
