@@ -82,7 +82,7 @@
 <rect x="400.0" y="588.8" width="400.0" height="20.8" class="tbl"/>
 <text x="409.6" y="603.2" class="small" text-anchor="start">②</text>
 <text x="428.8" y="603.2" class="small" text-anchor="start">하판</text>
-<text x="528.0" y="603.2" class="small" text-anchor="start">450 × 250 × 4</text>
+<text x="528.0" y="603.2" class="small" text-anchor="start">450 × 250 × 4 · R20</text>
 <text x="668.8" y="603.2" class="small" text-anchor="start">×1</text>
 <text x="707.2" y="603.2" class="small" text-anchor="start">나사 6×⌀3.2 + 하면 CSK ⌀6.5</text>
 <rect x="400.0" y="609.6" width="400.0" height="20.8" class="tbl"/>
@@ -143,7 +143,7 @@
 <text x="400.0" y="836.8" class="note" text-anchor="start">1. 소재: 자작합판 4.0mm BB급↑ · SE0/E0(포름알데히드 저방출) 명시. 그레인=장변 방향 필수(해석 전제+측판 파손 방지).</text>
 <text x="400.0" y="854.4" class="note" text-anchor="start">2. 조립: 상판·측판·블록 = E0급 목공본드 완전접착(무타공 매끈 외관). 하판 = 무본드, ⌀3×12 목나사 6점(AS 분리형).</text>
 <text x="400.0" y="872.0" class="note" text-anchor="start">3. 삼각 코너블록(다리 30)은 R20 백킹 조건 — 측판 높이 12mm 전체 충전 + 상단 플러시 접착 필수.</text>
-<text x="400.0" y="889.6" class="note" text-anchor="start">4. 익사이터 4개 VHB로 [상판 안쪽면] 부착 → 직렬 16Ω/채널, 후면 배선홀(⌀8, 코너 35mm 이격)로 인출 + 그로밋.</text>
+<text x="400.0" y="889.6" class="note" text-anchor="start">4. 익사이터 4개 VHB [9473PC 0.26mm — ⚠4941(1.1mm) 금지: 바터밍 여유 잠식] 상판 안쪽면 부착 → 직렬 16Ω, 후면 배선홀 ⌀8 인출+그로밋.</text>
 <text x="400.0" y="907.2" class="note" text-anchor="start">5. 마감: 방수 실링 + 어린이제품 유해물질 기준(E0/E1) 도료. 조립 후 세로 모서리 후가공 라운드(사포/라우터).</text>
 <text x="400.0" y="924.8" class="note" text-anchor="start">6. 검수: 총높이 20.0±0.3 · 15kg 중앙 정적 휨 ≤2.3mm · 하판 나사 체결 후 래틀 없음(프로토콜 G6).</text>
 <text x="400.0" y="942.4" class="note" text-anchor="start">7. 레이저 kerf 0.1~0.2mm 보정. 블록·보스는 자투리 아닌 정식 수량 품목(누락 금지).</text>
