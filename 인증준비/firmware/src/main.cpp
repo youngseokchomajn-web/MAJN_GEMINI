@@ -5,6 +5,7 @@
 #include "tas5805m.h"
 #include "lsm6dsox.h"
 #include "pid_control.h"
+#include "ble_manager.h"
 
 // -------------------------------------------------------------------------
 // Hardware Pin Mappings (Based on PCB Design & Spec v1.1)
@@ -39,19 +40,19 @@ LSM6DSOX accel(PIN_SPI_CS_XL);
 PIDController pid(0.01f, 0.002f, 0.0005f, 12.0f); 
 
 volatile bool safetyLockTriggered = false;
-volatile bool systemActive = true;
+volatile bool systemActive = false;
 
 // Vibration wave state
 volatile float targetFrequency = 45.0f; // Target vibration frequency (30~65Hz)
 volatile float currentAmplitudeScale = 0.0f; // 0.0f (Mute) to 1.0f (Full output)
-volatile float targetAmplitudeScale = 0.5f;  // Soft-start target amplitude scaling factor
+volatile float targetAmplitudeScale = 0.0f;  // Idle until an explicit START command
 
 // Soft Start/Stop config
 const float RAMP_STEP_20MS = 0.005f; // Ramping rate (approx. 2 seconds to full scale)
 
 // Safety Constraints (KC Infant Safety Standard)
 const unsigned long MAX_RUNNING_TIME_MS = 30 * 60 * 1000; // 30 minutes automatic shutdown
-unsigned long activeStateStartTime = 0;
+unsigned long activeStateStartTime = 0;\n\nstatic AccelData latestAccel = {0, 0, 0, 0.0f, 0.0f, 1.0f};\nstatic uint8_t outputVolume = 72; // TAS5805M safe default: -12 dB (0x48)
 
 // Sine wave Lookup Table for fast real-time wave synthesis
 int16_t sineLut[LUT_SIZE];
@@ -214,7 +215,7 @@ void VibrationControlTask(void *pvParameters) {
         }
         
         // 3. Read Accel sensor data over SPI (fast 10MHz bus)
-        if (accel.readAccel(accelData)) {
+        if (accel.readAccel(accelData)) {\n            latestAccel = accelData;
             // Double integration to displacement (Z-axis only for micro-vibrations)
             // Remove DC gravity offset using exponential moving average (EMA)
             accel_dc = 0.995f * accel_dc + 0.005f * accelData.z_g;
@@ -252,17 +253,20 @@ void VibrationControlTask(void *pvParameters) {
 // -------------------------------------------------------------------------
 void WiFiBTCommunicationTask(void *pvParameters) {
     (void)pvParameters;
-    Serial.println("[Core 0] Wi-Fi & BT Communication Task Started.");
-    
+    Serial.println("[Core 0] BLE Communication Task Started.");
+
     for (;;) {
-        if (safetyLockTriggered) {
-            Serial.println("[Core 0] Critical Shock Triggered! Safety Lock Active.");
-            vTaskDelay(pdMS_TO_TICKS(1000));
-            continue;
-        }
-        
-        // Handle Wi-Fi, Cloud MQTT, & BLE SoC commands here
-        vTaskDelay(pdMS_TO_TICKS(100));
+        bleLoop();
+        bleNotifyTelemetry(
+            getSystemState(),
+            safetyLockTriggered,
+            targetFrequency,
+            currentAmplitudeScale,
+            latestAccel.x_g,
+            latestAccel.y_g,
+            latestAccel.z_g
+        );
+        vTaskDelay(pdMS_TO_TICKS(20));
     }
 }
 
@@ -277,14 +281,11 @@ void setup() {
     Serial.println("  Majung Smart Bassinet Firmware Initializing... ");
     Serial.println("=========================================");
     
-    // Configure safety shutdown pin
-    pinMode(PIN_BOOST_EN, OUTPUT);
-    digitalWrite(PIN_BOOST_EN, HIGH); // Enable MP3426 12V Boost Regulator
-
-    // Release TAS5805M from shutdown (PDN# active-low; HIGH = enable). Must precede I2C/I2S init.
+    // Safety-first boot sequence: PDN LOW and BOOST OFF before peripheral init.
     pinMode(PIN_AMP_PDN, OUTPUT);
-    digitalWrite(PIN_AMP_PDN, HIGH);
-    delay(10);
+    digitalWrite(PIN_AMP_PDN, LOW);
+    pinMode(PIN_BOOST_EN, OUTPUT);
+    digitalWrite(PIN_BOOST_EN, LOW);
 
     // GPIO34 is input-only and has NO internal pull resistor (ESP32 GPIO34-39).
     // LSM6DSOX INT1 is push-pull (actively driven), so plain INPUT is correct here.
@@ -301,9 +302,16 @@ void setup() {
     }
     Serial.println("[OK] LSM6DSOX Accelerometer Initialized via SPI.");
     
+    // Enable the 12 V boost, wait for PVDD to settle, then release TAS5805M PDN.
+    digitalWrite(PIN_BOOST_EN, HIGH);
+    delay(10);
+    digitalWrite(PIN_AMP_PDN, HIGH);
+    delay(5);
+
     // Initialize I2C for TAS5805M amplifier
     if (!amp.begin(PIN_I2C_SDA, PIN_I2C_SCL)) {
         Serial.println("[ERROR] TAS5805M Amplifier Initialization Failed.");
+        requestEmergencyStop();
         while (1);
     }
     Serial.println("[OK] TAS5805M Amplifier Initialized via I2C.");
@@ -327,6 +335,13 @@ void setup() {
     // Attach Hardware Safety ISR (Interrupt triggers safetyLockISR immediately)
     attachInterrupt(digitalPinToInterrupt(PIN_SAFETY_INT1), safetyLockISR, RISING);
     Serial.println("[OK] Safety Lock Hardware ISR Attached to GPIO34.");
+
+    if (!initBleServer()) {
+        Serial.println("[ERROR] BLE server initialization failed.");
+        requestEmergencyStop();
+        while (1);
+    }
+    Serial.println("[OK] BLE GATT server initialized.");
     
     // -------------------------------------------------------------------------
     // FreeRTOS Task Allocation
