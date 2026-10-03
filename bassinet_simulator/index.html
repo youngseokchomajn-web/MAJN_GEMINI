@@ -67,7 +67,7 @@
           <div class="mode-badge">
             <i class="fa-solid fa-shield-halved"></i> 안전 폐루프 가동 중
           </div>
-          <button class="btn btn-primary" id="btn-emergency-stop">
+          <button class="btn btn-outline" id="btn-ble-connect">ESP32 BLE 연결</button>\n          <button class="btn btn-outline" id="btn-device-start">START</button>\n          <button class="btn btn-outline" id="btn-device-stop">STOP</button>\n          <button class="btn btn-primary" id="btn-emergency-stop">
             <i class="fa-solid fa-octagon-exclamation"></i> 비상 정지
           </button>
         </div>
@@ -135,7 +135,7 @@
                 <span>진동 바운싱 강도 (Motion Level)</span>
                 <strong id="bounce-level-txt">Level 2 (Soft Gentle)</strong>
               </div>
-              <input type="range" id="bounce-slider" min="0" max="5" value="2" class="range-slider">
+              <input type="range" id="bounce-slider" min="0" max="5" value="2" class="range-slider">\n              <div class="control-label" style="margin-top:12px"><span>진동 주파수 (30–65 Hz)</span><strong id="frequency-txt">45 Hz</strong></div>\n              <input type="range" id="frequency-slider" min="30" max="65" value="45" class="range-slider">
               <div class="range-labels">
                 <span>Off</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5 (Max)</span>
               </div>
@@ -226,6 +226,6 @@
     </main>
   </div>
 
-  <script src="app.js"></script>
+  <script src="ble_provider.js"></script>\n  <script src="app.js"></script>
 </body>
 </html>
