@@ -16,7 +16,7 @@ class MajnBleProvider {
     this.event = null;
     this.connected = false;
     this.sequence = 1;
-    this.decoder = new TextDecoder();
+    this.decoder = new TextDecoder();\n    this.heartbeatTimer = null;
   }
 
   log(type, message) {
