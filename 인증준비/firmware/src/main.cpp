@@ -52,7 +52,7 @@ const float RAMP_STEP_20MS = 0.005f; // Ramping rate (approx. 2 seconds to full 
 
 // Safety Constraints (KC Infant Safety Standard)
 const unsigned long MAX_RUNNING_TIME_MS = 30 * 60 * 1000; // 30 minutes automatic shutdown
-unsigned long activeStateStartTime = 0;\n\nstatic AccelData latestAccel = {0, 0, 0, 0.0f, 0.0f, 1.0f};\nstatic uint8_t outputVolume = 72; // TAS5805M safe default: -12 dB (0x48)
+unsigned long activeStateStartTime = 0;\n\nstatic AccelData latestAccel = {0, 0, 0, 0.0f, 0.0f, 1.0f};\nstatic uint8_t outputVolume = 72; // GUI volume percent; TAS5805M safe default ceiling is -12 dB (0x48)\nstatic bool ampStandbyLatched = true;
 
 // Sine wave Lookup Table for fast real-time wave synthesis
 int16_t sineLut[LUT_SIZE];
@@ -210,7 +210,7 @@ void VibrationControlTask(void *pvParameters) {
                 if (currentAmplitudeScale < 0.0f) currentAmplitudeScale = 0.0f;
             } else {
                 // Completely ramped down, enter Standby State
-                amp.enterStandbyState();
+                if (!ampStandbyLatched) {\n                    amp.enterStandbyState();\n                    ampStandbyLatched = true;\n                }
             }
         }
         
