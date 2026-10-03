@@ -271,7 +271,7 @@ void WiFiBTCommunicationTask(void *pvParameters) {
 // -------------------------------------------------------------------------
 void setup() {
     Serial.begin(115200);
-    while (!Serial);
+    // while (!Serial); // Standalone execution: Do not wait for serial monitor
     
     Serial.println("=========================================");
     Serial.println("  Majung Smart Bassinet Firmware Initializing... ");
