@@ -90,7 +90,7 @@ function initIMUChart() {
 
 function initEventListeners() {
   // Auto Soothing Toggle
-  document.getElementById('auto-soothing-toggle').addEventListener('change', (e) => {
+  document.getElementById('frequency-slider')?.addEventListener('input', (e) => {\n    document.getElementById('frequency-txt').innerText = `${e.target.value} Hz`;\n  });\n\n  document.getElementById('auto-soothing-toggle').addEventListener('change', (e) => {
     autoSoothing = e.target.checked;
     logMessage('info', `[AI] Auto Soothing Engine switched to: ${autoSoothing ? 'ENABLED' : 'MANUAL'}`);
   });
@@ -121,7 +121,7 @@ function initEventListeners() {
     updateBounceUI();
     updateSoundUI();
     stopAudio();
-    logMessage('error', '[EMERGENCY] Emergency Stop Triggered! All Actuators Shutdown.');
+    logMessage('error', '[EMERGENCY] Emergency Stop Triggered! All Actuators Shutdown.');\n    if (window.majnBle?.connected) {\n      window.majnBle.send('ESTOP').catch(err => logMessage('error', `[BLE] ${err.message}`));\n    }
   });
 }
 
