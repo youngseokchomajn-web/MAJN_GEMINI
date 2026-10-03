@@ -126,7 +126,7 @@ class MajnBleProvider {
   }
 
   updateTelemetryUI(data) {
-    if (!window.imuChart || typeof imuChart === 'undefined') return;
+    if (typeof imuChart === 'undefined') return;
     chartDataX.shift(); chartDataX.push(data.accel_g.x);
     chartDataY.shift(); chartDataY.push(data.accel_g.y);
     chartDataZ.shift(); chartDataZ.push(data.accel_g.z);
@@ -171,6 +171,16 @@ document.addEventListener('DOMContentLoaded', () => {
       await window.majnBle.send('SET_VIBRATION', {
         frequency_hz: Number(document.getElementById('frequency-slider')?.value || 45),
         amplitude: Number(e.target.value) / 10
+      });
+    } catch (err) { window.majnBle.log('error', '[BLE] ' + err.message); }
+  });
+
+  document.getElementById('frequency-slider')?.addEventListener('input', async e => {
+    if (!window.majnBle.connected) return;
+    try {
+      await window.majnBle.send('SET_VIBRATION', {
+        frequency_hz: Number(e.target.value),
+        amplitude: Number(document.getElementById('bounce-slider')?.value || 2) / 10
       });
     } catch (err) { window.majnBle.log('error', '[BLE] ' + err.message); }
   });
