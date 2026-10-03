@@ -15,7 +15,7 @@ extern volatile unsigned long activeStateStartTime;
 extern void requestSafeStop();
 extern void requestEmergencyStop();
 extern void setVibrationTarget(float frequencyHz, float amplitudeScale);
-extern void setOutputVolume(uint8_t volume);
+extern void setOutputVolume(uint8_t volume);\nextern bool ampStandbyLatched;
 
 namespace {
 BLEServer* gServer = nullptr;
