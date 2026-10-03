@@ -35,13 +35,21 @@
 
       <div class="device-status-card">
         <div class="status-header">
-          <span class="status-indicator online"></span>
-          <span class="status-title">ESP32-S3 Connected</span>
+          <span class="status-indicator online ready" id="global-status-indicator"></span>
+          <span class="status-title" id="global-status-title">Simulation Ready</span>
         </div>
         <div class="status-details">
           <div class="stat-row">
-            <span>Wi-Fi RSSI</span>
-            <strong id="wifi-rssi">-64 dBm</strong>
+            <span>제어 모드</span>
+            <strong id="device-mode-val" class="highlight">가상 시뮬레이션</strong>
+          </div>
+          <div class="stat-row">
+            <span>동작 상태</span>
+            <strong id="device-state-val">READY</strong>
+          </div>
+          <div class="stat-row">
+            <span>FW / Protocol</span>
+            <strong id="device-version-val">0.2.0 / v1</strong>
           </div>
           <div class="stat-row">
             <span>PVDD (MP3426)</span>
@@ -50,6 +58,10 @@
           <div class="stat-row">
             <span>VDD_3V3 (AP2112)</span>
             <strong id="vdd3v3-val">3.31V</strong>
+          </div>
+          <div class="stat-row">
+            <span>AMP Temp</span>
+            <strong id="amp-temp-sidebar">41.5 °C</strong>
           </div>
         </div>
       </div>
@@ -64,10 +76,20 @@
           <p>LSM6DSOX IMU 폐루프 제어 및 TAS5805M 스마트 사운드 엔진 실시간 테스트</p>
         </div>
         <div class="header-actions">
-          <div class="mode-badge">
-            <i class="fa-solid fa-shield-halved"></i> 안전 폐루프 가동 중
+          <!-- 모드 전환 그룹 -->
+          <div class="mode-group">
+            <button class="btn btn-outline active" id="btn-mode-sim"><i class="fa-solid fa-flask"></i> 시뮬레이션</button>
+            <button class="btn btn-outline" id="btn-mode-ble"><i class="fa-solid fa-bluetooth-b"></i> ESP32 BLE 연결</button>
           </div>
-          <button class="btn btn-outline" id="btn-ble-connect">ESP32 BLE 연결</button>\n          <button class="btn btn-outline" id="btn-device-start">START</button>\n          <button class="btn btn-outline" id="btn-device-stop">STOP</button>\n          <button class="btn btn-primary" id="btn-emergency-stop">
+
+          <div class="mode-badge ready" id="global-mode-badge">
+            <i class="fa-solid fa-shield-halved"></i> <span id="mode-badge-text">안전 폐루프 가동 중</span>
+          </div>
+
+          <button class="btn btn-outline" id="btn-device-start"><i class="fa-solid fa-play"></i> START</button>
+          <button class="btn btn-outline" id="btn-device-stop" disabled><i class="fa-solid fa-stop"></i> STOP</button>
+          <button class="btn btn-outline" id="btn-reset-lock" style="display:none;"><i class="fa-solid fa-rotate-left"></i> 비상해제</button>
+          <button class="btn btn-primary" id="btn-emergency-stop">
             <i class="fa-solid fa-octagon-exclamation"></i> 비상 정지
           </button>
         </div>
@@ -107,14 +129,14 @@
               </div>
             </div>
 
-            <!-- 시뮬레이션 이벤트 트리어 컨트롤 -->
+            <!-- 시뮬레이션 이벤트 트리거 컨트롤 -->
             <div class="simulation-controls">
-              <h4>상태 트리거 시뮬레이션</h4>
+              <h4>수면/행동 이벤트 트리거 (AI Soothing 연동)</h4>
               <div class="btn-group">
-                <button class="btn btn-outline" onclick="triggerBabyState('sleep')">😴 깊은 수면</button>
-                <button class="btn btn-outline" onclick="triggerBabyState('light_sleep')">🥱 얕은 수면</button>
-                <button class="btn btn-outline" onclick="triggerBabyState('fussing')">🥺 징징거림</button>
-                <button class="btn btn-outline btn-danger" onclick="triggerBabyState('crying')">😭 심한 울음</button>
+                <button class="btn btn-outline" id="btn-trigger-sleep">😴 깊은 수면</button>
+                <button class="btn btn-outline" id="btn-trigger-light-sleep">🥱 얕은 수면</button>
+                <button class="btn btn-outline" id="btn-trigger-fussing">🥺 징징거림</button>
+                <button class="btn btn-outline btn-danger" id="btn-trigger-crying">😭 심한 울음</button>
               </div>
             </div>
           </div>
@@ -123,8 +145,8 @@
         <!-- 2. AI Soothing Logic & Control -->
         <div class="card soothing-control-card">
           <div class="card-header">
-            <h3><i class="fa-solid fa-wand-magic-sparkles"></i> AI 자동 달래기 (Soothing Engine)</h3>
-            <label class="switch">
+            <h3><i class="fa-solid fa-wand-magic-sparkles"></i> 진동 & 사운드 제어 (Actuator Control)</h3>
+            <label class="switch" title="AI 자동 진동 조절">
               <input type="checkbox" id="auto-soothing-toggle" checked>
               <span class="slider round"></span>
             </label>
@@ -132,12 +154,21 @@
           <div class="soothing-panel">
             <div class="control-group">
               <div class="control-label">
-                <span>진동 바운싱 강도 (Motion Level)</span>
-                <strong id="bounce-level-txt">Level 2 (Soft Gentle)</strong>
+                <span>진동 바운싱 강도 (Amplitude Scale)</span>
+                <strong id="bounce-level-txt">Level 2 (Scale 0.20)</strong>
               </div>
-              <input type="range" id="bounce-slider" min="0" max="5" value="2" class="range-slider">\n              <div class="control-label" style="margin-top:12px"><span>진동 주파수 (30–65 Hz)</span><strong id="frequency-txt">45 Hz</strong></div>\n              <input type="range" id="frequency-slider" min="30" max="65" value="45" class="range-slider">
+              <input type="range" id="bounce-slider" min="0" max="5" value="2" class="range-slider">
               <div class="range-labels">
-                <span>Off</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5 (Max)</span>
+                <span>Off</span><span>1 (0.1)</span><span>2 (0.2)</span><span>3 (0.3)</span><span>4 (0.4)</span><span>5 (0.5 Max)</span>
+              </div>
+
+              <div class="control-label" style="margin-top:14px">
+                <span>진동 주파수 (Frequency 30–65 Hz)</span>
+                <strong id="frequency-txt">45 Hz</strong>
+              </div>
+              <input type="range" id="frequency-slider" min="30" max="65" value="45" class="range-slider">
+              <div class="range-labels">
+                <span>30 Hz (Deep Rumble)</span><span>45 Hz (Default)</span><span>65 Hz (Fast Rocking)</span>
               </div>
             </div>
 
@@ -147,17 +178,17 @@
                 <strong id="sound-mode-txt">바이오리듬 핑크 노이즈</strong>
               </div>
               <div class="sound-presets">
-                <button class="preset-btn active" onclick="setSoundPreset('pink')"><i class="fa-solid fa-wind"></i> 핑크 노이즈</button>
-                <button class="preset-btn" onclick="setSoundPreset('heartbeat')"><i class="fa-solid fa-heart-pulse"></i> 심장소리</button>
-                <button class="preset-btn" onclick="setSoundPreset('lullaby')"><i class="fa-solid fa-music"></i> 바이오 자장가</button>
-                <button class="preset-btn" onclick="setSoundPreset('off')"><i class="fa-solid fa-volume-xmark"></i> 음소거</button>
+                <button class="preset-btn active" data-preset="pink"><i class="fa-solid fa-wind"></i> 핑크 노이즈</button>
+                <button class="preset-btn" data-preset="heartbeat"><i class="fa-solid fa-heart-pulse"></i> 심장소리</button>
+                <button class="preset-btn" data-preset="lullaby"><i class="fa-solid fa-music"></i> 바이오 자장가</button>
+                <button class="preset-btn" data-preset="off"><i class="fa-solid fa-volume-xmark"></i> 음소거</button>
               </div>
             </div>
 
             <div class="control-group">
               <div class="control-label">
                 <span>음량 제어 (Volume)</span>
-                <strong id="volume-txt">45 dB</strong>
+                <strong id="volume-txt">45 %</strong>
               </div>
               <input type="range" id="volume-slider" min="0" max="100" value="45" class="range-slider">
             </div>
@@ -167,8 +198,8 @@
         <!-- 3. IMU (LSM6DSOX) 센서 실시간 그래프 -->
         <div class="card graph-card">
           <div class="card-header">
-            <h3><i class="fa-solid fa-wave-square"></i> LSM6DSOX IMU 모션 센서 텔레메트리 (Acc & Gyro)</h3>
-            <span class="rate-badge">100 Hz Sampling</span>
+            <h3><i class="fa-solid fa-wave-square"></i> LSM6DSOX IMU 모션 센서 텔레메트리 (Acc X/Y/Z)</h3>
+            <span class="rate-badge" id="telemetry-rate-badge">Active Stream</span>
           </div>
           <div class="chart-container">
             <canvas id="imuChart"></canvas>
@@ -178,7 +209,7 @@
         <!-- 4. 전원 & 하드웨어 진단 (Power & Thermal) -->
         <div class="card hardware-card">
           <div class="card-header">
-            <h3><i class="fa-solid fa-bolt"></i> MP3426 Boost & AP2112 LDO 전원 실시간 레일</h3>
+            <h3><i class="fa-solid fa-bolt"></i> 전원 및 하드웨어 텔레메트리 레일</h3>
           </div>
           <div class="power-metrics">
             <div class="metric-box">
@@ -186,7 +217,7 @@
               <div class="metric-info">
                 <span class="label">PVDD Boost Output</span>
                 <span class="value" id="pvdd-voltage">12.12 V</span>
-                <span class="subtext">Amp Peak 1.5A Max</span>
+                <span class="subtext">MP3426 (Amp Peak 1.5A Max)</span>
               </div>
             </div>
             <div class="metric-box">
@@ -201,8 +232,8 @@
               <div class="metric-icon temp"><i class="fa-solid fa-temperature-half"></i></div>
               <div class="metric-info">
                 <span class="label">Amplifier Temp</span>
-                <span class="value" id="amp-temp">41.8 °C</span>
-                <span class="subtext">TAS5805M Thermal Normal</span>
+                <span class="value" id="amp-temp">41.5 °C</span>
+                <span class="subtext" id="amp-temp-sub">TAS5805M Thermal Normal</span>
               </div>
             </div>
           </div>
@@ -211,21 +242,18 @@
         <!-- 5. AI 수면 알고리즘 실시간 분석 파이프라인 로그 -->
         <div class="card log-card">
           <div class="card-header">
-            <h3><i class="fa-solid fa-terminal"></i> AI Soothing Engine Execution Logs</h3>
-            <button class="btn btn-sm btn-outline" onclick="clearLogs()">Clear Log</button>
+            <h3><i class="fa-solid fa-terminal"></i> 통합 이벤트 & 제어 통신 로그</h3>
+            <button class="btn btn-sm btn-outline" id="btn-clear-log">Clear Log</button>
           </div>
           <div class="log-terminal" id="log-terminal">
-            <div class="log-line info">[SYSTEM] MAJN Smart Bassinet Simulator Initialized.</div>
-            <div class="log-line success">[HW_CHECK] MP3426 Boost DC-DC 12.12V Stable.</div>
-            <div class="log-line success">[HW_CHECK] AP2112K 3.3V Logic Rail Regulated.</div>
-            <div class="log-line info">[IMU] LSM6DSOX Closed-loop Motion Sensing Active.</div>
-            <div class="log-line info">[AI] AI Sleep Pattern Detection Engine Standing By.</div>
+            <div class="log-line info">[SYSTEM] MAJN Smart Bassinet Controller Initialized.</div>
           </div>
         </div>
       </div>
     </main>
   </div>
 
-  <script src="ble_provider.js"></script>\n  <script src="app.js"></script>
+  <script src="device_provider.js"></script>
+  <script src="app.js"></script>
 </body>
 </html>

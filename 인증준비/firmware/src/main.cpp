@@ -5,6 +5,7 @@
 #include "tas5805m.h"
 #include "lsm6dsox.h"
 #include "pid_control.h"
+#include "ble_protocol.h"
 #include "ble_manager.h"
 
 // -------------------------------------------------------------------------
@@ -52,7 +53,15 @@ const float RAMP_STEP_20MS = 0.005f; // Ramping rate (approx. 2 seconds to full 
 
 // Safety Constraints (KC Infant Safety Standard)
 const unsigned long MAX_RUNNING_TIME_MS = 30 * 60 * 1000; // 30 minutes automatic shutdown
-unsigned long activeStateStartTime = 0;\n\nstatic AccelData latestAccel = {0, 0, 0, 0.0f, 0.0f, 1.0f};\nstatic uint8_t outputVolume = 72; // GUI volume percent; TAS5805M safe default ceiling is -12 dB (0x48)\nbool ampStandbyLatched = true;
+unsigned long activeStateStartTime = 0;
+
+static AccelData latestAccel = {0, 0, 0, 0.0f, 0.0f, 1.0f};
+static uint8_t outputVolume = 72; // GUI volume percent; TAS5805M safe default ceiling is -12 dB (0x48)
+bool ampStandbyLatched = true;
+bool accelReady = false;
+bool ampReady = false;
+bool i2sReady = false;
+static char currentSoundPreset[16] = "pink";
 
 // Sine wave Lookup Table for fast real-time wave synthesis
 int16_t sineLut[LUT_SIZE];
@@ -61,6 +70,45 @@ int16_t sineLut[LUT_SIZE];
 TaskHandle_t commTaskHandle = NULL;
 TaskHandle_t controlTaskHandle = NULL;
 TaskHandle_t audioTaskHandle = NULL;
+
+// -------------------------------------------------------------------------
+// State & Control Functions
+// -------------------------------------------------------------------------
+MajnBle::SystemState getSystemState() {
+    if (safetyLockTriggered) return MajnBle::SystemState::FAULT;
+    if (systemActive) return MajnBle::SystemState::RUNNING;
+    return MajnBle::SystemState::READY;
+}
+
+void requestSafeStop() {
+    systemActive = false;
+    targetAmplitudeScale = 0.0f;
+    Serial.println("[Control] Safe Stop requested.");
+}
+
+void requestEmergencyStop() {
+    safetyLockTriggered = true;
+    systemActive = false;
+    digitalWrite(PIN_BOOST_EN, LOW);
+    digitalWrite(PIN_AMP_PDN, LOW);
+    Serial.println("[Safety] Emergency Stop engaged! Boost & Amp disabled.");
+}
+
+void setVibrationTarget(float frequencyHz, float amplitudeScale) {
+    targetFrequency = constrain(frequencyHz, 30.0f, 65.0f);
+    targetAmplitudeScale = constrain(amplitudeScale, 0.0f, 0.5f);
+}
+
+void setOutputVolume(uint8_t volume) {
+    outputVolume = constrain(volume, (uint8_t)0, (uint8_t)100);
+}
+
+void setSoundPreset(const char* preset) {
+    if (preset) {
+        strncpy(currentSoundPreset, preset, sizeof(currentSoundPreset) - 1);
+        currentSoundPreset[sizeof(currentSoundPreset) - 1] = '\0';
+    }
+}
 
 // -------------------------------------------------------------------------
 // ISR: Critical Hardware Emergency Safety Shutdown
@@ -128,11 +176,13 @@ void AudioOutputTask(void *pvParameters) {
     Serial.println("[Core 1] I2S Audio Output Task Started.");
     
     for (;;) {
-        if (!systemActive || safetyLockTriggered) {
+        if (!systemActive || safetyLockTriggered || !i2sReady) {
             // Write silence to I2S
-            memset(buffer, 0, sizeof(buffer));
-            size_t bytes_written;
-            i2s_write(I2S_NUM, buffer, sizeof(buffer), &bytes_written, portMAX_DELAY);
+            if (i2sReady) {
+                memset(buffer, 0, sizeof(buffer));
+                size_t bytes_written;
+                i2s_write(I2S_NUM, buffer, sizeof(buffer), &bytes_written, portMAX_DELAY);
+            }
             vTaskDelay(pdMS_TO_TICKS(50));
             continue;
         }
@@ -210,14 +260,17 @@ void VibrationControlTask(void *pvParameters) {
                 if (currentAmplitudeScale < 0.0f) currentAmplitudeScale = 0.0f;
             } else {
                 // Completely ramped down, enter Standby State
-                if (!ampStandbyLatched) {\n                    amp.enterStandbyState();\n                    ampStandbyLatched = true;\n                }
+                if (!ampStandbyLatched && ampReady) {
+                    amp.enterStandbyState();
+                    ampStandbyLatched = true;
+                }
             }
         }
         
-        // 3. Read Accel sensor data over SPI (fast 10MHz bus)
-        if (accel.readAccel(accelData)) {\n            latestAccel = accelData;
+        // 3. Read Accel sensor data over SPI (fast 10MHz bus) if hardware ready
+        if (accelReady && accel.readAccel(accelData)) {
+            latestAccel = accelData;
             // Double integration to displacement (Z-axis only for micro-vibrations)
-            // Remove DC gravity offset using exponential moving average (EMA)
             accel_dc = 0.995f * accel_dc + 0.005f * accelData.z_g;
             float accel_ac_g = accelData.z_g - accel_dc;
             float accel_m_s2 = accel_ac_g * 9.80665f;
@@ -241,9 +294,14 @@ void VibrationControlTask(void *pvParameters) {
                 
                 // Adjust target scale slowly
                 targetAmplitudeScale += pid_output * 0.01f;
-                if (targetAmplitudeScale > 1.0f) targetAmplitudeScale = 1.0f;
+                if (targetAmplitudeScale > 0.5f) targetAmplitudeScale = 0.5f;
                 if (targetAmplitudeScale < 0.05f) targetAmplitudeScale = 0.05f;
             }
+        } else {
+            // Baseline 1.0g gravity reading in test mode
+            latestAccel.x_g = 0.0f;
+            latestAccel.y_g = 0.0f;
+            latestAccel.z_g = 1.0f;
         }
     }
 }
@@ -288,7 +346,6 @@ void setup() {
     digitalWrite(PIN_BOOST_EN, LOW);
 
     // GPIO34 is input-only and has NO internal pull resistor (ESP32 GPIO34-39).
-    // LSM6DSOX INT1 is push-pull (actively driven), so plain INPUT is correct here.
     pinMode(PIN_SAFETY_INT1, INPUT);
     
     // Initialize Sine Wave Table
@@ -297,10 +354,15 @@ void setup() {
     // Initialize SPI for LSM6DSOX sensor
     SPI.begin(PIN_SPI_SCLK, PIN_SPI_MISO, PIN_SPI_MOSI, PIN_SPI_CS_XL);
     if (!accel.begin()) {
-        Serial.println("[ERROR] LSM6DSOX Accelerometer Initialization Failed.");
-        while (1);
+        Serial.println("[WARN] LSM6DSOX not detected (Standalone BLE Test Mode active).");
+        accelReady = false;
+    } else {
+        Serial.println("[OK] LSM6DSOX Accelerometer Initialized via SPI.");
+        accelReady = true;
+        accel.configureSafetyInterrupt(1.5f, 20);
+        attachInterrupt(digitalPinToInterrupt(PIN_SAFETY_INT1), safetyLockISR, RISING);
+        Serial.println("[OK] Safety Lock Hardware ISR Attached to GPIO34.");
     }
-    Serial.println("[OK] LSM6DSOX Accelerometer Initialized via SPI.");
     
     // Enable the 12 V boost, wait for PVDD to settle, then release TAS5805M PDN.
     digitalWrite(PIN_BOOST_EN, HIGH);
@@ -310,38 +372,33 @@ void setup() {
 
     // Initialize I2C for TAS5805M amplifier
     if (!amp.begin(PIN_I2C_SDA, PIN_I2C_SCL)) {
-        Serial.println("[ERROR] TAS5805M Amplifier Initialization Failed.");
-        requestEmergencyStop();
-        while (1);
+        Serial.println("[WARN] TAS5805M not detected (Standalone BLE Test Mode active).");
+        ampReady = false;
+    } else {
+        Serial.println("[OK] TAS5805M Amplifier Initialized via I2C.");
+        ampReady = true;
+        amp.enterPlayState();
     }
-    Serial.println("[OK] TAS5805M Amplifier Initialized via I2C.");
     
     // Initialize I2S Audio Driver
     if (!initI2S()) {
-        Serial.println("[ERROR] I2S initialization failed.");
-        while (1);
+        Serial.println("[WARN] I2S initialization skipped or failed.");
+        i2sReady = false;
+    } else {
+        Serial.println("[OK] I2S Driver Configured for TAS5805M.");
+        i2sReady = true;
     }
-    Serial.println("[OK] I2S Driver Configured for TAS5805M.");
-    
-    // Configure Safety Shock Interrupt (Trigger at 1.5g shock limit, latched)
-    accel.configureSafetyInterrupt(1.5f, 20);
-    
-    // Enable TAS5805M to Play State
-    amp.enterPlayState();
     
     // Initialize PID Controller output limits (-1.0 to 1.0 step adjustments)
     pid.setOutputLimits(-1.0f, 1.0f);
-    
-    // Attach Hardware Safety ISR (Interrupt triggers safetyLockISR immediately)
-    attachInterrupt(digitalPinToInterrupt(PIN_SAFETY_INT1), safetyLockISR, RISING);
-    Serial.println("[OK] Safety Lock Hardware ISR Attached to GPIO34.");
 
+    // Initialize BLE Server unconditionally
     if (!initBleServer()) {
         Serial.println("[ERROR] BLE server initialization failed.");
         requestEmergencyStop();
         while (1);
     }
-    Serial.println("[OK] BLE GATT server initialized.");
+    Serial.println("[OK] BLE GATT server initialized successfully.");
     
     // -------------------------------------------------------------------------
     // FreeRTOS Task Allocation
@@ -385,4 +442,3 @@ void setup() {
 void loop() {
     vTaskDelay(pdMS_TO_TICKS(1000));
 }
-

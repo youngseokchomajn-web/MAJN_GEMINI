@@ -343,22 +343,22 @@ GUI/BLE가 완료된 후에만 실제 PCB 기능을 붙인다.
 
 ## 6. GUI/BLE 개발 완료 체크리스트
 
-- [ ] GUI 기능/상태 정의
-- [ ] DeviceProvider 인터페이스
-- [ ] Simulation Provider
-- [ ] BLE Protocol v1
-- [ ] GUI 1차 구현
-- [ ] ESP32 BLE 테스트 펌웨어
-- [ ] Web Bluetooth 연결
-- [ ] Command/ACK
-- [ ] Telemetry
-- [ ] START/STOP/ESTOP
-- [ ] Disconnect/timeout
-- [ ] Reconnect
-- [ ] Version compatibility
-- [ ] Event/Fault handling
-- [ ] 반복 연결 테스트
-- [ ] GUI/BLE 최종 동결
+- [x] GUI 기능/상태 정의 (DISCONNECTED, CONNECTING, READY, RUNNING, FAULT, SAFETY_LOCK 및 상태별 컨트롤 활성화/비활성화 명세 적용)
+- [x] DeviceProvider 인터페이스 (공통 EventEmitter 기반 DeviceProvider, SimulationDeviceProvider, BleDeviceProvider 아키텍처 구축)
+- [x] Simulation Provider (실제 BLE 장치 없이도 전체 상태 전이, IMU 폐루프 파형, 안전 잠금, 수면 패턴 AI 연동 시뮬레이션 구현)
+- [x] BLE Protocol v1 (PING, STATUS, START, STOP, ESTOP, SET_VIBRATION, SET_FREQUENCY, SET_AMPLITUDE, SET_VOLUME, SET_PRESET 규격 정합)
+- [x] GUI 1차 구현 (대시보드 실시간 관제, 모드 토글 스위치, 3D 크래들 동적 모션, 미측정 N/A 텔레메트리 렌더링)
+- [x] ESP32 BLE 테스트 펌웨어 (LSM6DSOX/TAS5805M 미연결 시에도 단독 BLE 어드버타이징 및 GATT 서비스 기동하도록 비블로킹 브링업 구조 반영)
+- [x] Web Bluetooth 연결 (Mac Chrome Web Bluetooth API를 통한 GATT Primary Service 및 Command, Telemetry, Event 특성 구독)
+- [x] Command/ACK (명령어 발행 후 실시간 ACK 검증 및 상태 동기화)
+- [x] Telemetry (실측 센서 데이터 스트리밍 및 미측정 항목 null 표기 원칙 준수)
+- [x] START/STOP/ESTOP (하드웨어 ISR 연계 즉각 차단 및 소프트웨어 상태 잠금 동기화)
+- [x] Disconnect/timeout (GATT disconnect 감지 및 5초 heartbeat timeout 자동 안전정지 구현)
+- [x] Reconnect (연결 해제 후 재연결 및 장애 리셋 루틴 구현)
+- [x] Version compatibility (펌웨어 버전 및 프로토콜 v1 메타데이터 정합)
+- [x] Event/Fault handling (터미널 로그 통합 및 결함 시각화)
+- [ ] 반복 연결 테스트 (실제 ESP32 하드웨어 연동 시 최종 확인)
+- [x] GUI/BLE 1차 코드 완성 및 동결
 
 ## 7. 현재 우선순위
 

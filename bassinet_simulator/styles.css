@@ -616,3 +616,73 @@ input:checked + .slider:before { transform: translateX(20px); }
 .log-line.success { color: var(--accent-green); }
 .log-line.warn { color: var(--accent-amber); }
 .log-line.error { color: var(--accent-rose); }
+
+/* Provider Mode & State Badges */
+.btn-outline.active {
+  background: rgba(56, 189, 248, 0.2);
+  border-color: var(--accent-blue);
+  color: white;
+}
+
+.btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.metric-info .value.unmeasured {
+  color: #64748b;
+  font-size: 14px;
+  font-style: italic;
+}
+
+.status-indicator.fault, .status-indicator.safetylock {
+  background-color: var(--accent-rose);
+  box-shadow: 0 0 10px var(--accent-rose);
+  animation: pulse-red 1s infinite alternate;
+}
+
+.status-indicator.running {
+  background-color: var(--accent-blue);
+  box-shadow: 0 0 10px var(--accent-blue);
+}
+
+.status-indicator.ready {
+  background-color: var(--accent-green);
+  box-shadow: 0 0 8px var(--accent-green);
+}
+
+.mode-badge.fault {
+  background: rgba(244, 63, 94, 0.15);
+  border-color: rgba(244, 63, 94, 0.3);
+  color: var(--accent-rose);
+}
+
+.mode-badge.running {
+  background: rgba(56, 189, 248, 0.15);
+  border-color: rgba(56, 189, 248, 0.3);
+  color: var(--accent-blue);
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.mode-group {
+  display: flex;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 4px;
+  border: 1px solid var(--border-color);
+  gap: 4px;
+}
+
+.mode-group .btn {
+  padding: 6px 12px;
+  font-size: 13px;
+  border-radius: 8px;
+}
+

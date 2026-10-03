@@ -20,12 +20,14 @@ GUI → ESP32:
 ```json
 {"id":12,"cmd":"PING"}
 {"id":13,"cmd":"STATUS"}
-{"id":14,"cmd":"START"}
+{"id":14,"cmd":"START","frequency_hz":45,"amplitude":0.2}
 {"id":15,"cmd":"STOP"}
 {"id":16,"cmd":"ESTOP"}
 {"id":17,"cmd":"SET_VIBRATION","frequency_hz":45,"amplitude":0.5}
-{"id":18,"cmd":"SET_VOLUME","volume":72}
-{"id":19,"cmd":"SET_PRESET","preset":"pink"}
+{"id":18,"cmd":"SET_FREQUENCY","frequency_hz":50}
+{"id":19,"cmd":"SET_AMPLITUDE","amplitude":0.3}
+{"id":20,"cmd":"SET_VOLUME","volume":72}
+{"id":21,"cmd":"SET_PRESET","preset":"pink"}
 ```
 
 ### ACK

@@ -15,7 +15,10 @@ extern volatile unsigned long activeStateStartTime;
 extern void requestSafeStop();
 extern void requestEmergencyStop();
 extern void setVibrationTarget(float frequencyHz, float amplitudeScale);
-extern void setOutputVolume(uint8_t volume);\nextern bool ampStandbyLatched;
+extern void setOutputVolume(uint8_t volume);
+extern void setSoundPreset(const char* preset);
+extern bool ampStandbyLatched;
+extern MajnBle::SystemState getSystemState();
 
 namespace {
 BLEServer* gServer = nullptr;
@@ -38,7 +41,7 @@ const char* stateName(MajnBle::SystemState state) {
 }
 
 void sendAck(int id, const char* cmd, const char* status, const char* state) {
-    if (!gConnected || !gCommand) return;
+    if (!gConnected || !gEvent) return;
     JsonDocument doc;
     doc["type"] = "ack";
     doc["id"] = id;
@@ -82,11 +85,11 @@ class CommandCallbacks : public BLECharacteristicCallbacks {
         const char* cmd = doc["cmd"] | "";
 
         if (strcmp(cmd, "PING") == 0) {
-            sendAck(id, cmd, "applied", "READY");
+            sendAck(id, cmd, "applied", stateName(getSystemState()));
             return;
         }
         if (strcmp(cmd, "STATUS") == 0) {
-            sendAck(id, cmd, "applied", systemActive ? "RUNNING" : "READY");
+            sendAck(id, cmd, "applied", stateName(getSystemState()));
             return;
         }
         if (strcmp(cmd, "START") == 0) {
@@ -96,7 +99,11 @@ class CommandCallbacks : public BLECharacteristicCallbacks {
             }
             systemActive = true;
             activeStateStartTime = millis();
-            targetAmplitudeScale = constrain((float)(doc["amplitude"] | targetAmplitudeScale), 0.0f, 0.5f);
+            if (doc.containsKey("frequency_hz")) {
+                float f = doc["frequency_hz"];
+                if (f >= 30.0f && f <= 65.0f) targetFrequency = f;
+            }
+            targetAmplitudeScale = constrain((float)(doc["amplitude"] | (targetAmplitudeScale > 0.05f ? targetAmplitudeScale : 0.2f)), 0.0f, 0.5f);
             sendAck(id, cmd, "applied", "RUNNING");
             return;
         }
@@ -114,25 +121,51 @@ class CommandCallbacks : public BLECharacteristicCallbacks {
             float f = doc["frequency_hz"] | targetFrequency;
             float a = doc["amplitude"] | targetAmplitudeScale;
             if (f < 30.0f || f > 65.0f || a < 0.0f || a > 0.5f) {
-                sendAck(id, cmd, "rejected", systemActive ? "RUNNING" : "READY");
+                sendAck(id, cmd, "rejected", stateName(getSystemState()));
                 return;
             }
             setVibrationTarget(f, a);
-            sendAck(id, cmd, "applied", systemActive ? "RUNNING" : "READY");
+            sendAck(id, cmd, "applied", stateName(getSystemState()));
+            return;
+        }
+        if (strcmp(cmd, "SET_FREQUENCY") == 0) {
+            float f = doc["frequency_hz"] | targetFrequency;
+            if (f < 30.0f || f > 65.0f) {
+                sendAck(id, cmd, "rejected", stateName(getSystemState()));
+                return;
+            }
+            setVibrationTarget(f, targetAmplitudeScale);
+            sendAck(id, cmd, "applied", stateName(getSystemState()));
+            return;
+        }
+        if (strcmp(cmd, "SET_AMPLITUDE") == 0) {
+            float a = doc["amplitude"] | targetAmplitudeScale;
+            if (a < 0.0f || a > 0.5f) {
+                sendAck(id, cmd, "rejected", stateName(getSystemState()));
+                return;
+            }
+            setVibrationTarget(targetFrequency, a);
+            sendAck(id, cmd, "applied", stateName(getSystemState()));
             return;
         }
         if (strcmp(cmd, "SET_VOLUME") == 0) {
             uint8_t v = doc["volume"] | 0;
             if (v > 100) {
-                sendAck(id, cmd, "rejected", systemActive ? "RUNNING" : "READY");
+                sendAck(id, cmd, "rejected", stateName(getSystemState()));
                 return;
             }
             setOutputVolume(v);
-            sendAck(id, cmd, "applied", systemActive ? "RUNNING" : "READY");
+            sendAck(id, cmd, "applied", stateName(getSystemState()));
+            return;
+        }
+        if (strcmp(cmd, "SET_PRESET") == 0) {
+            const char* p = doc["preset"] | "pink";
+            setSoundPreset(p);
+            sendAck(id, cmd, "applied", stateName(getSystemState()));
             return;
         }
 
-        sendAck(id, cmd, "rejected", systemActive ? "RUNNING" : "READY");
+        sendAck(id, cmd, "rejected", stateName(getSystemState()));
     }
 };
 }
