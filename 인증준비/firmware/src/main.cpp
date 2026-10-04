@@ -7,6 +7,7 @@
 #include "amplifier_manager.h"
 #include "imu_manager.h"
 #include "vibration_controller.h"
+#include "ota_manager.h"
 
 // -------------------------------------------------------------------------
 // Global Operational State & FreeRTOS Orchestration
@@ -145,9 +146,13 @@ void setup() {
     xTaskCreatePinnedToCore(VibrationControlTask, "ControlTask", 4096, NULL, 4, &controlTaskHandle, 1);
     xTaskCreatePinnedToCore(AudioOutputTask, "AudioTask", 4096, NULL, 5, &audioTaskHandle, 1);
 
+    // 8. Wireless OTA Engine Initialization
+    MajnOta::initOta();
+
     Serial.println("[OK] System Tasks Running. Ready for BLE Connection.");
 }
 
 void loop() {
-    vTaskDelay(pdMS_TO_TICKS(1000));
+    MajnOta::tickOta();
+    vTaskDelay(pdMS_TO_TICKS(10));
 }
