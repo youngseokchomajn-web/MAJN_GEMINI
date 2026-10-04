@@ -341,6 +341,20 @@ function initEventListeners() {
     }
   });
 
+  document.getElementById('btn-device-reboot')?.addEventListener('click', async () => {
+    if (!activeProvider) return;
+    if (confirm('보드를 원격으로 소프트웨어 재기동(REBOOT)하시겠습니까?')) {
+      try {
+        logMessage('warn', '[SYSTEM] 원격 소프트웨어 재부팅 명령을 보냅니다...');
+        if (typeof activeProvider.reboot === 'function') {
+          await activeProvider.reboot();
+        }
+      } catch (err) {
+        logMessage('error', `재부팅 실패: ${err.message}`);
+      }
+    }
+  });
+
   document.getElementById('btn-emergency-stop')?.addEventListener('click', async () => {
     if (!activeProvider) return;
     try {
