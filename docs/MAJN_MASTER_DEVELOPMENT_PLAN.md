@@ -41,6 +41,7 @@ MAJN은 Mac Chrome GUI에서 ESP32 BLE 장치를 연결하고, 실제 IMU teleme
 | 18 | Safety/Fault | fault matrix 통과 |
 | 19 | Long-duration | 반복/장시간 시험 완료 |
 | 20 | Final Acceptance | 전체 lifecycle 통과 |
+| 21 | OTA Wireless Update | 브라우저/Wi-Fi 무선 펌웨어 업데이트 (수동 핀 쇼트 완전 제거) |
 
 ## 4. Phase 0 — 현재 코드/문서 정합성
 ### 작업
