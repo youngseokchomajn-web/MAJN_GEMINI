@@ -37,7 +37,8 @@ export const COMMANDS = Object.freeze({
   SET_FREQUENCY: 'SET_FREQUENCY',
   SET_AMPLITUDE: 'SET_AMPLITUDE',
   SET_VOLUME: 'SET_VOLUME',
-  SET_PRESET: 'SET_PRESET'
+  SET_PRESET: 'SET_PRESET',
+  REBOOT: 'REBOOT'
 });
 
 export const ACK_STATUS = Object.freeze({

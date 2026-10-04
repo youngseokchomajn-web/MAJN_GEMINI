@@ -264,6 +264,10 @@ export class BleDeviceProvider extends DeviceProvider {
   async getStatus() {
     return await this.send(COMMANDS.STATUS);
   }
+
+  async reboot() {
+    return await this.send(COMMANDS.REBOOT);
+  }
 }
 
 if (typeof window !== 'undefined') {
