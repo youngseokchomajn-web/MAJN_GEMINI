@@ -3,10 +3,17 @@
  * Fully decoupled architecture using the common DeviceProvider interface.
  */
 
-// Device Providers
+import { SimulationDeviceProvider } from './simulation_provider.js';
+import { BleDeviceProvider } from './ble_provider.js';
+import { DiagnosticsMonitor } from './diagnostics.js';
+import { COMMANDS, PROTOCOL_LIMITS } from './protocol.js';
+import { DeviceState } from './state_machine.js';
+
+// Device Providers & Diagnostics
 let simProvider = null;
 let bleProvider = null;
 let activeProvider = null;
+const diagnostics = new DiagnosticsMonitor();
 
 // UI & Simulation State
 let autoSoothing = true;

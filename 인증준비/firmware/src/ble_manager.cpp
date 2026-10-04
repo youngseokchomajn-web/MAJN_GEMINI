@@ -6,19 +6,13 @@
 #include <BLE2902.h>
 #include <ArduinoJson.h>
 
-extern volatile bool safetyLockTriggered;
+#include "safety_manager.h"
+#include "power_manager.h"
+#include "amplifier_manager.h"
+#include "vibration_controller.h"
+
 extern volatile bool systemActive;
-extern volatile float targetFrequency;
-extern volatile float currentAmplitudeScale;
-extern volatile float targetAmplitudeScale;
 extern volatile unsigned long activeStateStartTime;
-extern void requestSafeStop();
-extern void requestEmergencyStop();
-extern void setVibrationTarget(float frequencyHz, float amplitudeScale);
-extern void setOutputVolume(uint8_t volume);
-extern void setSoundPreset(const char* preset);
-extern bool ampStandbyLatched;
-extern MajnBle::SystemState getSystemState();
 
 namespace {
 BLEServer* gServer = nullptr;
@@ -28,6 +22,7 @@ BLECharacteristic* gEvent = nullptr;
 volatile bool gConnected = false;
 volatile uint32_t gLastClientActivity = 0;
 uint32_t gLastTelemetry = 0;
+char gCurrentPreset[16] = "pink";
 
 const char* stateName(MajnBle::SystemState state) {
     switch (state) {
@@ -63,7 +58,7 @@ class ServerCallbacks : public BLEServerCallbacks {
     void onDisconnect(BLEServer* server) override {
         gConnected = false;
         Serial.println("[BLE] Client disconnected. Requesting safe stop.");
-        requestSafeStop();
+        MajnSafety::requestSafeStop();
         server->startAdvertising();
     }
 };
@@ -71,13 +66,13 @@ class ServerCallbacks : public BLEServerCallbacks {
 class CommandCallbacks : public BLECharacteristicCallbacks {
     void onWrite(BLECharacteristic* characteristic) override {
         gLastClientActivity = millis();
-        std::string raw = characteristic->getValue();
-        if (raw.empty()) return;
+        String raw = characteristic->getValue();
+        if (raw.length() == 0) return;
 
         JsonDocument doc;
-        DeserializationError err = deserializeJson(doc, raw);
+        DeserializationError err = deserializeJson(doc, raw.c_str());
         if (err) {
-            sendAck(-1, "UNKNOWN", "rejected", "FAULT");
+            sendAck(-1, "UNKNOWN", "rejected", stateName(MajnSafety::getSystemState(systemActive)));
             return;
         }
 
@@ -85,87 +80,87 @@ class CommandCallbacks : public BLECharacteristicCallbacks {
         const char* cmd = doc["cmd"] | "";
 
         if (strcmp(cmd, "PING") == 0) {
-            sendAck(id, cmd, "applied", stateName(getSystemState()));
+            sendAck(id, cmd, "applied", stateName(MajnSafety::getSystemState(systemActive)));
             return;
         }
         if (strcmp(cmd, "STATUS") == 0) {
-            sendAck(id, cmd, "applied", stateName(getSystemState()));
+            sendAck(id, cmd, "applied", stateName(MajnSafety::getSystemState(systemActive)));
             return;
         }
         if (strcmp(cmd, "START") == 0) {
-            if (safetyLockTriggered) {
+            if (MajnSafety::isSafetyLockTriggered()) {
                 sendAck(id, cmd, "fault", "FAULT");
                 return;
             }
             systemActive = true;
             activeStateStartTime = millis();
-            if (doc.containsKey("frequency_hz")) {
-                float f = doc["frequency_hz"];
-                if (f >= 30.0f && f <= 65.0f) targetFrequency = f;
-            }
-            targetAmplitudeScale = constrain((float)(doc["amplitude"] | (targetAmplitudeScale > 0.05f ? targetAmplitudeScale : 0.2f)), 0.0f, 0.5f);
+            float f = doc["frequency_hz"] | MajnVibration::getTargetFrequency();
+            float a = doc["amplitude"] | (MajnVibration::getTargetAmplitude() > 0.05f ? MajnVibration::getTargetAmplitude() : 0.2f);
+            MajnVibration::setTarget(f, a);
+            MajnAmplifier::enterPlayState();
             sendAck(id, cmd, "applied", "RUNNING");
             return;
         }
         if (strcmp(cmd, "STOP") == 0) {
-            requestSafeStop();
+            MajnSafety::requestSafeStop();
             sendAck(id, cmd, "applied", "READY");
             return;
         }
         if (strcmp(cmd, "ESTOP") == 0) {
-            requestEmergencyStop();
+            MajnSafety::requestEmergencyStop();
             sendAck(id, cmd, "applied", "FAULT");
             return;
         }
         if (strcmp(cmd, "SET_VIBRATION") == 0) {
-            float f = doc["frequency_hz"] | targetFrequency;
-            float a = doc["amplitude"] | targetAmplitudeScale;
+            float f = doc["frequency_hz"] | MajnVibration::getTargetFrequency();
+            float a = doc["amplitude"] | MajnVibration::getTargetAmplitude();
             if (f < 30.0f || f > 65.0f || a < 0.0f || a > 0.5f) {
-                sendAck(id, cmd, "rejected", stateName(getSystemState()));
+                sendAck(id, cmd, "rejected", stateName(MajnSafety::getSystemState(systemActive)));
                 return;
             }
-            setVibrationTarget(f, a);
-            sendAck(id, cmd, "applied", stateName(getSystemState()));
+            MajnVibration::setTarget(f, a);
+            sendAck(id, cmd, "applied", stateName(MajnSafety::getSystemState(systemActive)));
             return;
         }
         if (strcmp(cmd, "SET_FREQUENCY") == 0) {
-            float f = doc["frequency_hz"] | targetFrequency;
+            float f = doc["frequency_hz"] | MajnVibration::getTargetFrequency();
             if (f < 30.0f || f > 65.0f) {
-                sendAck(id, cmd, "rejected", stateName(getSystemState()));
+                sendAck(id, cmd, "rejected", stateName(MajnSafety::getSystemState(systemActive)));
                 return;
             }
-            setVibrationTarget(f, targetAmplitudeScale);
-            sendAck(id, cmd, "applied", stateName(getSystemState()));
+            MajnVibration::setTarget(f, MajnVibration::getTargetAmplitude());
+            sendAck(id, cmd, "applied", stateName(MajnSafety::getSystemState(systemActive)));
             return;
         }
         if (strcmp(cmd, "SET_AMPLITUDE") == 0) {
-            float a = doc["amplitude"] | targetAmplitudeScale;
+            float a = doc["amplitude"] | MajnVibration::getTargetAmplitude();
             if (a < 0.0f || a > 0.5f) {
-                sendAck(id, cmd, "rejected", stateName(getSystemState()));
+                sendAck(id, cmd, "rejected", stateName(MajnSafety::getSystemState(systemActive)));
                 return;
             }
-            setVibrationTarget(targetFrequency, a);
-            sendAck(id, cmd, "applied", stateName(getSystemState()));
+            MajnVibration::setTarget(MajnVibration::getTargetFrequency(), a);
+            sendAck(id, cmd, "applied", stateName(MajnSafety::getSystemState(systemActive)));
             return;
         }
         if (strcmp(cmd, "SET_VOLUME") == 0) {
             uint8_t v = doc["volume"] | 0;
             if (v > 100) {
-                sendAck(id, cmd, "rejected", stateName(getSystemState()));
+                sendAck(id, cmd, "rejected", stateName(MajnSafety::getSystemState(systemActive)));
                 return;
             }
-            setOutputVolume(v);
-            sendAck(id, cmd, "applied", stateName(getSystemState()));
+            MajnAmplifier::setVolume(v);
+            sendAck(id, cmd, "applied", stateName(MajnSafety::getSystemState(systemActive)));
             return;
         }
         if (strcmp(cmd, "SET_PRESET") == 0) {
             const char* p = doc["preset"] | "pink";
-            setSoundPreset(p);
-            sendAck(id, cmd, "applied", stateName(getSystemState()));
+            strncpy(gCurrentPreset, p, sizeof(gCurrentPreset) - 1);
+            gCurrentPreset[sizeof(gCurrentPreset) - 1] = '\0';
+            sendAck(id, cmd, "applied", stateName(MajnSafety::getSystemState(systemActive)));
             return;
         }
 
-        sendAck(id, cmd, "rejected", stateName(getSystemState()));
+        sendAck(id, cmd, "rejected", stateName(MajnSafety::getSystemState(systemActive)));
     }
 };
 }
@@ -213,8 +208,8 @@ void bleRegisterHeartbeat() {
 
 void bleLoop() {
     if (gConnected && millis() - gLastClientActivity > MajnBle::HEARTBEAT_TIMEOUT_MS) {
-        Serial.println("[BLE] Heartbeat timeout. Safe stop.");
-        requestSafeStop();
+        Serial.println("[BLE] Heartbeat timeout (5s). Requesting safe stop.");
+        MajnSafety::requestSafeStop();
         gLastClientActivity = millis();
     }
 }

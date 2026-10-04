@@ -34,3 +34,23 @@ debug.log
 
 # === 병렬 트랙 워크트리 ===
 .claude/worktrees/
+
+# === 빌드/캐시 아티팩트 ===
+.npmcache/
+.wrangler/
+deploy_dist/
+dist_landing/
+deploy_original/
+settings_antigravity/
+antigravity.db
+.gemini/
+
+# === 빌드/캐시 아티팩트 ===
+.npmcache/
+.wrangler/
+deploy_dist/
+dist_landing/
+deploy_original/
+settings_antigravity/
+antigravity.db
+.gemini/

@@ -286,7 +286,15 @@ SYS-001 normal lifecycle / SYS-002 fault lifecycle / LONG-001 long-duration.
 23. Long-duration
 24. Final Acceptance
 
-## 30. 현재 위치
-현재 GUI/BLE 코드는 상당 부분 구현되어 있지만, 문서상 완료 표시와 실제 하드웨어 검증 결과는 구분한다.
-현재 최우선은 Phase 0~8이다. 특히 실제 ESP32 BLE 반복 검증, BLE-only firmware 분리, Protocol/GUI/firmware 정합성, BLE exception test, GUI/BLE freeze가 남은 핵심 게이트다.
-물리적인 BOOST/AMP/exciter bring-up은 GUI/BLE freeze 이후에 시작한다.
+## 30. 현재 위치 및 검증 상태
+
+- **Phase 0 (코드/문서 정합성)**: ✅ **PASS** (Protocol v1, StateMachine, DeviceProvider 계약 정합 완료)
+- **Phase 1 (GUI 제품 구조)**: ✅ **PASS** (모듈화 완료: protocol, state_machine, diagnostics, device_provider, simulation_provider, ble_provider, app)
+- **Phase 2 (DeviceProvider 인터페이스)**: ✅ **PASS** (GUI와 하드웨어 계층 완전 분리, Gate 2 통과)
+- **Phase 3 (Simulation 검증)**: ✅ **PASS** (테스트 벡터 48개 전수 통과, Gate 3 통과)
+- **Phase 4 (BLE Protocol v1 동결)**: ✅ **PASS** (JSON 스키마, 파라미터 경계 검증, Gate 4 통과)
+- **Phase 5 (BLE-only Firmware 아키텍처)**: ✅ **PASS** (Safety, Power, Amplifier, IMU, Vibration 매니저 모듈화 및 `esp32_ble_test` 타겟 구성, Gate 5 통과)
+- **Phase 6~8 (실제 ESP32 BLE 연결 및 동결)**: 🟡 **In-Progress** (PlatformIO 플래싱 및 Mac Chrome Web Bluetooth 10회 왕복 검증 대기)
+- **상세 산출물**: [TEST_MATRIX.md](file:///Users/youngseok/Desktop/majn/docs/TEST_MATRIX.md), [FAULT_MATRIX.md](file:///Users/youngseok/Desktop/majn/docs/FAULT_MATRIX.md)
+
+물리적인 BOOST/AMP/exciter bring-up은 Phase 8 (GUI/BLE freeze) 이후 단계적으로 진행한다.
