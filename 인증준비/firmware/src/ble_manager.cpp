@@ -5,6 +5,7 @@
 #include <BLEUtils.h>
 #include <BLE2902.h>
 #include <ArduinoJson.h>
+#include "soc/rtc_cntl_reg.h"
 
 #include "safety_manager.h"
 #include "power_manager.h"
@@ -157,6 +158,13 @@ class CommandCallbacks : public BLECharacteristicCallbacks {
             strncpy(gCurrentPreset, p, sizeof(gCurrentPreset) - 1);
             gCurrentPreset[sizeof(gCurrentPreset) - 1] = '\0';
             sendAck(id, cmd, "applied", stateName(MajnSafety::getSystemState(systemActive)));
+            return;
+        }
+        if (strcmp(cmd, "REBOOT") == 0) {
+            sendAck(id, cmd, "applied", "REBOOTING");
+            Serial.println("[SYSTEM] Remote reboot requested via BLE. Restarting in 200ms...");
+            delay(200);
+            esp_restart();
             return;
         }
 
