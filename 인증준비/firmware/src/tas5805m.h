@@ -3,8 +3,10 @@
 
 #include <stdint.h>
 
-// TAS5805M Default I2C Address (ADDR pin pulled down: 0x2C, ADDR pulled up: 0x2D)
-#define TAS5805M_I2C_ADDR   0x2C
+// TAS5805M I2C Addresses (ADDR pulled up to 3.3V: 0x2D, pulled down: 0x2C)
+#define TAS5805M_I2C_ADDR_PULLUP    0x2D
+#define TAS5805M_I2C_ADDR_PULLDOWN  0x2C
+#define TAS5805M_I2C_ADDR           TAS5805M_I2C_ADDR_PULLUP
 
 // TAS5805M Essential Registers
 #define REG_DEVICE_CTRL_1   0x02

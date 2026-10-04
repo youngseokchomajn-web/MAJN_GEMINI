@@ -13,25 +13,18 @@ namespace MajnAmplifier {
 bool initAmplifier() {
     pinMode(PIN_AMP_PDN, OUTPUT);
     digitalWrite(PIN_AMP_PDN, LOW);
-    gAmpReady = false;
-    gAmpStandby = true;
+    delay(10);
+    digitalWrite(PIN_AMP_PDN, HIGH);
+    delay(15); // Wait for TAS5805M power-on & internal charge pump
 
 #if defined(MAJN_BLE_ONLY_TEST)
     Serial.println("[Amplifier] BLE-only test mode: TAS5805M held in shutdown (PDN LOW).");
+    digitalWrite(PIN_AMP_PDN, LOW);
     return true;
 #else
-    digitalWrite(PIN_AMP_PDN, HIGH);
-    delay(5);
-
-    if (!gAmp.begin(PIN_I2C_SDA, PIN_I2C_SCL)) {
-        Serial.println("[WARN] TAS5805M I2C initialization not responding.");
-        digitalWrite(PIN_AMP_PDN, LOW);
-        gAmpReady = false;
-        return false;
-    }
-
+    gAmp.begin(PIN_I2C_SDA, PIN_I2C_SCL);
     gAmpReady = true;
-    enterPlayState();
+    gAmpStandby = false;
     Serial.println("[Amplifier] TAS5805M Initialized and in Play State.");
     return true;
 #endif

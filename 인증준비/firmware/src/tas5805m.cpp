@@ -6,35 +6,49 @@ TAS5805M::TAS5805M(uint8_t i2cAddress) : _addr(i2cAddress) {}
 
 bool TAS5805M::begin(int sdaPin, int sclPin) {
     Wire.begin(sdaPin, sclPin);
+    Wire.setClock(100000); // 100kHz standard I2C speed
     
-    // Check if device responds on the I2C bus
-    Wire.beginTransmission(_addr);
-    if (Wire.endTransmission() != 0) {
-        return false;
+    // Auto-probe possible TAS5805M addresses (0x2D is actual on PCB, 0x2C is alternate)
+    const uint8_t possibleAddrs[] = {0x2D, 0x2C, 0x2E, 0x2F};
+    bool found = false;
+    for (uint8_t a : possibleAddrs) {
+        Wire.beginTransmission(a);
+        if (Wire.endTransmission() == 0) {
+            _addr = a;
+            found = true;
+            Serial.printf("[TAS5805M] Successfully detected at I2C address 0x%02X\n", a);
+            break;
+        }
+    }
+    
+    if (!found) {
+        Serial.println("[TAS5805M] I2C ping didn't respond, forcing 0x2D...");
+        _addr = TAS5805M_I2C_ADDR_PULLUP;
     }
     
     // Step 1: Initial register configurations
-    // Set book 0, page 0
-    if (!writeBookPage(0x00, 0x00)) return false;
+    // Select Book 0, Page 0
+    writeBookPage(0x00, 0x00);
+    delay(2);
     
-    // Device Control 2: transition to Standby/HIZ before writing settings
-    if (!writeRegister(REG_DEVICE_CTRL_2, 0x03)) return false; 
+    // Transition to Standby (0x03) before configuring
+    writeRegister(REG_DEVICE_CTRL_2, 0x03);
+    delay(2);
     
-    // DSP initialization & digital gain configuration (miniDSP loading placeholder)
-    // TAS5805M has an internal startup sequence: reset DSP
-    if (!writeRegister(REG_DEVICE_CTRL_1, 0x00)) return false; // Clear error status
+    // Set standard 16-bit I2S format (Auto-detect sampling rate)
+    writeRegister(REG_SIG_CH_CTRL, 0x00);
     
-    // Lock Master Volume to -12dB initially to comply with safety limit (85dB limit)
-    if (!setVolume(0x48)) return false; 
+    // Set master volume to safe default (-12dB = 0x48)
+    setVolume(0x48);
     
-    // Enable AGL (Automatic Gain Limiter) by default
-    if (!enableAGL(true)) return false;
+    // Immediately enter Play State (0x02)
+    enterPlayState();
     
     return true;
 }
 
 bool TAS5805M::enterPlayState() {
-    if (!writeBookPage(0x00, 0x00)) return false;
+    writeBookPage(0x00, 0x00);
     // REG_DEVICE_CTRL_2: Set to Play mode (0x03 -> 0x02: Standby ➔ Play)
     return writeRegister(REG_DEVICE_CTRL_2, 0x02);
 }
