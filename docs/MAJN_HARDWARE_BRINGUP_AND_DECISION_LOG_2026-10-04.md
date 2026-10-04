@@ -72,3 +72,11 @@
 3. **Phase 21 (무선 OTA 파이프라인 완성)**:
    - 이번 1회 플래싱을 끝으로 향후 물리 핀 조작 불필요 (무선 OTA 및 BLE 원격 재부팅 파이프라인 완비).
 
+
+---
+
+## 5. 19:15 추가 심층 분석 및 긴급 이슈 해결 내역
+
+- **상세 보고서 문서**: [`docs/MAJN_PCB0005_BRINGUP_DEEP_ANALYSIS_2026-10-04.md`](MAJN_PCB0005_BRINGUP_DEEP_ANALYSIS_2026-10-04.md)
+- **TAS5805M I2C 주소 규명**: R12 (4.7kΩ 풀업) 실측 확인에 따라 기본 주소를 `0x2D`로 변경 및 자동 탐색 로직 적용 완료 ([`90f84c5`](https://github.com/youngseokchomajn-web/MAJN_GEMINI/commit/90f84c5)).
+- **Wi-Fi SoftAP RF 충돌 제거**: BLE와 Core 0에서 동시 기동 시 발생한 `ieee80211_hostap_attach` 패닉을 원천 차단하여 초안정 펌웨어 바이너리(1.79MB) 빌드 완료 ([`0dddc2f`](https://github.com/youngseokchomajn-web/MAJN_GEMINI/commit/0dddc2f)).
