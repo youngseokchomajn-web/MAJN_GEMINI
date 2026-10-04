@@ -146,13 +146,12 @@ void setup() {
     xTaskCreatePinnedToCore(VibrationControlTask, "ControlTask", 4096, NULL, 4, &controlTaskHandle, 1);
     xTaskCreatePinnedToCore(AudioOutputTask, "AudioTask", 4096, NULL, 5, &audioTaskHandle, 1);
 
-    // 8. Wireless OTA Engine Initialization
-    MajnOta::initOta();
+    // 8. Wireless OTA Engine (Disabled to prevent Wi-Fi/BLE coexist memory crash)
+    // MajnOta::initOta();
 
     Serial.println("[OK] System Tasks Running. Ready for BLE Connection.");
 }
 
 void loop() {
-    MajnOta::tickOta();
-    vTaskDelay(pdMS_TO_TICKS(10));
+    vTaskDelay(pdMS_TO_TICKS(1000));
 }
