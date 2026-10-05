@@ -355,6 +355,67 @@ function initEventListeners() {
     }
   });
 
+  // Web BLE Wireless OTA Handler
+  const otaFileInput = document.getElementById('ota-file-input');
+  const btnOtaChoose = document.getElementById('btn-ota-choose');
+  const btnOtaStart = document.getElementById('btn-ota-start');
+  const otaFileInfo = document.getElementById('ota-file-info');
+  const otaProgressBar = document.getElementById('ota-progress-bar');
+  const otaProgressPct = document.getElementById('ota-progress-pct');
+  const otaStatusLabel = document.getElementById('ota-status-label');
+
+  let selectedOtaFile = null;
+
+  btnOtaChoose?.addEventListener('click', () => {
+    otaFileInput?.click();
+  });
+
+  otaFileInput?.addEventListener('change', (e) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      selectedOtaFile = file;
+      if (otaFileInfo) otaFileInfo.textContent = `선택된 파일: ${file.name} (${(file.size / 1024).toFixed(1)} KB)`;
+      if (btnOtaStart) btnOtaStart.disabled = false;
+      if (otaStatusLabel) otaStatusLabel.textContent = '업로드 준비 완료';
+    }
+  });
+
+  btnOtaStart?.addEventListener('click', async () => {
+    if (!selectedOtaFile) {
+      alert('먼저 펌웨어(.bin) 파일을 선택해주세요.');
+      return;
+    }
+    if (activeProvider?.mode !== 'ble' || !activeProvider?.isConnected) {
+      alert('ESP32 BLE 실물 장치가 연결되어 있지 않습니다. 상단에서 [ESP32 BLE 실물]을 먼저 연결해주세요.');
+      return;
+    }
+
+    if (!confirm(`무선 펌웨어 업데이트를 시작하시겠습니까?\n파일: ${selectedOtaFile.name}\n크기: ${(selectedOtaFile.size / 1024).toFixed(1)} KB\n\n업데이트 중에는 전원을 끄지 마세요.`)) {
+      return;
+    }
+
+    btnOtaStart.disabled = true;
+    btnOtaChoose.disabled = true;
+    if (otaStatusLabel) otaStatusLabel.textContent = '블루투스 무선 전송 중...';
+
+    try {
+      await activeProvider.performOta(selectedOtaFile, (pct, sent, total) => {
+        if (otaProgressBar) otaProgressBar.style.width = `${pct}%`;
+        if (otaProgressPct) otaProgressPct.textContent = `${pct}% (${(sent / 1024).toFixed(0)}/${(total / 1024).toFixed(0)} KB)`;
+      });
+      if (otaStatusLabel) otaStatusLabel.textContent = '완료! ESP32 자동 재부팅 중...';
+      if (otaProgressBar) otaProgressBar.style.background = '#10b981';
+      alert('🎉 무선 펌웨어 업데이트 대성공!\nESP32가 새 펌웨어로 자동 재부팅됩니다.');
+    } catch (err) {
+      if (otaStatusLabel) otaStatusLabel.textContent = `오류 발생: ${err.message}`;
+      if (otaProgressBar) otaProgressBar.style.background = '#ef4444';
+      alert(`무선 업데이트 실패: ${err.message}`);
+    } finally {
+      btnOtaStart.disabled = false;
+      btnOtaChoose.disabled = false;
+    }
+  });
+
   document.getElementById('btn-emergency-stop')?.addEventListener('click', async () => {
     if (!activeProvider) return;
     try {

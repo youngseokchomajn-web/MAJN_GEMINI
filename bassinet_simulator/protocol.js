@@ -9,7 +9,10 @@ export const MAJN_BLE_UUIDS = Object.freeze({
   service: '7b4d0001-7a6a-4d41-9a4d-4d414a4a4e01',
   command: '7b4d0002-7a6a-4d41-9a4d-4d414a4a4e01',
   telemetry: '7b4d0003-7a6a-4d41-9a4d-4d414a4a4e01',
-  event: '7b4d0004-7a6a-4d41-9a4d-4d414a4a4e01'
+  event: '7b4d0004-7a6a-4d41-9a4d-4d414a4a4e01',
+  otaService: '00000004-6a6e-4d41-4a4e-000000000001',
+  otaControl: '00000005-6a6e-4d41-4a4e-000000000001',
+  otaData: '00000006-6a6e-4d41-4a4e-000000000001'
 });
 
 export const PROTOCOL_LIMITS = Object.freeze({

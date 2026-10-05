@@ -52,7 +52,7 @@ export class BleDeviceProvider extends DeviceProvider {
     try {
       this.device = await navigator.bluetooth.requestDevice({
         filters: [{ services: [MAJN_BLE_UUIDS.service] }],
-        optionalServices: [MAJN_BLE_UUIDS.service]
+        optionalServices: [MAJN_BLE_UUIDS.service, MAJN_BLE_UUIDS.otaService]
       });
     } catch (err) {
       this.setState(DeviceState.DISCONNECTED, 'Device selection cancelled');
@@ -267,6 +267,60 @@ export class BleDeviceProvider extends DeviceProvider {
 
   async reboot() {
     return await this.send(COMMANDS.REBOOT);
+  }
+
+  /**
+   * 100% Wireless Web Bluetooth OTA Firmware Update
+   * Uploads .bin firmware directly to ESP32 over BLE GATT
+   */
+  async performOta(file, onProgress) {
+    if (!this.isConnected || !this.server) {
+      throw new Error('ESP32가 연결되어 있지 않습니다. 먼저 BLE 연결을 해주세요.');
+    }
+
+    this.emit('log', { type: 'info', message: `[BLE-OTA] 무선 펌웨어 업데이트 시작 (파일: ${file.name}, 크기: ${file.size} bytes)` });
+
+    const otaService = await this.server.getPrimaryService(MAJN_BLE_UUIDS.otaService);
+    const otaControl = await otaService.getCharacteristic(MAJN_BLE_UUIDS.otaControl);
+    const otaData = await otaService.getCharacteristic(MAJN_BLE_UUIDS.otaData);
+
+    const encoder = new TextEncoder();
+
+    // 1. Send OTA_BEGIN with firmware size
+    const beginPayload = JSON.stringify({ cmd: 'OTA_BEGIN', size: file.size });
+    await otaControl.writeValue(encoder.encode(beginPayload));
+    this.emit('log', { type: 'info', message: '[BLE-OTA] ESP32 OTA 준비 완료. 바이너리 스트리밍을 시작합니다...' });
+
+    // 2. Read file as ArrayBuffer and send in MTU chunks
+    const buffer = await file.arrayBuffer();
+    const bytes = new Uint8Array(buffer);
+    const totalBytes = bytes.length;
+    const CHUNK_SIZE = 256;
+    let offset = 0;
+
+    while (offset < totalBytes) {
+      const end = Math.min(offset + CHUNK_SIZE, totalBytes);
+      const chunk = bytes.slice(offset, end);
+
+      if (otaData.writeValueWithoutResponse) {
+        await otaData.writeValueWithoutResponse(chunk);
+      } else {
+        await otaData.writeValue(chunk);
+      }
+
+      offset = end;
+      const pct = Math.round((offset / totalBytes) * 100);
+      if (onProgress) onProgress(pct, offset, totalBytes);
+
+      // Micro-pause to prevent BLE stack buffer overflow
+      await new Promise(r => setTimeout(r, 6));
+    }
+
+    // 3. Send OTA_END
+    this.emit('log', { type: 'info', message: '[BLE-OTA] 모든 바이너리 전송 완료. 플래시 무결성 검증 및 재부팅 요청 중...' });
+    const endPayload = JSON.stringify({ cmd: 'OTA_END' });
+    await otaControl.writeValue(encoder.encode(endPayload));
+    this.emit('log', { type: 'info', message: '🎉 [BLE-OTA] 무선 업데이트 성공! ESP32가 새 펌웨어로 자동 재부팅됩니다.' });
   }
 }
 

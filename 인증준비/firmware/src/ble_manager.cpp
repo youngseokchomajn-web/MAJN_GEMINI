@@ -11,6 +11,7 @@
 #include "power_manager.h"
 #include "amplifier_manager.h"
 #include "vibration_controller.h"
+#include "ota_ble_service.h"
 
 extern volatile bool systemActive;
 extern volatile unsigned long activeStateStartTime;
@@ -197,12 +198,17 @@ bool initBleServer() {
     gCommand->setCallbacks(new CommandCallbacks());
 
     service->start();
+
+    // Initialize Web Bluetooth Wireless OTA GATT Service
+    MajnBleOta::initBleOta(gServer);
+
     BLEAdvertising* advertising = BLEDevice::getAdvertising();
     advertising->addServiceUUID(MajnBle::SERVICE_UUID);
+    advertising->addServiceUUID(OTA_SERVICE_UUID);
     advertising->setScanResponse(true);
     advertising->start();
 
-    Serial.println("[BLE] Advertising as MAJN-Bassinet.");
+    Serial.println("[BLE] Advertising as MAJN-Bassinet with Wireless OTA Service.");
     return true;
 }
 

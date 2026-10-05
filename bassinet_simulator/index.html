@@ -240,7 +240,33 @@
           </div>
         </div>
 
-        <!-- 5. AI 수면 알고리즘 실시간 분석 파이프라인 로그 -->
+        <!-- 5. 무선 펌웨어 업데이트 (Web BLE OTA) -->
+        <div class="card ota-card" style="border: 1px solid #3b82f6; background: rgba(59, 130, 246, 0.05); margin-bottom: 20px;">
+          <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
+            <h3><i class="fa-solid fa-cloud-arrow-up" style="color: #3b82f6;"></i> 무선 펌웨어 업데이트 (Web BLE OTA)</h3>
+            <span class="badge" style="background: #3b82f6; color: white; padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: 600;">핀 터치 0회</span>
+          </div>
+          <div style="padding: 15px;">
+            <p style="font-size: 13px; color: #94a3b8; margin-bottom: 12px;">
+              다운로드 모드 진입이나 점퍼선 조작 없이, 크롬 브라우저에서 블루투스로 ESP32 펌웨어(.bin)를 100% 무선으로 교체합니다.
+            </p>
+            <div style="display: flex; gap: 10px; align-items: center; margin-bottom: 12px;">
+              <input type="file" id="ota-file-input" accept=".bin" style="display: none;">
+              <button class="btn btn-outline" id="btn-ota-choose" style="flex: 1;"><i class="fa-solid fa-folder-open"></i> 펌웨어 파일 선택 (.bin)</button>
+              <button class="btn btn-primary" id="btn-ota-start" disabled style="flex: 1; background: #3b82f6;"><i class="fa-solid fa-bolt"></i> 무선 업데이트 시작</button>
+            </div>
+            <div id="ota-file-info" style="font-size: 12px; color: #cbd5e1; margin-bottom: 8px;">선택된 파일 없음</div>
+            <div style="width: 100%; height: 8px; background: #1e293b; border-radius: 4px; overflow: hidden; margin-bottom: 6px;">
+              <div id="ota-progress-bar" style="width: 0%; height: 100%; background: #3b82f6; transition: width 0.2s;"></div>
+            </div>
+            <div style="display: flex; justify-content: space-between; font-size: 11px; color: #64748b;">
+              <span id="ota-status-label">대기 중</span>
+              <span id="ota-progress-pct">0%</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 6. AI 수면 알고리즘 실시간 분석 파이프라인 로그 -->
         <div class="card log-card">
           <div class="card-header">
             <h3><i class="fa-solid fa-terminal"></i> 통합 이벤트 & 제어 통신 로그</h3>
