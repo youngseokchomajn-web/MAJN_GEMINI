@@ -80,3 +80,13 @@
 - **상세 보고서 문서**: [`docs/MAJN_PCB0005_BRINGUP_DEEP_ANALYSIS_2026-10-04.md`](MAJN_PCB0005_BRINGUP_DEEP_ANALYSIS_2026-10-04.md)
 - **TAS5805M I2C 주소 규명**: R12 (4.7kΩ 풀업) 실측 확인에 따라 기본 주소를 `0x2D`로 변경 및 자동 탐색 로직 적용 완료 ([`90f84c5`](https://github.com/youngseokchomajn-web/MAJN_GEMINI/commit/90f84c5)).
 - **Wi-Fi SoftAP RF 충돌 제거**: BLE와 Core 0에서 동시 기동 시 발생한 `ieee80211_hostap_attach` 패닉을 원천 차단하여 초안정 펌웨어 바이너리(1.79MB) 빌드 완료 ([`0dddc2f`](https://github.com/youngseokchomajn-web/MAJN_GEMINI/commit/0dddc2f)).
+
+---
+
+## 6. 2026-10-05 19:11 Web BLE 무선 OTA 완결판 펌웨어 최종 적재 성공
+
+- **플래싱 결과**: 1,867,664 bytes (1.17 MB compressed) 100% 검증 (`Hash of data verified`, 28.6초 완료)
+- **적재된 핵심 기능**:
+  1. **TAS5805M 앰프 I2C 주소 `0x2D` 패치 및 Play 모드 즉각 진입** (J1 익사이터 45Hz 수면 진동 활성화)
+  2. **Core 0 Wi-Fi 충돌 제거**로 시스템 크래시/패닉 완전 방지
+  3. **Web Bluetooth (BLE) 무선 OTA GATT 서비스 탑재**: 핀 터치 및 케이블 조작 영구 불필요, 웹 브라우저에서 마우스 클릭으로 펌웨어 무선 업데이트 파이프라인 완비.
