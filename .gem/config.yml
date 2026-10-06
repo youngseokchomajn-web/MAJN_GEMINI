@@ -1,0 +1,35 @@
+version: 1
+mode: read_only
+default_branch: main
+watch:
+  branches:
+    - main
+    - "plan/**"
+ignore:
+  commit_tags:
+    - "[skip ci]"
+    - "[gem-auto]"
+  paths:
+    - ".git/**"
+    - ".github/**"
+classification:
+  cert:
+    - "인증준비/**"
+  pcb:
+    - "**/*.epro2"
+    - "**/*pcb*"
+    - "**/*PCB*"
+  firmware:
+    - "**/firmware/**"
+    - "**/*.ino"
+    - "**/*.cpp"
+    - "**/*.h"
+  ai_ops:
+    - ".gem/**"
+    - "scripts/**"
+    - ".github/**"
+actions:
+  create_draft_pr: false
+  modify_pcb_master: false
+  certify: false
+  push_main: false

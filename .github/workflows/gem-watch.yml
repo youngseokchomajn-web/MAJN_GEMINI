@@ -1,0 +1,61 @@
+name: Gem change watcher (Phase 0)
+
+on:
+  push:
+    branches:
+      - main
+      - "plan/**"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  classify:
+    name: Detect and classify changed files
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 2
+
+      - name: Show trigger
+        run: |
+          echo "SHA: $GITHUB_SHA"
+          echo "REF: $GITHUB_REF"
+          echo "MESSAGE: ${{ github.event.head_commit.message }}"
+
+      - name: Skip Gem-generated commits
+        id: guard
+        shell: bash
+        run: |
+          msg='${{ github.event.head_commit.message }}'
+          if [[ "$msg" == *"[skip ci]"* || "$msg" == *"[gem-auto]"* ]]; then
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+            echo "Gem-generated/skip commit detected."
+          else
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Get changed paths
+        if: steps.guard.outputs.skip != 'true'
+        shell: bash
+        run: |
+          git diff-tree --no-commit-id --name-only -r "$GITHUB_SHA" > changed_paths.txt
+          cat changed_paths.txt
+
+      - name: Classify
+        if: steps.guard.outputs.skip != 'true'
+        shell: bash
+        run: |
+          python3 scripts/change_classifier.py < changed_paths.txt | tee classification.txt
+
+      - name: Upload classification evidence
+        if: always() && steps.guard.outputs.skip != 'true'
+        uses: actions/upload-artifact@v5
+        with:
+          name: gem-classification-${{ github.run_id }}
+          path: |
+            changed_paths.txt
+            classification.txt
