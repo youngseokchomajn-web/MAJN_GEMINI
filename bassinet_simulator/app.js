@@ -85,9 +85,9 @@ async function selectProvider(mode) {
     updateDeviceInfoUI(activeProvider.deviceInfo);
   } catch (err) {
     logMessage('error', `[${mode.toUpperCase()}] 연결 실패: ${err.message}`);
-    // If BLE connect was cancelled or failed, fall back to simulation
     if (mode === 'ble') {
-      setTimeout(() => selectProvider('simulation'), 1000);
+      alert(`[블루투스 연결 안내]\n${err.message}`);
+      setTimeout(() => selectProvider('simulation'), 500);
     }
   }
 }
@@ -676,13 +676,18 @@ function stopAudio() {
 
 function logMessage(type, msg) {
   const term = document.getElementById('log-terminal');
-  if (!term) return;
-  const line = document.createElement('div');
-  line.className = `log-line ${type}`;
-  const timestamp = new Date().toLocaleTimeString();
-  line.innerText = `[${timestamp}] ${msg}`;
-  term.appendChild(line);
-  term.scrollTop = term.scrollHeight;
+  if (term) {
+    const line = document.createElement('div');
+    line.className = `log-line ${type}`;
+    const timestamp = new Date().toLocaleTimeString();
+    line.innerText = `[${timestamp}] ${msg}`;
+    term.appendChild(line);
+    term.scrollTop = term.scrollHeight;
+  }
+  // Mirror to server log endpoint
+  try {
+    fetch(`/api/client-log?type=${encodeURIComponent(type)}&msg=${encodeURIComponent(msg)}`).catch(() => {});
+  } catch (e) {}
 }
 
 function clearLogs() {

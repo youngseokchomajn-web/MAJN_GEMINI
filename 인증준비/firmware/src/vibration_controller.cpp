@@ -6,7 +6,7 @@
 
 namespace {
 constexpr size_t LUT_SIZE = 1024;
-constexpr int SAMPLE_RATE = 16000;
+constexpr int SAMPLE_RATE = 48000; // 48kHz standard rate for TAS5805M auto-clock detection
 int16_t gSineLut[LUT_SIZE];
 
 volatile float gTargetFrequency = 45.0f;
@@ -57,7 +57,7 @@ void initVibrationController() {
     if (i2s_driver_install(I2S_NUM_0, &i2s_config, 0, NULL) == ESP_OK &&
         i2s_set_pin(I2S_NUM_0, &pin_config) == ESP_OK) {
         gI2sReady = true;
-        Serial.println("[Vibration] I2S 16kHz driver configured.");
+        Serial.println("[Vibration] I2S 48kHz driver configured (TAS5805M compliant).");
     } else {
         Serial.println("[WARN] I2S driver failed to configure.");
         gI2sReady = false;

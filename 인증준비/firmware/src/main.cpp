@@ -125,11 +125,11 @@ void setup() {
     // 4. Power up 12V Boost Regulator and Settle
     MajnPower::enableBoost();
 
-    // 5. Amplifier Layer (TAS5805M I2C & PDN)
-    MajnAmplifier::initAmplifier();
-
-    // 6. Vibration Control & I2S Peripheral
+    // 5. Vibration Control & I2S Peripheral (Start clocks first)
     MajnVibration::initVibrationController();
+
+    // 6. Amplifier Layer (TAS5805M I2C & PDN - detects stable I2S clocks)
+    MajnAmplifier::initAmplifier();
 
     // 7. BLE GATT Server (Starts advertising MAJN-Bassinet)
     if (!initBleServer()) {

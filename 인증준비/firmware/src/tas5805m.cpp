@@ -38,10 +38,14 @@ bool TAS5805M::begin(int sdaPin, int sclPin) {
     // Set standard 16-bit I2S format (Auto-detect sampling rate)
     writeRegister(REG_SIG_CH_CTRL, 0x00);
     
-    // Set master volume to safe default (-12dB = 0x48)
-    setVolume(0x48);
+    // Default volume: 0x30 = 0dB unity gain (or safe volume)
+    setVolume(0x30);
     
-    // Immediately enter Play State (0x02)
+    // Clear any previous fault flags (Write 0x80 to 0x78 FAULT_CLEAR)
+    writeRegister(0x78, 0x80);
+    delay(2);
+    
+    // Enter Play State (0x02)
     enterPlayState();
     
     return true;
@@ -62,12 +66,11 @@ bool TAS5805M::enterStandbyState() {
 bool TAS5805M::setVolume(uint8_t volume) {
     if (!writeBookPage(0x00, 0x00)) return false;
     
-    // HARDWARE LOCK FOR KC COMPLIANCE (어린이제품 공통안전기준 소음 85 dB 이하 보장)
-    // 0x48 = -12 dB. To prevent outputting excessive sound/vibration level, 
-    // we clamp the volume inside this driver.
+    // TAS5805M REG_MASTER_VOL (0x4C): 0x30 = 0dB default reset value.
+    // Clamping to maximum 0x30 ensures unity gain without over-driving.
     uint8_t safetyVolume = volume;
-    if (safetyVolume > 0x48) {
-        safetyVolume = 0x48; // Clamp to -12dB max output limit
+    if (safetyVolume > 0x30) {
+        safetyVolume = 0x30;
     }
     
     return writeRegister(REG_MASTER_VOL, safetyVolume);

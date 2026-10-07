@@ -51,7 +51,10 @@ export class BleDeviceProvider extends DeviceProvider {
 
     try {
       this.device = await navigator.bluetooth.requestDevice({
-        filters: [{ services: [MAJN_BLE_UUIDS.service] }],
+        filters: [
+          { services: [MAJN_BLE_UUIDS.service] },
+          { namePrefix: 'MAJN' }
+        ],
         optionalServices: [MAJN_BLE_UUIDS.service, MAJN_BLE_UUIDS.otaService]
       });
     } catch (err) {
