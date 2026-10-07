@@ -31,8 +31,8 @@ bool TAS5805M::begin(int sdaPin, int sclPin) {
     writeBookPage(0x00, 0x00);
     delay(2);
     
-    // Transition to Standby (0x03) before configuring
-    writeRegister(REG_DEVICE_CTRL_2, 0x03);
+    // Transition to Hi-Z (0x02) before configuring
+    writeRegister(REG_DEVICE_CTRL_2, 0x02);
     delay(2);
     
     // Set standard 16-bit I2S format (Auto-detect sampling rate)
@@ -53,14 +53,14 @@ bool TAS5805M::begin(int sdaPin, int sclPin) {
 
 bool TAS5805M::enterPlayState() {
     writeBookPage(0x00, 0x00);
-    // REG_DEVICE_CTRL_2: Set to Play mode (0x03 -> 0x02: Standby ➔ Play)
-    return writeRegister(REG_DEVICE_CTRL_2, 0x02);
+    // REG_DEVICE_CTRL_2 (0x03): 0x03 = PLAY Mode (0x02 = Hi-Z Mode)
+    return writeRegister(REG_DEVICE_CTRL_2, 0x03);
 }
 
 bool TAS5805M::enterStandbyState() {
     if (!writeBookPage(0x00, 0x00)) return false;
-    // REG_DEVICE_CTRL_2: Set to Standby/HIZ mode (0x03)
-    return writeRegister(REG_DEVICE_CTRL_2, 0x03);
+    // REG_DEVICE_CTRL_2 (0x03): 0x02 = Hi-Z (High Impedance Output / Standby)
+    return writeRegister(REG_DEVICE_CTRL_2, 0x02);
 }
 
 bool TAS5805M::setVolume(uint8_t volume) {
