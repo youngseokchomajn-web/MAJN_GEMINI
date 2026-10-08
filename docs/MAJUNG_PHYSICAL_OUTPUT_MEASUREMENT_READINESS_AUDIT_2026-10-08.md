@@ -1,193 +1,156 @@
-# MAJUNG Physical-Output Measurement Readiness Audit — 2026-10-08
+# MAJUNG Physical-Output Measurement Readiness Audit — 2026-10-08 (corrected)
 
 ## 1. Audit result
 
-현재 MAJN_GEMINI의 Master Development Plan을 실제 engineering plan과 대조했다.
+현재까지 확인된 레포 evidence를 기준으로 보면 **LSM6DSOX는 실제 구현 하드웨어/firmware로 확인되지 않았다.**
 
-기존 system architecture에는 **LSM6DSOX IMU telemetry**가 이미 Phase 10에 포함되어 있고, 이후 Phase 15에서 command amplitude ↔ physical acceleration calibration을 하도록 되어 있다.
+Master Development Plan에는 Phase 10의 설계 대상으로 LSM6DSOX가 명시되어 있지만, 이것은 실제 장착/구현/telemetry의 증거가 아니다.
 
-그러나 이것만으로 E-M001을 완료했다고 볼 수 없다.
+실제 코드 검색에서 다음 키워드의 구현 증거를 확인하지 못했다.
 
-### 핵심 이유
+- LSM6DSOX / lsm6dsox
+- LSM6
+- IMU
+- accel_g
+- imu_manager
+- imu_manager.cpp
 
-**PCB/내부 IMU의 가속도 ≠ infant contact surface에서 전달되는 vibration**
+따라서 이 문서의 이전 버전에서 LSM6DSOX가 현재 PCB에 존재한다고 전제했던 부분은 폐기한다.
 
-센서 위치, PCB mounting, mechanical path, mattress compliance, load, bedding에 따라 실제 contact-surface output이 달라질 수 있기 때문이다.
+## 2. Current hardware/measurement status
 
-따라서 기존 LSM6DSOX는 다음 용도로 유지한다.
+| 항목 | 현재 판정 | 증거 |
+|---|---|---|
+| Master Plan에 LSM6DSOX 설계가 있음 | YES | Phase 10 |
+| 실제 PCB에 LSM6DSOX 장착 | **미확인** | BOM/실물 확인 필요 |
+| LSM6DSOX firmware driver | **미확인** | 현재 코드 검색상 없음 |
+| LSM6DSOX telemetry | **미확인** | 현재 코드 검색상 없음 |
+| 실제 contact-surface vibration 측정 | NO | 아직 prototype measurement 전 |
+| independent reference sensor | NO | 미측정 |
+| MAJUNG stimulation envelope v1.0 | NO | physical output 미측정 |
 
-- device internal telemetry
-- actuator/control feedback 후보
-- system fault/diagnostic signal
-- repeatability monitoring
+## 3. Measurement hierarchy
 
-반면 E-M001의 reference measurement는 **mattress contact surface에 별도 external accelerometer를 직접 부착**하는 방식으로 분리한다.
+앞으로 다음 세 가지를 분리한다.
 
-## 2. Current architecture implication
+### A. Design intent
+Master Plan에 무엇을 넣으려고 했는가.
 
-기존 system flow:
-Exciter → IMU → Calibration → Closed-loop
+### B. Implementation evidence
+PCB/BOM/firmware에 실제로 구현되어 있는가.
 
-연구용 physical-output validation에서는 다음처럼 확장한다.
+### C. Measurement evidence
+실제 장치에서 측정값으로 검증되었는가.
 
-Exciter → mechanical path → mattress/contact surface → external reference accelerometer
+특히 의료연구에 전달하는 physical-output 값은 **C. Measurement evidence**를 기준으로 한다.
 
-그리고 병렬로:
-PCB/LSM6DSOX → internal telemetry
+## 4. 현재 올바른 측정 경로
 
-두 데이터를 동시에 저장한다.
+현재는 internal IMU를 전제로 하지 않는다.
 
-목적은 나중에:
-internal IMU signal ↔ contact-surface reference
-관계를 정량적으로 비교하는 것이다.
+**MAJUNG prototype**
+→ mattress/contact surface
+→ external reference accelerometer
+→ logger
+→ raw CSV
+→ analysis
 
-## 3. Sensor roles
+병렬:
 
-| Sensor | 위치 | 역할 | E-M001 reference 여부 |
-|---|---|---|---|
-| LSM6DSOX | MAJN PCB | 내부 telemetry / feedback | NO |
-| ADXL355급 | mattress contact surface | reference vibration measurement | YES |
-| microphone | infant-head-equivalent position | acoustic output | YES |
-| temperature sensor | device/mattress vicinity | thermal trend | YES |
+**MAJUNG controller**
+→ command/state timestamp
 
-LSM6DSOX를 버리는 것이 아니라 **measurement hierarchy를 분리**한다.
+별도:
 
-## 4. Immediate bench test
+**mattress/head-equivalent position**
+→ microphone
+→ acoustic recording
 
-### Test M0 — system baseline
+실제 PCB에 IMU가 나중에 확인되면 다음 관계를 추가한다.
 
-- MAJN power OFF
-- external accelerometer zero/noise recording
-- LSM6DSOX telemetry 상태 기록
-- ambient acoustic recording
-- 30–60 s baseline
+**internal IMU ↔ external contact-surface reference**
 
-### Test M1 — ON/OFF detectability
+## 5. External reference sensor role
 
-- prototype default output
-- external accelerometer P1
-- LSM6DSOX simultaneously recorded
+ADXL355급 센서를 quantitative reference 후보로 유지한다.
+
+ADXL345급 센서는 E0/E1 탐색용으로 사용할 수 있지만 최종 reference와 동일한 정밀도로 취급하지 않는다.
+
+센서 선택보다 먼저 다음을 고정한다.
+
+1. contact-surface 위치
+2. 센서 고정법
+3. MCU/USB logging path
+4. sampling rate
+5. timestamp 규격
+6. raw-data format
+
+## 6. Immediate bench sequence
+
+### M0 — Sensor baseline
+- stationary zero/noise
+- gravity/orientation check
+- ambient vibration
+- acoustic baseline
+
+### M1 — ON/OFF detectability
 - OFF → ON → steady → OFF
 - ≥3 repeats
+- current prototype configuration
+- contact-surface P1
 
-판정:
-- external sensor에서 ON/OFF가 명확히 구분되는가?
-- LSM6DSOX에서도 동일 event가 검출되는가?
-- 두 sensor의 timestamp alignment가 가능한가?
-
-### Test M2 — spatial measurement
-
-동일 조건에서:
+### M2 — Spatial
 - P1 center
 - P2/P3 longitudinal ±25%
 - P4/P5 lateral ±25%
 
-를 측정한다.
+### M3 — Load/bedding
+- L0 no load
+- L1 bedding only
+- L2 representative distributed load
+- L3 conservative/worst-case distributed load
 
-### Test M3 — load/bedding
+### M4 — Acoustic/thermal
+- infant-head-equivalent acoustic position
+- ambient vs ON
+- spectrum / dBA if calibrated measurement is available
+- temperature trend
 
-- no load
-- bedding only
-- representative distributed load
-- conservative/worst-case load
+## 7. E-M001 gates
 
-를 비교한다.
+- **E0 Detectability:** ON/OFF가 실제 센서 데이터에서 구분되는가?
+- **E1 Repeatability:** 동일 조건 반복 결과가 재현되는가?
+- **E2 Load dependence:** 하중/침구 변화가 출력에 미치는 영향이 정량화되는가?
+- **E3 Spatial distribution:** 위치별 출력 편차가 설명되는가?
+- **E4 Acoustic coupling:** 진동과 동반되는 음향 출력이 측정되는가?
+- **E5 Configuration freeze:** hardware/firmware/mattress/bedding/sensor setup이 재현 가능하게 고정되는가?
 
-## 5. Data architecture
+E5 이후에만 **MAJUNG Stimulation Envelope v1.0**을 정의한다.
 
-기존 firmware telemetry와 external measurement를 같은 run ID로 묶는다.
-
-Minimum schema:
-
-run_id
-timestamp
-firmware_revision
-hardware_revision
-command_state
-command_frequency
-command_amplitude
-internal_imu_x/y/z
-external_accel_x/y/z
-sampling_rate
-sensor_position
-load_condition
-bedding_condition
-acoustic_level
-temperature
-
-원본 raw data는 보존한다.
-
-Derived data는 별도 파일로 만든다.
-
-## 6. Calibration relationship
-
-M1~M3가 완료되면 다음 관계를 계산할 수 있다.
-
-command amplitude → external contact-surface acceleration
-
-그리고:
-
-internal LSM6DSOX acceleration → external reference acceleration
-
-이 관계가 충분히 안정적이면 이후 Phase 15 Calibration에서 internal IMU를 feedback sensor로 활용할 근거가 생긴다.
-
-반대로 두 센서 사이 관계가 불안정하면 closed-loop 전에 mechanical/sensor placement를 다시 검토한다.
-
-## 7. Important correction to previous plan
-
-기존 계획에서 'ADXL355 + MCU/USB logger'를 바로 구매하는 것보다 먼저 해야 할 것은 **현재 PCB/firmware에서 LSM6DSOX telemetry가 실제로 얼마나 잘 기록되는지 확인하는 것**이다.
-
-따라서 비용을 최소화하기 위해:
-
-1. 기존 LSM6DSOX telemetry 확인
-2. internal IMU raw/sample-rate/format 검증
-3. 실제 actuator ON/OFF waveform 확인
-4. external reference sensor 필요성 확인
-5. 그 후 ADXL355급 sensor 구매
-
-순서로 한다.
-
-단, LSM6DSOX가 이미 PCB에 장착되어 있어도 E-M001의 최종 reference sensor를 대체하는 것으로 간주하지 않는다.
-
-## 8. Decision gate
-
-### G-IMU-0
-LSM6DSOX raw telemetry가 안정적으로 수집되는가?
-
-NO → firmware/telemetry 먼저 수정.
-
-YES → G-IMU-1.
-
-### G-IMU-1
-LSM6DSOX에서 actuator ON/OFF와 dominant vibration component가 검출되는가?
-
-NO → external sensor 측정으로 즉시 이동.
-
-YES → external reference measurement와 cross-check.
-
-### G-IMU-2
-internal IMU와 contact-surface reference 사이 관계가 반복적으로 재현되는가?
-
-YES → closed-loop 후보 sensor로 평가.
-
-NO → external sensor를 reference로 유지하고 mechanical path를 추가 분석.
-
-## 9. Safety boundary
+## 8. Safety boundary
 
 이 audit는 의료 안전성 평가가 아니다.
 
-측정값이 좋다고 해서 인간 대상 시험이 승인되는 것도 아니며, vibration output이 낮다고 해서 자동으로 안전하다고 판단하지 않는다.
+측정값이 낮거나 반복성이 좋다는 사실만으로 인간 대상 시험의 안전성이 확보되는 것은 아니다.
 
-이 단계의 목적은 오직:
+FDA가 실제 therapeutic vibrational mattress pad의 분류에서 별도의 clinical/performance 및 device-specific requirements를 두고 있는 점도 이 구분을 뒷받침한다. Prapela의 FDA De Novo authorization은 일반 영아 수면 제품에 대한 authorization이 아니라 prenatal opioid exposure/NOWS라는 특정 임상 적응증에 한정된다. citeturn0search0turn0search3
 
-**'우리가 실제로 영아에게 전달될 물리 자극을 정확히 알고 있는가?'**
+## 9. Decision rule
 
-를 확인하는 것이다.
+다음 원칙을 고정한다.
+
+> **계획에 있음 ≠ 구현됨 ≠ 측정됨 ≠ 임상적으로 안전함 ≠ 임상적으로 유효함**
+
+각 단계의 evidence를 별도 상태로 기록한다.
 
 ## 10. Current next action
 
-가장 먼저 **현재 LSM6DSOX telemetry 구현과 실제 firmware data path를 검증**한다.
+문헌 단계는 freeze한다.
 
-그 결과를 확인한 뒤 external reference sensor를 붙이는 것이 가장 효율적이다.
+다음 병목은 **실제 MAJUNG prototype의 contact-surface physical output 측정**이다.
 
-이렇게 하면 이미 PCB에 들어가 있는 센서를 활용하면서도 의료연구에 필요한 independent physical-output measurement의 원칙을 유지할 수 있다.
+순서는:
+
+**prototype 확인 → external sensor baseline → E0 → E1 → E2/E3 → E4 → E5 → stimulation envelope → medical researcher review**
+
+LSM6DSOX는 실제 PCB/BOM/firmware에서 존재가 확인될 때만 measurement path에 추가한다.
