@@ -115,3 +115,77 @@ AAP의 safe-sleep recommendations는 영아를 등을 대고, 다른 사람 없�
 문헌 검토 FREEZE → 의료연구 질문 정의 → prototype physical-output definition → engineering characterization → medical researcher review → IRB/ethics feasibility → Phase 1 short-term human feasibility → Phase 2 controlled efficacy → Phase 3 longitudinal sleep
 
 이 순서를 유지한다.
+
+## 14. Endpoint 설계 추가 검토 — 2026-10-08
+
+추가 문헌 검토 결과, 기존의 'time-to-settling' 후보는 유지하되 단독 primary endpoint로 고정하지 않는다.
+
+### 근거
+
+영아 sleep-state 연구에서는 행동상태 분류 자체의 scorer reliability가 중요한 문제이며, 엄격한 scoring guideline과 training을 통해 reliability가 개선된다는 선행근거가 있다. CHIME 연구에서는 trained scorers의 sleep-state inter-rater kappa가 0.68까지 개선됐다. citeturn0search0
+
+또한 infant sleep에서 actigraphy는 PSG와 높은 sleep-detection agreement를 보였지만 wake specificity는 상대적으로 낮았다. 따라서 '잠들었는가'와 '깨어 있는가'를 하나의 센서로 완전히 대체한다고 가정하지 않는다. citeturn0search1
+
+### endpoint hierarchy 수정
+
+**Tier 1 — 가장 직접적인 단기 행동 endpoint**
+- time-to-settling
+- fussing/crying episode resolution
+- caregiver-intervention-free resolution
+
+**Tier 2 — 행동상태 endpoint**
+- quiet sleep proportion
+- active sleep proportion
+- drowsy/awake transitions
+- awakening frequency
+
+**Tier 3 — 장기/연속 수면 endpoint**
+- sleep onset latency
+- total sleep time
+- longest sleep stretch
+- wake after sleep onset
+
+**Tier 4 — 보조 생리 endpoint**
+- HR / HRV
+- RR
+- SpO2
+- movement
+
+### 중요한 수정
+
+'침착/진정'이라는 단일 score를 만들지 않는다.
+
+또한 부모 설문이나 총 수면시간만으로 efficacy를 판정하지 않는다. 실제 연구에서는 객관적 관찰과 caregiver intervention을 함께 기록해야 한다. Videosomnography는 infant sleep-wake 및 parent-child interaction을 시간축으로 관찰하는 선행 방법이 있으며, 자동 videosomnography는 sleep timing에는 유용할 수 있지만 wake와 세부 행동상태 분류에는 한계가 보고됐다. citeturn0search3turn0search4
+
+### Phase 1의 더 보수적인 성공 기준
+
+Phase 1에서는 '수면 개선'을 성공 기준으로 두지 않는다.
+
+1. predefined stimulation이 반복적으로 전달됨
+2. behavioral event가 시간축에서 안정적으로 코딩됨
+3. caregiver intervention과 stimulation을 구분할 수 있음
+4. 동일 조건 반복에서 outcome의 방향성이 일관됨
+5. 이상반응 또는 임상적으로 중요한 생리 변화가 없는지 평가 가능함
+
+효과 크기 자체보다 **측정 가능성 + 반복 가능성 + 인과관계 해석 가능성**을 먼저 확인한다.
+
+## 15. 의료연구자에게 전달할 연구 질문의 최종 형태
+
+### Primary question
+사전에 정의된 MAJUNG 물리 자극이 특정 초기 행동상태의 건강한 만삭 영아에서 caregiver intervention 없이 발생하는 settling 또는 fussing/crying episode resolution의 시간/확률을 변화시키는가?
+
+### Secondary questions
+1. 효과가 있다면 quiet sleep/active sleep 및 상태 전이에 어떤 변화가 나타나는가?
+2. 효과는 초기 crying/fussing, awake, drowsy, sleep 상태에 따라 달라지는가?
+3. 행동 변화가 HR/HRV/RR/SpO2/movement 변화와 동반되는가?
+4. 실제 mattress-surface stimulation 물리량과 반응 사이에 exposure-response 관계가 있는가?
+5. caregiver intervention 및 환경요인을 통제한 뒤에도 결과가 유지되는가?
+6. 반복 사용에서 clinically meaningful adverse event가 증가하지 않는가?
+
+## 16. 현재 단계의 결론
+
+문헌 검토와 endpoint-methodology 검토를 합쳐도 MAJUNG efficacy claim을 뒷받침하는 단계는 아니다.
+
+대신 의료연구자와 논의할 수 있는 **검증 가능한 연구질문과 측정 구조는 충분히 구체화됐다.**
+
+다음 단계에서는 연구질문을 다시 넓히지 않고, 이 프레임을 기준으로 의료연구자 검토에 필요한 1~2 page research brief를 작성한다.
