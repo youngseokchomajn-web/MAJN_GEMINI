@@ -166,3 +166,38 @@ G-007. MAJUNG의 acoustic/mechanical/thermal exposure가 안전범위인지 미�
 이 순서를 뒤집지 않는다.
 
 특히 현재 단계에서는 문헌의 30–60 Hz 또는 10–21 µm를 MAJUNG에 그대로 복사하지 않는다.
+
+
+## 11. 2025 systematic review / network meta-analysis 추가 확인
+
+문헌 검토를 종료하기 전에 2025년까지의 종합 근거를 추가 확인했다.
+
+### Li et al., 2025 — preterm infant sensory stimulation systematic review
+
+20개 RCT, 총 1,297명의 미숙아를 대상으로 감각 자극과 수면의 질을 검토한 systematic review/meta-analysis에서 sensory stimulation은 수면시간과 quiet-sleep efficiency 개선과 연관됐지만 active-sleep efficiency에는 유의한 효과가 없었다. 효과는 자극 종류에 따라 달랐고 전체 근거의 질은 moderate~very low로 평가됐다.
+
+**MAJUNG 판정:** NICU 미숙아와 이질적인 tactile/auditory/multisensory intervention을 대상으로 한 결과이므로 MAJUNG vibration-only의 직접 근거가 아니다. 다만 quiet sleep / active sleep을 분리해 평가해야 한다는 방법론적 근거는 강화된다.
+
+### Rohmah et al., 2025 — sleep-wake network meta-analysis
+
+17개 RCT, 709명의 미숙아를 대상으로 한 network meta-analysis에서는 touch + massage + kangaroo care가 active/quiet sleep 비율 개선에서 높은 순위를 보였다.
+
+**MAJUNG 판정:** vibration efficacy의 직접 근거는 아니며, sleep-state endpoint와 비교중재 설계의 참고 근거다.
+
+## 12. 문헌 검토 최종 freeze 판정
+
+2025년 systematic review 및 network meta-analysis까지 확인한 결과 **기존 결론을 변경할 수준의 직접 근거는 확인되지 않았다.**
+
+**현재 강하게 말할 수 있는 것**
+1. 영아/신생아의 기계적·촉각·운동 자극은 행동 및 생리 반응에 영향을 줄 수 있다.
+2. 특정 임상 상황에서는 vibration의 유효성이 RCT로 관찰됐다.
+3. 수면 상태에 대한 감각 자극 효과는 존재 가능하지만 자극 종류와 대상군에 따라 이질적이다.
+4. 실제 자극의 물리적 특성과 behavioral state를 분리해서 기록하는 것이 중요하다.
+
+**현재 말할 수 없는 것**
+1. MAJUNG과 동일한 vibration이 일반 건강 만삭 영아의 수면을 개선한다.
+2. vibration-only가 SNOO의 rocking/sound/swaddling과 동등한 효과를 낸다.
+3. 선행연구의 30–60 Hz, 10–21 µm 등을 일반 영아용 안전/효능 목표값으로 사용할 수 있다.
+4. 단기 crying reduction이 장기 sleep benefit으로 이어진다.
+
+**문헌 단계는 여기서 freeze한다.** 추가 문헌은 새로운 직접 RCT 또는 체계적 문헌고찰처럼 판정을 실제로 바꿀 수준의 근거가 나타날 때만 재개한다. 다음 판단은 실제 MAJUNG 물리 출력과 의료연구자 검토 단계에서 갱신한다.
