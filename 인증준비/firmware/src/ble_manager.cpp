@@ -97,7 +97,7 @@ class CommandCallbacks : public BLECharacteristicCallbacks {
             systemActive = true;
             activeStateStartTime = millis();
             float f = doc["frequency_hz"] | MajnVibration::getTargetFrequency();
-            float a = doc["amplitude"] | (MajnVibration::getTargetAmplitude() > 0.05f ? MajnVibration::getTargetAmplitude() : 0.2f);
+            float a = doc["amplitude"] | (MajnVibration::getTargetAmplitude() > 0.05f ? MajnVibration::getTargetAmplitude() : 0.6f);
             MajnVibration::setTarget(f, a);
             MajnAmplifier::enterPlayState();
             sendAck(id, cmd, "applied", "RUNNING");

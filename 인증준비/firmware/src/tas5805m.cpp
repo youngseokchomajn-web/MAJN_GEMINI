@@ -35,11 +35,12 @@ bool TAS5805M::begin(int sdaPin, int sclPin) {
     writeRegister(REG_DEVICE_CTRL_2, 0x02);
     delay(2);
     
-    // Set standard 16-bit I2S format (Auto-detect sampling rate)
+    // Set standard I2S format & explicit 16-bit word length (SAP_CTRL1: 0x33 = 0x00)
+    writeRegister(0x33, 0x00);
     writeRegister(REG_SIG_CH_CTRL, 0x00);
     
-    // Default volume: 0x30 = 0dB unity gain (or safe volume)
-    setVolume(0x30);
+    // Set full 0dB unity gain volume (0x4C: 0x00 is max unattenuated volume)
+    writeRegister(REG_MASTER_VOL, 0x00);
     
     // Clear any previous fault flags (Write 0x80 to 0x78 FAULT_CLEAR)
     writeRegister(0x78, 0x80);

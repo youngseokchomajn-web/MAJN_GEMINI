@@ -67,7 +67,7 @@ void initVibrationController() {
 
 void setTarget(float frequencyHz, float amplitudeScale) {
     gTargetFrequency = constrain(frequencyHz, 30.0f, 65.0f);
-    gTargetAmplitude = constrain(amplitudeScale, 0.0f, 0.5f);
+    gTargetAmplitude = constrain(amplitudeScale, 0.0f, 1.0f);
 }
 
 float getTargetFrequency() {
