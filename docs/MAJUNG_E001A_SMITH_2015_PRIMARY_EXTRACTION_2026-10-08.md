@@ -237,3 +237,21 @@ defined physical stimulus
 → ordinary infant calming/sleep benefit.
 
 That latter question requires separate evidence and should become its own RQ rather than being inferred from Prapela/SR respiratory studies.
+
+
+## 10. Primary-source locator audit (2026-10-12)
+
+Primary source: https://pmc.ncbi.nlm.nih.gov/articles/PMC4657600/
+
+| Extracted claim | Source locator | Interpretation note |
+|---|---|---|
+| Population and study design | Methods: Participants / Study Design | Preterm infants with documented cardiorespiratory events; not general infant soothing |
+| Actual surface stimulation | Methods: mattress/stimulation description | Preserve 30–60 Hz bandwidth and 10–20 μm displacement as the study's reported exposure, not a MAJUNG target |
+| Apnea/desaturation/bradycardia results | Results section and outcome tables/figures | Keep apnea, desaturation, and bradycardia endpoints separate because their responses differed |
+| Repeated ON/OFF crossover | Methods and protocol figure | Repeated measures are clustered within infant; do not treat all intervals as independent infants |
+
+### Extraction status
+- Core population, design, physical output, and endpoint families: extracted.
+- Exact table/figure locator for each quantitative result: still needs normalization.
+- Adverse-event status: verify explicit source wording before coding as “none”; absence of a highlighted event is not enough.
+- General soothing/sleep efficacy: not established.
