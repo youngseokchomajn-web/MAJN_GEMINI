@@ -268,3 +268,23 @@ It should be cited when justifying:
 - and separation of mechanical stimulation from behavioral/physiological outcomes.
 
 It should not be cited as evidence that a bassinet vibration system improves sleep or soothing in healthy term infants.
+
+
+## 12. Primary-source locator audit (2026-10-12)
+
+Primary source: https://pmc.ncbi.nlm.nih.gov/articles/PMC2763836/
+
+| Extracted claim | Source locator | Interpretation note |
+|---|---|---|
+| Population and purpose | Abstract / Methods: Participants | Small preterm-infant physiology study; not ordinary soothing efficacy |
+| 30–60 Hz, 0.021 mm RMS, 0.090 mm maximum displacement | Methods: stimulus characterization | Keep RMS and maximum displacement distinct; do not treat as interchangeable values |
+| Surface uniformity ±2% | Methods/results: surface displacement measurement | Method precedent for mapping output across the actual contact surface |
+| Load/bedding simulation with saline bags and sheet | Methods/results: loading and bedding characterization | Dummy/load simulation supports engineering repeatability work, not infant safety by itself |
+| Acoustic output measurement | Methods/results: acoustic measurement | Sound is a separate exposure variable from mechanical vibration |
+| Behavioral arousal threshold | Methods/results: stimulation intensity selection and sleep-state observation | Threshold applies only to the study's population and configuration |
+
+### Extraction status
+- Engineering measurement logic: well represented.
+- Exact figure/table/page locator for each numeric value: still needs normalization.
+- Safety conclusion: study-specific and not a universal safe-exposure threshold.
+- General infant soothing/sleep efficacy: not established.
