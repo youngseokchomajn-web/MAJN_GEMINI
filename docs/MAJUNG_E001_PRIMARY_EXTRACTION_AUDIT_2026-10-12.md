@@ -77,4 +77,4 @@ Quality와 directness는 다른 축이다. 예를 들어 잘 설계된 RCT라도
 - evidence type, quality, directness가 분리돼 있다.
 - MAJUNG에 직접 적용할 수 없는 근거가 직접 효능 근거로 잘못 표현되지 않는다.
 
-현재 상태: 감사 기준과 문서별 보완 항목은 정리 완료. E001-A~E001-E 모든 locator 보완 작업은 아직 완료되지 않았다.
+현재 상태: 감사 기준과 문서별 보완 항목은 정리 완료. E001-A, E001-B, E001-C, E001-E에 source URL 및 주요 claim별 section/table/figure locator 감사 블록을 추가했다. 다만 모든 숫자에 정확한 페이지·표·그림 위치를 일괄 부착하는 작업과 E001-D PDF locator의 최종 일치 확인은 아직 남아 있다.
