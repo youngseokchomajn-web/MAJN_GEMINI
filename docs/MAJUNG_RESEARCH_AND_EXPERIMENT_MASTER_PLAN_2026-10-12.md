@@ -258,11 +258,19 @@ WP-0, WP-1, WP-4, WP-5의 문서 설계는 시제품 작동 여부와 무관하�
 
 계획 문서의 작성은 시험 완료가 아니며, 측정·연구 결과가 없는 항목은 '미확인' 또는 '미측정'으로 유지한다.
 
-## 8. 다음으로 실제 작성할 산출물
+## 8. 작성·갱신된 산출물과 다음 작업
 
-이 마스터 플랜 이후의 다음 문서는 다음 두 가지다.
+이번 계획에서 다음 문서를 작성 또는 갱신했다.
 
-1. **문헌 근거 매트릭스 개정본:** 핵심 논문마다 원문 추적, 직접성, 품질, 결과, 반대 근거, MAJUNG 적용 한계를 동일 필드로 정리한다.
-2. **연구자 검토용 protocol synopsis:** 연구 질문, 대상 후보, comparator, endpoint 후보, 데이터 수집, 안전성·중단 원칙, 윤리·기관 검토 질문을 2~4페이지로 정리한다.
+1. **문헌 근거·Claim 매트릭스:** 직접성, 근거 유형, 품질/한계, 후속 실험 연결을 분리한다.
+2. **1차 문헌 원문 재확인 기록:** Emori 1995, Huhtala 2000, Contours Vibes, Catal 2024, Poets 2024, Bloch-Salisbury 2023, SNOO NCT05711927의 결과와 외삽 한계를 정리한다.
+3. **연구자 검토용 protocol synopsis:** 질문, endpoint 후보, 비교 조건, 안전성·중단 원칙, 기관 검토 질문을 정리한다.
+4. **Endpoint·측정법·이벤트 기록 설계:** settling·crying/fussing·sleep의 분리, 실제 물리 출력과 행동 이벤트의 동기화, 돌봄 개입과 안전성 로그를 정리한다.
+
+### 다음 작업
+1. SNOO NCT05711927의 결과를 공식 등록 결과와 보고 논문 간 일치 여부까지 표준 문헌 추출표에 반영한다.
+2. 기존 E001-A~E001-E 추출 문서를 원문 필드(population, intervention, comparator, exposure, endpoint, primary result, adverse events, limitations, DOI/URL/page/table/figure) 기준으로 일괄 감사한다.
+3. 각 endpoint 후보의 임상적 의미와 조작적 정의를 임상 연구자·행동 측정 전문가·통계 전문가가 검토할 수 있도록 질문 목록을 만든다.
+4. 공학 시험은 actual contact-surface output, repeatability, load/bedding, acoustic/thermal behavior, foreseeable faults를 시험 계획과 연결한다.
 
 이후 실제 출력 측정값이 확보되면 물리 자극 dossier를 붙인다. 현재 장치의 작동 여부나 회로 동결을 이 연구 계획의 선행조건으로 삼지 않는다.
