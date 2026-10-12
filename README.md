@@ -9,10 +9,16 @@ ESP32-WROOM(BLE 제어), LSM6DSOX IMU, AP2112K-3.3 LDO. KC 국내인증(진동 �
 
 | 파일 | 내용 |
 |---|---|
-| `인증준비/mcp_development/mcp_design_flow.json` | **SSOT** — 전체 넷리스트·부품(56개), v1.9.0 |
+| `인증준비/mcp_development/mcp_design_flow.json` | **SSOT** — 전체 넷리스트·부품(56개), v1.9.2 (파일의 실제 version 필드 기준) |
 | `인증준비/mcp_development/run_draw_schematic.py` | SSOT에서 **회로도 자동 재생성** (EasyEDA 브릿지) |
 | `인증준비/mcp_development/a1_symbol_verify.json` | 검증된 라이브 심볼 핀맵(222핀) |
 | `인증준비/mcp_development/MAJN_*.md` | 설계기록·fresh-eye 리뷰·ECO 절차 문서 |
+
+## 🔬 연구 증거·의료협업 문서
+
+마중의 효과·안전성 근거 구축을 위한 문헌 검토, 연구 설계, 측정 절차 및 연구자 전달 자료는 [연구 문서 색인](docs/MAJUNG_INDEX.md)에서 확인합니다.
+
+**연구 상태 주의:** 문헌·계획 문서와 실제 시험 결과는 구분합니다. 현재 색인에 기록된 실행 패키지는 측정 템플릿이며, 그 자체가 MAJUNG의 실제 진동 출력 측정이나 임상 효능·안전성 입증을 의미하지 않습니다.
 
 ## 🌐 회로도 + PCB 실물 = EasyEDA Pro 클라우드
 
@@ -27,7 +33,7 @@ ESP32-WROOM(BLE 제어), LSM6DSOX IMU, AP2112K-3.3 LDO. KC 국내인증(진동 �
 
 > PCB 배선/배치는 EasyEDA 클라우드에만 있고 git으로 재생성 불가 → **클라우드 프로젝트가 PCB의 정본(master)**.
 
-## ✅ 설계 상태 (v1.9.0)
+## ✅ 설계 상태 (SSOT 파일 버전 v1.9.2 — EasyEDA PCB 상태는 별도 확인 필요)
 - **앰프 ADR 핵심버그 수정 완료**: U4/3을 GND직결 → **R12 4.7k→DVDD** (I2C 주소 0x2C). 안 고치면 앰프 I2C 죽음.
 - **회로도 ↔ PCB 넷리스트 완전 일관** (정공법 ECO: 회로도 재생성 → Update PCB)
 - **EP 12 써멀비아 GND화 + re-pour** (rebuildCopperRegion) — Class-D 접지·방열
