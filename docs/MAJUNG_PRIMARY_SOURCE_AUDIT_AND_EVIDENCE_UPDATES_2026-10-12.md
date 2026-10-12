@@ -31,8 +31,9 @@
    - DOI: https://doi.org/10.1001/jamapediatrics.2023.1077
    - 등록: NCT02801331
 
-7. **SNOO NCT05711927**는 현재 ClinicalTrials.gov 기록상 완료(completed) 상태이고 결과가 게시된 기록이다. 기존 문서에서 이 항목을 endpoint 설계의 선례로만 적었다면, 다음 문헌 갱신에서는 결과표와 연구 설계를 실제로 추출해야 한다. SNOO 중재는 rocking·white noise·swaddling을 결합하므로 vibration-only 효과 자료로 분류하면 안 된다.
-   - 공식 기록: https://clinicaltrials.gov/study/NCT05711927
+7. **SNOO NCT05711927 / Iurcotta et al. (2024) 보고**는 완료된 단일기관 무작위 연구로, 미숙아 20명(SNOO 11명, 전통 배시넷 9명)을 대상으로 했다. 보고된 분석에서 총 수면시간 비율은 SNOO 89.9% 대 대조 94.5%(p=.138)로 차이가 유의하지 않았다. 조용한 수면(quiet sleep)은 SNOO 23.7% 대 대조 18.6%(p=.049), 활동 수면(active sleep)은 56.1% 대 68.1%(p=.014)였다. 깨어 있음/울음 상태 비율에는 유의한 차이가 없었다. 공식 등록 결과에서는 주요 endpoint quiet sleep 비율이 SNOO 26.8%(SD 9.5) 대 대조 19.8%(SD 5.1)로 게시돼 있다. 이 결과는 특정 수면 상태 분포 변화 가능성을 시사하지만, 총 수면시간 또는 울음 감소 개선을 보여주지 않았고 표본도 작다. SNOO는 rocking·white noise·swaddling을 결합하므로 vibration-only 효과 자료로 분류하면 안 된다. 또한 공식 등록 기록상 계획했던 두 번째 시점 측정은 참가자들이 첫 측정 후 퇴원해 수행되지 않았고, 관련 2차 지표 데이터가 게시되지 않았다.
+   - 공식 기록/결과: https://clinicaltrials.gov/study/NCT05711927
+   - 보고: https://neonatologytoday.org/wp-content/uploads/2024/03/nt-24-05-078-160.pdf
 
 ## 2. 연구별 근거 역할과 MAJUNG 적용 한계
 
