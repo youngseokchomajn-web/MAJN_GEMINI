@@ -236,3 +236,29 @@ Key locations:
 - Results: exposure-duration analysis and treated responder subgroup
 - Safety protocol/discontinuation section: pre-discharge SVS shutdown and observation
 - Discussion: interpretation and limitations
+
+
+## 13. Primary-source locator audit (2026-10-12)
+
+Primary source: https://jamanetwork.com/journals/jamapediatrics/fullarticle/2804943
+
+| Extracted claim | Source locator | Interpretation note |
+|---|---|---|
+| Trial design, enrollment 208, analyzed cohort 181, randomized TAU/SVS | Abstract and Methods; Figure 1 enrollment flow | Keep enrolled/randomized/analyzed counts distinct |
+| Prespecified primary outcomes | Abstract: “Main Outcomes and Measures”; Methods | Outcomes concern pharmacotherapy and length of stay, not soothing or sleep |
+| Morphine treatment rate TAU 31/87 (35.6%) vs SVS 29/94 (30.9%), P=.60 | Results, Table 2, “Administration of morphine treatment”; abstract | This is the overall randomized-group comparison and must remain visible |
+| Exposure-duration association, adjusted OR 0.88 (95% CI 0.81–0.93) | Abstract and adjusted model in Results, Table 3 | Association with actual exposure duration is not the same as the randomized assignment effect |
+| 32 treated responders who completed therapy within 3 weeks; HR 1.96, 3.18 fewer days, 1.76 mg/kg less morphine | Results, Figure 2B and Table 2 / text | Subgroup/conditional result; do not elevate to the overall primary result |
+| No effect among infants treated >3 weeks | Results text adjacent to subgroup analysis | Preserve as a boundary on the subgroup signal |
+| 6 of 58 infants whose SVS was stopped met pharmacotherapy criteria within 24 hours | Safety/discontinuation protocol section in source document | Observation only; not proof of rebound or causal harm |
+
+### Adverse-event status
+
+Do not encode “no adverse events” unless the source explicitly reports a complete adverse-event analysis. The source discusses monitoring and discontinuation but the extraction should distinguish reported safety observations from a powered general safety conclusion.
+
+### Current extraction status
+
+- Core primary result and subgroup boundary: extracted.
+- Table/figure locator added: yes, at section level.
+- Exact page/line locators for every quantitative value: not yet fully normalized.
+- General infant soothing/sleep efficacy: not established.
