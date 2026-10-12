@@ -16,7 +16,7 @@ Evidence type, quality, directness는 서로 다른 필드이며 하나로 합�
 
 | Source ID / source | 실제 근거 유형 | MAJUNG 진정·수면 Claim 직접성 | 주요 제한·반대 근거 | 다음에 연결할 작업 |
 |---|---|---|---|---|
-| E-003 — Emori et al., 1995, DOI 10.5100/jje.31.369 | 건강 영아의 요람 whole-body vibration 및 행동/생리 반응 | 낮음 | 요람의 수평 운동 자극이 현재 MAJUNG 자극과 동일하지 않음. 울음 감소와 함께 수면 중 각성 가능성도 고려해야 함 | WP-0: 원문에서 자극·대상·관찰 정의 확인. WP-4: 초기 행동 상태를 별도 코딩하는 방법 설계 |
+| E-003 — Emori et al., 1995, DOI 10.5100/jje.31.369 | 건강 영아 54명에게 5분간 수평 요람 whole-body sinusoidal vibration(1 Hz, amplitude 55 mm, 1.0 m/s²) 적용; 울음 중단과 졸림/수면 상태 영아의 각성 반응 보고 | 낮음 | 큰 변위의 요람 운동으로 MAJUNG 소형 진동과 물리적으로 다름. 특정 설정을 안전 기준으로 전용할 수 없음 | WP-0: 자극·대상·관찰 정의 보존. WP-4: 초기 행동 상태를 별도 코딩하고 각성 반응도 안전성 관찰에 포함 |
 | E-004 — Huhtala et al., 2000, DOI 10.1542/peds.105.6.e84 | 산통 영아에서 마사지와 crib vibrator 비교 | 낮음 | 일반 건강 영아 대상이 아님. 자연 경과 및 비교군 효과를 진동 고유 효과와 분리하기 어려움 | WP-0: 무효·제한 결과 보존. WP-5: 비교군과 시간 경과 효과를 설계에서 통제 |
 | Contours Vibes, Sleep Science 2022, DOI 10.5935/1984-0063.20210014; https://pmc.ncbi.nlm.nih.gov/articles/PMC8889968/ | 소규모 매트리스·진동 사용 조건 및 보호자 보고 기반 수면/보챔 결과 | 낮음~중간(연구 질문 참고용) | 고정된 조건 순서, 소규모 표본, 보호자 보고, 제품·환경 변경 효과 분리 한계 | WP-0: 순서·보고 편향 평가. WP-5: 대조·무작위화·독립 평가 검토 |
 | Bloch-Salisbury et al., 2009 | 미숙아 대상 물리 자극 노출·생리 반응 및 출력 특성화 방법 | 일반 영아 진정에는 낮음; 공학 방법에는 높음 | 특정 임상군·생리 질문. 일반 가정용 진정/수면 효과를 입증하지 않음 | WP-2: 접촉면 파형·주파수·변위·공간 균일성·소음·하중 영향 측정 |
@@ -24,8 +24,8 @@ Evidence type, quality, directness는 서로 다른 필드이며 하나로 합�
 | Zuzarte et al., 2017 | 산전 오피오이드 노출 신생아의 움직임·생리 반응 | 낮음~중간(측정법 참고) | 특정 임상 집단, 작은 표본, 동시 치료 및 설계 제한 | WP-4: 행동·생리·보호자 개입 로그의 공통 타임라인 설계 |
 | Prapela FDA De Novo, https://www.accessdata.fda.gov/cdrh_docs/reviews/DEN240031.pdf | 특정 적응증, 기기 검증·위험관리 및 규제 판단 | 일반 건강 영아 Claim에는 낮음 | NOWS 등 제한된 임상 적응증. 일반 수면/진정 Claim의 승인으로 확대할 수 없음 | WP-3/WP-8: 위험 통제·출력 검증·적응증/제품 분류 검토 |
 | Bloch-Salisbury et al., 2023 RCT | 산전 오피오이드 노출 신생아의 임상 결과 | 일반 영아 진정에는 낮음 | 전체 약물치료 관련 결과와 하위/보조 분석을 구분해야 함. 특정 대상군 | WP-0: 주요 결과와 하위 분석 분리. WP-8: 대상군이 붙은 표현만 검토 |
-| SNOO / NCT05711927 sleep research | rocking, sound, swaddling 등 복합중재와 행동적 수면 상태 측정 | endpoint 방법에는 유용; vibration-only 효능에는 낮음 | 다중 자극이므로 진동 단독 효과를 분리하기 어려움 | WP-4: quiet/active sleep, awake/cry 등 상태 코딩 참고. WP-5: MAJUNG 단독 효과를 분리할 비교 설계 |
-| 2024 neonatal mechanical-vibration procedural-pain RCT (원문 확인 필요) | 발뒤꿈치 채혈 등 급성 통증 상황의 울음·통증 반응 | 일반 배시넷 진정에는 낮음 | 자극 위치와 목적이 다름. 수면 또는 장시간 사용 효과가 아님 | WP-0: 정확한 서지·자극·endpoint 원문 확인 후 보조 근거로만 분류 |
+| SNOO / NCT05711927 | 완료된 단일기관 무작위 연구(20명, SNOO 11명/전통 배시넷 9명); quiet sleep 비율 23.7% vs 18.6% (p=.049), active sleep 56.1% vs 68.1% (p=.014); total sleep time과 awake/crying에서 유의 차이 없음으로 공개된 보고 | endpoint 방법에는 유용; vibration-only 효능에는 낮음 | 미숙아 대상, 작은 표본, 공개 연구/미눈가림, rocking+white noise+swaddling 복합중재. quiet sleep 비율 변화가 총 수면시간 또는 진정 개선을 뜻하지 않음 | WP-4: quiet/active sleep, awake/cry 등 상태 코딩 참고. WP-5: MAJUNG 단독 효과를 분리하고 사전 지정 1차 결과를 둘 비교 설계 |
+| Catal et al., 2024, DOI 10.1016/j.pedn.2024.09.019 | 건강 만삭 신생아 105명; 채혈 전 사지에 30초 국소 진동; 진동군에서 급성 통증 점수와 울음시간이 대조군보다 낮았다고 보고 | 일반 배시넷 진정에는 낮음 | 국소·단시간·시술 통증 상황. 전신/접촉면 진동, 수면 중 반복 노출, 일반 진정 효능과 다름 | WP-0: 국소 진동의 물리 조건과 결과 정의 추출. WP-4: 단기 행동 endpoint 측정법 참고에 한정 |
 | 2024 electric rocking-device sleep RCT (원문 확인 필요) | rocking과 수면 관련 endpoint | 낮음 | rocking은 진동과 다른 운동 자극. 수면 개선이 일관되게 확인되지 않은 결과를 보존해야 함 | WP-0: 정확한 서지와 null 결과 확인. WP-5: '기계적 자극이면 모두 수면 개선'이라는 가정을 피함 |
 
 **주의:** 위 표는 현재 저장소에 정리된 연구를 연결한 작업 매트릭스다. '원문 확인 필요'로 표시한 두 항목은 서지와 결과를 1차 원문에서 재확인하기 전까지 정량 결과나 확정 근거로 사용하지 않는다.
