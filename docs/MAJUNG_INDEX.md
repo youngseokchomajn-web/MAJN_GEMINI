@@ -5,6 +5,7 @@
 마중 스마트 배시넷의 문헌 근거, 연구 설계, 공학 측정 및 연구기관 협업 문서를 모아둔 진입점입니다.
 
 ## 먼저 읽을 문서
+- [제품 요구사항 초안·미결정 항목 (2026-10-12)](MAJUNG_PRODUCT_REQUIREMENTS_DRAFT_2026-10-12.md)
 - [검토 실행계획·우선순위 (2026-10-12)](MAJUNG_REVIEW_EXECUTION_PLAN_2026-10-12.md)
 - [최우선 원칙](MAJUNG_1ST_PRINCIPLE_EVIDENCE_AND_MEDICAL_COLLABORATION_2026-10-08.md)
 - [문헌 검토 종합판정](MAJUNG_LITERATURE_REVIEW_FINAL_SYNTHESIS_2026-10-08.md)
@@ -48,4 +49,4 @@
 2. 실제 측정에는 시험 ID, 구성, 원자료, 분석 버전, 한계와 판정 기준을 남깁니다.
 3. 연구자 후보는 협업 확정 인력이 아닙니다.
 4. 임상 효능·안전성은 실제 연구와 적절한 기관 검토 없이 확정하지 않습니다.
-5. PCB SSOT와 EasyEDA 클라우드의 실제 PCB 배치·배선 상태는 별도로 확인합니다.
+5. 현재 회로·PCB는 변경 가능한 개발안이며, SSOT는 버전 추적 기준입니다. 설계 동결은 요구사항·위험·검증 근거를 검토한 별도 Gate에서 결정합니다.
