@@ -263,3 +263,22 @@ Key locations:
 - Materials and Methods / Environmental monitoring: sound/light and timestamped comments
 - Results: movement and cardiorespiratory findings
 - Discussion: interpretation and limitations
+
+
+## 11. Primary-source locator audit (2026-10-12)
+
+Primary source: https://pmc.ncbi.nlm.nih.gov/articles/PMC5398650/
+
+| Extracted claim | Source locator | Interpretation note |
+|---|---|---|
+| Population and study design | Abstract / Methods: Participants and study design | Opioid-exposed newborns in a single-center within-subject study; not general infant soothing efficacy |
+| 30–60 Hz and 10–12 μm RMS surface displacement | Methods: mattress/stimulation characterization | Study-specific physical exposure; not a universal safe or effective range |
+| ON/OFF intervals and 6–8 hour session | Methods: stimulation protocol | Within-subject temporal comparison; time effects and concurrent clinical care remain potential confounders |
+| Movement and physiological outcomes | Results tables/figures | Movement reduction is not synonymous with calming or sleep |
+| Time-stamped sound/light/caregiver/nursing interventions | Methods: physiological acquisition and event annotation | Useful precedent for synchronized event logging |
+| Safety and adverse-event reporting | Results/discussion | Exact wording and denominators require final source check before “none reported” coding |
+
+### Extraction status
+- Exposure, event logging, and physiological outcome families: extracted.
+- Exact table/figure/page locator for each quantitative result: still needs normalization.
+- General infant soothing/sleep efficacy: not established.
