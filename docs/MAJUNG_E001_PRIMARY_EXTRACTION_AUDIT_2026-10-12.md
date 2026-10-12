@@ -27,7 +27,7 @@
 | E001-B Bloch-Salisbury 2009 | 물리 출력, 공간 균일성, 소리, 하중/침구 시험, 각성 임계 검토 등 공학 방법이 상세 | 주요 측정값·방법에 원문 figure/table/page를 붙이기. 안전성·이상사건의 정확한 보고 상태를 구분. sample flow 및 제한사항을 표준 필드로 추가 |
 | E001-C Zuzarte 2017 | 대상·출력·ON/OFF·환경/돌봄 로그·생리/행동 측정이 상세 | 표본 흐름, 사전 지정 결과 여부, 결과 수치의 표/그림 위치, 안전성/이상사건 보고, 교란 및 연구 설계 한계를 동일 필드로 보강 |
 | E001-D Prapela FDA | 공식 9페이지 De Novo Summary를 printed-page 기준으로 대조; intended use, bench testing, clinical evidence, risks, special controls, benefit-risk locator audit 추가 | 상세 bench 수치 일부는 redacted 상태. safety support와 effectiveness evidence를 분리하고, 일반 영아 Claim으로 확대하지 않음 |
-| E001-E Bloch-Salisbury 2023 | 전체 무작위 결과와 exposure-duration 분석 및 responder subgroup을 분리. null result와 discontinuation observation을 보존 | 모든 주요 숫자에 논문 표/그림 위치 연결. primary endpoint의 통계적 정의·다중성·분석집단을 표준 필드로 보강. 6/105 discontinuation 관찰을 인과적 rebound로 해석하지 않는 경계 유지 |
+| E001-E Bloch-Salisbury 2023 | Table 2/3, Figure 1/2, eTable 3/4 및 publisher HTML locator를 숫자별로 분리한 보조 감사 문서 추가 | 저널 인쇄 페이지 단위 locator와 다중성/통계 분석계획의 전체 감사는 별도 확인이 남음. shutdown 관찰은 인과적 rebound로 해석하지 않음 |
 
 ## 3. 이번 감사에서 이미 확인한 공통 해석 규칙
 
@@ -77,4 +77,4 @@ Quality와 directness는 다른 축이다. 예를 들어 잘 설계된 RCT라도
 - evidence type, quality, directness가 분리돼 있다.
 - MAJUNG에 직접 적용할 수 없는 근거가 직접 효능 근거로 잘못 표현되지 않는다.
 
-현재 상태: 감사 기준과 문서별 보완 항목은 정리 완료. E001-A, E001-B, E001-C, E001-E에 source URL 및 주요 claim별 section/table/figure locator 감사 블록이 있고, E001-D는 공식 FDA De Novo Summary의 printed-page locator 대조를 별도 문서로 기록했다. E001-A/B/C/E의 모든 핵심 숫자에 정확한 페이지·표·그림 위치를 일괄 부착하는 작업은 남아 있다.
+현재 상태: E001-D는 FDA De Novo Summary의 printed-page locator를 별도 감사했고, E001-E는 핵심 수치별 Table/Figure/eTable 및 publisher HTML locator를 별도 기록했다. E001-A/B/C의 주요 수치 locator와 E001-E의 저널 인쇄 페이지 기준 대조는 남아 있다.
