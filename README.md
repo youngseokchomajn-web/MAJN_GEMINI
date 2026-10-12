@@ -1,7 +1,7 @@
 # 마중 스마트 요람/배시넷 PCB (MAJN Smart Cradle)
 
-USB-C 5V → MP3426 부스트 12.12V (PVDD) → TAS5805M Class-D 앰프 → 2× 8Ω 진동 트랜스듀서(10W RMS/30W Max).
-ESP32-WROOM(BLE 제어), LSM6DSOX IMU, AP2112K-3.3 LDO. KC 국내인증(진동 액세서리). **4층 PCB.**
+USB-C 5V → MP3426 부스트 → TAS5805M Class-D 앰프 → 진동 트랜스듀서 구성의 스마트 배시넷 PCB 프로젝트.
+SSOT의 현재 부품 구성과 EasyEDA 클라우드 PCB가 일치하는지는 실제 설계 내보내기 및 비교로 확인해야 합니다. **4층 PCB 설계 기록.**
 
 ---
 
@@ -33,23 +33,17 @@ ESP32-WROOM(BLE 제어), LSM6DSOX IMU, AP2112K-3.3 LDO. KC 국내인증(진동 �
 
 > PCB 배선/배치는 EasyEDA 클라우드에만 있고 git으로 재생성 불가 → **클라우드 프로젝트가 PCB의 정본(master)**.
 
-## ✅ 설계 상태 (SSOT 파일 버전 v1.9.2 — EasyEDA PCB 상태는 별도 확인 필요)
-- **앰프 ADR 핵심버그 수정 완료**: U4/3을 GND직결 → **R12 4.7k→DVDD** (I2C 주소 0x2C). 안 고치면 앰프 I2C 죽음.
-- **회로도 ↔ PCB 넷리스트 완전 일관** (정공법 ECO: 회로도 재생성 → Update PCB)
-- **EP 12 써멀비아 GND화 + re-pour** (rebuildCopperRegion) — Class-D 접지·방열
-- **R12(ADR)/R13(GPIO15 풀업)/R14(GPIO5 풀업) 배치+배선**
-- 전원폭 유지: VBUS/PVDD/BOOST_SW Top pour + 2oz 외층(발주지정)
+## ⚠️ 설계 상태 해석 주의
 
-### 권위 DRC ≈ 63건 — 정체
-- **~52건**: U4 EP 써멀비아 영역의 조밀한 GND-GND 간격 → **써멀비아 표준, 제조정상**(일반 간격룰이 플래그)
-- **6건 connection**: 구리는 실제로 연결됨(검증), EasyEDA가 브릿지생성 동박을 인식 못한 아티팩트 → Gerber상 연결됨
-- **진짜 short/open 결함 0**
+SSOT 파일의 실제 버전 필드는 **v1.9.2**입니다. 아래 설계 상세 및 DRC 수치는 이전 설계 기록에서 가져온 상태 설명이며, 현재 SSOT와 EasyEDA 클라우드 PCB의 동기화 여부를 이번 점검에서 재검증하지 않았습니다. 따라서 이를 현재 발주 가능 판정이나 최신 DRC 결과로 해석하면 안 됩니다.
 
-## ⚠️ 발주 전 잔여 (선택/권장)
-1. EP 써멀비아 간격룰 = DFM 예외 수용
-2. 6건 connection = 신뢰성 위해 EasyEDA 인터랙티브 라우터로 재연결(선택)
-3. 강건성(유아 제품): 부스트 인덕터 8A 교체·입력 퓨즈(PPTC)·LDO 발열 실측
-4. 펌웨어: 최대 SPL 하드리밋, ADR PVDD후 100ms 유지, 스프레드스펙트럼
+발주 전에는 다음을 다시 확인해야 합니다.
+1. EasyEDA Pro에서 최신 Schematic1/PCB1을 내보내 SSOT와 부품·넷·풋프린트·배치·배선 차이를 비교
+2. 최신 DRC/제조성 검토 및 실제 short/open 검증
+3. 전원부·인덕터·발열·음향 출력 제한 등 제품 위험 항목 검토
+4. 현재 펌웨어 및 PCB 리비전이 시험 대상 장치와 일치하는지 기록
+
+과거 설계 메모는 하단의 설계 기록 문서를 참고하되, 최신 상태는 위 검증 후 갱신합니다.
 
 ## 📖 상세 문서
 - `MAJN_FreshEye_재검증_2026-06-24.md` — fresh-eye 리뷰 + false positive 재검증
