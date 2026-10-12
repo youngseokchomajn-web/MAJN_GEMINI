@@ -5,6 +5,7 @@
 마중 스마트 배시넷의 문헌 근거, 연구 설계, 공학 측정 및 연구기관 협업 문서를 모아둔 진입점입니다.
 
 ## 먼저 읽을 문서
+- [검토 실행계획·우선순위 (2026-10-12)](MAJUNG_REVIEW_EXECUTION_PLAN_2026-10-12.md)
 - [최우선 원칙](MAJUNG_1ST_PRINCIPLE_EVIDENCE_AND_MEDICAL_COLLABORATION_2026-10-08.md)
 - [문헌 검토 종합판정](MAJUNG_LITERATURE_REVIEW_FINAL_SYNTHESIS_2026-10-08.md)
 - [Claim–Evidence 계획](MAJUNG_CLAIM_TO_EVIDENCE_AND_MEDICAL_COLLABORATION_PLAN_2026-10-08.md)
