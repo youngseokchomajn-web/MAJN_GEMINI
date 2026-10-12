@@ -77,4 +77,4 @@ Quality와 directness는 다른 축이다. 예를 들어 잘 설계된 RCT라도
 - evidence type, quality, directness가 분리돼 있다.
 - MAJUNG에 직접 적용할 수 없는 근거가 직접 효능 근거로 잘못 표현되지 않는다.
 
-현재 상태: E001-D는 FDA De Novo Summary의 printed-page locator를 별도 감사했고, E001-E는 핵심 수치별 Table/Figure/eTable 및 publisher HTML locator를 별도 기록했다. E001-A/B/C의 주요 수치 locator와 E001-E의 저널 인쇄 페이지 기준 대조는 남아 있다.
+현재 상태: E001-A/B/C의 주요 수치별 Results subsection, Table/Figure 및 제한적 안전성 보고 상태를 보조 감사 문서에 정리했다. E001-D는 FDA De Novo Summary printed-page locator, E001-E는 핵심 수치별 Table/Figure/eTable 및 publisher HTML locator를 별도 기록했다. 남은 일은 A/B/C의 저널 인쇄 페이지 기준 대조, E001-E의 저널 인쇄 페이지 기준 대조, 그리고 전체 문서의 표준 필드·미해결 항목 통합이다.
