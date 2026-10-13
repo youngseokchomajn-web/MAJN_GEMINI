@@ -39,12 +39,10 @@ Continuous low-level stochastic vibrotactile stimulation, 30–60 Hz, 10–12 μ
 - Authors reported no adverse events in either study group. Bound this statement to the 62 infants and the short hospital observation context.
 
 ## 5. Source locator status
-- Design, recruitment, allocation: Methods (“Study design”, eligibility, randomization); Fig. 1.
-- Exposure: Methods (“Interventions”).
-- Primary endpoint and discharge readiness: Results; Table 2.
-- Cry data: Results (“Cry data”); Table 3.
-- Acceptability/adverse events: Results (caregiver acceptability); Table 4.
-- Journal page range 276–282 is confirmed. Exact printed page for each table/section and supplemental Table S1/Figure S1 remain to be checked against the final PDF. Do not infer exact page numbers from HTML.
+- **PMC full-text anchors verified:** design/recruitment/allocation in Methods and Fig. 1; exposure in Methods (“Interventions”); primary endpoint/discharge readiness in Results and Table 2; cry data in Results (“Cry data”) and Table 3; acceptability/adverse events in caregiver acceptability results and Table 4.
+- **Journal page range:** 276–282, confirmed in the PMC full-text citation metadata.
+- **Exact printed page for each table/section:** still requires checking against the final PDF. The older master table contains page assignments (Fig. 1 p.278; Table 2 p.279; Table 3 p.280; Table 4 pp.280–281), but these are not yet independently reconfirmed from the PDF and must remain provisional.
+- **Supplement:** the PMC full text identifies `NIHMS2106170-supplement-Supplementary_Files.pdf`; contents, including referenced Supplemental Table S1/Figure S1, have not yet been inspected. Do not infer exact page numbers from HTML.
 
 ## 6. Evidence classification
 - Evidence type: randomized clinical study of NOWS pharmacotherapy, discharge readiness, clinical scores, crying, and acceptability.
@@ -59,5 +57,5 @@ This trial should be added to the evidence set. Its primary outcome, discharge-r
 - [ ] Verify exact printed pages for Tables 2–4 and major results in the final PDF.
 - [ ] Review Supplemental Table S1/Figure S1 and denominator/missing-data details.
 - [ ] Verify full adverse-event reporting context.
-- [ ] Add E001-F to the standardized extraction matrix and synthesis.
+- [x] Add E001-F to the standardized extraction matrix and synthesis.
 - [ ] Independent review has not yet occurred.
