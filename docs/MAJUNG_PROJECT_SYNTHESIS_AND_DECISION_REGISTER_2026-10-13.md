@@ -29,6 +29,15 @@
 - 최신 실행 브리프 및 한 번에 붙여넣을 프롬프트: [MAJUNG_GEMINI_ONE_SHOT_HANDOFF_2026-10-13.md](MAJUNG_GEMINI_ONE_SHOT_HANDOFF_2026-10-13.md)
 - 실행 패키지 및 복사·붙여넣기용 전체 프롬프트: [MAJUNG_GEMINI_BATCH_RESEARCH_EXECUTION_PACKAGE_2026-10-13.md](MAJUNG_GEMINI_BATCH_RESEARCH_EXECUTION_PACKAGE_2026-10-13.md)
 
+## Gemini 다음 실행 — WP-0 잔여 문헌 locator 대조
+
+- 단일 실행 작업지시서: [MAJUNG_GEMINI_NEXT_RUN_WORK_ORDER_2026-10-13.md](MAJUNG_GEMINI_NEXT_RUN_WORK_ORDER_2026-10-13.md)
+- 실행 범위: E001-C Zuzarte 2017의 숫자·분모별 대조, E001-E Bloch-Salisbury 2023의 최종 PDF/보충자료/AE 문맥, E001-F Singh의 최종 PDF/보충자료/cry subset/AE 문맥.
+- E001-C의 주요 PDF page/table/figure 위치는 extraction 문서에 반영했으나, 행별 수치 전사 및 독립 2차 검토는 미완료다.
+- E001-E/F의 인쇄 페이지와 보충자료 대조는 미완료 항목으로 유지한다.
+- Gemini가 재검토했다는 사실만으로 외부 독립 검토를 완료 처리하지 않는다.
+- **WP-0 상태는 Partial — closure deferred.** 모든 locator, 분모, adverse-event 문맥 및 문서 정합성 기준이 확인되기 전에는 종료 선언하지 않는다.
+
 ## 1. 한눈에 보는 판정
 
 ### 현재 확인된 것
@@ -262,4 +271,4 @@ Claim은 기능 구현, 물리 출력, 공학 안전, 단기 효능, 수면, 장
 
 진입점: [MAJUNG_INDEX.md](MAJUNG_INDEX.md)
 
-다음 실행은 문헌별 미해결 locator와 완료 상태를 대조해 WP-0 판정을 정합화하는 것이다. 이후 실제 제품 기준선과 출력·위험 시험 준비를 확인하고, 연구자 전달 패키지에는 검증된 사실과 계획을 분리해 담는다. 어떤 단계에서도 근거가 없는 효능·안전성 주장을 앞서 확정하지 않는다.
+다음 실행은 [Gemini WP-0 작업지시서](MAJUNG_GEMINI_NEXT_RUN_WORK_ORDER_2026-10-13.md)에 따라 E001-C/E/F의 남은 원문 locator·분모·보충자료를 대조하고, 실행 로그·상태표·마스터 테이블의 상태를 일치시키는 것이다. 이후 실제 제품 기준선과 출력·위험 시험 준비를 확인하고, 연구자 전달 패키지에는 검증된 사실과 계획을 분리해 담는다. 어떤 단계에서도 근거가 없는 효능·안전성 주장을 앞서 확정하지 않는다.
