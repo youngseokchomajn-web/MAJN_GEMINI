@@ -4,6 +4,8 @@
 상태: Gemini 실행을 위한 인계 문서. 연구 완료 보고서가 아님.  
 저장소: https://github.com/youngseokchomajn-web/MAJN_GEMINI
 
+> **최신 실행 기준선(2026-10-13):** 기존의 넓은 범위 Gemini 패키지보다 먼저 [Gemini 다음 실행 작업지시서 — WP-0 E001-C/E/F 원문 locator 정합성 마감](MAJUNG_GEMINI_NEXT_RUN_WORK_ORDER_2026-10-13.md)을 수행한다. 이번 작업은 E001-C/E001-E/E001-F 원문 PDF·보충자료 및 분모 대조에 한정한다. WP-0는 여전히 Partial — closure deferred이며, 전체 조사 완료로 간주하지 않는다.
+
 ## 1. 이번 실행의 목적
 
 반복적으로 문헌을 조금씩 조사하는 대신, Gemini Deep Research에 기존 저장소와 필수 원문을 한 번에 인계해 다음 작업을 한 번의 계획 아래 진행한다.
