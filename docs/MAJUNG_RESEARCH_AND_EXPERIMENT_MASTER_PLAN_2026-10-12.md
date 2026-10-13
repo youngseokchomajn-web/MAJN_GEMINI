@@ -268,9 +268,11 @@ WP-0, WP-1, WP-4, WP-5의 문서 설계는 시제품 작동 여부와 무관하�
 4. **Endpoint·측정법·이벤트 기록 설계:** settling·crying/fussing·sleep의 분리, 실제 물리 출력과 행동 이벤트의 동기화, 돌봄 개입과 안전성 로그를 정리한다.
 
 ### 다음 작업
-1. SNOO NCT05711927의 결과를 공식 등록 결과와 보고 논문 간 일치 여부까지 표준 문헌 추출표에 반영한다.
-2. 기존 E001-A~E001-E 추출 문서를 원문 필드(population, intervention, comparator, exposure, endpoint, primary result, adverse events, limitations, DOI/URL/page/table/figure) 기준으로 일괄 감사한다.
+1. SNOO NCT05711927의 공식 등록 결과와 2024년 보고서 차이를 별도 문서로 대조했다. 다음에는 endpoint 분모와 missing/not-collected 상태를 master evidence matrix에 통합한다.
+2. E001-A~E001-E 표준 추출 필드·상태 매트릭스를 추가했다. 다음은 A/B/C/E의 printed-page locator 대조와 adverse-event reporting code 최종 확인이다.
 3. 각 endpoint 후보의 임상적 의미와 조작적 정의를 임상 연구자·행동 측정 전문가·통계 전문가가 검토할 수 있도록 질문 목록을 만든다.
 4. 공학 시험은 actual contact-surface output, repeatability, load/bedding, acoustic/thermal behavior, foreseeable faults를 시험 계획과 연결한다.
+
+**WP-0 상태:** 진행 중. 표준 필드와 1차 locator audit 문서는 마련됐으나, 모든 핵심 수치의 printed-page locator 및 독립 검토가 끝나지 않아 완료로 표시하지 않는다. 상태표: [E001-A~E 표준 추출 필드·상태 매트릭스](MAJUNG_E001_STANDARDIZED_EXTRACTION_STATUS_MATRIX_2026-10-13.md).
 
 이후 실제 출력 측정값이 확보되면 물리 자극 dossier를 붙인다. 현재 장치의 작동 여부나 회로 동결을 이 연구 계획의 선행조건으로 삼지 않는다.
