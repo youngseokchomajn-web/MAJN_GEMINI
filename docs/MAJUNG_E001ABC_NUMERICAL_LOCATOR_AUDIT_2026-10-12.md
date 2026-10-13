@@ -5,6 +5,8 @@
 
 ## E001-A — Smith et al. 2015
 
+**인쇄 페이지 locator 추가 확인 (2026-10-13):** 논문 범위 e1561–e1568. 참가자 흐름도 Figure 2는 e1564에 배치되고, Results의 주요 결과와 Table 2는 e1565–e1566에 걸쳐 있다. Table 2의 이벤트 수치가 놓인 인쇄 페이지는 e1566으로 확인. adverse-event 문구는 Results 시작부 e1565에서 확인. 표·본문별 수치 연결은 아래 행을 기준으로 유지한다.
+
 **원문:** Smith VC, et al. *Stochastic Resonance Effects on Apnea, Bradycardia, and Oxygenation: A Randomized Controlled Trial.* Pediatrics. 2015;136(6):e1561–e1568. DOI: 10.1542/peds.2015-1334. PMID 26598451; PMCID PMC4657600.  
 URL: https://pmc.ncbi.nlm.nih.gov/articles/PMC4657600/
 
@@ -20,6 +22,8 @@ URL: https://pmc.ncbi.nlm.nih.gov/articles/PMC4657600/
 **Key reading rule:** Figure 2/3 are participant flow; Table 2 is the event-level outcome table. Abstract percentages should be checked against the outcome-specific Results subsections, because event count, duration and intensity use different denominators/statistical models.
 
 ## E001-B — Bloch-Salisbury et al. 2009
+
+**인쇄 페이지 locator 추가 확인 (2026-10-13):** 논문 범위 1017–1027. Table 2는 p.1021, 요약 Figure 6은 p.1024에 배치되어 있음을 원문 PDF 텍스트의 인쇄 페이지 머리말/꼬리말로 확인했다. 물리 출력·침구/하중 조건은 Methods의 “Vibrotactile Stimulation” subsection에서 추적한다. 해당 subsection의 정확한 페이지와 모든 수치의 독립 대조는 계속 확인한다.
 
 **원문:** Bloch-Salisbury E, Indic P, Bednarek F, Paydarfar D. *Stabilizing immature breathing patterns of preterm infants using stochastic mechanosensory stimulation.* J Appl Physiol. 2009;107(4):1017–1027. DOI: 10.1152/japplphysiol.00058.2009. PMID 19608934; PMCID PMC2763836.  
 URL: https://pmc.ncbi.nlm.nih.gov/articles/PMC2763836/
@@ -38,6 +42,8 @@ URL: https://pmc.ncbi.nlm.nih.gov/articles/PMC2763836/
 **Key reading rule:** Table 1 = subject characteristics; Table 2 = respiratory, cardiac, behavioral and EEG measurements; Figures 1–2 = protocol/IBI examples and variance; Figure 6 = summary. Exact numerical results above are located at the named Results subsections and table/figure, not inferred from figure appearance.
 
 ## E001-C — Zuzarte et al. 2017
+
+**페이지 locator 규칙 (2026-10-13):** PLOS ONE 논문은 일반적인 연속 저널 인쇄 페이지 대신 article number e0175981을 사용한다. 따라서 해당 논문은 저널 인쇄 페이지를 억지로 부여하지 않고, 최종 PDF의 “x / 15” 페이지 표기와 section/table/figure를 함께 기록한다. Table 2는 PDF p.9/15에 위치함을 원문 PDF 텍스트에서 확인했다. 다른 표/그림과 adverse-event 문구의 세부 PDF page locator는 계속 대조한다.
 
 **원문:** Zuzarte I, Indic P, Barton B, Paydarfar D, Bednarek F, Bloch-Salisbury E. *Vibrotactile stimulation: A non-pharmacological intervention for opioid-exposed newborns.* PLOS ONE. 2017;12(4):e0175981. DOI: 10.1371/journal.pone.0175981. PMID 28426726; PMCID PMC5398650.  
 URL: https://pmc.ncbi.nlm.nih.gov/articles/PMC5398650/
@@ -61,4 +67,4 @@ URL: https://pmc.ncbi.nlm.nih.gov/articles/PMC5398650/
 2. Frequency bandwidth, RMS displacement, maximum displacement, and measured surface uniformity must not be treated as interchangeable measures or universal safe values.
 3. None of these three studies directly establishes that MAJUNG reduces crying, improves settling, or improves sleep in healthy infants.
 4. An absent or limited adverse-event discussion must not be recoded as “no adverse events” or “safe”.
-5. This audit identifies source locations but does not replace full methodological risk-of-bias review or journal-PDF page normalization.
+5. 2026-10-13 update: E001-A Table 2/adverse-event paragraph and E001-B Table 2/Figure 6 printed pages were confirmed; E001-C uses PLOS article-number/PDF-page locators. Remaining E001-C table/figure locators, E001-E/F table pages, and independent review are open. This audit does not replace full methodological risk-of-bias review.
