@@ -1,10 +1,11 @@
 # MAJUNG 연구 문서 색인
 
-최종 정리: 2026-10-12
+최종 정리: 2026-10-13
 
 마중 스마트 배시넷의 문헌 근거, 연구 설계, 공학 측정 및 연구기관 협업 문서를 모아둔 진입점입니다.
 
 ## 먼저 읽을 문서
+- [프로젝트 전체 구조 분석·통합 요약·결정 기록 (2026-10-13)](MAJUNG_PROJECT_SYNTHESIS_AND_DECISION_REGISTER_2026-10-13.md)
 - [Claim–Evidence–Gap–Experiment 매트릭스 (2026-10-12)](MAJUNG_CLAIM_EVIDENCE_GAP_EXPERIMENT_MATRIX_2026-10-12.md)
 - [1차 문헌 원문 재확인·근거 해석 업데이트 (2026-10-12)](MAJUNG_PRIMARY_SOURCE_AUDIT_AND_EVIDENCE_UPDATES_2026-10-12.md)
 - [Endpoint·측정법·이벤트 기록 설계 (2026-10-12)](MAJUNG_ENDPOINT_MEASUREMENT_AND_EVENT_LOGGING_PLAN_2026-10-12.md)
