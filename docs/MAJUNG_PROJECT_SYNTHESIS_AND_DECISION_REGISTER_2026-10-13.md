@@ -132,7 +132,7 @@ Claim은 기능 구현, 물리 출력, 공학 안전, 단기 효능, 수면, 장
 연구자에게 단순히 “진동이 아기에게 효과가 있는지 연구해 달라”고 요청하는 대신 아래 자료를 전달할 수 있도록 준비한다.
 
 1. 현재 Claim과 직접 근거·반대 근거·미해결 질문
-2. E001-A~E 표준 추출 상태표와 원문 추적 링크
+2. E001-A~F 표준 추출 상태표와 원문 추적 링크
 3. 후보 연구 질문과 endpoint 정의가 필요한 항목
 4. comparator, 시간 경과, 초기 행동 상태, 보호자 개입 및 결측 처리 질문
 5. 실제 출력과 위험 자료가 추가로 필요한 목록
@@ -158,7 +158,8 @@ Claim은 기능 구현, 물리 출력, 공학 안전, 단기 효능, 수면, 장
 - [E001-A/B/C 수치별 locator 감사](MAJUNG_E001ABC_NUMERICAL_LOCATOR_AUDIT_2026-10-12.md)
 - [E001-D FDA locator 감사](MAJUNG_E001D_FDA_LOCATOR_AUDIT_2026-10-12.md)
 - [E001-E 수치별 locator 감사](MAJUNG_E001E_NUMERICAL_LOCATOR_AUDIT_2026-10-12.md)
-- [E001-A~F 표준 추출 필드·상태 매트릭스](MAJUNG_E001_STANDARDIZED_EXTRACTION_STATUS_MATRIX_2026-10-13.md)\n- [Singh et al. 2025/2026 다기관 SVS RCT 추출](MAJUNG_E001F_SINGH_2026_NOWS_RCT_PRIMARY_EXTRACTION_2026-10-13.md)
+- [E001-A~F 표준 추출 필드·상태 매트릭스](MAJUNG_E001_STANDARDIZED_EXTRACTION_STATUS_MATRIX_2026-10-13.md)
+- [Singh et al. 2025/2026 다기관 SVS RCT 추출](MAJUNG_E001F_SINGH_2026_NOWS_RCT_PRIMARY_EXTRACTION_2026-10-13.md)
 - [SNOO 공식 등록 결과–2024 보고서 대조](MAJUNG_SNOO_NCT05711927_REGISTRY_REPORT_RECONCILIATION_2026-10-12.md)
 
 ### 공학 시험·측정 준비
