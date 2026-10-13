@@ -5,6 +5,7 @@
 마중 스마트 배시넷의 문헌 근거, 연구 설계, 공학 측정 및 연구기관 협업 문서를 모아둔 진입점입니다.
 
 ## 먼저 읽을 문서
+- [특허(FTO)·리콜 감사·신호 필터링·웰니스 규제 심층 분석 (2026-10-13)](MAJUNG_DEEP_DIVE_FTO_RECALL_SIGNAL_REGULATORY_2026-10-13.md)
 - [Gemini 일괄 연구 실행 및 감사 로그 (2026-10-13)](MAJUNG_GEMINI_RESEARCH_RUN_LOG_2026-10-13.md)
 - [의사결정 게이트 및 제품 주장 규칙 (2026-10-13)](MAJUNG_DECISION_GATES_AND_CLAIM_RULES_2026-10-13.md)
 - [임상 연구자 협업 접촉 패키지 (2026-10-13)](MAJUNG_RESEARCHER_OUTREACH_PACKAGE_2026-10-13.md)
