@@ -5,6 +5,7 @@
 마중 스마트 배시넷의 문헌 근거, 연구 설계, 공학 측정 및 연구기관 협업 문서를 모아둔 진입점입니다.
 
 ## 먼저 읽을 문서
+- [Gemini 일괄 실행 브리프·한 번에 붙여넣을 프롬프트 (2026-10-13)](MAJUNG_GEMINI_ONE_SHOT_HANDOFF_2026-10-13.md)
 - [Gemini 일괄 조사·검증 실행 패키지 및 복붙용 전체 프롬프트 (2026-10-13)](MAJUNG_GEMINI_BATCH_RESEARCH_EXECUTION_PACKAGE_2026-10-13.md)
 - [프로젝트 전체 구조 분석·통합 요약·결정 기록 (2026-10-13)](MAJUNG_PROJECT_SYNTHESIS_AND_DECISION_REGISTER_2026-10-13.md)
 - [Claim–Evidence–Gap–Experiment 매트릭스 (2026-10-12)](MAJUNG_CLAIM_EVIDENCE_GAP_EXPERIMENT_MATRIX_2026-10-12.md)
