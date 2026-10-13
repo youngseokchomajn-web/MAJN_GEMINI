@@ -74,3 +74,34 @@
 6. `docs/MAJUNG_RESEARCHER_OUTREACH_PACKAGE_2026-10-13.md` [신규]
 7. `docs/MAJUNG_DECISION_GATES_AND_CLAIM_RULES_2026-10-13.md` [신규]
 8. `docs/MAJUNG_GEMINI_RESEARCH_RUN_LOG_2026-10-13.md` [신규]
+
+
+---
+
+## 5. 2026-10-13 후속 구조화 및 Gemini 작업지시서 반영
+
+이번 정합성 정리에서 완료된 것은 **문서 상태·실행 순서 정리**이며, 원문 전체 검증이나 임상/공학 검증 완료가 아니다.
+
+- `docs/MAJUNG_GEMINI_NEXT_RUN_WORK_ORDER_2026-10-13.md` 신규 생성: E001-C/E001-E/E001-F 원문 PDF, 보충자료, 수치·분모·인쇄 페이지 대조를 위한 단일 실행 지시서와 복사·붙여넣기 프롬프트.
+- `docs/MAJUNG_INDEX.md` 갱신: 새 작업지시서를 최상단 진입 링크로 추가.
+- `docs/MAJUNG_PROJECT_SYNTHESIS_AND_DECISION_REGISTER_2026-10-13.md` 갱신: 다음 Gemini 실행 범위와 WP-0 종료 보류 상태 명시.
+- `docs/MAJUNG_GEMINI_ONE_SHOT_HANDOFF_2026-10-13.md` 갱신: 기존 광범위 작업보다 새 WP-0 작업지시서를 먼저 수행하도록 기준선 지정.
+- `docs/MAJUNG_DECISION_GATES_AND_CLAIM_RULES_2026-10-13.md` 갱신: “공식 거버넌스 규격서” 표현을 내부 초안으로 정정.
+- `docs/MAJUNG_E001C_ZUZARTE_2017_PRIMARY_EXTRACTION_2026-10-08.md` 갱신: 주요 PDF page/table/figure locator를 추가하고, 행별 수치 전사 및 독립 검토는 미완료로 표시.
+- `docs/MAJUNG_E001_STANDARDIZED_EXTRACTION_STATUS_MATRIX_2026-10-13.md` 갱신: E001-C locator 현황을 extraction 문서와 동기화.
+
+### 실제 GitHub commit SHA
+
+| 변경 | Commit SHA |
+|---|---|
+| Gemini 다음 실행 작업지시서 신규 생성 | `889d2dd0599d75487c2ae3ba99207f31742aef0b` |
+| Index 갱신 | `68c20b515bdfd10b3ed86ba99dad281a81b33dc7` |
+| 종합·결정 기록 갱신 | `3eff0c73a75adf4c8738a486651a03e4980fbbc2` |
+| Gemini one-shot handoff 기준선 갱신 | `86f4cfa3cd6af664eb2eb7b3407d72f5d93d5da7` |
+| 의사결정 게이트 문서의 초안 상태 정정 | `5990a59dff50704fccdf7c3a2dfa708e1dedcd63` |
+| E001-C locator audit 갱신 | `d30b514029c379f32175ce618c39d3c56ae71e4e` |
+| E001 표준 추출 상태표 동기화 | `2393760b707732eed9e917a665a1677d1f3bf25f` |
+
+### 다음 실행 상태
+
+**WP-0: Partial — closure deferred.** Gemini는 새 작업지시서에 따라 E001-C의 수치별 검증, E001-E/F의 최종 PDF·보충자료 대조를 수행해야 한다. 실제 원문 또는 보충자료를 열어 확인하지 못한 항목은 미확인으로 남기며, Gemini 재검토를 외부 독립 검토로 표시하지 않는다.
