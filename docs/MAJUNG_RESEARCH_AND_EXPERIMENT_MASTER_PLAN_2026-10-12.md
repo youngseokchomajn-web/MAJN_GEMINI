@@ -271,10 +271,10 @@ WP-0, WP-1, WP-4, WP-5의 문서 설계는 시제품 작동 여부와 무관하�
 
 ### 다음 작업
 1. SNOO NCT05711927의 공식 등록 결과와 2024년 보고서 차이를 별도 문서로 대조했다. 다음에는 endpoint 분모와 missing/not-collected 상태를 master evidence matrix에 통합한다.
-2. E001-A~E001-E 표준 추출 필드·상태 매트릭스를 추가했다. 다음은 A/B/C/E의 printed-page locator 대조와 adverse-event reporting code 최종 확인이다.
+2. E001-A~E001-F 표준 추출 필드·상태 매트릭스를 추가했다. 다음은 A/B/C/E/F의 printed-page locator 대조와 adverse-event reporting code 최종 확인이다.
 3. 임상·측정 연구자에게 전달할 역할별 검토 질문 세트를 만들었다. 다음은 synopsis와 함께 검토 가능한 최소 전달 패키지로 묶고, 답변·수정 이력을 기록한다: [연구자 검토 질문 세트](MAJUNG_CLINICAL_RESEARCHER_REVIEW_QUESTION_SET_2026-10-13.md).
 4. 공학 시험은 actual contact-surface output, repeatability, load/bedding, acoustic/thermal behavior, foreseeable faults를 시험 계획과 연결한다.
 
-**WP-0 상태:** 진행 중. 표준 필드와 1차 locator audit 문서는 마련됐으나, 모든 핵심 수치의 printed-page locator 및 독립 검토가 끝나지 않아 완료로 표시하지 않는다. 상태표: [E001-A~E 표준 추출 필드·상태 매트릭스](MAJUNG_E001_STANDARDIZED_EXTRACTION_STATUS_MATRIX_2026-10-13.md).
+**WP-0 상태:** 진행 중. 표준 필드와 1차 locator audit 문서는 마련됐으나, E001-A~F 핵심 수치의 printed-page locator 및 독립 검토가 끝나지 않아 완료로 표시하지 않는다. 상태표: [E001-A~F 표준 추출 필드·상태 매트릭스](MAJUNG_E001_STANDARDIZED_EXTRACTION_STATUS_MATRIX_2026-10-13.md).
 
 이후 실제 출력 측정값이 확보되면 물리 자극 dossier를 붙인다. 현재 장치의 작동 여부나 회로 동결을 이 연구 계획의 선행조건으로 삼지 않는다.
