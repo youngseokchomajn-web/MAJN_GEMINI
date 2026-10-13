@@ -65,7 +65,7 @@
 * **fact_from_source**: 확률 진동이 미숙아의 산소탈포화 및 무호흡 빈도/강도를 줄였으나 서맥 발생 횟수는 줄이지 못함.
 * **author_interpretation**: 감각 피질의 확률 공명 기전이 미숙한 뇌간 호흡 중추 신경망의 리듬 생성을 보조함.
 * **majung_inference_and_boundary**: **외삽 절대 금지.** 미숙아의 생리적 사건 억제 효과를 건강한 만삭아의 '잠투정 해소'나 '수면 연장' 근거로 차용할 수 없음.
-* **verification_status**: Verified (인쇄 페이지 e1564–e1566 및 Table 2 수치 완전 대조).
+* **verification_status**: Partial (Figure 2 및 Table 2 주요 locator가 기록됨. 모든 핵심 수치·분모의 재대조와 WP-0 전체 종료 판정은 별도 확인 필요).
 
 ---
 
@@ -100,7 +100,7 @@
 * **fact_from_source**: 0.021 mm RMS(30-60 Hz) 진동이 미숙아의 호흡 불규칙성을 반감시켰으며, 수면 단편화나 각성을 일으키지 않고 수면 상태 비율을 유지함.
 * **author_interpretation**: 감각 진동 자극이 호흡신경망에 동조 신호로 작용하여 안정화를 유도함.
 * **majung_inference_and_boundary**: **공학적 참고 한정.** 매트리스 폼의 진동 감쇠 및 침구(시트/담요) 적층 시 진폭 보정 방법론은 벤치 테스트 설계에 유효하나, 수치 자체를 일반 영아의 안전 한계값으로 전용할 수 없음.
-* **verification_status**: Verified (인쇄 페이지 1018, 1020, 1021, 1024 확인).
+* **verification_status**: Partial (주요 표·그림 페이지 locator가 기록됨. 물리 출력 subsection 및 이상사건 보고 범위 확인이 남아 있음).
 
 ---
 
@@ -256,8 +256,8 @@
 
 | Source ID | 수치 Locator 대조 상태 | AE 코딩 상태 | 건강 영아 진정 직접성 | WP-0 판정 |
 |---|---|---|---|---|
-| E001-A | Verified (pp.e1564–e1566) | authors reported none | Low | Locator 대조 완료 |
-| E001-B | Verified (pp.1018–1024) | not clearly reported | Low-Moderate | Locator 대조 완료 |
+| E001-A | Partial — 주요 locator 기록, 전체 수치·분모 재대조 필요 | 보고 문구 locator 기록; 최종 코딩 재확인 | Low | 종료 판정 보류 |
+| E001-B | Partial — 주요 표·그림 locator 기록, 출력/AE 맥락 미완료 | not clearly reported; 보고 범위 재확인 | Low-Moderate | 종료 판정 보류 |
 | E001-C | Partial — 일부 PDF locator 기록, 수치·분모/표·그림 재대조 필요 | 기존 기록상 authors reported none; 원문 맥락 재확인 | Moderate | 종료 판정 보류 |
 | E001-D | Partial — 문서 범위 검토, 핵심 문장·표 2차 확인 필요 | bounded report; 원문 범위 유지 | Moderate-Low | 종료 판정 보류 |
 | E001-E | Partial — HTML locator 기록, 인쇄 페이지/보충자료 맥락 미완료 | protocol/shutdown observation의 해석 경계 유지 | Low | 종료 판정 보류 |
