@@ -29,20 +29,20 @@
 
 ### [3순위] 근거 추출 마스터 테이블 생성
 * 파일: `docs/MAJUNG_EVIDENCE_EXTRACTION_MASTER_TABLE_2026-10-13.md`
-* 22개 표준 스키마 필드 전수 적용, source fact vs author interpretation vs MAJUNG inference 3단계 층위 완벽 분리.
+* 표준 스키마 기반 추출 초안을 작성했다. 다만 locator와 source별 상태에 미해결 항목이 있어 전수 적용·완전 분리 완료로 보지 않으며, 마스터 테이블의 WP-0 상태는 Partial이다.
 
 ### [4순위] 공학 출력 및 위험 벤치 시험 계획 수립
 * 파일: `docs/MAJUNG_ENGINEERING_OUTPUT_AND_BENCH_TEST_PLAN_2026-10-13.md`
-* 30–60 Hz 변위(10–25 μm RMS) 9점 측정, 0/3/6 kg 하중 및 침구 감쇠율 맵핑, <45 dBA 음향 소음, 표면 발열 <2°C 상승 한계, 전기/기계 페일세이프 규정.
+* 공학 시험 계획 초안을 작성했다. 주파수·변위·하중·소음·온도 수치는 검토용 후보 또는 시험 변수이며, 적용 규격·위험 분석·실제 측정 결과로 정당화되기 전에는 확정 합격 기준으로 사용하지 않는다.
 
 ### [5순위] 건강 영아 임상 연구 프로토콜 시놉시스 작성
 * 파일: `docs/MAJUNG_CLINICAL_RESEARCH_PROTOCOL_SYNOPSIS_2026-10-13.md`
-* 생후 2주~16주 건강 만삭아 대상 MAJUNG-CALM Trial. 1차 평가변수(취침 진정 시간, 울음 비율) 조작적 정의, 비디오 독립 코딩 Gold Standard 설정, 액티그래피 간섭 필터링, IRB/DSMB 규정.
+* 임상 연구 시놉시스 초안을 작성했다. 대상 연령, 1차 endpoint, 표본 수, 측정 방식 및 분석 기준은 임상·통계 전문가와 기관 검토 전 잠정안이며, 사람 대상 연구의 시작이나 승인 완료를 의미하지 않는다.
 
 ### [6순위] 국내 연구진 공식 검증 숏리스트 및 아웃리치 패키지 구축
 * 파일: `docs/MAJUNG_KOREA_RESEARCH_COLLABORATOR_SHORTLIST_2026-10-13.md`
 * 파일: `docs/MAJUNG_RESEARCHER_OUTREACH_PACKAGE_2026-10-13.md`
-* 조재소(분당서울대), 이병섭/김수현(서울아산), KRISS 진동음향센터 공식 팩트체크 완료. 과장 없는 1-page Concept Note, 한국어 이메일 초안, 30분 미팅 구조화 아젠다, IP/COI 거버넌스 완성.
+* 조재소, 이병섭, 김수현 및 KRISS 관련 검토 대상과 연구자 접촉 패키지 초안을 정리했다. 소속·연구 적합성 및 연락 경로는 개별 공식 출처를 다시 확인해야 하며, 협업·자문·IP/COI 합의가 완료된 것은 아니다.
 
 ### [7순위] 의사결정 게이트 (Gate 0–5) 및 클레임 규칙 확립
 * 파일: `docs/MAJUNG_DECISION_GATES_AND_CLAIM_RULES_2026-10-13.md`
