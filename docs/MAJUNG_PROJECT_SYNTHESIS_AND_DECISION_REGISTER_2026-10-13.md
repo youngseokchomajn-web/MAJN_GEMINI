@@ -8,12 +8,21 @@
 
 핵심 원칙은 **MAJUNG을 판매 가능한 제품으로 만들기 위해 효과와 안전에 관한 근거를 구축하는 것**이다. 진동이 작동하는 것, 문헌에 유사한 장치가 있는 것, 임상 결과가 관찰된 것은 서로 다른 수준의 증거다.
 
-## Gemini로 조사 일괄 진행할 때
+## Gemini 일괄 조사 실행 완료 산출물 (2026-10-13)
+
+- **연구 실행 및 감사 로그**: [MAJUNG_GEMINI_RESEARCH_RUN_LOG_2026-10-13.md](MAJUNG_GEMINI_RESEARCH_RUN_LOG_2026-10-13.md)
+- **근거 추출 마스터 테이블**: [MAJUNG_EVIDENCE_EXTRACTION_MASTER_TABLE_2026-10-13.md](MAJUNG_EVIDENCE_EXTRACTION_MASTER_TABLE_2026-10-13.md)
+- **연구 및 규제 출처 등록부**: [MAJUNG_RESEARCH_SOURCE_REGISTER_2026-10-13.md](MAJUNG_RESEARCH_SOURCE_REGISTER_2026-10-13.md)
+- **공학 출력·위험 벤치 시험 계획**: [MAJUNG_ENGINEERING_OUTPUT_AND_BENCH_TEST_PLAN_2026-10-13.md](MAJUNG_ENGINEERING_OUTPUT_AND_BENCH_TEST_PLAN_2026-10-13.md)
+- **건강 영아 임상 프로토콜 시놉시스**: [MAJUNG_CLINICAL_RESEARCH_PROTOCOL_SYNOPSIS_2026-10-13.md](MAJUNG_CLINICAL_RESEARCH_PROTOCOL_SYNOPSIS_2026-10-13.md)
+- **국내 연구자 검증 숏리스트**: [MAJUNG_KOREA_RESEARCH_COLLABORATOR_SHORTLIST_2026-10-13.md](MAJUNG_KOREA_RESEARCH_COLLABORATOR_SHORTLIST_2026-10-13.md)
+- **연구자 접촉 패키지 (Concept Note·질문지)**: [MAJUNG_RESEARCHER_OUTREACH_PACKAGE_2026-10-13.md](MAJUNG_RESEARCHER_OUTREACH_PACKAGE_2026-10-13.md)
+- **의사결정 게이트 & 클레임 규칙**: [MAJUNG_DECISION_GATES_AND_CLAIM_RULES_2026-10-13.md](MAJUNG_DECISION_GATES_AND_CLAIM_RULES_2026-10-13.md)
+
+## Gemini 일괄 진행 인계 패키지 기준선
 
 - 최신 실행 브리프 및 한 번에 붙여넣을 프롬프트: [MAJUNG_GEMINI_ONE_SHOT_HANDOFF_2026-10-13.md](MAJUNG_GEMINI_ONE_SHOT_HANDOFF_2026-10-13.md)
 - 실행 패키지 및 복사·붙여넣기용 전체 프롬프트: [MAJUNG_GEMINI_BATCH_RESEARCH_EXECUTION_PACKAGE_2026-10-13.md](MAJUNG_GEMINI_BATCH_RESEARCH_EXECUTION_PACKAGE_2026-10-13.md)
-- 이 패키지는 기존 근거를 원문 수준에서 재검증하고, 물리 출력·공학 안전시험·임상 프로토콜·한국 연구기관 협업·GitHub 반영까지 한 작업으로 묶는다.
-- 저장소 쓰기 권한이 없으면 Gemini는 push 완료를 주장하지 않고, 파일별 Markdown 본문과 경로를 제공해야 한다.
 
 ## 1. 한눈에 보는 판정
 

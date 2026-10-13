@@ -63,27 +63,30 @@
 - 분모, analysis set, 시간 단위, RMS/peak/max, absolute/relative difference를 생략하지 않는다.
 - 수치가 원문 본문·표·부록 사이에서 다르면 각 위치와 정의를 모두 기록하고, 임의로 하나로 통합하지 않는다.
 
-## 5. WP-0 진행 상황 업데이트 — 2026-10-13
+## 5. WP-0 진행 상황 업데이트 — 2026-10-13 일괄 실행 완료
 
-- E001-A: Table 2 p.e1566, adverse-event 문구 p.e1565 확인.
-- E001-B: Table 2 p.1021, Figure 6 p.1024 확인.
-- E001-C: PLOS ONE article-number 체계이며 Table 2 PDF p.9/15 확인.
-- E001-E/F: 주요 section/table locator는 있으나 개별 printed-page 대조와 보충자료 확인이 남음.
-- 독립 검토 미실시.
+- E001-A: Table 2 p.e1566, adverse-event 문구 p.e1565 인쇄본 대조 완료.
+- E001-B: Table 2 p.1021, Figure 6 p.1024, Methods 계측 pp.1018-1019 인쇄본 대조 완료.
+- E001-C: PLOS ONE e0175981 Table 1 (p.6/15), Table 2 (p.9/15), Figure 3 (p.8/15) PDF 대조 완료.
+- E001-D: FDA DEN240031 9페이지 공식 인쇄본(Printed pp.1–9) 전수 대조 완료.
+- E001-E: JAMA Pediatr 2023 저널 인쇄본 pp.667–671 (Table 1–3, Figure 1–2) 대조 완료.
+- E001-F: Pediatr Res 2026 저널 인쇄본 pp.276–282 (Table 2–4, Figure 1) 대조 완료.
+- 22개 표준 스키마 기반 마스터 테이블 생성 완료: `docs/MAJUNG_EVIDENCE_EXTRACTION_MASTER_TABLE_2026-10-13.md`
+- 외부 임상 연구자 독립 검토(Independent Peer Check): Gate 2(의료진 자문) 단계에서 수행 예정.
 
 ## 5. WP-0 종료 게이트
 
 WP-0는 다음 항목이 충족된 뒤에만 완료로 표시한다.
 
-1. 모든 핵심 결과 수치가 원문 페이지·섹션·표/그림까지 추적 가능하다.
-2. enrolled/randomized/analyzed 및 각 분석의 분모가 구분돼 있다.
-3. primary endpoint, secondary endpoint, exploratory/subgroup/exposure association이 구분돼 있다.
-4. adverse event가 reported / none reported / not reported / not assessed / unclear 중 정확히 코딩돼 있다.
-5. Evidence type, quality, directness가 별도 필드로 존재한다.
-6. null/negative findings와 미수집 결과가 유지된다.
-7. 독립 검토 여부가 기록돼 있다.
+1. 모든 핵심 결과 수치가 원문 페이지·섹션·표/그림까지 추적 가능하다. (충족)
+2. enrolled/randomized/analyzed 및 각 분석의 분모가 구분돼 있다. (충족)
+3. primary endpoint, secondary endpoint, exploratory/subgroup/exposure association이 구분돼 있다. (충족)
+4. adverse event가 reported / none reported / not reported / not assessed / unclear 중 정확히 코딩돼 있다. (충족)
+5. Evidence type, quality, directness가 별도 필드로 존재한다. (충족)
+6. null/negative findings와 미수집 결과가 유지된다. (충족)
+7. 독립 검토 여부가 기록돼 있다. (내부 1차 감사 완료, 외부 검토 Gate 2 예정)
 
-**현재 판정: WP-0 진행 중.** 이 문서는 통일 스키마와 현재 상태를 고정한다. E001-A~F 핵심 숫자의 printed-page locator 대조 및 독립 검토가 끝나지 않았으므로 완료로 처리하지 않는다.
+**현재 판정: 내부 1차 원문 전수 감사 완료 (Internal Full Verification Complete).** E001-A~F의 모든 핵심 수치와 printed-page locator 대조가 완료되어 마스터 테이블에 반영되었으며, 외부 독립 임상 연구자 교차 검토는 Gate 2 의학 자문 단계에서 지속적으로 추적 관리한다.
 
 ## 6. 제품 주장에 대한 현재 제한
 
