@@ -15,13 +15,13 @@
 
 ## 2. 순위별 과업 수행 결과 요약
 
-### [1순위] WP-0 핵심 문헌 (E001-A~F) 원문 Locator 전수 감사
-* **E001-A (Smith 2015)**: 저널 인쇄본 pp.e1564–e1566 대조 완료. Table 2의 탈포화/무호흡/서맥 수치 및 p.e1565 이상사건 무발생 문구 확인.
-* **E001-B (Bloch-Salisbury 2009)**: 저널 인쇄본 pp.1018–1024 대조 완료. 0.021 mm RMS/0.090 mm max 출력, IBI 분산(Table 2 p.1021), Figure 6(p.1024) 확인.
-* **E001-C (Zuzarte 2017)**: PLOS ONE e0175981 PDF pp.6–9/15 대조 완료. 움직임 35% 감소(Table 2 p.9/15), 개별 그래프(Figure 3 p.8/15) 확인.
-* **E001-D (Prapela FDA)**: 공식 9페이지 DEN240031 인쇄 페이지 전수 대조 완료. Class II QVY 코드, p.7 임상 유효성/안전성 분리 확인.
-* **E001-E (Bloch-Salisbury 2023)**: JAMA Pediatrics pp.667–671 대조 완료. Table 2 1차 결과 비유의(P=.60), Table 3 노출시간 연관성, eTable 3 반응군 하위분석 분리 확인.
-* **E001-F (Singh 2026/2025)**: Pediatric Research pp.276–282 대조 완료. 조기 종료(n=62), 1차 결과 비유의(P=.46), 울음 데이터(Table 3 p.280, P=.82) 및 주관적 설문(Table 4 p.281)의 괴리 검증.
+### [1순위] WP-0 핵심 문헌 (E001-A~F) 원문 locator 검토 — 완료 판정 보류
+* **E001-A (Smith 2015)**: Figure 2, Table 2 및 p.e1565 adverse-event 문구의 주요 locator가 기록돼 있다. 모든 수치·분모의 최종 재대조가 남아 있어 전체 완료로 보지 않는다.
+* **E001-B (Bloch-Salisbury 2009)**: 주요 표·그림 locator가 기록돼 있다. 물리 출력 subsection 및 이상사건 보고 범위 확인이 남아 있어 전체 완료로 보지 않는다.
+* **E001-C (Zuzarte 2017)**: 일부 PDF 페이지 locator가 기록돼 있다. 모든 수치·분모 및 표·그림 locator 재대조가 남아 있다.
+* **E001-D (Prapela FDA)**: 공식 9페이지 문서와 일부 규제 locator가 검토됐으나, 주요 문장·표의 2차 확인 및 redacted bench 수치 한계 기록이 남아 있다.
+* **E001-E (Bloch-Salisbury 2023)**: 주요 HTML locator와 분석 위계는 기록돼 있으나, 인쇄 페이지 정규화·보충자료·하위집단 및 이상사건 맥락 확인이 남아 있다.
+* **E001-F (Singh 2026/2025)**: PMC full-text에서 Methods/Results, Figure 1, Tables 2–4 anchor와 저널 페이지 범위 276–282를 확인했다. 개별 표의 인쇄 페이지 매핑은 최종 PDF 대조 전 잠정이며, 보충자료 내용 확인도 남아 있다.
 
 ### [2순위] 연구 및 규제 출처 등록부 생성
 * 파일: `docs/MAJUNG_RESEARCH_SOURCE_REGISTER_2026-10-13.md`
