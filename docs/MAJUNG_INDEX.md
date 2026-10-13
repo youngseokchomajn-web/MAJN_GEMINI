@@ -2,6 +2,8 @@
 
 문서 정합성 수정 진행: 2026-10-13
 
+Gemini 다음 실행: WP-0 잔여 원문 locator·수치 대조 작업지시서 추가. WP-0 종료 판정은 여전히 보류.
+
 마중 스마트 배시넷의 문헌 근거, 연구 설계, 공학 측정 및 연구기관 협업 문서를 모아둔 진입점입니다.
 
 ## 현재 상태 요약
@@ -12,6 +14,7 @@
 - 숫자 기준(진동·소음·온도·표본 수·MCID): 제품별 시험 및 전문가 검토 전 잠정값으로만 관리.
 
 ## 먼저 읽을 문서
+- [Gemini 다음 실행 작업지시서 — WP-0 E001-C/E 정합성 마감 (2026-10-13)](MAJUNG_GEMINI_NEXT_RUN_WORK_ORDER_2026-10-13.md)
 - [통합 자료 구조 재분석·문서 간 불일치 감사 (2026-10-13)](MAJUNG_INTEGRATED_STRUCTURAL_REANALYSIS_2026-10-13.md)
 - [FTO·리콜·DSP·규제 심층 보고서 비판적 검토 (2026-10-13)](MAJUNG_DEEP_DIVE_FTO_RECALL_SIGNAL_REGULATORY_CRITICAL_REVIEW_2026-10-13.md)
 - [특허(FTO)·리콜 감사·신호 필터링·웰니스 규제 심층 분석 (2026-10-13)](MAJUNG_DEEP_DIVE_FTO_RECALL_SIGNAL_REGULATORY_2026-10-13.md)
