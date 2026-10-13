@@ -210,7 +210,7 @@
 * **fact_from_source**: SVS 배정만으로는 전체 환아의 모르핀 투여율을 유의하게 낮추지 못했으나, 실사용 시간이 길수록 연관 위험이 낮았고 조기 반응군에서 유의한 용량 감소가 관찰됨.
 * **author_interpretation**: SVS는 약물 투여 위험을 줄이고 치료 반응을 가속하는 안전한 비약물적 보조 요법이 될 수 있음.
 * **majung_inference_and_boundary**: **전체 결과의 음성(Null)을 은폐하고 하위분석만 인용하는 행위 엄금.** MAJUNG 마케팅이나 기술 문서에서 "임상시험을 통해 증명된"이라는 문구를 쓰며 이 논문의 하위분석 수치를 인용하는 것은 심각한 학술적 왜곡임.
-* **verification_status**: Verified (인쇄 페이지 667–671, Table 2/3 및 Figure 2 완전 대조).
+* **verification_status**: Partial (주요 분석의 HTML locator는 기록돼 있으나, 인쇄 페이지 정규화·보충자료·하위집단 및 이상사건 맥락 확인이 남아 있음).
 
 ---
 
@@ -260,7 +260,7 @@
 | E001-B | Verified (pp.1018–1024) | not clearly reported | Low-Moderate | Locator 대조 완료 |
 | E001-C | Verified (PDF pp.6–9/15) | authors reported none | Moderate | Locator 대조 완료 |
 | E001-D | Verified (Printed pp.1–9) | bounded report | Moderate-Low | Locator 대조 완료 |
-| E001-E | Verified (pp.667–671) | bounded protocol obs | Low | Locator 대조 완료 |
+| E001-E | Partial — HTML locator 기록, 인쇄 페이지/보충자료 맥락 미완료 | protocol/shutdown observation의 해석 경계 유지 | Low | 종료 판정 보류 |
 | E001-F | Partial — 저널 페이지 범위 확인, 개별 표 페이지/보충자료 미완료 | 저자 보고 문구는 62명·단기 관찰 범위로 한정 | Low-Moderate | 종료 판정 보류 |
 
 > **현재 감사 결론:** E001-A~F의 추출 내용과 일부 locator는 존재하지만, 모든 인쇄 페이지·표/그림·분모·통계·이상사건 맥락이 전수 대조되었다고 선언할 수 없다. E001-E/F의 인쇄 페이지 및 보충자료 확인과 E001-C의 일부 locator 재대조가 남아 있다. 외부 독립 임상 연구자 검토도 아직 수행되지 않았다. 따라서 WP-0는 **Partial / 종료 판정 보류**다. 이 상태는 각 논문의 결과 요약을 무효화하지 않지만, 문헌 감사 전체가 끝났다는 의미도 아니다.
