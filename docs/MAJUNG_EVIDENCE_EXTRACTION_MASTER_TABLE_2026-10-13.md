@@ -239,11 +239,10 @@
 * **adverse_event_status**: authors reported none ("No adverse events were observed in either group", p.280).
 * **limitations_risk_of_bias**: 낮은 모집률로 인한 조기 종료(n=62 vs 계획 120), 불균등 배정(2:1), 비눈가림 평가, 울음 데이터 누락(16명 미수집).
 * **printed_page_locator**:
-  - 저널 인쇄 페이지: 276–282
-  - Participant Flow (Figure 1): p.278
-  - Primary & Discharge Outcomes (Table 2): p.279
-  - Cry Data (Table 3): p.280
-  - Acceptability Survey & AE (Table 4): p.280–281
+  - 저널 페이지 범위: 276–282 (PMC full-text citation metadata로 확인)
+  - Figure 1 p.278, Table 2 p.279, Table 3 p.280, Table 4 pp.280–281: 기존 마스터 테이블의 잠정 매핑. 최종 PDF 페이지 이미지와 대조해 독립 재확인하기 전에는 확정 locator로 사용하지 않는다.
+  - PMC full-text anchor: Methods / Fig. 1; Results / Table 2; Results “Cry data” / Table 3; caregiver acceptability / Table 4.
+  - Supplement: NIHMS2106170-supplement-Supplementary_Files.pdf가 연결돼 있으나, 파일 내용 및 Supplemental Table S1/Figure S1은 아직 검토하지 않았다.
 * **section_table_figure_locator**: Results ("Primary outcome", "Cry data", "Acceptability"), Tables 2–4, Figure 1.
 * **fact_from_source**: 지속적 진동 자극이 5일 내 약물치료율, 퇴원 준비 기간, 객관적 울음 시간 및 울음 강도를 통계적으로 유의하게 감소시키지 못함. 그러나 양육자 주관적 만족도는 높았음.
 * **author_interpretation**: 환아 모집 부진으로 충분한 검정력을 확보하지 못했으나, 경향성과 수용도는 비약물적 보조 요법으로서의 가능성을 보여줌.
