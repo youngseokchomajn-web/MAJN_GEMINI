@@ -261,6 +261,6 @@
 | E001-C | Verified (PDF pp.6–9/15) | authors reported none | Moderate | Locator 대조 완료 |
 | E001-D | Verified (Printed pp.1–9) | bounded report | Moderate-Low | Locator 대조 완료 |
 | E001-E | Verified (pp.667–671) | bounded protocol obs | Low | Locator 대조 완료 |
-| E001-F | Verified (pp.276–282) | authors reported none | Low-Moderate | Locator 대조 완료 |
+| E001-F | Partial — 저널 페이지 범위 확인, 개별 표 페이지/보충자료 미완료 | 저자 보고 문구는 62명·단기 관찰 범위로 한정 | Low-Moderate | 종료 판정 보류 |
 
 > **종합 감사 결론:** E001-A부터 E001-F까지 모든 1차 핵심 문헌의 인쇄본 페이지, 표 번호, 객관적 수치, 통계적 신뢰구간, 이상사건 보고 맥락의 전수 대조가 완료되었다. 모든 연구에서 일반 건강 영아의 울음 완화나 수면 질 향상을 입증한 바 없으며, 특히 E001-F의 결과는 주관적 만족도와 객관적 울음 억제 효과 간의 괴리를 명확히 보여준다.
