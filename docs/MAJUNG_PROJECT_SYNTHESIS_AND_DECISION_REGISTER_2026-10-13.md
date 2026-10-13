@@ -10,6 +10,8 @@
 
 ## Gemini 일괄 조사 실행 완료 산출물 (2026-10-13)
 
+- **통합 구조 재분석 및 불일치 감사:** [MAJUNG_INTEGRATED_STRUCTURAL_REANALYSIS_2026-10-13.md](MAJUNG_INTEGRATED_STRUCTURAL_REANALYSIS_2026-10-13.md). 핵심 지적: WP-0 상태 충돌, 직접 근거 표현 과장 가능성, 잠정 임상/안전 수치의 확정 기준화, 연구자 접촉 패키지의 실측 완료 표현.
+
 - **FTO·리콜·DSP·규제 심층 보고서 비판적 검토**: [MAJUNG_DEEP_DIVE_FTO_RECALL_SIGNAL_REGULATORY_CRITICAL_REVIEW_2026-10-13.md](MAJUNG_DEEP_DIVE_FTO_RECALL_SIGNAL_REGULATORY_CRITICAL_REVIEW_2026-10-13.md). 원 보고서는 보존하고, 특허 회피·안전 수치·DSP 성능·웰니스/IRB 분류를 검증 전 확정 결론으로 사용하지 않도록 상태를 분리함.
 
 - **특허(FTO)·리콜 감사·신호 필터링·웰니스 규제 심층 분석**: [MAJUNG_DEEP_DIVE_FTO_RECALL_SIGNAL_REGULATORY_2026-10-13.md](MAJUNG_DEEP_DIVE_FTO_RECALL_SIGNAL_REGULATORY_2026-10-13.md)
