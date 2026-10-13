@@ -62,6 +62,14 @@
 - 분모, analysis set, 시간 단위, RMS/peak/max, absolute/relative difference를 생략하지 않는다.
 - 수치가 원문 본문·표·부록 사이에서 다르면 각 위치와 정의를 모두 기록하고, 임의로 하나로 통합하지 않는다.
 
+## 5. WP-0 진행 상황 업데이트 — 2026-10-13
+
+- E001-A: Table 2 p.e1566, adverse-event 문구 p.e1565 확인.
+- E001-B: Table 2 p.1021, Figure 6 p.1024 확인.
+- E001-C: PLOS ONE article-number 체계이며 Table 2 PDF p.9/15 확인.
+- E001-E/F: 주요 section/table locator는 있으나 개별 printed-page 대조와 보충자료 확인이 남음.
+- 독립 검토 미실시.
+
 ## 5. WP-0 종료 게이트
 
 WP-0는 다음 항목이 충족된 뒤에만 완료로 표시한다.
