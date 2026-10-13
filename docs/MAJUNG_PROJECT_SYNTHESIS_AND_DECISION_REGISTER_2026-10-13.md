@@ -10,6 +10,7 @@
 
 ## Gemini로 조사 일괄 진행할 때
 
+- 최신 실행 브리프 및 한 번에 붙여넣을 프롬프트: [MAJUNG_GEMINI_ONE_SHOT_HANDOFF_2026-10-13.md](MAJUNG_GEMINI_ONE_SHOT_HANDOFF_2026-10-13.md)
 - 실행 패키지 및 복사·붙여넣기용 전체 프롬프트: [MAJUNG_GEMINI_BATCH_RESEARCH_EXECUTION_PACKAGE_2026-10-13.md](MAJUNG_GEMINI_BATCH_RESEARCH_EXECUTION_PACKAGE_2026-10-13.md)
 - 이 패키지는 기존 근거를 원문 수준에서 재검증하고, 물리 출력·공학 안전시험·임상 프로토콜·한국 연구기관 협업·GitHub 반영까지 한 작업으로 묶는다.
 - 저장소 쓰기 권한이 없으면 Gemini는 push 완료를 주장하지 않고, 파일별 Markdown 본문과 경로를 제공해야 한다.
