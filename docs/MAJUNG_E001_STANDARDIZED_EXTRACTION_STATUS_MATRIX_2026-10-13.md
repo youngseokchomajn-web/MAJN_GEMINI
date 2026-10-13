@@ -1,7 +1,7 @@
-# MAJUNG E001-A~E 1차 근거 표준 필드·상태 매트릭스
+# MAJUNG E001-A~F 1차 근거 표준 필드·상태 매트릭스
 작성일: 2026-10-13
 
-**목적:** E001-A~E001-E 원문 추출을 동일한 필드로 관리하고, 출처 위치가 확인된 항목과 미확인 항목을 구분한다. 이 문서는 원문 전체의 재분석이나 모든 locator의 완료를 선언하지 않는다.
+**목적:** E001-A~E001-F 원문 추출을 동일한 필드로 관리하고, 출처 위치가 확인된 항목과 미확인 항목을 구분한다. 이 문서는 원문 전체의 재분석이나 모든 locator의 완료를 선언하지 않는다.
 
 ## 1. 공통 추출 스키마
 
@@ -9,7 +9,7 @@
 
 | Field | 정의 / 입력 규칙 |
 |---|---|
-| source_id | E001-A~E001-E |
+| source_id | E001-A~E001-F |
 | full_citation | 저자, 제목, 저널/기관, 연도, 권·호·페이지 또는 문서번호 |
 | doi_url | DOI와 원문/공식 URL |
 | source_type | peer-reviewed paper / FDA regulatory summary / registry / report |
@@ -41,7 +41,7 @@
 | E001-D Prapela FDA De Novo | FDA 규제 요약; NOWS 적응증의 특정 의료기기 | Prapela SVS Hospital Bassinet Pad; 제품별 bench/clinical evidence | 해당 적응증의 임상 성능과 기기 안전성/규제 기준 | 2023 RCT의 전체 무작위 결과와 subgroup 결과를 구분; 2017 자료는 FDA 평가상 effectiveness 입증 endpoint로는 부적절하지만 safety support에 기여 | 제출된 임상 자료 범위에서 adverse events 미관찰 보고; 장기/모든 영아 위험 없음의 증거 아님 | 9-page PDF printed-page locator audit 기록됨 | redacted bench 수치는 미해결로 명시; FDA summary의 모든 주요 표/문장 locator 2차 확인 |
 | E001-E Bloch-Salisbury 2023 | 산전 opioid 노출 신생아, randomized clinical trial; 208 enrolled/randomized, 181 analyzed | SVS mattress + treatment as usual vs treatment as usual | morphine treatment administration, cumulative morphine dose, length of stay (논문 Methods/Abstract 기준) | 전체 약물치료 비율 35.6% vs 30.9%, P=.60; exposure-duration association, treated cohort, responder subgroup 별도 분석 | 6/58 shutdown observation을 rebound/causality로 단정하지 않음; adverse event status는 원문 정의대로 제한 | Table 2/3, Figure 1/2, eTable 3/4 + publisher HTML locator 기록됨; 인쇄 페이지 미정규화 | journal PDF page/table locator, multiplicity/statistical analysis plan, adverse event terminology, subgroup status final check |
 
-## 3. Evidence type / quality / directness 분리 예시
+| E001-F Singh 2025/2026 | 산전 opioid 노출, ≥35주 신생아 62명; 다기관 비눈가림 RCT, 조기 종료 | SVS mattress 40명 vs 표준 매트리스 22명; 30–60 Hz, 10–12 μm RMS | 생후 5일 이내 NOWS 약물치료 시작 | 4/40 (10.0%) vs 4/22 (18.2%); adjusted OR 0.54 (95% CI 0.10–2.85), P=.46. Cry data subset n=46에서 fussy/pain cry 시간 및 cry strength 차이 유의하지 않음 | 저자는 양 군에서 adverse events 미관찰 보고; 단기 병원 관찰·표본 범위로 제한 | Methods/Results, Table 2–4, Fig. 1 위치 확인; 저널 페이지 276–282, 각 표의 정확한 인쇄 페이지 미확인 | 표본 부족·조기 종료, cry subset 분모, 보충자료, adverse-event 맥락, PDF 인쇄 페이지, 독립 검토 확인 |\n\n## 3. Evidence type / quality / directness 분리 예시
 
 이 필드들은 서로 다른 질문에 답하므로 합쳐서 한 점수로 만들지 않는다.
 
@@ -74,7 +74,7 @@ WP-0는 다음 항목이 충족된 뒤에만 완료로 표시한다.
 6. null/negative findings와 미수집 결과가 유지된다.
 7. 독립 검토 여부가 기록돼 있다.
 
-**현재 판정: WP-0 진행 중.** 이 문서는 통일 스키마와 현재 상태를 고정한다. 모든 핵심 숫자의 printed-page locator 대조 및 독립 검토가 끝나지 않았으므로 완료로 처리하지 않는다.
+**현재 판정: WP-0 진행 중.** 이 문서는 통일 스키마와 현재 상태를 고정한다. E001-A~F 핵심 숫자의 printed-page locator 대조 및 독립 검토가 끝나지 않았으므로 완료로 처리하지 않는다.
 
 ## 6. 제품 주장에 대한 현재 제한
 
