@@ -265,20 +265,24 @@ Key locations:
 - Discussion: interpretation and limitations
 
 
-## 11. Primary-source locator audit (2026-10-12)
+## 11. Primary-source locator audit (updated 2026-10-13)
 
-Primary source: https://pmc.ncbi.nlm.nih.gov/articles/PMC5398650/
+Primary source checked: publisher-hosted printable PDF, DOI 10.1371/journal.pone.0175981. Printed page numbers below refer to the PDF's own “x / 15” pagination, not browser line numbers.
 
-| Extracted claim | Source locator | Interpretation note |
+| Extracted claim | Exact printed locator | Verification status / interpretation |
 |---|---|---|
-| Population and study design | Abstract / Methods: Participants and study design | Opioid-exposed newborns in a single-center within-subject study; not general infant soothing efficacy |
-| 30–60 Hz and 10–12 μm RMS surface displacement | Methods: mattress/stimulation characterization | Study-specific physical exposure; not a universal safe or effective range |
-| ON/OFF intervals and 6–8 hour session | Methods: stimulation protocol | Within-subject temporal comparison; time effects and concurrent clinical care remain potential confounders |
-| Movement and physiological outcomes | Results tables/figures | Movement reduction is not synonymous with calming or sleep |
-| Time-stamped sound/light/caregiver/nursing interventions | Methods: physiological acquisition and event annotation | Useful precedent for synchronized event logging |
-| Safety and adverse-event reporting | Results/discussion | Exact wording and denominators require final source check before “none reported” coding |
+| Population, design, intervention and abstract-level summary | PDF p.1, Abstract | Verified: N=26 opioid-exposed term newborns receiving pharmacologic treatment; within-subject ON/OFF design; 30–60 Hz, 10–12 μm RMS; abstract reports 35% reduction in movement activity |
+| Cohort characteristics and co-treatment | PDF pp.3–4, Table 1 and Methods | Verified at section/table level; all infants were receiving morphine on study day and 8 also received phenobarbital |
+| Acquisition and intervention timing | PDF p.4, Methods (“Vibrotactile stimulation”, “Data acquisition”, “General procedures”) | Verified: mattress analog output sampled at 200 Hz; 30-minute ON/OFF intervals, with protocol exceptions noted by authors; timestamped comments and synchronized video used |
+| Example protocol / physiological signals | PDF p.5, Figure 1 | Verified |
+| Example physiological response | PDF p.6, Figure 2 | Verified |
+| Movement and cardio-respiratory results | PDF pp.8–9, Table 2 and Results | Verified at table/page level; movement-period values and selected cardio-respiratory counts located; bradycardic beats were not significantly different (P=.625), and Results report no effect on SaO2 |
+| Adjusted movement, heart-rate and respiratory-rate estimates | PDF p.10, Table 3 | Verified at table/page level |
+| Adverse-effects statement and qualification | PDF p.11, Discussion | Verified: authors report no adverse effects during this study, but explicitly state further studies are required to establish safety and efficacy |
+| Limitations and final interpretation | PDF pp.11–12, Discussion/Conclusions | Verified at section level; includes lack of full polysomnography, small sample and need for larger/longitudinal studies |
 
-### Extraction status
-- Exposure, event logging, and physiological outcome families: extracted.
-- Exact table/figure/page locator for each quantitative result: still needs normalization.
-- General infant soothing/sleep efficacy: not established.
+### Remaining checks
+- The principal PDF pages and tables above have now been located. A row-by-row transcription audit of every numeric value, unit, denominator, and confidence interval has **not** been completed.
+- The adverse-effects statement is bounded to this 26-infant, short-session, opioid-exposed, pharmacologically treated cohort; it does not establish general infant or long-term safety.
+- Movement is not objectively measured sleep and does not prove calming in healthy infants.
+- Independent second-reviewer verification remains outstanding.
