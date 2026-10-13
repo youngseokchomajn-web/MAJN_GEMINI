@@ -137,7 +137,7 @@
 * **fact_from_source**: SVS 진동 시 NOWS 환아의 과도한 신체 움직임이 35% 감소하고 심박/호흡이 안정되었으며 체온 저하나 탈포화는 없었음.
 * **author_interpretation**: 체성감각 진동 자극이 중추신경계 자율신경계 과흥분을 진정시켜 금단 증상을 완화함.
 * **majung_inference_and_boundary**: **움직임 감소 ≠ 건강 영아 수면 성공.** 과민 환아의 모터 움직임 감소가 일반 영아의 보챔 완화나 야간 수면 질 개선을 자동으로 보장하지 않음. FDA 또한 본 연구의 엔드포인트가 '유효성 확증'에는 불충분하며 '안전성 보조 근거'로만 인정함(DEN240031 p.7).
-* **verification_status**: Verified (PDF p.6, p.8, p.9/15 및 Table 2 완전 대조).
+* **verification_status**: Partial (일부 PDF 페이지 locator가 기록됨. 모든 수치·분모와 표·그림 locator의 재대조가 남아 있음).
 
 ---
 
@@ -173,7 +173,7 @@
 * **fact_from_source**: FDA는 SVS 패드를 NOWS 신생아의 '보조 요법' 의료기기로 승인함. 특별 통제 기준으로 음향 소음 한계 및 진동 출력 검증을 의무화함.
 * **author_interpretation**: 기기의 위험(수면 방해/청각 영향, 끼임, 조직 반응 등)은 특별 통제 기준(Special Controls)을 통해 합리적으로 완화 가능함.
 * **majung_inference_and_boundary**: **의료기기 승인을 일반 제품 효능으로 위장 불가.** MAJUNG이 FDA De Novo 허가를 획득한 것이 아니며, 일반 영아 배시넷에 대해 "FDA 승인 기술" 등의 과장 광고를 적용할 경우 의료기기법 및 표시광고법 위반에 해당함.
-* **verification_status**: Verified (9페이지 전수 인쇄본 페이지 대조 완료; 단, Redacted 벤치 수치는 미결정 유지).
+* **verification_status**: Partial (문서 페이지 범위 및 일부 규제 근거를 검토했으나, redacted bench 수치의 한계와 핵심 문장·표의 2차 확인이 남아 있음).
 
 ---
 
@@ -258,8 +258,8 @@
 |---|---|---|---|---|
 | E001-A | Verified (pp.e1564–e1566) | authors reported none | Low | Locator 대조 완료 |
 | E001-B | Verified (pp.1018–1024) | not clearly reported | Low-Moderate | Locator 대조 완료 |
-| E001-C | Verified (PDF pp.6–9/15) | authors reported none | Moderate | Locator 대조 완료 |
-| E001-D | Verified (Printed pp.1–9) | bounded report | Moderate-Low | Locator 대조 완료 |
+| E001-C | Partial — 일부 PDF locator 기록, 수치·분모/표·그림 재대조 필요 | 기존 기록상 authors reported none; 원문 맥락 재확인 | Moderate | 종료 판정 보류 |
+| E001-D | Partial — 문서 범위 검토, 핵심 문장·표 2차 확인 필요 | bounded report; 원문 범위 유지 | Moderate-Low | 종료 판정 보류 |
 | E001-E | Partial — HTML locator 기록, 인쇄 페이지/보충자료 맥락 미완료 | protocol/shutdown observation의 해석 경계 유지 | Low | 종료 판정 보류 |
 | E001-F | Partial — 저널 페이지 범위 확인, 개별 표 페이지/보충자료 미완료 | 저자 보고 문구는 62명·단기 관찰 범위로 한정 | Low-Moderate | 종료 판정 보류 |
 
