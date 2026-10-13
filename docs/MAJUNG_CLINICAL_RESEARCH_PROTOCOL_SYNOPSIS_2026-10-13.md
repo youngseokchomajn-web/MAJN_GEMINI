@@ -50,6 +50,8 @@
 ## 4. 평가변수의 조작적 정의 (Endpoints & Operational Definitions)
 
 ### 4.1 1차 평가변수 후보 (Primary Endpoint — 전문가 검토 전 미확정)
+
+> Settling latency와 crying/fussing 비율을 동시에 공동 1차 변수로 둘지는 아직 결정하지 않는다. 단일 1차 변수 또는 공동 1차 변수의 위계, 다중성 처리, 관찰 창과 결측 처리 방식을 임상·통계 전문가가 사전 정의해야 한다.
 * **취침 진정 소요 시간 (Settling Latency, 분 단위)**:
   - **조작적 정의**: 영아를 배시넷에 눕힌 시점(Time of Placement)부터 지속적인 조용한 수면(Quiet Sleep) 또는 부동 상태(Immobility)가 최소 10분간 중단 없이 유지된 시점까지 경과한 시간.
   - **측정 방법**: 고해상도 적외선 야간 비디오 카메라 독립 분석 + 소아 수면 전문 코더(Blind Coder)의 30초 에포크(Epoch) 비디오 수면 코딩.
