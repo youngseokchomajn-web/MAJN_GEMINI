@@ -70,6 +70,8 @@
 - **SNOO NCT05711927 / 2024 보고:** 미숙아 20명 규모이며 rocking + swaddling + white noise 복합중재다. quiet/active sleep 분포 결과를 총 수면시간이나 울음 감소와 혼동하지 않는다. 총 수면시간 비율과 awake/crying의 유의한 차이는 보고되지 않았고, 계획된 두 번째 시점의 일부 생리 자료는 수집되지 않았다. SNOO 결과를 진동 단독 효능으로 귀속하지 않는다.
 - **Poets et al. (2024):** 전동 rocking 연구에서 수면 지표의 유의한 개선이 확인되지 않았다. rocking과 vibration은 다른 물리 중재이지만, null result를 근거표에서 제거하지 않는다.
 
+- **Singh et al. (online 2025; issue 2026):** 산전 opioid 노출 신생아 62명을 대상으로 한 다기관 비눈가림 RCT. 약물치료 시작은 SVS 4/40 (10.0%) vs 표준 4/22 (18.2%), 조정 OR 0.54 (95% CI 0.10–2.85), P=.46으로 유의한 차이가 없었다. 퇴원 준비도는 중앙값 3.9일 vs 4.9일, 조정 rate ratio 0.75 (95% CI 0.53–1.05), P=.09. Cry data subset n=46에서 fussy/pain cry 시간과 cry strength 차이는 유의하지 않았다. 보호자·간호사의 긍정적 수용성 설문은 객관적 진정 효능과 구분한다. 계획 표본 120명 대비 62명 등록 후 조기 종료했고, 일반 건강 영아의 수면/진정 연구가 아니다. [1차 추출 문서](MAJUNG_E001F_SINGH_2026_NOWS_RCT_PRIMARY_EXTRACTION_2026-10-13.md)
+
 **통합 해석:** 문헌은 연구 질문·측정·위험 관찰을 설계하는 데 도움이 되지만, 현재 확보된 자료는 MAJUNG이 일반 건강 영아의 진정·울음·수면을 개선한다고 직접 입증하지 않는다.
 
 ## 5. Claim 단계별 상태
@@ -156,7 +158,7 @@ Claim은 기능 구현, 물리 출력, 공학 안전, 단기 효능, 수면, 장
 - [E001-A/B/C 수치별 locator 감사](MAJUNG_E001ABC_NUMERICAL_LOCATOR_AUDIT_2026-10-12.md)
 - [E001-D FDA locator 감사](MAJUNG_E001D_FDA_LOCATOR_AUDIT_2026-10-12.md)
 - [E001-E 수치별 locator 감사](MAJUNG_E001E_NUMERICAL_LOCATOR_AUDIT_2026-10-12.md)
-- [E001-A~E 표준 추출 필드·상태 매트릭스](MAJUNG_E001_STANDARDIZED_EXTRACTION_STATUS_MATRIX_2026-10-13.md)
+- [E001-A~F 표준 추출 필드·상태 매트릭스](MAJUNG_E001_STANDARDIZED_EXTRACTION_STATUS_MATRIX_2026-10-13.md)\n- [Singh et al. 2025/2026 다기관 SVS RCT 추출](MAJUNG_E001F_SINGH_2026_NOWS_RCT_PRIMARY_EXTRACTION_2026-10-13.md)
 - [SNOO 공식 등록 결과–2024 보고서 대조](MAJUNG_SNOO_NCT05711927_REGISTRY_REPORT_RECONCILIATION_2026-10-12.md)
 
 ### 공학 시험·측정 준비
@@ -170,7 +172,7 @@ Claim은 기능 구현, 물리 출력, 공학 안전, 단기 효능, 수면, 장
 ## 10. 남은 일과 우선순위
 
 ### P0 — 문헌 추적성과 통합 근거표
-- E001-A/B/C/E의 핵심 수치를 저널 인쇄 페이지·섹션·표/그림 행까지 대조한다.
+- E001-A/B/C/E/F의 핵심 수치를 저널 인쇄 페이지·섹션·표/그림 행까지 대조한다.
 - E001-D의 주요 FDA 문장·표·미공개/비교 불가 자료를 확인 상태와 함께 보존한다.
 - adverse-event status를 reported / none reported / not reported / not assessed / unclear로 정확히 코딩한다.
 - enrolled/randomized/analyzed, 분모, endpoint, subgroup/exposure association, missing/not collected를 분리한다.
