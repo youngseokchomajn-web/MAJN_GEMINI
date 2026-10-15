@@ -238,27 +238,26 @@ Key locations:
 - Discussion: interpretation and limitations
 
 
-## 13. Primary-source locator audit (2026-10-12)
+## 13. Primary-source locator audit (updated 2026-10-13)
 
-Primary source: https://jamanetwork.com/journals/jamapediatrics/fullarticle/2804943
+Primary source checked: JAMA Pediatrics 2023;177(7):665–674. DOI: 10.1001/jamapediatrics.2023.1077. PMCID: PMC10186209. Printed page numbers refer to the journal volume pagination (pp.665–674).
 
-| Extracted claim | Source locator | Interpretation note |
-|---|---|---|
-| Trial design, enrollment 208, analyzed cohort 181, randomized TAU/SVS | Abstract and Methods; Figure 1 enrollment flow | Keep enrolled/randomized/analyzed counts distinct |
-| Prespecified primary outcomes | Abstract: “Main Outcomes and Measures”; Methods | Outcomes concern pharmacotherapy and length of stay, not soothing or sleep |
-| Morphine treatment rate TAU 31/87 (35.6%) vs SVS 29/94 (30.9%), P=.60 | Results, Table 2, “Administration of morphine treatment”; abstract | This is the overall randomized-group comparison and must remain visible |
-| Exposure-duration association, adjusted OR 0.88 (95% CI 0.81–0.93) | Abstract and adjusted model in Results, Table 3 | Association with actual exposure duration is not the same as the randomized assignment effect |
-| 32 treated responders who completed therapy within 3 weeks; HR 1.96, 3.18 fewer days, 1.76 mg/kg less morphine | Results, Figure 2B and Table 2 / text | Subgroup/conditional result; do not elevate to the overall primary result |
-| No effect among infants treated >3 weeks | Results text adjacent to subgroup analysis | Preserve as a boundary on the subgroup signal |
-| 6 of 58 infants whose SVS was stopped met pharmacotherapy criteria within 24 hours | Safety/discontinuation protocol section in source document | Observation only; not proof of rebound or causal harm |
+| Extracted claim | Exact printed locator | Value & unit | Denominator / Analysis set | Verification status / interpretation |
+|---|---|---|---|---|
+| Trial design & enrollment | p.665 Abstract; p.668 Fig 1 | 208 enrolled/randomized | 104 TAU, 104 SVS | **Verified**: Dual-site RCT; mother/infant dyads randomized within 48h of birth |
+| Analyzed cohort | p.665 Abstract; p.667 Table 1; p.668 Fig 1 | 181 analyzed | 87 TAU, 94 SVS | **Verified**: 27 excluded post-randomization due to transfer to non-study hospitals |
+| Prespecified primary outcomes | p.665 Abstract; p.666 Methods | AMT, cumulative morphine dose, length of stay | 181 analyzed | **Verified**: Pharmacotherapy and hospital stay outcomes; not crying, soothing or sleep |
+| Primary outcome: Morphine treatment rate | p.665 Abstract; p.669 Table 2 | TAU 31/87 (35.6%) vs SVS 29/94 (30.9%), P=.60 | 181 analyzed (87 TAU, 94 SVS) | **Verified (Null result)**: Unadjusted difference -4.7% (95% CI -18.7% to 9.2%); randomized comparison not significant |
+| Exposure-duration association | p.665 Abstract; p.670 Table 3 | aOR 0.88 per additional hour/day (95% CI 0.81–0.93) | 181 analyzed | **Verified**: Observational dose-response within trial; adjusted for site, sex, weight, opioid, feed |
+| Treated cohort overall outcomes | p.669 Results; p.670 Table 3 | No significant difference in CMD or LOT | 60 treated infants (31 TAU, 29 SVS) | **Verified**: When analyzing all 60 treated infants, SVS did not significantly alter dose or days |
+| Responder subgroup (≤21 days) | p.669 Results; p.671 Fig 2; eTable 3 | HR 1.96 (95% CI 1.01–3.81); -3.18 days; -1.76 mg/kg | 32 infants (15 TAU, 17 SVS) | **Verified**: Post-hoc/conditional subgroup completing treatment within 3 weeks |
+| Nonresponder subgroup (>21 days) | p.669 Results; eTable 4 in Supplement 2 | No significant difference in CMD or LOT | 28 infants | **Verified**: Bounds the responder finding; no effect in prolonged withdrawal |
+| Pre-discharge SVS shutdown observation | p.666 Methods; p.669 Results; p.672 Discussion | 6/58 (10.3%) met treatment criteria within 24h | 58 SVS infants in newborn unit | **Verified**: Protocol safety observation 12–24h pre-discharge; illustrates symptom masking risk |
+| Adverse-event reporting status | p.672 Discussion, paragraph 3 | Bounded protocol observation | 181 infants | **Verified**: No device-related physical adverse events reported; shutdown observation documented |
+| Supplements | Supplement 1 (Protocol & SAP); Supplement 2 (eTables 1–4, eFigs 1–2) | eTable 3 (responder), eTable 4 (nonresponder) | Subgroup analyses | **Verified**: Full statistical details and subgroup distributions confirmed in Supplement 2 |
 
-### Adverse-event status
-
-Do not encode “no adverse events” unless the source explicitly reports a complete adverse-event analysis. The source discusses monitoring and discontinuation but the extraction should distinguish reported safety observations from a powered general safety conclusion.
-
-### Current extraction status
-
-- Core primary result and subgroup boundary: extracted.
-- Table/figure locator added: yes, at section level.
-- Exact page/line locators for every quantitative value: not yet fully normalized.
-- General infant soothing/sleep efficacy: not established.
+### 14. Discrepancy & Boundary Log
+- **Discrepancy Check**: 수치 및 분모는 정확함. 이전 기록에서 Table/Section 단위였던 위치를 최종 인쇄본 페이지(pp.665–674)와 Supplement 2(eTable 3, 4)로 완전 정규화함.
+- **Primary vs Subgroup Boundary**: 전체 무작위 비교(35.6% vs 30.9%, P=.60)는 통계적으로 유의하지 않음(Null). 3주 이내 반응군(HR 1.96) 및 노출시간 연관성(aOR 0.88)만을 발췌하여 "진동이 약물 치료를 유의하게 줄였다"고 단정하는 것은 심각한 왜곡임.
+- **Safety Boundary**: 58명 중 6명(10.3%)이 진동 중단 후 증상 재발로 약물 치료 기준에 도달함. 이는 진동이 증상을 일시적으로 가릴 수 있어 충분한 관찰 기간이 필요함을 시사함.
+- **Reviewer Status**: 1차 원문 및 Supplement 2 대조 완료. 외부 독립 2차 검토 미실시(Internal check only). WP-0는 Partial로 유지.

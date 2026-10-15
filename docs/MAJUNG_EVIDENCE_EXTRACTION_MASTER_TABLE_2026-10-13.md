@@ -158,40 +158,44 @@
 * **secondary_exploratory_endpoints**: 음향 소음(Sound level), 전기안전(IEC 60601-1), 전자파(IEC 60601-1-2), 생체적합성(ISO 10993), 소프트웨어 V&V.
 * **result_effect_estimate_uncertainty**:
   - FDA 규제 승인 (Class II De Novo granted).
-  - 유효성 판단: 2023 RCT에서 전체 모르핀 치료율 차이는 비유의했으나, 반응군(21일 이내 완료)에서 치료 기간 및 누적 용량의 임상적 유의성을 인정.
-  - 2017 연구: 적응증에 대한 유효성 입증 엔드포인트로는 불충분하나 안전성(체온 유지, 산소포화도 유지, 이상사건 없음) 뒷받침으로 인정 (p.7).
-* **adverse_event_status**: bounded report (제출된 모든 임상 데이터에서 기기 관련 이상사건 미관찰 보고).
-* **limitations_risk_of_bias**: 병원 내 전문 의료진 감독 하의 처방 전용(Prescription use only) 기기로 제한됨. 가정 내 사용 안전성 미포함.
-* **printed_page_locator**:
-  - Regulatory Information & Indication: Printed p.1
-  - Device Description: Printed p.2
-  - Bench Testing (소음, 진동 균일도 등): Printed pp.4–6
-  - Clinical Information (2017 vs 2023 구분): Printed p.7
-  - Risks to Health: Printed p.8
-  - Special Controls & Benefit-Risk Conclusion: Printed pp.8–9
-* **section_table_figure_locator**: 각 절 제목 (Indications for Use, Performance Testing – Bench, Summary of Clinical Information, Risks to Health).
-* **fact_from_source**: FDA는 SVS 패드를 NOWS 신생아의 '보조 요법' 의료기기로 승인함. 특별 통제 기준으로 음향 소음 한계 및 진동 출력 검증을 의무화함.
-* **author_interpretation**: 기기의 위험(수면 방해/청각 영향, 끼임, 조직 반응 등)은 특별 통제 기준(Special Controls)을 통해 합리적으로 완화 가능함.
-* **majung_inference_and_boundary**: **의료기기 승인을 일반 제품 효능으로 위장 불가.** MAJUNG이 FDA De Novo 허가를 획득한 것이 아니며, 일반 영아 배시넷에 대해 "FDA 승인 기술" 등의 과장 광고를 적용할 경우 의료기기법 및 표시광고법 위반에 해당함.
-* **verification_status**: Partial (문서 페이지 범위 및 일부 규제 근거를 검토했으나, redacted bench 수치의 한계와 핵심 문장·표의 2차 확인이 남아 있음).
+  - 유효성 판단: 2023 RCT에서 전체 모르핀 치료율 차이는 비유의했으나, 반응군(21일 이내 �* **verification_status**: Partial (저널 인쇄본 pp.665–674, Tables 1–3, Figures 1–2, Supplement 2 eTables 3–4 대조 완료. 셧다운 6/58 및 1차 결과 35.6% vs 30.9% 분리 완료. 외부 독립 2차 검토 미실시).
 
 ---
 
-### 2.5 E001-E: Bloch-Salisbury et al. 2023 (JAMA Pediatrics)
+### 2.6 E001-F: Singh et al. 2026 / online 2025 (Pediatr Res)
 
-* **source_id**: E001-E
-* **full_citation**: Bloch-Salisbury E, Wilson JD, Rodriguez N, et al. Efficacy of a Vibrating Crib Mattress to Reduce Pharmacologic Treatment in Opioid-Exposed Newborns: A Randomized Clinical Trial. *JAMA Pediatr*. 2023;177(7):665–674.
-* **doi_url**: DOI 10.1001/jamapediatrics.2023.1077 / PMCID PMC10186209
-* **source_type**: Multi-center randomized controlled trial (RCT)
-* **evidence_type**: Clinical pharmacotherapy efficacy in NOWS
-* **evidence_quality**: 대규모 다기관 RCT (208명 무작위배정), 사전 프로토콜 등록, 그러나 ITT 분석에서 1차 평가변수 통계적 유의성 미달.
-* **directness_to_MAJUNG**: Low (NOWS 약물 투여율 및 입원 기간 평가; 영아 진정·수면 평가 아님).
-* **population**: 산전 오피오이드 노출 신생아 (재태연령 ≥37주, 출생체중 ≥2200g, 4개 병원 NICU/소아병동 입원).
-* **n_enrolled_randomized_analyzed**: 208명 등록 및 무작위 배정 (SVS 104명, TAU 104명) / 181명 최종 프로토콜 분석 완료 (SVS 94명, TAU 87명; 27명은 타원 이송 등으로 중도 탈락) (Figure 1, p.668).
-* **intervention_comparator**: SVS 매트리스 + 통상 치료(TAU) vs 통상 치료(TAU) 단독.
-* **exposure_parameters**: 30–60 Hz 대역; 10–12 μm RMS 변위; 입원 기간 내 임상 적용.
-* **primary_endpoint**: 모르핀 약물치료 시작률(Administration of morphine treatment, AMT), 누적 모르핀 용량(CMD), 입원 기간(LOS).
-* **secondary_exploratory_endpoints**: 일일 SVS 가동 시간과 치료율의 노출-반응 연관성, 조기 치료 완료 반응군(≤21일) 하위분석.
+* **source_id**: E001-F
+* **full_citation**: Singh R, Trinquart L, Koethe B, Cordova M, Rhein L, Bibi S, Fey J, Anderson A, Davis JM. Efficacy of stochastic vibro-tactile stimulation for newborns at risk of neonatal opioid withdrawal syndrome. *Pediatr Res*. 2026;99(1):276–282. (Online 2025-05-23).
+* **doi_url**: DOI 10.1038/s41390-025-04162-2 / PMCID PMC13134440 / ClinicalTrials.gov NCT04834297
+* **source_type**: Multi-center open-label randomized trial
+* **evidence_type**: Randomized clinical efficacy, infant crying analysis & acceptability
+* **evidence_quality**: 중앙 무작위 배정(2:1), 다기관 설계. 단, 조기 종료(목표 120명 중 62명 등록), 비눈가림, 울음 분석 부분 집단 결측 존재.
+* **directness_to_MAJUNG**: Low-Moderate (영아 울음 사운드 분석 ChatterBaby를 포함한 점은 MAJUNG에 매우 밀접하나, 집단이 NOWS 위험군이며 결과가 비유의함).
+* **population**: 산전 오피오이드에 노출되었으나 등록 당시 금단 증상이 아직 시작되지 않은 신생아 (재태연령 ≥35주, 6개 의료기관).
+* **n_enrolled_randomized_analyzed**: 129명 선별 / 80명 적격 / 62명 등록 및 무작위 배정 (SVS 40명, 표준 매트리스 22명) / 62명 분석 (Figure 1, p.278). Cry data subset n=46 (SVS 32, 표준 14).
+* **intervention_comparator**: 지속적 저수준 SVS 매트리스 (40명) vs 표준 유아용 침대 매트리스 (22명) (최대 5일 또는 약물 시작 시점까지).
+* **exposure_parameters**: 30–60 Hz 대역; 10–12 μm RMS 변위.
+* **primary_endpoint**: 생후 5일 이내 NOWS 약물 치료 시작률.
+* **secondary_exploratory_endpoints**: 퇴원 준비 기간(Readiness for discharge), FNASS/ESC 임상 평가 점수, ChatterBaby 음향 분석 기반 울음(보챔/통증 울음 시간 비율, 울음 강도), 보호자/간호사 수용도.
+* **result_effect_estimate_uncertainty**:
+  - **1차 결과 (약물 치료 시작)**: SVS 4/40 (10.0%) vs 표준 4/22 (18.2%); 조정 OR 0.54 (95% CI 0.10–2.85), P=.46; 조정 위험 차이 −5.7% (95% CI −21.2% to 9.8%). 유의차 없음.
+  - **퇴원 준비 기간**: 중간값 SVS 3.9일 vs 표준 4.9일; 조정 위험비 0.75 (95% CI 0.53–1.05, P=.09). 유의차 없음.
+  - **울음 분석 (ChatterBaby, n=46 분석)**: 
+    - 보챔/통증 울음(Fussy/pain cry) 시간 비율: SVS 중간값 8.0% vs 표준 7.2%; 추정치 0.3 (95% CI −1.5 to 2.3, P=.82). 유의차 없음.
+    - 울음 강도(Cry strength): SVS 87.2% vs 표준 86.5%; 추정치 −0.8 (95% CI −3.9 to 2.8), P=.55. 유의차 없음.
+  - **수용도 설문 (주관적)**: 간호사의 60%, 부모의 80%가 "매트리스가 아기를 달래고 진정시키는 데 도움이 되었다"고 응답 (Table 4).
+* **adverse_event_status**: authors reported none ("No adverse events were observed in either group", p.280 / Results text).
+* **limitations_risk_of_bias**: 낮은 모집률로 인한 조기 종료(n=62 vs 계획 120), 불균등 배정(2:1), 비눈가림 평가, 울음 데이터 누락(16명 미수집).
+* **printed_page_locator**:
+  - 저널 페이지 범위: 276–282 (PMC full-text 및 citation metadata로 확인)
+  - Figure 1 p.278, Table 2 p.279, Table 3 p.280, Table 4 pp.280–281: PMC 레이아웃 및 metadata 일치, 최종 출판 PDF 레스터 독립 대조 대기.
+  - PMC full-text anchor: Methods / Fig. 1; Results / Table 2; Results “Cry data” / Table 3; caregiver acceptability / Table 4.
+  - Supplement (NIHMS2106170): Supplemental Table S1 (설문 문항/점수), Supplemental Fig. 1 (FNASS/ESC 5일간 추이) 확인.
+* **section_table_figure_locator**: Results ("Primary outcome", "Cry data", "Acceptability"), Tables 2–4, Figure 1.
+* **fact_from_source**: 지속적 진동 자극이 5일 내 약물치료율, 퇴원 준비 기간, 객관적 울음 시간 및 울음 강도를 통계적으로 유의하게 감소시키지 못함. 그러나 양육자 주관적 만족도는 높았음.
+* **author_interpretation**: 환아 모집 부진으로 충분한 검정력을 확보하지 못했으나, 경향성과 수용도는 비약물적 보조 요법으로서의 가능성을 보여줌.
+* **majung_inference_and_boundary**: **핵심 경고: 객관적 효능 부재와 주관적 만족도의 괴리.** 객관적 울음 데이터에서 통계적 차이가 전혀 없음(P=.82)에도 불구하고 부모의 80%는 "달래는 데 도움이 되었다"고 응답함. 이는 일반 소비자용 배시넷에서 발생하는 '플라시보 효과' 및 '양육자 기대 편향'을 극명하게 보여줌. MAJUNG 연구는 반드시 주관적 설문이 아닌 객관적 비디오/음향 센서 엔드포인트를 1차로 설정해야 함.
+* **verification_status**: Partial (저널 인쇄 페이지 pp.276–282 및 PMC 풀텍스트 대조 완료. ITT n=62 및 Cry subset n=46 분모 분리, 보충자료 식별 완료. 출판사 최종 인쇄 PDF 레스터 독립 대조 및 외부 독립 2차 검토 미실시).ts**: 일일 SVS 가동 시간과 치료율의 노출-반응 연관성, 조기 치료 완료 반응군(≤21일) 하위분석.
 * **result_effect_estimate_uncertainty**:
   - **전체 무작위 비교 (1차 결과)**: AMT 투여율 TAU 31/87 (35.6%) vs SVS 29/94 (30.9%); 위험 차이 비유의 (P=.60, Table 2).
   - **노출 시간 연관성 (관찰 분석)**: SVS 가동 시간이 1시간/일 증가할 때마다 약물치료 위험 감소 (aOR 0.88, 95% CI 0.81–0.93, Table 3).

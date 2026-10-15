@@ -267,22 +267,25 @@ Key locations:
 
 ## 11. Primary-source locator audit (updated 2026-10-13)
 
-Primary source checked: publisher-hosted printable PDF, DOI 10.1371/journal.pone.0175981. Printed page numbers below refer to the PDF's own “x / 15” pagination, not browser line numbers.
+Primary source checked: publisher-hosted printable PDF and full-text PMC, DOI 10.1371/journal.pone.0175981. Printed page numbers below refer to the PDF's own “x / 15” pagination.
 
-| Extracted claim | Exact printed locator | Verification status / interpretation |
-|---|---|---|
-| Population, design, intervention and abstract-level summary | PDF p.1, Abstract | Verified: N=26 opioid-exposed term newborns receiving pharmacologic treatment; within-subject ON/OFF design; 30–60 Hz, 10–12 μm RMS; abstract reports 35% reduction in movement activity |
-| Cohort characteristics and co-treatment | PDF pp.3–4, Table 1 and Methods | Verified at section/table level; all infants were receiving morphine on study day and 8 also received phenobarbital |
-| Acquisition and intervention timing | PDF p.4, Methods (“Vibrotactile stimulation”, “Data acquisition”, “General procedures”) | Verified: mattress analog output sampled at 200 Hz; 30-minute ON/OFF intervals, with protocol exceptions noted by authors; timestamped comments and synchronized video used |
-| Example protocol / physiological signals | PDF p.5, Figure 1 | Verified |
-| Example physiological response | PDF p.6, Figure 2 | Verified |
-| Movement and cardio-respiratory results | PDF pp.8–9, Table 2 and Results | Verified at table/page level; movement-period values and selected cardio-respiratory counts located; bradycardic beats were not significantly different (P=.625), and Results report no effect on SaO2 |
-| Adjusted movement, heart-rate and respiratory-rate estimates | PDF p.10, Table 3 | Verified at table/page level |
-| Adverse-effects statement and qualification | PDF p.11, Discussion | Verified: authors report no adverse effects during this study, but explicitly state further studies are required to establish safety and efficacy |
-| Limitations and final interpretation | PDF pp.11–12, Discussion/Conclusions | Verified at section level; includes lack of full polysomnography, small sample and need for larger/longitudinal studies |
+| Extracted claim | Exact printed locator | Value & unit | Denominator / Analysis set | Verification status / interpretation |
+|---|---|---|---|---|
+| Population & Cohort | PDF p.1 Abstract; pp.3–4 Table 1 | N=26 | 26 term opioid-exposed newborns on morphine | **Verified**: PCA 38.3–44.7 wks, all receiving morphine, 8 receiving phenobarbital |
+| Physical Exposure | PDF p.1 Abstract; p.4 Methods | 30–60 Hz, 10–12 μm RMS | N=26 | **Verified**: continuous SVS in 30-min ON/OFF blocks |
+| Condition duration & Caregiver intervention | PDF p.7 Results | OFF 28.7 min vs ON 28.8 min (P=.561); Caregiver OFF 58.1 s vs ON 54.5 s (P=.874) | 26 infants | **Verified**: No significant difference in baseline block time or caregiver disruption |
+| Movement Period % (MP%) | PDF p.7 Results; p.9 Table 2; p.8 Fig 3 | 35% relative reduction (14% absolute reduction), P<.001 | 26 infants (23/26 reduced) | **Verified**: Valid non-movement time OFF 17.5 min vs ON 21.6 min (P<.001) |
+| Movement burst skewness (Sigma) | PDF p.7 Results; p.9 Table 2 | OFF 1.7 (CI 1.6–1.8) vs ON 1.5 (CI 1.4–1.6), P=.002 | 26 infants | **Verified**: Fewer prolonged movement periods (>5 s, ≥30 s); brief MPs (≤5 s) unaffected |
+| Respiratory rate & pattern | PDF p.7 Results; p.9 Table 2; p.6 Fig 2 | Mean RR ~6 bpm lower with SVS; eupneic breaths increased, tachypneic breaths decreased | 26 infants | **Verified**: IBI variance P=.303 (NS); Bradypnea unaffected; 4 apneas (>10 s) in 3 infants |
+| Heart rate & intervals | PDF p.7 Results; p.9 Table 2 | Mean HR <3 bpm lower with SVS (P=.016); HR variance reduced (P=.001) | 26 infants | **Verified**: Tachycardic beats 36.6% relative reduction; Bradycardic beats unaffected |
+| SaO2 & Skin Temperature | PDF p.7 Results; p.9 Table 2 | SaO2 ~99% (P=.544); Temp 36.8°C (P=.581) | 26 infants | **Verified**: Virtually no thermoregulation or desaturation issues during study |
+| Sound & Light environment | PDF p.7 Results | Sound 52.2 dBA (P=.102); Light 97.1 lux (P=.632) | 26 infants | **Verified**: Background environmental conditions stable across ON/OFF |
+| Adjusted regression models | PDF p.10 Table 3 | Adjusted movement -14.6%, HR -2.6 bpm, RR -5.6 bpm | 26 infants | **Verified**: Mixed-effects model adjusting for covariates; females had lower movement/HR |
+| Adverse events statement | PDF p.11 Discussion, paragraph 3 | "There were no adverse effects associated with SVS in the current study" | 26 infants, 6–8 h session | **Verified**: Authors explicitly state further studies required to establish safety and efficacy |
+| Anecdotal caregiver reports | PDF p.11 Discussion, paragraph 3 | Nurses/parents reported infants seemed “less irritable”, “calmer”, “slept better” | Anecdotal survey | **Verified**: Anecdotal feedback, explicitly distinguished from objective proof of sleep |
 
-### Remaining checks
-- The principal PDF pages and tables above have now been located. A row-by-row transcription audit of every numeric value, unit, denominator, and confidence interval has **not** been completed.
-- The adverse-effects statement is bounded to this 26-infant, short-session, opioid-exposed, pharmacologically treated cohort; it does not establish general infant or long-term safety.
-- Movement is not objectively measured sleep and does not prove calming in healthy infants.
-- Independent second-reviewer verification remains outstanding.
+### 12. Discrepancy & Boundary Log
+- **Discrepancy Check**: 이전 요약 문서의 35% 움직임 감소 및 14% 포인트 절대 감소는 Table 2 및 Results 텍스트와 정확히 일치함. 이전 기록에 누락되었던 Condition duration (OFF 28.7 min vs ON 28.8 min), Caregiver intervention duration (58.1 s vs 54.5 s), Sigma skewness (1.7 vs 1.5) 수치를 공식 원문과 완전 대조하여 추가함.
+- **Safety Boundary**: 저자의 "No adverse effects" 보고는 본 26명 대상의 단기 6–8시간 입원 세션에 한정됨. 일반 영아 대상 장기/가정 사용 안전성 근거가 아님.
+- **Efficacy Boundary**: 움직임 감소(Movement reduction)는 수면다원검사(PSG)로 확인된 수면 질 개선이나 영아 진정의 직접적 증거가 아님.
+- **Reviewer Status**: 1차 원문 수치 및 인쇄 PDF(x/15) 대조 완료. 외부 독립 2차 검토는 미실시(Internal check only).

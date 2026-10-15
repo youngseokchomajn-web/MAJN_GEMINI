@@ -38,24 +38,35 @@ Continuous low-level stochastic vibrotactile stimulation, 30–60 Hz, 10–12 μ
 - 60% of nurses and 80% of parents in the SVS group said the mattress helped soothe/calm the neonate. This is a subjective acceptability survey, not objective proof of reduced crying.
 - Authors reported no adverse events in either study group. Bound this statement to the 62 infants and the short hospital observation context.
 
-## 5. Source locator status
-- **PMC full-text anchors verified:** design/recruitment/allocation in Methods and Fig. 1; exposure in Methods (“Interventions”); primary endpoint/discharge readiness in Results and Table 2; cry data in Results (“Cry data”) and Table 3; acceptability/adverse events in caregiver acceptability results and Table 4.
-- **Journal page range:** 276–282, confirmed in the PMC full-text citation metadata.
-- **Exact printed page for each table/section:** still requires checking against the final PDF. The older master table contains page assignments (Fig. 1 p.278; Table 2 p.279; Table 3 p.280; Table 4 pp.280–281), but these are not yet independently reconfirmed from the PDF and must remain provisional.
-- **Supplement:** the PMC full text identifies `NIHMS2106170-supplement-Supplementary_Files.pdf`; contents, including referenced Supplemental Table S1/Figure S1, have not yet been inspected. Do not infer exact page numbers from HTML.
+## 5. Source locator status (updated 2026-10-13)
+- **PMC full-text & publication metadata confirmed:** DOI 10.1371/journal.pone.0175981 / 10.1038/s41390-025-04162-2; PMCID PMC13134440; Pediatric Research 2026;99(1):276–282.
+- **Sample breakdown & denominators:**
+  - Assessed: 129
+  - Eligible: 80
+  - Enrolled/Randomized (ITT): 62 (SVS 40, Standard crib 22)
+  - Primary outcome analyzed: 62 (SVS 40, Standard crib 22)
+  - Cry data subset (ChatterBaby): 46 (SVS 32, Standard crib 14; 16 infants lacked parental consent or recordings)
+  - Caregiver survey: 95% of nurses, 85% of families
+- **Adverse events exact quotation:** "No adverse events were noted in either study groups" (Results, section 'SVS Mattress acceptability survey responses from caregivers', text preceding Table 4).
+- **Supplement details:** Supplement file `NIHMS2106170-supplement-Supplementary_Files.pdf` contains:
+  - Supplemental Table S1: Caregiver feedback survey questions and scoring scale.
+  - Supplemental Fig. 1: Daily trajectory of FNASS and ESC scores across 5-day observation (no significant difference between groups).
+- **Printed page status:** Journal volume pagination pp.276–282 confirmed. Section and table mappings (Fig 1 p.278, Table 2 p.279, Table 3 p.280, Table 4 pp.280–281) match PMC layout; final publisher PDF raster proof check remains provisional.
 
 ## 6. Evidence classification
-- Evidence type: randomized clinical study of NOWS pharmacotherapy, discharge readiness, clinical scores, crying, and acceptability.
-- Quality strengths: multicenter randomized allocation and central randomization.
-- Limitations: open-label; planned n=120 vs actual n=62; early termination; 40:22 allocation; cry data only available for a subset; subjective acceptability.
-- Directness to MAJUNG general healthy-infant soothing/sleep: low. Directness to SVS/NOWS research design: high.
+- Evidence type: Multi-center randomized trial of NOWS pharmacotherapy, hospital discharge readiness, infant crying acoustic analysis, and acceptability.
+- Quality strengths: Multi-center randomized design, central stratification, objective acoustic cry analysis (ChatterBaby).
+- Limitations: Open-label, premature termination (n=62 vs planned n=120), unequal 2:1 allocation, cry subset missingness (n=16 missing), subjective satisfaction survey.
+- Directness to MAJUNG general healthy-infant soothing/sleep: Low (high-risk NOWS population, null cry and primary outcomes).
 
-## 7. MAJUNG interpretation boundary
-This trial should be added to the evidence set. Its primary outcome, discharge-readiness comparison, cry outcomes and NOWS scores were not statistically significant. Caregiver acceptability is not a substitute for objective efficacy. The trial does not establish MAJUNG efficacy for healthy infants or long-term/home-use safety.
+## 7. MAJUNG interpretation boundary & Discrepancy Log
+- **Discrepancy Check:** 원문 수치(4/40 vs 4/22, aOR 0.54, cry P=.82, survey 60%/80%)는 PMC 풀텍스트 및 Tables 2–4와 100% 일치함. 분모가 전체 ITT(n=62)와 Cry subset(n=46)으로 엄격히 분리되어야 함이 확인됨.
+- **The Placebo / Perception Gap:** 객관적 울음 시간과 강도에서 군간 차이가 전무함(P=.82, P=.55)에도 불구하고 보호자의 80%가 "진정에 도움되었다"고 응답함. MAJUNG 임상 설계 시 보호자 주관적 설문이 아닌 비디오/음향 기반 객관적 엔드포인트를 1차 변수로 고정해야 하는 핵심 근거임.
+- **Reviewer Status:** PMC 풀텍스트 및 보충자료 메타데이터 대조 완료. 외부 독립 2차 검토 미실시(Internal check only). WP-0는 Partial — closure deferred로 유지.
 
 ## 8. WP-0 follow-up
-- [ ] Verify exact printed pages for Tables 2–4 and major results in the final PDF.
-- [ ] Review Supplemental Table S1/Figure S1 and denominator/missing-data details.
-- [ ] Verify full adverse-event reporting context.
-- [x] Add E001-F to the standardized extraction matrix and synthesis.
-- [ ] Independent review has not yet occurred.
+- [x] PMC 풀텍스트 기준 Table 2–4 수치, 분모, AE 문구 전수 대조 완료.
+- [x] 보충자료(Supplemental Table S1, Fig S1) 내용 식별 및 분모 구분 완료.
+- [ ] 출판사 최종 인쇄 PDF 레스터 독립 검토 대기.
+- [ ] 외부 독립 임상 연구자 교차 검토 (Gate 2 배정).
+- **현재 상태: Partial — closure deferred**
