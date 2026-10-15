@@ -20,6 +20,7 @@ Gemini 다음 실행: WP-0 잔여 원문 locator·수치 대조 작업지시서 
 - [특허(FTO)·리콜 감사·신호 필터링·웰니스 규제 심층 분석 (2026-10-13)](MAJUNG_DEEP_DIVE_FTO_RECALL_SIGNAL_REGULATORY_2026-10-13.md)
 - [Gemini 일괄 연구 실행 및 감사 로그 (2026-10-13)](MAJUNG_GEMINI_RESEARCH_RUN_LOG_2026-10-13.md)
 - [의사결정 게이트 및 제품 주장 규칙 (2026-10-13)](MAJUNG_DECISION_GATES_AND_CLAIM_RULES_2026-10-13.md)
+- [UNIST 후보 연구실 기존 연구와 마중 진동 모듈 연계 가능성 검토 (2026-10-15)](MAJUNG_UNIST_LAB_PRIOR_RESEARCH_FIT_AND_COLLABORATION_2026-10-15.md)
 - [임상 연구자 협업 접촉 패키지 (2026-10-13)](MAJUNG_RESEARCHER_OUTREACH_PACKAGE_2026-10-13.md)
 - [국내 연구 협업 후보군 공식 검증 숏리스트 (2026-10-13)](MAJUNG_KOREA_RESEARCH_COLLABORATOR_SHORTLIST_2026-10-13.md)
 - [건강 영아 임상 연구 프로토콜 시놉시스 초안 (2026-10-13)](MAJUNG_CLINICAL_RESEARCH_PROTOCOL_SYNOPSIS_2026-10-13.md)
