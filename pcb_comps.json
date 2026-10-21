@@ -1,0 +1,4297 @@
+{
+  "success": true,
+  "result": [
+    {
+      "async": true,
+      "primitiveType": "Component",
+      "layer": 1,
+      "x": 1457,
+      "y": 276,
+      "rotation": 0,
+      "primitiveLock": false,
+      "addIntoBom": true,
+      "component": {
+        "libraryUuid": "eaeb453561334991933e309d30646366",
+        "uuid": "9ccca418db8ced05",
+        "name": "CC0805MKX5R8BB226"
+      },
+      "primitiveId": "c00fe4786b0ff32c",
+      "footprint": {
+        "libraryUuid": "eaeb453561334991933e309d30646366",
+        "uuid": "109eb0395a41d263",
+        "name": "C0805"
+      },
+      "model3D": {
+        "libraryUuid": "0819f05c4eef4c71ace90d822a990e87",
+        "uuid": "8c88e81f49c6409b980720ec8953afb6|0819f05c4eef4c71ace90d822a990e87",
+        "name": "C0805_L2.0-W1.3-H1.3"
+      },
+      "designator": "C1",
+      "pads": [
+        {
+          "primitiveId": "e15",
+          "net": "GND",
+          "padNumber": "2"
+        },
+        {
+          "primitiveId": "e16",
+          "net": "VCC_3V3",
+          "padNumber": "1"
+        }
+      ],
+      "name": "={Value}",
+      "uniqueId": "link_C1",
+      "manufacturer": "YAGEO(\u56fd\u5de8)",
+      "manufacturerId": "CC0805MKX5R8BB226",
+      "supplier": "LCSC",
+      "supplierId": "C784585",
+      "otherProperty": {
+        "Footprint": "C0805",
+        "LCSC Part Name": "22uF \u00b120% 25V",
+        "Supplier Footprint": "0805",
+        "JLCPCB Part Class": "Extended Part",
+        "Datasheet": "https://item.szlcsc.com/datasheet/CC0805MKX5R8BB226/840648.html",
+        "3D Model": "8c88e81f49c6409b980720ec8953afb6|0819f05c4eef4c71ace90d822a990e87",
+        "3D Model Title": "C0805_L2.0-W1.3-H1.3",
+        "3D Model Transform": "78.74,51.181,0,0,0,0,0,0.0005,0",
+        "Value": "22uF",
+        "Tolerance": "\u00b120%",
+        "Voltage Rating": "25V",
+        "Temperature Coefficient": "X5R",
+        "Description": "Capacitance:22uF Tolerance:\u00b120% Tolerance:\u00b120% Voltage Rating:25V Temperature Coefficient:X5R",
+        "Device": "CC0805MKX5R8BB226",
+        "Reuse Block": "",
+        "Group ID": "",
+        "Channel ID": "$1I720"
+      }
+    },
+    {
+      "async": true,
+      "primitiveType": "Component",
+      "layer": 1,
+      "x": 1299,
+      "y": 276,
+      "rotation": 0,
+      "primitiveLock": false,
+      "addIntoBom": true,
+      "component": {
+        "libraryUuid": "eaeb453561334991933e309d30646366",
+        "uuid": "385fe687d66b917b",
+        "name": "CC0603KRX7R9BB104"
+      },
+      "primitiveId": "6a9cbb546601c6f2",
+      "footprint": {
+        "libraryUuid": "eaeb453561334991933e309d30646366",
+        "uuid": "65562d6edab14b2a",
+        "name": "C0603"
+      },
+      "model3D": {
+        "libraryUuid": "0819f05c4eef4c71ace90d822a990e87",
+        "uuid": "624118aa3cc7497086c383c2d72e0852|0819f05c4eef4c71ace90d822a990e87",
+        "name": "C0603_L1.6-W0.8-H0.8"
+      },
+      "designator": "C2",
+      "pads": [
+        {
+          "primitiveId": "e14",
+          "net": "GND",
+          "padNumber": "2"
+        },
+        {
+          "primitiveId": "e15",
+          "net": "VCC_3V3",
+          "padNumber": "1"
+        }
+      ],
+      "name": "={Value}",
+      "uniqueId": "link_C2",
+      "manufacturer": "YAGEO(\u56fd\u5de8)",
+      "manufacturerId": "CC0603KRX7R9BB104",
+      "supplier": "LCSC",
+      "supplierId": "C14663",
+      "otherProperty": {
+        "Footprint": "C0603",
+        "LCSC Part Name": "100nF \u00b110% 50V",
+        "Supplier Footprint": "0603",
+        "JLCPCB Part Class": "Basic Part",
+        "Datasheet": "https://item.szlcsc.com/datasheet/CC0603KRX7R9BB104/15331.html",
+        "3D Model": "624118aa3cc7497086c383c2d72e0852|0819f05c4eef4c71ace90d822a990e87",
+        "3D Model Title": "C0603_L1.6-W0.8-H0.8",
+        "3D Model Transform": "62.992,31.496,0,0,0,0,0,0,0",
+        "Value": "100nF",
+        "Tolerance": "\u00b110%",
+        "Voltage Rating": "50V",
+        "Temperature Coefficient": "X7R",
+        "Description": "Capacitance:100nF Tolerance:\u00b110% Tolerance:\u00b110% Voltage Rating:50V Temperature Coefficient:X7R",
+        "Device": "CC0603KRX7R9BB104",
+        "Reuse Block": "",
+        "Group ID": "",
+        "Channel ID": "$1I721"
+      }
+    },
+    {
+      "async": true,
+      "primitiveType": "Component",
+      "layer": 1,
+      "x": 827,
+      "y": 472,
+      "rotation": 90,
+      "primitiveLock": false,
+      "addIntoBom": true,
+      "component": {
+        "libraryUuid": "eaeb453561334991933e309d30646366",
+        "uuid": "66a1cfd628bd22d5",
+        "name": "CL10A106MA8NRNC"
+      },
+      "primitiveId": "33523abe92539f53",
+      "footprint": {
+        "libraryUuid": "eaeb453561334991933e309d30646366",
+        "uuid": "65562d6edab14b2a",
+        "name": "C0603"
+      },
+      "model3D": {
+        "libraryUuid": "0819f05c4eef4c71ace90d822a990e87",
+        "uuid": "624118aa3cc7497086c383c2d72e0852|0819f05c4eef4c71ace90d822a990e87",
+        "name": "C0603_L1.6-W0.8-H0.8"
+      },
+      "designator": "C3",
+      "pads": [
+        {
+          "primitiveId": "e14",
+          "net": "GND",
+          "padNumber": "2"
+        },
+        {
+          "primitiveId": "e15",
+          "net": "VBUS_5V",
+          "padNumber": "1"
+        }
+      ],
+      "name": "={Value}",
+      "uniqueId": "link_C3",
+      "manufacturer": "SAMSUNG(\u4e09\u661f)",
+      "manufacturerId": "CL10A106MA8NRNC",
+      "supplier": "LCSC",
+      "supplierId": "C96446",
+      "otherProperty": {
+        "Footprint": "C0603",
+        "LCSC Part Name": "10uF \u00b120% 25V",
+        "Supplier Footprint": "0603",
+        "JLCPCB Part Class": "Basic Part",
+        "Datasheet": "https://item.szlcsc.com/datasheet/CL10A106MA8NRNC/97651.html",
+        "3D Model": "624118aa3cc7497086c383c2d72e0852|0819f05c4eef4c71ace90d822a990e87",
+        "3D Model Title": "C0603_L1.6-W0.8-H0.8",
+        "3D Model Transform": "62.992,31.496,0,0,0,0,0,0,0",
+        "Value": "10uF",
+        "Tolerance": "\u00b120%",
+        "Voltage Rating": "25V",
+        "Temperature Coefficient": "X5R",
+        "Description": "Capacitance:10uF Tolerance:\u00b120% Tolerance:\u00b120% Voltage Rating:25V Temperature Coefficient:X5R",
+        "Device": "CL10A106MA8NRNC",
+        "Reuse Block": "",
+        "Group ID": "",
+        "Channel ID": "$1I722"
+      }
+    },
+    {
+      "async": true,
+      "primitiveType": "Component",
+      "layer": 1,
+      "x": 1142,
+      "y": 472,
+      "rotation": 90,
+      "primitiveLock": false,
+      "addIntoBom": true,
+      "component": {
+        "libraryUuid": "eaeb453561334991933e309d30646366",
+        "uuid": "000f184e77367042",
+        "name": "CL10A106KP8NNNC"
+      },
+      "primitiveId": "3d23a204107d6c93",
+      "footprint": {
+        "libraryUuid": "eaeb453561334991933e309d30646366",
+        "uuid": "65562d6edab14b2a",
+        "name": "C0603"
+      },
+      "model3D": {
+        "libraryUuid": "0819f05c4eef4c71ace90d822a990e87",
+        "uuid": "624118aa3cc7497086c383c2d72e0852|0819f05c4eef4c71ace90d822a990e87",
+        "name": "C0603_L1.6-W0.8-H0.8"
+      },
+      "designator": "C4",
+      "pads": [
+        {
+          "primitiveId": "e14",
+          "net": "GND",
+          "padNumber": "2"
+        },
+        {
+          "primitiveId": "e15",
+          "net": "VCC_3V3",
+          "padNumber": "1"
+        }
+      ],
+      "name": "={Value}",
+      "uniqueId": "link_C4",
+      "manufacturer": "SAMSUNG(\u4e09\u661f)",
+      "manufacturerId": "CL10A106KP8NNNC",
+      "supplier": "LCSC",
+      "supplierId": "C19702",
+      "otherProperty": {
+        "Footprint": "C0603",
+        "LCSC Part Name": "10uF \u00b110% 10V",
+        "Supplier Footprint": "0603",
+        "JLCPCB Part Class": "Basic Part",
+        "Datasheet": "https://item.szlcsc.com/datasheet/CL10A106KP8NNNC/20411.html",
+        "3D Model": "624118aa3cc7497086c383c2d72e0852|0819f05c4eef4c71ace90d822a990e87",
+        "3D Model Title": "C0603_L1.6-W0.8-H0.8",
+        "3D Model Transform": "62.992,31.496,0,0,0,0,0,0,0",
+        "Value": "10uF",
+        "Tolerance": "\u00b110%",
+        "Voltage Rating": "10V",
+        "Temperature Coefficient": "X5R",
+        "Description": "Capacitance:10uF Tolerance:\u00b110% Tolerance:\u00b110% Voltage Rating:10V Temperature Coefficient:X5R",
+        "Device": "CL10A106KP8NNNC",
+        "Reuse Block": "",
+        "Group ID": "",
+        "Channel ID": "$1I723"
+      }
+    },
+    {
+      "async": true,
+      "primitiveType": "Component",
+      "layer": 1,
+      "x": 433,
+      "y": 1748,
+      "rotation": 0,
+      "primitiveLock": false,
+      "addIntoBom": true,
+      "component": {
+        "libraryUuid": "eaeb453561334991933e309d30646366",
+        "uuid": "806173d88980b254",
+        "name": "CL10A475KO8NNNC"
+      },
+      "primitiveId": "3be1b2ae0304e4a9",
+      "footprint": {
+        "libraryUuid": "eaeb453561334991933e309d30646366",
+        "uuid": "65562d6edab14b2a",
+        "name": "C0603"
+      },
+      "model3D": {
+        "libraryUuid": "0819f05c4eef4c71ace90d822a990e87",
+        "uuid": "624118aa3cc7497086c383c2d72e0852|0819f05c4eef4c71ace90d822a990e87",
+        "name": "C0603_L1.6-W0.8-H0.8"
+      },
+      "designator": "C5",
+      "pads": [
+        {
+          "primitiveId": "e14",
+          "net": "GND",
+          "padNumber": "2"
+        },
+        {
+          "primitiveId": "e15",
+          "net": "VBUS_5V",
+          "padNumber": "1"
+        }
+      ],
+      "name": "={Value}",
+      "uniqueId": "link_C5",
+      "manufacturer": "SAMSUNG(\u4e09\u661f)",
+      "manufacturerId": "CL10A475KO8NNNC",
+      "supplier": "LCSC",
+      "supplierId": "C19666",
+      "otherProperty": {
+        "Footprint": "C0603",
+        "LCSC Part Name": "4.7uF \u00b110% 16V",
+        "Supplier Footprint": "0603",
+        "JLCPCB Part Class": "Basic Part",
+        "Datasheet": "https://item.szlcsc.com/datasheet/CL10A475KO8NNNC/20375.html",
+        "3D Model": "624118aa3cc7497086c383c2d72e0852|0819f05c4eef4c71ace90d822a990e87",
+        "3D Model Title": "C0603_L1.6-W0.8-H0.8",
+        "3D Model Transform": "62.992,31.496,0,0,0,0,0,0,0",
+        "Value": "4.7uF",
+        "Tolerance": "\u00b110%",
+        "Voltage Rating": "16V",
+        "Temperature Coefficient": "X5R",
+        "Description": "Capacitance:4.7uF Tolerance:\u00b110% Tolerance:\u00b110% Voltage Rating:16V Temperature Coefficient:X5R",
+        "Device": "CL10A475KO8NNNC",
+        "Reuse Block": "",
+        "Group ID": "",
+        "Channel ID": "$1I724"
+      }
+    },
+    {
+      "async": true,
+      "primitiveType": "Component",
+      "layer": 1,
+      "x": 1024,
+      "y": 1819,
+      "rotation": 90,
+      "primitiveLock": false,
+      "addIntoBom": true,
+      "component": {
+        "libraryUuid": "eaeb453561334991933e309d30646366",
+        "uuid": "9ccca418db8ced05",
+        "name": "CC0805MKX5R8BB226"
+      },
+      "primitiveId": "5b4057f7da12729d",
+      "footprint": {
+        "libraryUuid": "eaeb453561334991933e309d30646366",
+        "uuid": "109eb0395a41d263",
+        "name": "C0805"
+      },
+      "model3D": {
+        "libraryUuid": "0819f05c4eef4c71ace90d822a990e87",
+        "uuid": "8c88e81f49c6409b980720ec8953afb6|0819f05c4eef4c71ace90d822a990e87",
+        "name": "C0805_L2.0-W1.3-H1.3"
+      },
+      "designator": "C6",
+      "pads": [
+        {
+          "primitiveId": "e15",
+          "net": "GND",
+          "padNumber": "2"
+        },
+        {
+          "primitiveId": "e16",
+          "net": "PVDD_12V",
+          "padNumber": "1"
+        }
+      ],
+      "name": "={Value}",
+      "uniqueId": "link_C6",
+      "manufacturer": "YAGEO(\u56fd\u5de8)",
+      "manufacturerId": "CC0805MKX5R8BB226",
+      "supplier": "LCSC",
+      "supplierId": "C784585",
+      "otherProperty": {
+        "Footprint": "C0805",
+        "LCSC Part Name": "22uF \u00b120% 25V",
+        "Supplier Footprint": "0805",
+        "JLCPCB Part Class": "Extended Part",
+        "Datasheet": "https://item.szlcsc.com/datasheet/CC0805MKX5R8BB226/840648.html",
+        "3D Model": "8c88e81f49c6409b980720ec8953afb6|0819f05c4eef4c71ace90d822a990e87",
+        "3D Model Title": "C0805_L2.0-W1.3-H1.3",
+        "3D Model Transform": "78.74,51.181,0,0,0,0,0,0.0005,0",
+        "Value": "22uF",
+        "Tolerance": "\u00b120%",
+        "Voltage Rating": "25V",
+        "Temperature Coefficient": "X5R",
+        "Description": "Capacitance:22uF Tolerance:\u00b120% Tolerance:\u00b120% Voltage Rating:25V Temperature Coefficient:X5R",
+        "Device": "CC0805MKX5R8BB226",
+        "Reuse Block": "",
+        "Group ID": "",
+        "Channel ID": "$1I725"
+      }
+    },
+    {
+      "async": true,
+      "primitiveType": "Component",
+      "layer": 1,
+      "x": 1024,
+      "y": 1575,
+      "rotation": 0,
+      "primitiveLock": false,
+      "addIntoBom": true,
+      "component": {
+        "libraryUuid": "eaeb453561334991933e309d30646366",
+        "uuid": "9ccca418db8ced05",
+        "name": "CC0805MKX5R8BB226"
+      },
+      "primitiveId": "5d04ea304f59ea14",
+      "footprint": {
+        "libraryUuid": "eaeb453561334991933e309d30646366",
+        "uuid": "109eb0395a41d263",
+        "name": "C0805"
+      },
+      "model3D": {
+        "libraryUuid": "0819f05c4eef4c71ace90d822a990e87",
+        "uuid": "8c88e81f49c6409b980720ec8953afb6|0819f05c4eef4c71ace90d822a990e87",
+        "name": "C0805_L2.0-W1.3-H1.3"
+      },
+      "designator": "C7",
+      "pads": [
+        {
+          "primitiveId": "e15",
+          "net": "GND",
+          "padNumber": "2"
+        },
+        {
+          "primitiveId": "e16",
+          "net": "PVDD_12V",
+          "padNumber": "1"
+        }
+      ],
+      "name": "={Value}",
+      "uniqueId": "link_C7",
+      "manufacturer": "YAGEO(\u56fd\u5de8)",
+      "manufacturerId": "CC0805MKX5R8BB226",
+      "supplier": "LCSC",
+      "supplierId": "C784585",
+      "otherProperty": {
+        "Footprint": "C0805",
+        "LCSC Part Name": "22uF \u00b120% 25V",
+        "Supplier Footprint": "0805",
+        "JLCPCB Part Class": "Extended Part",
+        "Datasheet": "https://item.szlcsc.com/datasheet/CC0805MKX5R8BB226/840648.html",
+        "3D Model": "8c88e81f49c6409b980720ec8953afb6|0819f05c4eef4c71ace90d822a990e87",
+        "3D Model Title": "C0805_L2.0-W1.3-H1.3",
+        "3D Model Transform": "78.74,51.181,0,0,0,0,0,0.0005,0",
+        "Value": "22uF",
+        "Tolerance": "\u00b120%",
+        "Voltage Rating": "25V",
+        "Temperature Coefficient": "X5R",
+        "Description": "Capacitance:22uF Tolerance:\u00b120% Tolerance:\u00b120% Voltage Rating:25V Temperature Coefficient:X5R",
+        "Device": "CC0805MKX5R8BB226",
+        "Reuse Block": "",
+        "Group ID": "",
+        "Channel ID": "$1I726"
+      }
+    },
+    {
+      "async": true,
+      "primitiveType": "Component",
+      "layer": 1,
+      "x": 1788,
+      "y": 1812,
+      "rotation": 0,
+      "primitiveLock": false,
+      "addIntoBom": true,
+      "component": {
+        "libraryUuid": "eaeb453561334991933e309d30646366",
+        "uuid": "66a1cfd628bd22d5",
+        "name": "CL10A106MA8NRNC"
+      },
+      "primitiveId": "33dbefdc7e40206a",
+      "footprint": {
+        "libraryUuid": "eaeb453561334991933e309d30646366",
+        "uuid": "65562d6edab14b2a",
+        "name": "C0603"
+      },
+      "model3D": {
+        "libraryUuid": "0819f05c4eef4c71ace90d822a990e87",
+        "uuid": "624118aa3cc7497086c383c2d72e0852|0819f05c4eef4c71ace90d822a990e87",
+        "name": "C0603_L1.6-W0.8-H0.8"
+      },
+      "designator": "C8",
+      "pads": [
+        {
+          "primitiveId": "e14",
+          "net": "GND",
+          "padNumber": "2"
+        },
+        {
+          "primitiveId": "e15",
+          "net": "PVDD_12V",
+          "padNumber": "1"
+        }
+      ],
+      "name": "={Value}",
+      "uniqueId": "link_C8",
+      "manufacturer": "SAMSUNG(\u4e09\u661f)",
+      "manufacturerId": "CL10A106MA8NRNC",
+      "supplier": "LCSC",
+      "supplierId": "C96446",
+      "otherProperty": {
+        "Footprint": "C0603",
+        "LCSC Part Name": "10uF \u00b120% 25V",
+        "Supplier Footprint": "0603",
+        "JLCPCB Part Class": "Basic Part",
+        "Datasheet": "https://item.szlcsc.com/datasheet/CL10A106MA8NRNC/97651.html",
+        "3D Model": "624118aa3cc7497086c383c2d72e0852|0819f05c4eef4c71ace90d822a990e87",
+        "3D Model Title": "C0603_L1.6-W0.8-H0.8",
+        "3D Model Transform": "62.992,31.496,0,0,0,0,0,0,0",
+        "Value": "10uF",
+        "Tolerance": "\u00b120%",
+        "Voltage Rating": "25V",
+        "Temperature Coefficient": "X5R",
+        "Description": "Capacitance:10uF Tolerance:\u00b120% Tolerance:\u00b120% Voltage Rating:25V Temperature Coefficient:X5R",
+        "Device": "CL10A106MA8NRNC",
+        "Reuse Block": "",
+        "Group ID": "",
+        "Channel ID": "$1I727"
+      }
+    },
+    {
+      "async": true,
+      "primitiveType": "Component",
+      "layer": 1,
+      "x": 1299,
+      "y": 1811,
+      "rotation": 0,
+      "primitiveLock": false,
+      "addIntoBom": true,
+      "component": {
+        "libraryUuid": "eaeb453561334991933e309d30646366",
+        "uuid": "66a1cfd628bd22d5",
+        "name": "CL10A106MA8NRNC"
+      },
+      "primitiveId": "334d3e54644e141e",
+      "footprint": {
+        "libraryUuid": "eaeb453561334991933e309d30646366",
+        "uuid": "65562d6edab14b2a",
+        "name": "C0603"
+      },
+      "model3D": {
+        "libraryUuid": "0819f05c4eef4c71ace90d822a990e87",
+        "uuid": "624118aa3cc7497086c383c2d72e0852|0819f05c4eef4c71ace90d822a990e87",
+        "name": "C0603_L1.6-W0.8-H0.8"
+      },
+      "designator": "C9",
+      "pads": [
+        {
+          "primitiveId": "e14",
+          "net": "GND",
+          "padNumber": "2"
+        },
+        {
+          "primitiveId": "e15",
+          "net": "PVDD_12V",
+          "padNumber": "1"
+        }
+      ],
+      "name": "={Value}",
+      "uniqueId": "link_C9",
+      "manufacturer": "SAMSUNG(\u4e09\u661f)",
+      "manufacturerId": "CL10A106MA8NRNC",
+      "supplier": "LCSC",
+      "supplierId": "C96446",
+      "otherProperty": {
+        "Footprint": "C0603",
+        "LCSC Part Name": "10uF \u00b120% 25V",
+        "Supplier Footprint": "0603",
+        "JLCPCB Part Class": "Basic Part",
+        "Datasheet": "https://item.szlcsc.com/datasheet/CL10A106MA8NRNC/97651.html",
+        "3D Model": "624118aa3cc7497086c383c2d72e0852|0819f05c4eef4c71ace90d822a990e87",
+        "3D Model Title": "C0603_L1.6-W0.8-H0.8",
+        "3D Model Transform": "62.992,31.496,0,0,0,0,0,0,0",
+        "Value": "10uF",
+        "Tolerance": "\u00b120%",
+        "Voltage Rating": "25V",
+        "Temperature Coefficient": "X5R",
+        "Description": "Capacitance:10uF Tolerance:\u00b120% Tolerance:\u00b120% Voltage Rating:25V Temperature Coefficient:X5R",
+        "Device": "CL10A106MA8NRNC",
+        "Reuse Block": "",
+        "Group ID": "",
+        "Channel ID": "$1I728"
+      }
+    },
+    {
+      "async": true,
+      "primitiveType": "Component",
+      "layer": 1,
+      "x": 2205,
+      "y": 630,
+      "rotation": 90,
+      "primitiveLock": false,
+      "addIntoBom": true,
+      "component": {
+        "libraryUuid": "eaeb453561334991933e309d30646366",
+        "uuid": "385fe687d66b917b",
+        "name": "CC0603KRX7R9BB104"
+      },
+      "primitiveId": "4cc99cc254d2882f",
+      "footprint": {
+        "libraryUuid": "eaeb453561334991933e309d30646366",
+        "uuid": "65562d6edab14b2a",
+        "name": "C0603"
+      },
+      "model3D": {
+        "libraryUuid": "0819f05c4eef4c71ace90d822a990e87",
+        "uuid": "624118aa3cc7497086c383c2d72e0852|0819f05c4eef4c71ace90d822a990e87",
+        "name": "C0603_L1.6-W0.8-H0.8"
+      },
+      "designator": "C10",
+      "pads": [
+        {
+          "primitiveId": "e14",
+          "net": "GND",
+          "padNumber": "2"
+        },
+        {
+          "primitiveId": "e15",
+          "net": "VCC_3V3",
+          "padNumber": "1"
+        }
+      ],
+      "name": "={Value}",
+      "uniqueId": "link_C10",
+      "manufacturer": "YAGEO(\u56fd\u5de8)",
+      "manufacturerId": "CC0603KRX7R9BB104",
+      "supplier": "LCSC",
+      "supplierId": "C14663",
+      "otherProperty": {
+        "Footprint": "C0603",
+        "LCSC Part Name": "100nF \u00b110% 50V",
+        "Supplier Footprint": "0603",
+        "JLCPCB Part Class": "Basic Part",
+        "Datasheet": "https://item.szlcsc.com/datasheet/CC0603KRX7R9BB104/15331.html",
+        "3D Model": "624118aa3cc7497086c383c2d72e0852|0819f05c4eef4c71ace90d822a990e87",
+        "3D Model Title": "C0603_L1.6-W0.8-H0.8",
+        "3D Model Transform": "62.992,31.496,0,0,0,0,0,0,0",
+        "Value": "100nF",
+        "Tolerance": "\u00b110%",
+        "Voltage Rating": "50V",
+        "Temperature Coefficient": "X7R",
+        "Description": "Capacitance:100nF Tolerance:\u00b110% Tolerance:\u00b110% Voltage Rating:50V Temperature Coefficient:X7R",
+        "Device": "CC0603KRX7R9BB104",
+        "Reuse Block": "",
+        "Group ID": "",
+        "Channel ID": "$1I729"
+      }
+    },
+    {
+      "async": true,
+      "primitiveType": "Component",
+      "layer": 1,
+      "x": 2301,
+      "y": 590,
+      "rotation": 90,
+      "primitiveLock": false,
+      "addIntoBom": true,
+      "component": {
+        "libraryUuid": "eaeb453561334991933e309d30646366",
+        "uuid": "385fe687d66b917b",
+        "name": "CC0603KRX7R9BB104"
+      },
+      "primitiveId": "8ecf347af173ece2",
+      "footprint": {
+        "libraryUuid": "eaeb453561334991933e309d30646366",
+        "uuid": "65562d6edab14b2a",
+        "name": "C0603"
+      },
+      "model3D": {
+        "libraryUuid": "0819f05c4eef4c71ace90d822a990e87",
+        "uuid": "624118aa3cc7497086c383c2d72e0852|0819f05c4eef4c71ace90d822a990e87",
+        "name": "C0603_L1.6-W0.8-H0.8"
+      },
+      "designator": "C11",
+      "pads": [
+        {
+          "primitiveId": "e14",
+          "net": "GND",
+          "padNumber": "2"
+        },
+        {
+          "primitiveId": "e15",
+          "net": "VCC_3V3",
+          "padNumber": "1"
+        }
+      ],
+      "name": "={Value}",
+      "uniqueId": "link_C11",
+      "manufacturer": "YAGEO(\u56fd\u5de8)",
+      "manufacturerId": "CC0603KRX7R9BB104",
+      "supplier": "LCSC",
+      "supplierId": "C14663",
+      "otherProperty": {
+        "Footprint": "C0603",
+        "LCSC Part Name": "100nF \u00b110% 50V",
+        "Supplier Footprint": "0603",
+        "JLCPCB Part Class": "Basic Part",
+        "Datasheet": "https://item.szlcsc.com/datasheet/CC0603KRX7R9BB104/15331.html",
+        "3D Model": "624118aa3cc7497086c383c2d72e0852|0819f05c4eef4c71ace90d822a990e87",
+        "3D Model Title": "C0603_L1.6-W0.8-H0.8",
+        "3D Model Transform": "62.992,31.496,0,0,0,0,0,0,0",
+        "Value": "100nF",
+        "Tolerance": "\u00b110%",
+        "Voltage Rating": "50V",
+        "Temperature Coefficient": "X7R",
+        "Description": "Capacitance:100nF Tolerance:\u00b110% Tolerance:\u00b110% Voltage Rating:50V Temperature Coefficient:X7R",
+        "Device": "CC0603KRX7R9BB104",
+        "Reuse Block": "",
+        "Group ID": "",
+        "Channel ID": "$1I739"
+      }
+    },
+    {
+      "async": true,
+      "primitiveType": "Component",
+      "layer": 1,
+      "x": 1378,
+      "y": 1909,
+      "rotation": 0,
+      "primitiveLock": false,
+      "addIntoBom": true,
+      "component": {
+        "libraryUuid": "eaeb453561334991933e309d30646366",
+        "uuid": "385fe687d66b917b",
+        "name": "CC0603KRX7R9BB104"
+      },
+      "primitiveId": "8befee67745d0d27",
+      "footprint": {
+        "libraryUuid": "eaeb453561334991933e309d30646366",
+        "uuid": "65562d6edab14b2a",
+        "name": "C0603"
+      },
+      "model3D": {
+        "libraryUuid": "0819f05c4eef4c71ace90d822a990e87",
+        "uuid": "624118aa3cc7497086c383c2d72e0852|0819f05c4eef4c71ace90d822a990e87",
+        "name": "C0603_L1.6-W0.8-H0.8"
+      },
+      "designator": "C12",
+      "pads": [
+        {
+          "primitiveId": "e14",
+          "net": "BST_A+",
+          "padNumber": "2"
+        },
+        {
+          "primitiveId": "e15",
+          "net": "AMP_OUT_A+",
+          "padNumber": "1"
+        }
+      ],
+      "name": "={Value}",
+      "uniqueId": "link_C12",
+      "manufacturer": "YAGEO(\u56fd\u5de8)",
+      "manufacturerId": "CC0603KRX7R9BB104",
+      "supplier": "LCSC",
+      "supplierId": "C14663",
+      "otherProperty": {
+        "Footprint": "C0603",
+        "LCSC Part Name": "100nF \u00b110% 50V",
+        "Supplier Footprint": "0603",
+        "JLCPCB Part Class": "Basic Part",
+        "Datasheet": "https://item.szlcsc.com/datasheet/CC0603KRX7R9BB104/15331.html",
+        "3D Model": "624118aa3cc7497086c383c2d72e0852|0819f05c4eef4c71ace90d822a990e87",
+        "3D Model Title": "C0603_L1.6-W0.8-H0.8",
+        "3D Model Transform": "62.992,31.496,0,0,0,0,0,0,0",
+        "Value": "100nF",
+        "Tolerance": "\u00b110%",
+        "Voltage Rating": "50V",
+        "Temperature Coefficient": "X7R",
+        "Description": "Capacitance:100nF Tolerance:\u00b110% Tolerance:\u00b110% Voltage Rating:50V Temperature Coefficient:X7R",
+        "Device": "CC0603KRX7R9BB104",
+        "Reuse Block": "",
+        "Group ID": "",
+        "Channel ID": "$1I740"
+      }
+    },
+    {
+      "async": true,
+      "primitiveType": "Component",
+      "layer": 1,
+      "x": 1496,
+      "y": 1909,
+      "rotation": 0,
+      "primitiveLock": false,
+      "addIntoBom": true,
+      "component": {
+        "libraryUuid": "eaeb453561334991933e309d30646366",
+        "uuid": "385fe687d66b917b",
+        "name": "CC0603KRX7R9BB104"
+      },
+      "primitiveId": "4687fe08de4c84ea",
+      "footprint": {
+        "libraryUuid": "eaeb453561334991933e309d30646366",
+        "uuid": "65562d6edab14b2a",
+        "name": "C0603"
+      },
+      "model3D": {
+        "libraryUuid": "0819f05c4eef4c71ace90d822a990e87",
+        "uuid": "624118aa3cc7497086c383c2d72e0852|0819f05c4eef4c71ace90d822a990e87",
+        "name": "C0603_L1.6-W0.8-H0.8"
+      },
+      "designator": "C13",
+      "pads": [
+        {
+          "primitiveId": "e14",
+          "net": "BST_A-",
+          "padNumber": "2"
+        },
+        {
+          "primitiveId": "e15",
+          "net": "AMP_OUT_A-",
+          "padNumber": "1"
+        }
+      ],
+      "name": "={Value}",
+      "uniqueId": "link_C13",
+      "manufacturer": "YAGEO(\u56fd\u5de8)",
+      "manufacturerId": "CC0603KRX7R9BB104",
+      "supplier": "LCSC",
+      "supplierId": "C14663",
+      "otherProperty": {
+        "Footprint": "C0603",
+        "LCSC Part Name": "100nF \u00b110% 50V",
+        "Supplier Footprint": "0603",
+        "JLCPCB Part Class": "Basic Part",
+        "Datasheet": "https://item.szlcsc.com/datasheet/CC0603KRX7R9BB104/15331.html",
+        "3D Model": "624118aa3cc7497086c383c2d72e0852|0819f05c4eef4c71ace90d822a990e87",
+        "3D Model Title": "C0603_L1.6-W0.8-H0.8",
+        "3D Model Transform": "62.992,31.496,0,0,0,0,0,0,0",
+        "Value": "100nF",
+        "Tolerance": "\u00b110%",
+        "Voltage Rating": "50V",
+        "Temperature Coefficient": "X7R",
+        "Description": "Capacitance:100nF Tolerance:\u00b110% Tolerance:\u00b110% Voltage Rating:50V Temperature Coefficient:X7R",
+        "Device": "CC0603KRX7R9BB104",
+        "Reuse Block": "",
+        "Group ID": "",
+        "Channel ID": "$1I741"
+      }
+    },
+    {
+      "async": true,
+      "primitiveType": "Component",
+      "layer": 1,
+      "x": 1732,
+      "y": 1909,
+      "rotation": 0,
+      "primitiveLock": false,
+      "addIntoBom": true,
+      "component": {
+        "libraryUuid": "eaeb453561334991933e309d30646366",
+        "uuid": "385fe687d66b917b",
+        "name": "CC0603KRX7R9BB104"
+      },
+      "primitiveId": "7b065b670a24c88f",
+      "footprint": {
+        "libraryUuid": "eaeb453561334991933e309d30646366",
+        "uuid": "65562d6edab14b2a",
+        "name": "C0603"
+      },
+      "model3D": {
+        "libraryUuid": "0819f05c4eef4c71ace90d822a990e87",
+        "uuid": "624118aa3cc7497086c383c2d72e0852|0819f05c4eef4c71ace90d822a990e87",
+        "name": "C0603_L1.6-W0.8-H0.8"
+      },
+      "designator": "C14",
+      "pads": [
+        {
+          "primitiveId": "e14",
+          "net": "BST_B+",
+          "padNumber": "2"
+        },
+        {
+          "primitiveId": "e15",
+          "net": "AMP_OUT_B+",
+          "padNumber": "1"
+        }
+      ],
+      "name": "={Value}",
+      "uniqueId": "link_C14",
+      "manufacturer": "YAGEO(\u56fd\u5de8)",
+      "manufacturerId": "CC0603KRX7R9BB104",
+      "supplier": "LCSC",
+      "supplierId": "C14663",
+      "otherProperty": {
+        "Footprint": "C0603",
+        "LCSC Part Name": "100nF \u00b110% 50V",
+        "Supplier Footprint": "0603",
+        "JLCPCB Part Class": "Basic Part",
+        "Datasheet": "https://item.szlcsc.com/datasheet/CC0603KRX7R9BB104/15331.html",
+        "3D Model": "624118aa3cc7497086c383c2d72e0852|0819f05c4eef4c71ace90d822a990e87",
+        "3D Model Title": "C0603_L1.6-W0.8-H0.8",
+        "3D Model Transform": "62.992,31.496,0,0,0,0,0,0,0",
+        "Value": "100nF",
+        "Tolerance": "\u00b110%",
+        "Voltage Rating": "50V",
+        "Temperature Coefficient": "X7R",
+        "Description": "Capacitance:100nF Tolerance:\u00b110% Tolerance:\u00b110% Voltage Rating:50V Temperature Coefficient:X7R",
+        "Device": "CC0603KRX7R9BB104",
+        "Reuse Block": "",
+        "Group ID": "",
+        "Channel ID": "$1I742"
+      }
+    },
+    {
+      "async": true,
+      "primitiveType": "Component",
+      "layer": 1,
+      "x": 1614,
+      "y": 1909,
+      "rotation": 0,
+      "primitiveLock": false,
+      "addIntoBom": true,
+      "component": {
+        "libraryUuid": "eaeb453561334991933e309d30646366",
+        "uuid": "385fe687d66b917b",
+        "name": "CC0603KRX7R9BB104"
+      },
+      "primitiveId": "eb00938e5dbd3e97",
+      "footprint": {
+        "libraryUuid": "eaeb453561334991933e309d30646366",
+        "uuid": "65562d6edab14b2a",
+        "name": "C0603"
+      },
+      "model3D": {
+        "libraryUuid": "0819f05c4eef4c71ace90d822a990e87",
+        "uuid": "624118aa3cc7497086c383c2d72e0852|0819f05c4eef4c71ace90d822a990e87",
+        "name": "C0603_L1.6-W0.8-H0.8"
+      },
+      "designator": "C15",
+      "pads": [
+        {
+          "primitiveId": "e14",
+          "net": "BST_B-",
+          "padNumber": "2"
+        },
+        {
+          "primitiveId": "e15",
+          "net": "AMP_OUT_B-",
+          "padNumber": "1"
+        }
+      ],
+      "name": "={Value}",
+      "uniqueId": "link_C15",
+      "manufacturer": "YAGEO(\u56fd\u5de8)",
+      "manufacturerId": "CC0603KRX7R9BB104",
+      "supplier": "LCSC",
+      "supplierId": "C14663",
+      "otherProperty": {
+        "Footprint": "C0603",
+        "LCSC Part Name": "100nF \u00b110% 50V",
+        "Supplier Footprint": "0603",
+        "JLCPCB Part Class": "Basic Part",
+        "Datasheet": "https://item.szlcsc.com/datasheet/CC0603KRX7R9BB104/15331.html",
+        "3D Model": "624118aa3cc7497086c383c2d72e0852|0819f05c4eef4c71ace90d822a990e87",
+        "3D Model Title": "C0603_L1.6-W0.8-H0.8",
+        "3D Model Transform": "62.992,31.496,0,0,0,0,0,0,0",
+        "Value": "100nF",
+        "Tolerance": "\u00b110%",
+        "Voltage Rating": "50V",
+        "Temperature Coefficient": "X7R",
+        "Description": "Capacitance:100nF Tolerance:\u00b110% Tolerance:\u00b110% Voltage Rating:50V Temperature Coefficient:X7R",
+        "Device": "CC0603KRX7R9BB104",
+        "Reuse Block": "",
+        "Group ID": "",
+        "Channel ID": "$1I743"
+      }
+    },
+    {
+      "async": true,
+      "primitiveType": "Component",
+      "layer": 1,
+      "x": 1102,
+      "y": 1024,
+      "rotation": 0,
+      "primitiveLock": false,
+      "addIntoBom": true,
+      "component": {
+        "libraryUuid": "eaeb453561334991933e309d30646366",
+        "uuid": "a3db905d6a943523",
+        "name": "CC0603KRX7R8BB105"
+      },
+      "primitiveId": "241729d6533bad10",
+      "footprint": {
+        "libraryUuid": "eaeb453561334991933e309d30646366",
+        "uuid": "65562d6edab14b2a",
+        "name": "C0603"
+      },
+      "model3D": {
+        "libraryUuid": "0819f05c4eef4c71ace90d822a990e87",
+        "uuid": "624118aa3cc7497086c383c2d72e0852|0819f05c4eef4c71ace90d822a990e87",
+        "name": "C0603_L1.6-W0.8-H0.8"
+      },
+      "designator": "C17",
+      "pads": [
+        {
+          "primitiveId": "e14",
+          "net": "GND",
+          "padNumber": "2"
+        },
+        {
+          "primitiveId": "e15",
+          "net": "ESP_EN",
+          "padNumber": "1"
+        }
+      ],
+      "name": "={Value}",
+      "uniqueId": "link_C17",
+      "manufacturer": "YAGEO(\u56fd\u5de8)",
+      "manufacturerId": "CC0603KRX7R8BB105",
+      "supplier": "LCSC",
+      "supplierId": "C106858",
+      "otherProperty": {
+        "Footprint": "C0603",
+        "LCSC Part Name": "1uF \u00b110% 25V",
+        "Supplier Footprint": "0603",
+        "JLCPCB Part Class": "Extended Part",
+        "Datasheet": "https://item.szlcsc.com/datasheet/CC0603KRX7R8BB105/108074.html",
+        "3D Model": "624118aa3cc7497086c383c2d72e0852|0819f05c4eef4c71ace90d822a990e87",
+        "3D Model Title": "C0603_L1.6-W0.8-H0.8",
+        "3D Model Transform": "62.992,31.496,0,0,0,0,0,0,0",
+        "Value": "1uF",
+        "Tolerance": "\u00b110%",
+        "Voltage Rating": "25V",
+        "Temperature Coefficient": "X7R",
+        "Description": "Capacitance:1uF Tolerance:\u00b110% Tolerance:\u00b110% Voltage Rating:25V Temperature Coefficient:X7R",
+        "Device": "CC0603KRX7R8BB105",
+        "Reuse Block": "",
+        "Group ID": "",
+        "Channel ID": "$1I737"
+      }
+    },
+    {
+      "async": true,
+      "primitiveType": "Component",
+      "layer": 1,
+      "x": 1375,
+      "y": 1496,
+      "rotation": 0,
+      "primitiveLock": false,
+      "addIntoBom": true,
+      "component": {
+        "libraryUuid": "eaeb453561334991933e309d30646366",
+        "uuid": "385fe687d66b917b",
+        "name": "CC0603KRX7R9BB104"
+      },
+      "primitiveId": "898f957777917a0d",
+      "footprint": {
+        "libraryUuid": "eaeb453561334991933e309d30646366",
+        "uuid": "65562d6edab14b2a",
+        "name": "C0603"
+      },
+      "model3D": {
+        "libraryUuid": "0819f05c4eef4c71ace90d822a990e87",
+        "uuid": "624118aa3cc7497086c383c2d72e0852|0819f05c4eef4c71ace90d822a990e87",
+        "name": "C0603_L1.6-W0.8-H0.8"
+      },
+      "designator": "C18",
+      "pads": [
+        {
+          "primitiveId": "e14",
+          "net": "GND",
+          "padNumber": "2"
+        },
+        {
+          "primitiveId": "e15",
+          "net": "VCC_3V3",
+          "padNumber": "1"
+        }
+      ],
+      "name": "={Value}",
+      "uniqueId": "link_C18",
+      "manufacturer": "YAGEO(\u56fd\u5de8)",
+      "manufacturerId": "CC0603KRX7R9BB104",
+      "supplier": "LCSC",
+      "supplierId": "C14663",
+      "otherProperty": {
+        "Footprint": "C0603",
+        "LCSC Part Name": "100nF \u00b110% 50V",
+        "Supplier Footprint": "0603",
+        "JLCPCB Part Class": "Basic Part",
+        "Datasheet": "https://item.szlcsc.com/datasheet/CC0603KRX7R9BB104/15331.html",
+        "3D Model": "624118aa3cc7497086c383c2d72e0852|0819f05c4eef4c71ace90d822a990e87",
+        "3D Model Title": "C0603_L1.6-W0.8-H0.8",
+        "3D Model Transform": "62.992,31.496,0,0,0,0,0,0,0",
+        "Value": "100nF",
+        "Tolerance": "\u00b110%",
+        "Voltage Rating": "50V",
+        "Temperature Coefficient": "X7R",
+        "Description": "Capacitance:100nF Tolerance:\u00b110% Tolerance:\u00b110% Voltage Rating:50V Temperature Coefficient:X7R",
+        "Device": "CC0603KRX7R9BB104",
+        "Reuse Block": "",
+        "Group ID": "",
+        "Channel ID": "$1I748"
+      }
+    },
+    {
+      "async": true,
+      "primitiveType": "Component",
+      "layer": 1,
+      "x": 1775,
+      "y": 1496,
+      "rotation": 0,
+      "primitiveLock": false,
+      "addIntoBom": true,
+      "component": {
+        "libraryUuid": "eaeb453561334991933e309d30646366",
+        "uuid": "a3db905d6a943523",
+        "name": "CC0603KRX7R8BB105"
+      },
+      "primitiveId": "e3115451f328d53f",
+      "footprint": {
+        "libraryUuid": "eaeb453561334991933e309d30646366",
+        "uuid": "65562d6edab14b2a",
+        "name": "C0603"
+      },
+      "model3D": {
+        "libraryUuid": "0819f05c4eef4c71ace90d822a990e87",
+        "uuid": "624118aa3cc7497086c383c2d72e0852|0819f05c4eef4c71ace90d822a990e87",
+        "name": "C0603_L1.6-W0.8-H0.8"
+      },
+      "designator": "C19",
+      "pads": [
+        {
+          "primitiveId": "e14",
+          "net": "GND",
+          "padNumber": "2"
+        },
+        {
+          "primitiveId": "e15",
+          "net": "AVDD",
+          "padNumber": "1"
+        }
+      ],
+      "name": "={Value}",
+      "uniqueId": "link_C19",
+      "manufacturer": "YAGEO(\u56fd\u5de8)",
+      "manufacturerId": "CC0603KRX7R8BB105",
+      "supplier": "LCSC",
+      "supplierId": "C106858",
+      "otherProperty": {
+        "Footprint": "C0603",
+        "LCSC Part Name": "1uF \u00b110% 25V",
+        "Supplier Footprint": "0603",
+        "JLCPCB Part Class": "Extended Part",
+        "Datasheet": "https://item.szlcsc.com/datasheet/CC0603KRX7R8BB105/108074.html",
+        "3D Model": "624118aa3cc7497086c383c2d72e0852|0819f05c4eef4c71ace90d822a990e87",
+        "3D Model Title": "C0603_L1.6-W0.8-H0.8",
+        "3D Model Transform": "62.992,31.496,0,0,0,0,0,0,0",
+        "Value": "1uF",
+        "Tolerance": "\u00b110%",
+        "Voltage Rating": "25V",
+        "Temperature Coefficient": "X7R",
+        "Description": "Capacitance:1uF Tolerance:\u00b110% Tolerance:\u00b110% Voltage Rating:25V Temperature Coefficient:X7R",
+        "Device": "CC0603KRX7R8BB105",
+        "Reuse Block": "",
+        "Group ID": "",
+        "Channel ID": "$1I749"
+      }
+    },
+    {
+      "async": true,
+      "primitiveType": "Component",
+      "layer": 1,
+      "x": 1575,
+      "y": 1496,
+      "rotation": 0,
+      "primitiveLock": false,
+      "addIntoBom": true,
+      "component": {
+        "libraryUuid": "eaeb453561334991933e309d30646366",
+        "uuid": "a3db905d6a943523",
+        "name": "CC0603KRX7R8BB105"
+      },
+      "primitiveId": "ec92f5106139a922",
+      "footprint": {
+        "libraryUuid": "eaeb453561334991933e309d30646366",
+        "uuid": "65562d6edab14b2a",
+        "name": "C0603"
+      },
+      "model3D": {
+        "libraryUuid": "0819f05c4eef4c71ace90d822a990e87",
+        "uuid": "624118aa3cc7497086c383c2d72e0852|0819f05c4eef4c71ace90d822a990e87",
+        "name": "C0603_L1.6-W0.8-H0.8"
+      },
+      "designator": "C20",
+      "pads": [
+        {
+          "primitiveId": "e14",
+          "net": "GND",
+          "padNumber": "2"
+        },
+        {
+          "primitiveId": "e15",
+          "net": "VR_DIG",
+          "padNumber": "1"
+        }
+      ],
+      "name": "={Value}",
+      "uniqueId": "link_C20",
+      "manufacturer": "YAGEO(\u56fd\u5de8)",
+      "manufacturerId": "CC0603KRX7R8BB105",
+      "supplier": "LCSC",
+      "supplierId": "C106858",
+      "otherProperty": {
+        "Footprint": "C0603",
+        "LCSC Part Name": "1uF \u00b110% 25V",
+        "Supplier Footprint": "0603",
+        "JLCPCB Part Class": "Extended Part",
+        "Datasheet": "https://item.szlcsc.com/datasheet/CC0603KRX7R8BB105/108074.html",
+        "3D Model": "624118aa3cc7497086c383c2d72e0852|0819f05c4eef4c71ace90d822a990e87",
+        "3D Model Title": "C0603_L1.6-W0.8-H0.8",
+        "3D Model Transform": "62.992,31.496,0,0,0,0,0,0,0",
+        "Value": "1uF",
+        "Tolerance": "\u00b110%",
+        "Voltage Rating": "25V",
+        "Temperature Coefficient": "X7R",
+        "Description": "Capacitance:1uF Tolerance:\u00b110% Tolerance:\u00b110% Voltage Rating:25V Temperature Coefficient:X7R",
+        "Device": "CC0603KRX7R8BB105",
+        "Reuse Block": "",
+        "Group ID": "",
+        "Channel ID": "$1I750"
+      }
+    },
+    {
+      "async": true,
+      "primitiveType": "Component",
+      "layer": 1,
+      "x": 624,
+      "y": 1820,
+      "rotation": 180,
+      "primitiveLock": false,
+      "addIntoBom": true,
+      "component": {
+        "libraryUuid": "eaeb453561334991933e309d30646366",
+        "uuid": "a3db905d6a943523",
+        "name": "CC0603KRX7R8BB105"
+      },
+      "primitiveId": "6c12bb3cb9d2f0f5",
+      "footprint": {
+        "libraryUuid": "eaeb453561334991933e309d30646366",
+        "uuid": "65562d6edab14b2a",
+        "name": "C0603"
+      },
+      "model3D": {
+        "libraryUuid": "0819f05c4eef4c71ace90d822a990e87",
+        "uuid": "624118aa3cc7497086c383c2d72e0852|0819f05c4eef4c71ace90d822a990e87",
+        "name": "C0603_L1.6-W0.8-H0.8"
+      },
+      "designator": "C21",
+      "pads": [
+        {
+          "primitiveId": "e14",
+          "net": "GND",
+          "padNumber": "2"
+        },
+        {
+          "primitiveId": "e15",
+          "net": "BOOST_VDD",
+          "padNumber": "1"
+        }
+      ],
+      "name": "={Value}",
+      "uniqueId": "link_C21",
+      "manufacturer": "YAGEO(\u56fd\u5de8)",
+      "manufacturerId": "CC0603KRX7R8BB105",
+      "supplier": "LCSC",
+      "supplierId": "C106858",
+      "otherProperty": {
+        "Footprint": "C0603",
+        "LCSC Part Name": "1uF \u00b110% 25V",
+        "Supplier Footprint": "0603",
+        "JLCPCB Part Class": "Extended Part",
+        "Datasheet": "https://item.szlcsc.com/datasheet/CC0603KRX7R8BB105/108074.html",
+        "3D Model": "624118aa3cc7497086c383c2d72e0852|0819f05c4eef4c71ace90d822a990e87",
+        "3D Model Title": "C0603_L1.6-W0.8-H0.8",
+        "3D Model Transform": "62.992,31.496,0,0,0,0,0,0,0",
+        "Value": "1uF",
+        "Tolerance": "\u00b110%",
+        "Voltage Rating": "25V",
+        "Temperature Coefficient": "X7R",
+        "Description": "Capacitance:1uF Tolerance:\u00b110% Tolerance:\u00b110% Voltage Rating:25V Temperature Coefficient:X7R",
+        "Device": "CC0603KRX7R8BB105",
+        "Reuse Block": "",
+        "Group ID": "",
+        "Channel ID": "$1I754"
+      }
+    },
+    {
+      "async": true,
+      "primitiveType": "Component",
+      "layer": 1,
+      "x": 551,
+      "y": 1777,
+      "rotation": 0,
+      "primitiveLock": false,
+      "addIntoBom": true,
+      "component": {
+        "libraryUuid": "eaeb453561334991933e309d30646366",
+        "uuid": "366bf5e90b50f7ef",
+        "name": "CC0603KRX7RABB472"
+      },
+      "primitiveId": "896cb14065143469",
+      "footprint": {
+        "libraryUuid": "eaeb453561334991933e309d30646366",
+        "uuid": "65562d6edab14b2a",
+        "name": "C0603"
+      },
+      "model3D": {
+        "libraryUuid": "0819f05c4eef4c71ace90d822a990e87",
+        "uuid": "624118aa3cc7497086c383c2d72e0852|0819f05c4eef4c71ace90d822a990e87",
+        "name": "C0603_L1.6-W0.8-H0.8"
+      },
+      "designator": "C22",
+      "pads": [
+        {
+          "primitiveId": "e14",
+          "net": "GND",
+          "padNumber": "2"
+        },
+        {
+          "primitiveId": "e15",
+          "net": "COMP_RC",
+          "padNumber": "1"
+        }
+      ],
+      "name": "={Value}",
+      "uniqueId": "link_C22",
+      "manufacturer": "YAGEO(\u56fd\u5de8)",
+      "manufacturerId": "CC0603KRX7RABB472",
+      "supplier": "LCSC",
+      "supplierId": "C596328",
+      "otherProperty": {
+        "Footprint": "C0603",
+        "LCSC Part Name": "4.7nF \u00b110% 200V",
+        "Supplier Footprint": "0603",
+        "JLCPCB Part Class": "Extended Part",
+        "Datasheet": "https://item.szlcsc.com/datasheet/CC0603KRX7RABB472/624312.html",
+        "3D Model": "624118aa3cc7497086c383c2d72e0852|0819f05c4eef4c71ace90d822a990e87",
+        "3D Model Title": "C0603_L1.6-W0.8-H0.8",
+        "3D Model Transform": "62.992,31.496,0,0,0,0,0,0,0",
+        "Value": "4.7nF",
+        "Tolerance": "\u00b110%",
+        "Voltage Rating": "200V",
+        "Temperature Coefficient": "X7R",
+        "Description": "Capacitance:4.7nF Tolerance:\u00b110% Tolerance:\u00b110% Voltage Rating:200V Temperature Coefficient:X7R",
+        "Device": "CC0603KRX7RABB472",
+        "Reuse Block": "",
+        "Group ID": "",
+        "Channel ID": "$1I755"
+      }
+    },
+    {
+      "async": true,
+      "primitiveType": "Component",
+      "layer": 1,
+      "x": 551,
+      "y": 1832,
+      "rotation": 0,
+      "primitiveLock": false,
+      "addIntoBom": true,
+      "component": {
+        "libraryUuid": "eaeb453561334991933e309d30646366",
+        "uuid": "366bf5e90b50f7ef",
+        "name": "CC0603KRX7RABB472"
+      },
+      "primitiveId": "fb82b025be0f5ce1",
+      "footprint": {
+        "libraryUuid": "eaeb453561334991933e309d30646366",
+        "uuid": "65562d6edab14b2a",
+        "name": "C0603"
+      },
+      "model3D": {
+        "libraryUuid": "0819f05c4eef4c71ace90d822a990e87",
+        "uuid": "624118aa3cc7497086c383c2d72e0852|0819f05c4eef4c71ace90d822a990e87",
+        "name": "C0603_L1.6-W0.8-H0.8"
+      },
+      "designator": "C23",
+      "pads": [
+        {
+          "primitiveId": "e14",
+          "net": "GND",
+          "padNumber": "2"
+        },
+        {
+          "primitiveId": "e15",
+          "net": "BOOST_SS",
+          "padNumber": "1"
+        }
+      ],
+      "name": "={Value}",
+      "uniqueId": "link_C23",
+      "manufacturer": "YAGEO(\u56fd\u5de8)",
+      "manufacturerId": "CC0603KRX7RABB472",
+      "supplier": "LCSC",
+      "supplierId": "C596328",
+      "otherProperty": {
+        "Footprint": "C0603",
+        "LCSC Part Name": "4.7nF \u00b110% 200V",
+        "Supplier Footprint": "0603",
+        "JLCPCB Part Class": "Extended Part",
+        "Datasheet": "https://item.szlcsc.com/datasheet/CC0603KRX7RABB472/624312.html",
+        "3D Model": "624118aa3cc7497086c383c2d72e0852|0819f05c4eef4c71ace90d822a990e87",
+        "3D Model Title": "C0603_L1.6-W0.8-H0.8",
+        "3D Model Transform": "62.992,31.496,0,0,0,0,0,0,0",
+        "Value": "4.7nF",
+        "Tolerance": "\u00b110%",
+        "Voltage Rating": "200V",
+        "Temperature Coefficient": "X7R",
+        "Description": "Capacitance:4.7nF Tolerance:\u00b110% Tolerance:\u00b110% Voltage Rating:200V Temperature Coefficient:X7R",
+        "Device": "CC0603KRX7RABB472",
+        "Reuse Block": "",
+        "Group ID": "",
+        "Channel ID": "$1I756"
+      }
+    },
+    {
+      "async": true,
+      "primitiveType": "Component",
+      "layer": 1,
+      "x": 2283,
+      "y": 1496,
+      "rotation": 0,
+      "primitiveLock": false,
+      "addIntoBom": true,
+      "component": {
+        "libraryUuid": "eaeb453561334991933e309d30646366",
+        "uuid": "598c3a1cdbf729a2",
+        "name": "CL10B222KB8NNNC"
+      },
+      "primitiveId": "87bf3b06ef648eb3",
+      "footprint": {
+        "libraryUuid": "eaeb453561334991933e309d30646366",
+        "uuid": "65562d6edab14b2a",
+        "name": "C0603"
+      },
+      "model3D": {
+        "libraryUuid": "0819f05c4eef4c71ace90d822a990e87",
+        "uuid": "624118aa3cc7497086c383c2d72e0852|0819f05c4eef4c71ace90d822a990e87",
+        "name": "C0603_L1.6-W0.8-H0.8"
+      },
+      "designator": "C24",
+      "pads": [
+        {
+          "primitiveId": "e14",
+          "net": "GND",
+          "padNumber": "2"
+        },
+        {
+          "primitiveId": "e15",
+          "net": "SPK_A+",
+          "padNumber": "1"
+        }
+      ],
+      "name": "={Value}",
+      "uniqueId": "link_C24",
+      "manufacturer": "SAMSUNG(\u4e09\u661f)",
+      "manufacturerId": "CL10B222KB8NNNC",
+      "supplier": "LCSC",
+      "supplierId": "C16033",
+      "otherProperty": {
+        "Footprint": "C0603",
+        "LCSC Part Name": "2.2nF \u00b110% 50V",
+        "Supplier Footprint": "0603",
+        "JLCPCB Part Class": "Extended Part",
+        "Datasheet": "https://item.szlcsc.com/datasheet/CL10B222KB8NNNC/16715.html",
+        "3D Model": "624118aa3cc7497086c383c2d72e0852|0819f05c4eef4c71ace90d822a990e87",
+        "3D Model Title": "C0603_L1.6-W0.8-H0.8",
+        "3D Model Transform": "62.992,31.496,0,0,0,0,0,0,0",
+        "Value": "2.2nF",
+        "Tolerance": "\u00b110%",
+        "Voltage Rating": "50V",
+        "Temperature Coefficient": "X7R",
+        "Description": "Capacitance:2.2nF Tolerance:\u00b110% Tolerance:\u00b110% Voltage Rating:50V Temperature Coefficient:X7R",
+        "Device": "CL10B222KB8NNNC",
+        "Reuse Block": "",
+        "Group ID": "",
+        "Channel ID": "$1I758"
+      }
+    },
+    {
+      "async": true,
+      "primitiveType": "Component",
+      "layer": 1,
+      "x": 2283,
+      "y": 1654,
+      "rotation": 0,
+      "primitiveLock": false,
+      "addIntoBom": true,
+      "component": {
+        "libraryUuid": "eaeb453561334991933e309d30646366",
+        "uuid": "598c3a1cdbf729a2",
+        "name": "CL10B222KB8NNNC"
+      },
+      "primitiveId": "f7431b93e9ae8316",
+      "footprint": {
+        "libraryUuid": "eaeb453561334991933e309d30646366",
+        "uuid": "65562d6edab14b2a",
+        "name": "C0603"
+      },
+      "model3D": {
+        "libraryUuid": "0819f05c4eef4c71ace90d822a990e87",
+        "uuid": "624118aa3cc7497086c383c2d72e0852|0819f05c4eef4c71ace90d822a990e87",
+        "name": "C0603_L1.6-W0.8-H0.8"
+      },
+      "designator": "C25",
+      "pads": [
+        {
+          "primitiveId": "e14",
+          "net": "GND",
+          "padNumber": "2"
+        },
+        {
+          "primitiveId": "e15",
+          "net": "SPK_A-",
+          "padNumber": "1"
+        }
+      ],
+      "name": "={Value}",
+      "uniqueId": "link_C25",
+      "manufacturer": "SAMSUNG(\u4e09\u661f)",
+      "manufacturerId": "CL10B222KB8NNNC",
+      "supplier": "LCSC",
+      "supplierId": "C16033",
+      "otherProperty": {
+        "Footprint": "C0603",
+        "LCSC Part Name": "2.2nF \u00b110% 50V",
+        "Supplier Footprint": "0603",
+        "JLCPCB Part Class": "Extended Part",
+        "Datasheet": "https://item.szlcsc.com/datasheet/CL10B222KB8NNNC/16715.html",
+        "3D Model": "624118aa3cc7497086c383c2d72e0852|0819f05c4eef4c71ace90d822a990e87",
+        "3D Model Title": "C0603_L1.6-W0.8-H0.8",
+        "3D Model Transform": "62.992,31.496,0,0,0,0,0,0,0",
+        "Value": "2.2nF",
+        "Tolerance": "\u00b110%",
+        "Voltage Rating": "50V",
+        "Temperature Coefficient": "X7R",
+        "Description": "Capacitance:2.2nF Tolerance:\u00b110% Tolerance:\u00b110% Voltage Rating:50V Temperature Coefficient:X7R",
+        "Device": "CL10B222KB8NNNC",
+        "Reuse Block": "",
+        "Group ID": "",
+        "Channel ID": "$1I760"
+      }
+    },
+    {
+      "async": true,
+      "primitiveType": "Component",
+      "layer": 1,
+      "x": 2283,
+      "y": 1811,
+      "rotation": 0,
+      "primitiveLock": false,
+      "addIntoBom": true,
+      "component": {
+        "libraryUuid": "eaeb453561334991933e309d30646366",
+        "uuid": "598c3a1cdbf729a2",
+        "name": "CL10B222KB8NNNC"
+      },
+      "primitiveId": "1a8965f6dd9f92c2",
+      "footprint": {
+        "libraryUuid": "eaeb453561334991933e309d30646366",
+        "uuid": "65562d6edab14b2a",
+        "name": "C0603"
+      },
+      "model3D": {
+        "libraryUuid": "0819f05c4eef4c71ace90d822a990e87",
+        "uuid": "624118aa3cc7497086c383c2d72e0852|0819f05c4eef4c71ace90d822a990e87",
+        "name": "C0603_L1.6-W0.8-H0.8"
+      },
+      "designator": "C26",
+      "pads": [
+        {
+          "primitiveId": "e14",
+          "net": "GND",
+          "padNumber": "2"
+        },
+        {
+          "primitiveId": "e15",
+          "net": "SPK_B+",
+          "padNumber": "1"
+        }
+      ],
+      "name": "={Value}",
+      "uniqueId": "link_C26",
+      "manufacturer": "SAMSUNG(\u4e09\u661f)",
+      "manufacturerId": "CL10B222KB8NNNC",
+      "supplier": "LCSC",
+      "supplierId": "C16033",
+      "otherProperty": {
+        "Footprint": "C0603",
+        "LCSC Part Name": "2.2nF \u00b110% 50V",
+        "Supplier Footprint": "0603",
+        "JLCPCB Part Class": "Extended Part",
+        "Datasheet": "https://item.szlcsc.com/datasheet/CL10B222KB8NNNC/16715.html",
+        "3D Model": "624118aa3cc7497086c383c2d72e0852|0819f05c4eef4c71ace90d822a990e87",
+        "3D Model Title": "C0603_L1.6-W0.8-H0.8",
+        "3D Model Transform": "62.992,31.496,0,0,0,0,0,0,0",
+        "Value": "2.2nF",
+        "Tolerance": "\u00b110%",
+        "Voltage Rating": "50V",
+        "Temperature Coefficient": "X7R",
+        "Description": "Capacitance:2.2nF Tolerance:\u00b110% Tolerance:\u00b110% Voltage Rating:50V Temperature Coefficient:X7R",
+        "Device": "CL10B222KB8NNNC",
+        "Reuse Block": "",
+        "Group ID": "",
+        "Channel ID": "$1I762"
+      }
+    },
+    {
+      "async": true,
+      "primitiveType": "Component",
+      "layer": 1,
+      "x": 2283,
+      "y": 1969,
+      "rotation": 0,
+      "primitiveLock": false,
+      "addIntoBom": true,
+      "component": {
+        "libraryUuid": "eaeb453561334991933e309d30646366",
+        "uuid": "598c3a1cdbf729a2",
+        "name": "CL10B222KB8NNNC"
+      },
+      "primitiveId": "204c7f46d76684db",
+      "footprint": {
+        "libraryUuid": "eaeb453561334991933e309d30646366",
+        "uuid": "65562d6edab14b2a",
+        "name": "C0603"
+      },
+      "model3D": {
+        "libraryUuid": "0819f05c4eef4c71ace90d822a990e87",
+        "uuid": "624118aa3cc7497086c383c2d72e0852|0819f05c4eef4c71ace90d822a990e87",
+        "name": "C0603_L1.6-W0.8-H0.8"
+      },
+      "designator": "C27",
+      "pads": [
+        {
+          "primitiveId": "e14",
+          "net": "GND",
+          "padNumber": "2"
+        },
+        {
+          "primitiveId": "e15",
+          "net": "SPK_B-",
+          "padNumber": "1"
+        }
+      ],
+      "name": "={Value}",
+      "uniqueId": "link_C27",
+      "manufacturer": "SAMSUNG(\u4e09\u661f)",
+      "manufacturerId": "CL10B222KB8NNNC",
+      "supplier": "LCSC",
+      "supplierId": "C16033",
+      "otherProperty": {
+        "Footprint": "C0603",
+        "LCSC Part Name": "2.2nF \u00b110% 50V",
+        "Supplier Footprint": "0603",
+        "JLCPCB Part Class": "Extended Part",
+        "Datasheet": "https://item.szlcsc.com/datasheet/CL10B222KB8NNNC/16715.html",
+        "3D Model": "624118aa3cc7497086c383c2d72e0852|0819f05c4eef4c71ace90d822a990e87",
+        "3D Model Title": "C0603_L1.6-W0.8-H0.8",
+        "3D Model Transform": "62.992,31.496,0,0,0,0,0,0,0",
+        "Value": "2.2nF",
+        "Tolerance": "\u00b110%",
+        "Voltage Rating": "50V",
+        "Temperature Coefficient": "X7R",
+        "Description": "Capacitance:2.2nF Tolerance:\u00b110% Tolerance:\u00b110% Voltage Rating:50V Temperature Coefficient:X7R",
+        "Device": "CL10B222KB8NNNC",
+        "Reuse Block": "",
+        "Group ID": "",
+        "Channel ID": "$1I764"
+      }
+    },
+    {
+      "async": true,
+      "primitiveType": "Component",
+      "layer": 1,
+      "x": 443,
+      "y": 1102,
+      "rotation": 90,
+      "primitiveLock": false,
+      "addIntoBom": true,
+      "component": {
+        "libraryUuid": "eaeb453561334991933e309d30646366",
+        "uuid": "5af3e4f6c20513d8",
+        "name": "SMAJ5.0A_C83329"
+      },
+      "primitiveId": "fee1d1a60614bb06",
+      "footprint": {
+        "libraryUuid": "eaeb453561334991933e309d30646366",
+        "uuid": "5a1208c223253ef3",
+        "name": "SMA_L4.3-W2.6-LS5.2-RD"
+      },
+      "model3D": {
+        "libraryUuid": "0819f05c4eef4c71ace90d822a990e87",
+        "uuid": "e3551acb3c5a4975a5e9d36087fe1fa2|0819f05c4eef4c71ace90d822a990e87",
+        "name": "SMA_L4.3-W2.6-LS5.2-RD"
+      },
+      "designator": "D1",
+      "pads": [
+        {
+          "primitiveId": "e12",
+          "net": "GND",
+          "padNumber": "2"
+        },
+        {
+          "primitiveId": "e13",
+          "net": "VBUS_5V",
+          "padNumber": "1"
+        }
+      ],
+      "name": "={Manufacturer Part}",
+      "uniqueId": "link_D1",
+      "manufacturer": "Littelfuse(\u7f8e\u56fd\u529b\u7279)",
+      "manufacturerId": "SMAJ5.0A",
+      "supplier": "LCSC",
+      "supplierId": "C83329",
+      "otherProperty": {
+        "Footprint": "SMA_L4.3-W2.6-LS5.2-RD",
+        "LCSC Part Name": "\u5355\u5411TVS 5V\u622a\u6b62 \u5cf0\u503c\u8109\u51b2\u7535\u6d41\uff1a43.5A",
+        "Supplier Footprint": "DO-214AC(SMA)",
+        "JLCPCB Part Class": "Extended Part",
+        "Datasheet": "https://item.szlcsc.com/datasheet/SMAJ5.0A/84493.html",
+        "3D Model": "e3551acb3c5a4975a5e9d36087fe1fa2|0819f05c4eef4c71ace90d822a990e87",
+        "3D Model Title": "SMA_L4.3-W2.6-LS5.2-RD",
+        "3D Model Transform": "185.039,102.362,0,0,0,0,0,0,0",
+        "Polarity": "Unidirectional",
+        "Reverse Stand-Off Voltage (Vrwm)": "5V",
+        "Clamping Voltage": "9.2V",
+        "Peak Pulse Current (Ipp)": "43.5A",
+        "Peak Pulse Power Dissipation (Ppp)": "400W",
+        "Voltage - Breakdown": "6.4V",
+        "Reverse Leakage Current (Ir)": "800uA",
+        "Operating Temperature": "-65\u2103~+150\u2103",
+        "Type": "TVS",
+        "Description": "Polarity:Unidirectional Reverse Stand-Off Voltage (Vrwm):5V Clamping Voltage:9.2V Peak Pulse Current (Ipp):43.5A Peak Pulse Power Dissipation (Ppp):400W Voltage - Breakdown:6.4V Reverse Leakage Current (Ir):800uA Operating Temperature:-65\u2103~+150\u2103 Operating",
+        "Device": "SMAJ5.0A_C83329",
+        "Reuse Block": "",
+        "Group ID": "",
+        "Channel ID": "$1I717"
+      }
+    },
+    {
+      "async": true,
+      "primitiveType": "Component",
+      "layer": 1,
+      "x": 945,
+      "y": 1693,
+      "rotation": 180,
+      "primitiveLock": false,
+      "addIntoBom": true,
+      "component": {
+        "libraryUuid": "eaeb453561334991933e309d30646366",
+        "uuid": "633b4c093c805f34",
+        "name": "SS34_C8678"
+      },
+      "primitiveId": "4dad36deecdd630c",
+      "footprint": {
+        "libraryUuid": "eaeb453561334991933e309d30646366",
+        "uuid": "5a1208c223253ef3",
+        "name": "SMA_L4.3-W2.6-LS5.2-RD"
+      },
+      "model3D": {
+        "libraryUuid": "0819f05c4eef4c71ace90d822a990e87",
+        "uuid": "e3551acb3c5a4975a5e9d36087fe1fa2|0819f05c4eef4c71ace90d822a990e87",
+        "name": "SMA_L4.3-W2.6-LS5.2-RD"
+      },
+      "designator": "D3",
+      "pads": [
+        {
+          "primitiveId": "e12",
+          "net": "BOOST_SW",
+          "padNumber": "2"
+        },
+        {
+          "primitiveId": "e13",
+          "net": "PVDD_12V",
+          "padNumber": "1"
+        }
+      ],
+      "name": "={Manufacturer Part}",
+      "uniqueId": "link_D3",
+      "manufacturer": "MDD(\u8fb0\u8fbe\u534a\u5bfc\u4f53)",
+      "manufacturerId": "SS34",
+      "supplier": "LCSC",
+      "supplierId": "C8678",
+      "otherProperty": {
+        "Footprint": "SMA_L4.3-W2.6-LS5.2-RD",
+        "LCSC Part Name": "\u7535\u538b:40V \u7535\u6d41:3A",
+        "Supplier Footprint": "SMA(DO-214AC)",
+        "JLCPCB Part Class": "Basic Part",
+        "Datasheet": "https://item.szlcsc.com/datasheet/SS34/9178.html",
+        "3D Model": "e3551acb3c5a4975a5e9d36087fe1fa2|0819f05c4eef4c71ace90d822a990e87",
+        "3D Model Title": "SMA_L4.3-W2.6-LS5.2-RD",
+        "3D Model Transform": "185.039,102.362,0,0,0,0,0,0,0",
+        "Diode Configuration": "Independent",
+        "Voltage - Forward(Vf@If)": "550mV@3A",
+        "Voltage - DC Reverse(Vr)": "40V",
+        "Current - Rectified": "3A",
+        "Reverse Leakage Current (Ir)": "500uA@40V",
+        "Operating Junction Temperature Range": "-55\u2103~+125\u2103",
+        "Description": "Diode Configuration:Independent Voltage - Forward(Vf@If):550mV@3A Voltage - DC Reverse(Vr):40V Current - Rectified:3A Reverse Leakage Current (Ir):500uA@40V Operating Junction Temperature Range:-55\u2103~+125\u2103 Operating Junction Temperature Range:-55\u2103~+125\u2103",
+        "Device": "SS34_C8678",
+        "Reuse Block": "",
+        "Group ID": "",
+        "Channel ID": "$1I731"
+      }
+    },
+    {
+      "async": true,
+      "primitiveType": "Component",
+      "layer": 1,
+      "x": 2126,
+      "y": 1496,
+      "rotation": 90,
+      "primitiveLock": false,
+      "addIntoBom": true,
+      "component": {
+        "libraryUuid": "eaeb453561334991933e309d30646366",
+        "uuid": "3a73d09cbc8a4ae5",
+        "name": "UPZ2012E221-3R0TF"
+      },
+      "primitiveId": "4b83a94fd838e6d0",
+      "footprint": {
+        "libraryUuid": "eaeb453561334991933e309d30646366",
+        "uuid": "ba3bb2489c1892fa",
+        "name": "L0805"
+      },
+      "model3D": {
+        "libraryUuid": "0819f05c4eef4c71ace90d822a990e87",
+        "uuid": "b83c7c5430874b8eb2319a65d9433429|0819f05c4eef4c71ace90d822a990e87",
+        "name": "R0805_L2.0-W1.3-H0.6"
+      },
+      "designator": "FB1",
+      "pads": [
+        {
+          "primitiveId": "e20",
+          "net": "AMP_OUT_A+",
+          "padNumber": "1"
+        },
+        {
+          "primitiveId": "e21",
+          "net": "SPK_A+",
+          "padNumber": "2"
+        }
+      ],
+      "name": "={Manufacturer Part}",
+      "uniqueId": "link_FB1",
+      "manufacturer": "Sunlord(\u987a\u7edc)",
+      "manufacturerId": "UPZ2012E221-3R0TF",
+      "supplier": "LCSC",
+      "supplierId": "C154119",
+      "otherProperty": {
+        "Footprint": "L0805",
+        "LCSC Part Name": "\u5355\u8def 0805\u78c1\u73e0 \u963b\u6297220\u03a9@100MHz",
+        "Supplier Footprint": "0805",
+        "JLCPCB Part Class": "Extended Part",
+        "Datasheet": "https://item.szlcsc.com/datasheet/UPZ2012E221-3R0TF/165461.html",
+        "3D Model": "b83c7c5430874b8eb2319a65d9433429|0819f05c4eef4c71ace90d822a990e87",
+        "3D Model Title": "R0805_L2.0-W1.3-H0.6",
+        "3D Model Transform": "78.74,51.181,0,0,0,0,0,0.001,0",
+        "Impedance @ Frequency": "220\u03a9@100MHz",
+        "Tolerance": "\u00b125%",
+        "DC Resistance(DCR)": "40m\u03a9",
+        "Current Rating": "3A",
+        "Number of Circuits": "1",
+        "Operating Temperature": "-55\u2103~+125\u2103",
+        "Description": "Impedance @ Frequency:220\u03a9@100MHz Tolerance:\u00b125% Tolerance:\u00b125% DC Resistance(DCR):40m\u03a9 Current Rating:3A Number of Circuits:1 Operating Temperature:-55\u2103~+125\u2103 Operating Temperature:-55\u2103~+125\u2103",
+        "Device": "UPZ2012E221-3R0TF",
+        "Reuse Block": "",
+        "Group ID": "",
+        "Channel ID": "$1I757"
+      }
+    },
+    {
+      "async": true,
+      "primitiveType": "Component",
+      "layer": 1,
+      "x": 2126,
+      "y": 1654,
+      "rotation": 90,
+      "primitiveLock": false,
+      "addIntoBom": true,
+      "component": {
+        "libraryUuid": "eaeb453561334991933e309d30646366",
+        "uuid": "3a73d09cbc8a4ae5",
+        "name": "UPZ2012E221-3R0TF"
+      },
+      "primitiveId": "f14e382134c22184",
+      "footprint": {
+        "libraryUuid": "eaeb453561334991933e309d30646366",
+        "uuid": "ba3bb2489c1892fa",
+        "name": "L0805"
+      },
+      "model3D": {
+        "libraryUuid": "0819f05c4eef4c71ace90d822a990e87",
+        "uuid": "b83c7c5430874b8eb2319a65d9433429|0819f05c4eef4c71ace90d822a990e87",
+        "name": "R0805_L2.0-W1.3-H0.6"
+      },
+      "designator": "FB2",
+      "pads": [
+        {
+          "primitiveId": "e20",
+          "net": "AMP_OUT_A-",
+          "padNumber": "1"
+        },
+        {
+          "primitiveId": "e21",
+          "net": "SPK_A-",
+          "padNumber": "2"
+        }
+      ],
+      "name": "={Manufacturer Part}",
+      "uniqueId": "link_FB2",
+      "manufacturer": "Sunlord(\u987a\u7edc)",
+      "manufacturerId": "UPZ2012E221-3R0TF",
+      "supplier": "LCSC",
+      "supplierId": "C154119",
+      "otherProperty": {
+        "Footprint": "L0805",
+        "LCSC Part Name": "\u5355\u8def 0805\u78c1\u73e0 \u963b\u6297220\u03a9@100MHz",
+        "Supplier Footprint": "0805",
+        "JLCPCB Part Class": "Extended Part",
+        "Datasheet": "https://item.szlcsc.com/datasheet/UPZ2012E221-3R0TF/165461.html",
+        "3D Model": "b83c7c5430874b8eb2319a65d9433429|0819f05c4eef4c71ace90d822a990e87",
+        "3D Model Title": "R0805_L2.0-W1.3-H0.6",
+        "3D Model Transform": "78.74,51.181,0,0,0,0,0,0.001,0",
+        "Impedance @ Frequency": "220\u03a9@100MHz",
+        "Tolerance": "\u00b125%",
+        "DC Resistance(DCR)": "40m\u03a9",
+        "Current Rating": "3A",
+        "Number of Circuits": "1",
+        "Operating Temperature": "-55\u2103~+125\u2103",
+        "Description": "Impedance @ Frequency:220\u03a9@100MHz Tolerance:\u00b125% Tolerance:\u00b125% DC Resistance(DCR):40m\u03a9 Current Rating:3A Number of Circuits:1 Operating Temperature:-55\u2103~+125\u2103 Operating Temperature:-55\u2103~+125\u2103",
+        "Device": "UPZ2012E221-3R0TF",
+        "Reuse Block": "",
+        "Group ID": "",
+        "Channel ID": "$1I759"
+      }
+    },
+    {
+      "async": true,
+      "primitiveType": "Component",
+      "layer": 1,
+      "x": 2126,
+      "y": 1811,
+      "rotation": 90,
+      "primitiveLock": false,
+      "addIntoBom": true,
+      "component": {
+        "libraryUuid": "eaeb453561334991933e309d30646366",
+        "uuid": "3a73d09cbc8a4ae5",
+        "name": "UPZ2012E221-3R0TF"
+      },
+      "primitiveId": "94cb35902d14be88",
+      "footprint": {
+        "libraryUuid": "eaeb453561334991933e309d30646366",
+        "uuid": "ba3bb2489c1892fa",
+        "name": "L0805"
+      },
+      "model3D": {
+        "libraryUuid": "0819f05c4eef4c71ace90d822a990e87",
+        "uuid": "b83c7c5430874b8eb2319a65d9433429|0819f05c4eef4c71ace90d822a990e87",
+        "name": "R0805_L2.0-W1.3-H0.6"
+      },
+      "designator": "FB3",
+      "pads": [
+        {
+          "primitiveId": "e20",
+          "net": "AMP_OUT_B+",
+          "padNumber": "1"
+        },
+        {
+          "primitiveId": "e21",
+          "net": "SPK_B+",
+          "padNumber": "2"
+        }
+      ],
+      "name": "={Manufacturer Part}",
+      "uniqueId": "link_FB3",
+      "manufacturer": "Sunlord(\u987a\u7edc)",
+      "manufacturerId": "UPZ2012E221-3R0TF",
+      "supplier": "LCSC",
+      "supplierId": "C154119",
+      "otherProperty": {
+        "Footprint": "L0805",
+        "LCSC Part Name": "\u5355\u8def 0805\u78c1\u73e0 \u963b\u6297220\u03a9@100MHz",
+        "Supplier Footprint": "0805",
+        "JLCPCB Part Class": "Extended Part",
+        "Datasheet": "https://item.szlcsc.com/datasheet/UPZ2012E221-3R0TF/165461.html",
+        "3D Model": "b83c7c5430874b8eb2319a65d9433429|0819f05c4eef4c71ace90d822a990e87",
+        "3D Model Title": "R0805_L2.0-W1.3-H0.6",
+        "3D Model Transform": "78.74,51.181,0,0,0,0,0,0.001,0",
+        "Impedance @ Frequency": "220\u03a9@100MHz",
+        "Tolerance": "\u00b125%",
+        "DC Resistance(DCR)": "40m\u03a9",
+        "Current Rating": "3A",
+        "Number of Circuits": "1",
+        "Operating Temperature": "-55\u2103~+125\u2103",
+        "Description": "Impedance @ Frequency:220\u03a9@100MHz Tolerance:\u00b125% Tolerance:\u00b125% DC Resistance(DCR):40m\u03a9 Current Rating:3A Number of Circuits:1 Operating Temperature:-55\u2103~+125\u2103 Operating Temperature:-55\u2103~+125\u2103",
+        "Device": "UPZ2012E221-3R0TF",
+        "Reuse Block": "",
+        "Group ID": "",
+        "Channel ID": "$1I761"
+      }
+    },
+    {
+      "async": true,
+      "primitiveType": "Component",
+      "layer": 1,
+      "x": 2126,
+      "y": 1969,
+      "rotation": 90,
+      "primitiveLock": false,
+      "addIntoBom": true,
+      "component": {
+        "libraryUuid": "eaeb453561334991933e309d30646366",
+        "uuid": "3a73d09cbc8a4ae5",
+        "name": "UPZ2012E221-3R0TF"
+      },
+      "primitiveId": "1a611e6bc39c1ba2",
+      "footprint": {
+        "libraryUuid": "eaeb453561334991933e309d30646366",
+        "uuid": "ba3bb2489c1892fa",
+        "name": "L0805"
+      },
+      "model3D": {
+        "libraryUuid": "0819f05c4eef4c71ace90d822a990e87",
+        "uuid": "b83c7c5430874b8eb2319a65d9433429|0819f05c4eef4c71ace90d822a990e87",
+        "name": "R0805_L2.0-W1.3-H0.6"
+      },
+      "designator": "FB4",
+      "pads": [
+        {
+          "primitiveId": "e20",
+          "net": "AMP_OUT_B-",
+          "padNumber": "1"
+        },
+        {
+          "primitiveId": "e21",
+          "net": "SPK_B-",
+          "padNumber": "2"
+        }
+      ],
+      "name": "={Manufacturer Part}",
+      "uniqueId": "link_FB4",
+      "manufacturer": "Sunlord(\u987a\u7edc)",
+      "manufacturerId": "UPZ2012E221-3R0TF",
+      "supplier": "LCSC",
+      "supplierId": "C154119",
+      "otherProperty": {
+        "Footprint": "L0805",
+        "LCSC Part Name": "\u5355\u8def 0805\u78c1\u73e0 \u963b\u6297220\u03a9@100MHz",
+        "Supplier Footprint": "0805",
+        "JLCPCB Part Class": "Extended Part",
+        "Datasheet": "https://item.szlcsc.com/datasheet/UPZ2012E221-3R0TF/165461.html",
+        "3D Model": "b83c7c5430874b8eb2319a65d9433429|0819f05c4eef4c71ace90d822a990e87",
+        "3D Model Title": "R0805_L2.0-W1.3-H0.6",
+        "3D Model Transform": "78.74,51.181,0,0,0,0,0,0.001,0",
+        "Impedance @ Frequency": "220\u03a9@100MHz",
+        "Tolerance": "\u00b125%",
+        "DC Resistance(DCR)": "40m\u03a9",
+        "Current Rating": "3A",
+        "Number of Circuits": "1",
+        "Operating Temperature": "-55\u2103~+125\u2103",
+        "Description": "Impedance @ Frequency:220\u03a9@100MHz Tolerance:\u00b125% Tolerance:\u00b125% DC Resistance(DCR):40m\u03a9 Current Rating:3A Number of Circuits:1 Operating Temperature:-55\u2103~+125\u2103 Operating Temperature:-55\u2103~+125\u2103",
+        "Device": "UPZ2012E221-3R0TF",
+        "Reuse Block": "",
+        "Group ID": "",
+        "Channel ID": "$1I763"
+      }
+    },
+    {
+      "async": true,
+      "primitiveType": "Component",
+      "layer": 1,
+      "x": 3071,
+      "y": 1614,
+      "rotation": 180,
+      "primitiveLock": false,
+      "addIntoBom": true,
+      "component": {
+        "libraryUuid": "eaeb453561334991933e309d30646366",
+        "uuid": "3f940317ef23ae94",
+        "name": "B-2100S02P-A110"
+      },
+      "primitiveId": "29f9655af2b9116b",
+      "footprint": {
+        "libraryUuid": "eaeb453561334991933e309d30646366",
+        "uuid": "7b0693cdb7e2a8d0",
+        "name": "HDR-TH_2P-P2.54-V-M-1"
+      },
+      "model3D": {
+        "libraryUuid": "0819f05c4eef4c71ace90d822a990e87",
+        "uuid": "e506c2b6a89c4aacb020357246aab725|0819f05c4eef4c71ace90d822a990e87",
+        "name": "HDR-M-2.54_1x2"
+      },
+      "designator": "J1",
+      "pads": [
+        {
+          "primitiveId": "e6",
+          "net": "SPK_A-",
+          "padNumber": "2"
+        },
+        {
+          "primitiveId": "e7",
+          "net": "SPK_A+",
+          "padNumber": "1"
+        }
+      ],
+      "name": "={Manufacturer Part}",
+      "uniqueId": "link_J1",
+      "manufacturer": "Ckmtw(\u707f\u79d1\u76df)",
+      "manufacturerId": "B-2100S02P-A110",
+      "supplier": "LCSC",
+      "supplierId": "C124375",
+      "otherProperty": {
+        "Footprint": "HDR-TH_2P-P2.54-V-M-1",
+        "LCSC Part Name": "1x2P \u95f4\u8ddd:2.54mm \u65b9\u9488 \u76f4\u63d2",
+        "Supplier Footprint": "\u63d2\u4ef6,P=2.54mm",
+        "JLCPCB Part Class": "Extended Part",
+        "Datasheet": "https://item.szlcsc.com/datasheet/B-2100S02P-A110/125650.html",
+        "3D Model": "e506c2b6a89c4aacb020357246aab725|0819f05c4eef4c71ace90d822a990e87",
+        "3D Model Title": "HDR-M-2.54_1x2",
+        "3D Model Transform": "200,100,0,0,0,0,0,0,-118.11",
+        "Pin Structure": "1x2P",
+        "Pitch": "2.54mm",
+        "Row Spacing": "-",
+        "Circluar Pins/Square Pins": "Pin Header",
+        "Mounting Type": "Through Hole",
+        "Number of Rows": "1",
+        "Number of Pins": "2P",
+        "Current Rating": "3A",
+        "Voltage Rating (Max)": "-",
+        "Length of Mating Pin": "6mm",
+        "Insulation Height": "2.54mm",
+        "Length of End Connection Pin": "3mm",
+        "Contact Material": "Brass",
+        "Contact Plating": "Gold",
+        "Operating Temperature": "-40\u2103~+105\u2103",
+        "Color": "Black",
+        "Description": "Pin Structure:1x2P Pitch:2.54mm Row Spacing:- Circluar Pins/Square Pins:Pin Header Mounting Type:Through Hole Number of Rows:1 Number of Pins:2P Current Rating:3A Voltage Rating (Max):- Length of Mating Pin:6mm Insulation Height:2.54mm Length of End Conne",
+        "Device": "B-2100S02P-A110",
+        "Reuse Block": "",
+        "Group ID": "",
+        "Channel ID": "$1I744"
+      }
+    },
+    {
+      "async": true,
+      "primitiveType": "Component",
+      "layer": 1,
+      "x": 3071,
+      "y": 1772,
+      "rotation": 180,
+      "primitiveLock": false,
+      "addIntoBom": true,
+      "component": {
+        "libraryUuid": "eaeb453561334991933e309d30646366",
+        "uuid": "3f940317ef23ae94",
+        "name": "B-2100S02P-A110"
+      },
+      "primitiveId": "3c1736b7bd58b99e",
+      "footprint": {
+        "libraryUuid": "eaeb453561334991933e309d30646366",
+        "uuid": "7b0693cdb7e2a8d0",
+        "name": "HDR-TH_2P-P2.54-V-M-1"
+      },
+      "model3D": {
+        "libraryUuid": "0819f05c4eef4c71ace90d822a990e87",
+        "uuid": "e506c2b6a89c4aacb020357246aab725|0819f05c4eef4c71ace90d822a990e87",
+        "name": "HDR-M-2.54_1x2"
+      },
+      "designator": "J2",
+      "pads": [
+        {
+          "primitiveId": "e6",
+          "net": "SPK_B-",
+          "padNumber": "2"
+        },
+        {
+          "primitiveId": "e7",
+          "net": "SPK_B+",
+          "padNumber": "1"
+        }
+      ],
+      "name": "={Manufacturer Part}",
+      "uniqueId": "link_J2",
+      "manufacturer": "Ckmtw(\u707f\u79d1\u76df)",
+      "manufacturerId": "B-2100S02P-A110",
+      "supplier": "LCSC",
+      "supplierId": "C124375",
+      "otherProperty": {
+        "Footprint": "HDR-TH_2P-P2.54-V-M-1",
+        "LCSC Part Name": "1x2P \u95f4\u8ddd:2.54mm \u65b9\u9488 \u76f4\u63d2",
+        "Supplier Footprint": "\u63d2\u4ef6,P=2.54mm",
+        "JLCPCB Part Class": "Extended Part",
+        "Datasheet": "https://item.szlcsc.com/datasheet/B-2100S02P-A110/125650.html",
+        "3D Model": "e506c2b6a89c4aacb020357246aab725|0819f05c4eef4c71ace90d822a990e87",
+        "3D Model Title": "HDR-M-2.54_1x2",
+        "3D Model Transform": "200,100,0,0,0,0,0,0,-118.11",
+        "Pin Structure": "1x2P",
+        "Pitch": "2.54mm",
+        "Row Spacing": "-",
+        "Circluar Pins/Square Pins": "Pin Header",
+        "Mounting Type": "Through Hole",
+        "Number of Rows": "1",
+        "Number of Pins": "2P",
+        "Current Rating": "3A",
+        "Voltage Rating (Max)": "-",
+        "Length of Mating Pin": "6mm",
+        "Insulation Height": "2.54mm",
+        "Length of End Connection Pin": "3mm",
+        "Contact Material": "Brass",
+        "Contact Plating": "Gold",
+        "Operating Temperature": "-40\u2103~+105\u2103",
+        "Color": "Black",
+        "Description": "Pin Structure:1x2P Pitch:2.54mm Row Spacing:- Circluar Pins/Square Pins:Pin Header Mounting Type:Through Hole Number of Rows:1 Number of Pins:2P Current Rating:3A Voltage Rating (Max):- Length of Mating Pin:6mm Insulation Height:2.54mm Length of End Conne",
+        "Device": "B-2100S02P-A110",
+        "Reuse Block": "",
+        "Group ID": "",
+        "Channel ID": "$1I745"
+      }
+    },
+    {
+      "async": true,
+      "primitiveType": "Component",
+      "layer": 1,
+      "x": 709,
+      "y": 1969,
+      "rotation": 0,
+      "primitiveLock": false,
+      "addIntoBom": true,
+      "component": {
+        "libraryUuid": "eaeb453561334991933e309d30646366",
+        "uuid": "ad96c8c02e681339",
+        "name": "SWPA6045S4R7MT"
+      },
+      "primitiveId": "b1d2bb5e4ed3894c",
+      "footprint": {
+        "libraryUuid": "eaeb453561334991933e309d30646366",
+        "uuid": "76e924b0d946fc71",
+        "name": "IND-SMD_L6.0-W6.0_SWPA6045S"
+      },
+      "model3D": {
+        "libraryUuid": "0819f05c4eef4c71ace90d822a990e87",
+        "uuid": "22926ff12f534d1ab4e145dec6875873|0819f05c4eef4c71ace90d822a990e87",
+        "name": "IND-SMD_L6.0-W6.0-H4.5"
+      },
+      "designator": "L1",
+      "pads": [
+        {
+          "primitiveId": "e5",
+          "net": "VBUS_5V",
+          "padNumber": "1"
+        },
+        {
+          "primitiveId": "e6",
+          "net": "BOOST_SW",
+          "padNumber": "2"
+        }
+      ],
+      "name": "={Value}",
+      "uniqueId": "link_L1",
+      "manufacturer": "Sunlord(\u987a\u7edc)",
+      "manufacturerId": "SWPA6045S4R7MT",
+      "supplier": "LCSC",
+      "supplierId": "C78804",
+      "otherProperty": {
+        "Footprint": "IND-SMD_L6.0-W6.0_SWPA6045S",
+        "LCSC Part Name": "4.7uH \u00b120% 5.5A",
+        "Supplier Footprint": "SMD,6x6mm",
+        "JLCPCB Part Class": "Extended Part",
+        "Datasheet": "https://item.szlcsc.com/datasheet/SWPA6045S4R7MT/79941.html",
+        "3D Model": "22926ff12f534d1ab4e145dec6875873|0819f05c4eef4c71ace90d822a990e87",
+        "3D Model Title": "IND-SMD_L6.0-W6.0-H4.5",
+        "3D Model Transform": "236.22,237.007,0,90,0,0,-0.001,0.001,0",
+        "Value": "4.7uH",
+        "Tolerance": "\u00b120%",
+        "Current Rating": "3.3A",
+        "Current - Saturation(Isat)": "5.5A",
+        "DC Resistance(DCR)": "26m\u03a9",
+        "Type": "-",
+        "Ratings": "-",
+        "Description": "Inductance:4.7uH Tolerance:\u00b120% Tolerance:\u00b120% Current Rating:3.3A Current - Saturation(Isat):5.5A DC Resistance(DCR):26m\u03a9 Type:- Ratings:-",
+        "Device": "SWPA6045S4R7MT",
+        "Reuse Block": "",
+        "Group ID": "",
+        "Channel ID": "$1I730"
+      }
+    },
+    {
+      "async": true,
+      "primitiveType": "Component",
+      "layer": 1,
+      "x": 512,
+      "y": 1496,
+      "rotation": 0,
+      "primitiveLock": false,
+      "addIntoBom": true,
+      "component": {
+        "libraryUuid": "eaeb453561334991933e309d30646366",
+        "uuid": "c7b9e394c701681b",
+        "name": "0603WAF1433T5E"
+      },
+      "primitiveId": "d9100a09b6ccabfe",
+      "footprint": {
+        "libraryUuid": "eaeb453561334991933e309d30646366",
+        "uuid": "dfb7fb1817038c03",
+        "name": "R0603"
+      },
+      "model3D": {
+        "libraryUuid": "0819f05c4eef4c71ace90d822a990e87",
+        "uuid": "112863783b5b41f1b5254f87eedc7932|0819f05c4eef4c71ace90d822a990e87",
+        "name": "R0603"
+      },
+      "designator": "R1",
+      "pads": [
+        {
+          "primitiveId": "e7",
+          "net": "BOOST_FB",
+          "padNumber": "2"
+        },
+        {
+          "primitiveId": "e8",
+          "net": "PVDD_12V",
+          "padNumber": "1"
+        }
+      ],
+      "name": "={Value}",
+      "uniqueId": "link_R1",
+      "manufacturer": "UNI-ROYAL(\u539a\u58f0)",
+      "manufacturerId": "0603WAF1433T5E",
+      "supplier": "LCSC",
+      "supplierId": "C22877",
+      "otherProperty": {
+        "Footprint": "R0603",
+        "LCSC Part Name": "143k\u03a9 \u00b11% 100mW \u539a\u819c\u7535\u963b",
+        "Supplier Footprint": "0603",
+        "JLCPCB Part Class": "Extended Part",
+        "Datasheet": "https://atta.szlcsc.com/upload/public/pdf/source/20200306/C422600_1E6D84923E4A46A82E41ADD87F860B5C.pdf",
+        "3D Model": "112863783b5b41f1b5254f87eedc7932|0819f05c4eef4c71ace90d822a990e87",
+        "3D Model Title": "R0603",
+        "3D Model Transform": "31.8897,63.7794,0,90,0,0,0,0,0",
+        "Type": "Thick Film Resistors",
+        "Value": "143k\u03a9",
+        "Tolerance": "\u00b11%",
+        "Power(Watts)": "",
+        "Overload Voltage (Max)": "",
+        "Temperature Coefficient": "\u00b1100ppm/\u2103",
+        "Operating Temperature Range": "-55\u2103~+155\u2103",
+        "Description": "Type:Thick Film Resistors Resistance:143k\u03a9 Tolerance:\u00b11% Tolerance:\u00b11% Power(Watts): Overload Voltage (Max): Temperature Coefficient:\u00b1100ppm/\u2103 Temperature Coefficient:\u00b1100ppm/\u2103 Operating Temperature Range:-55\u2103~+155\u2103 Operating Temperature Range:-55\u2103~+155\u2103",
+        "Device": "0603WAF1433T5E",
+        "Reuse Block": "",
+        "Group ID": "",
+        "Channel ID": "$1I732"
+      }
+    },
+    {
+      "async": true,
+      "primitiveType": "Component",
+      "layer": 1,
+      "x": 630,
+      "y": 1496,
+      "rotation": 0,
+      "primitiveLock": false,
+      "addIntoBom": true,
+      "component": {
+        "libraryUuid": "eaeb453561334991933e309d30646366",
+        "uuid": "2a0d8aaf398ce4bc",
+        "name": "0603WAF1602T5E (SMT\u4e1a\u52a1\u4e13\u7528)"
+      },
+      "primitiveId": "6d250ab38cb26833",
+      "footprint": {
+        "libraryUuid": "eaeb453561334991933e309d30646366",
+        "uuid": "dfb7fb1817038c03",
+        "name": "R0603"
+      },
+      "model3D": {
+        "libraryUuid": "0819f05c4eef4c71ace90d822a990e87",
+        "uuid": "112863783b5b41f1b5254f87eedc7932|0819f05c4eef4c71ace90d822a990e87",
+        "name": "R0603"
+      },
+      "designator": "R2",
+      "pads": [
+        {
+          "primitiveId": "e7",
+          "net": "GND",
+          "padNumber": "2"
+        },
+        {
+          "primitiveId": "e8",
+          "net": "BOOST_FB",
+          "padNumber": "1"
+        }
+      ],
+      "name": "={Value}",
+      "uniqueId": "link_R2",
+      "manufacturer": "UNI-ROYAL(\u539a\u58f0)",
+      "manufacturerId": "0603WAF1602T5E (SMT\u4e1a\u52a1\u4e13\u7528)",
+      "supplier": "LCSC",
+      "supplierId": "C22818",
+      "otherProperty": {
+        "Footprint": "R0603",
+        "LCSC Part Name": "16k\u03a9 \u00b11%",
+        "Supplier Footprint": "0603",
+        "JLCPCB Part Class": "Extended Part",
+        "Datasheet": "https://atta.szlcsc.com/upload/public/pdf/source/20200102/C423413_58AC64FF5730584578C10BF0002471B1.pdf",
+        "3D Model": "112863783b5b41f1b5254f87eedc7932|0819f05c4eef4c71ace90d822a990e87",
+        "3D Model Title": "R0603",
+        "3D Model Transform": "31.8897,63.7794,0,90,0,0,0,0,0",
+        "Type": "",
+        "Value": "16k\u03a9",
+        "Tolerance": "\u00b11%",
+        "Power(Watts)": "-",
+        "Overload Voltage (Max)": "-",
+        "Description": "Type: Resistance: Tolerance:\u00b11% Tolerance:\u00b11% Power(Watts):- Overload Voltage (Max):-",
+        "Device": "0603WAF1602T5E (SMT\u4e1a\u52a1\u4e13\u7528)",
+        "Reuse Block": "",
+        "Group ID": "",
+        "Channel ID": "$1I733"
+      }
+    },
+    {
+      "async": true,
+      "primitiveType": "Component",
+      "layer": 1,
+      "x": 367,
+      "y": 945,
+      "rotation": 90,
+      "primitiveLock": false,
+      "addIntoBom": true,
+      "component": {
+        "libraryUuid": "eaeb453561334991933e309d30646366",
+        "uuid": "eec4b48e772df4c3",
+        "name": "0603WAF5101T5E"
+      },
+      "primitiveId": "f5beb9b4713e5cb4",
+      "footprint": {
+        "libraryUuid": "eaeb453561334991933e309d30646366",
+        "uuid": "dfb7fb1817038c03",
+        "name": "R0603"
+      },
+      "model3D": {
+        "libraryUuid": "0819f05c4eef4c71ace90d822a990e87",
+        "uuid": "112863783b5b41f1b5254f87eedc7932|0819f05c4eef4c71ace90d822a990e87",
+        "name": "R0603"
+      },
+      "designator": "R3",
+      "pads": [
+        {
+          "primitiveId": "e7",
+          "net": "GND",
+          "padNumber": "2"
+        },
+        {
+          "primitiveId": "e8",
+          "net": "USB_CC1",
+          "padNumber": "1"
+        }
+      ],
+      "name": "={Value}",
+      "uniqueId": "link_R3",
+      "manufacturer": "UNI-ROYAL(\u539a\u58f0)",
+      "manufacturerId": "0603WAF5101T5E",
+      "supplier": "LCSC",
+      "supplierId": "C23186",
+      "otherProperty": {
+        "Footprint": "R0603",
+        "LCSC Part Name": "5.1k\u03a9 \u00b11% 100mW \u539a\u819c\u7535\u963b",
+        "Supplier Footprint": "0603",
+        "JLCPCB Part Class": "Basic Part",
+        "Datasheet": "https://item.szlcsc.com/datasheet/0603WAF5101T5E/23913.html",
+        "3D Model": "112863783b5b41f1b5254f87eedc7932|0819f05c4eef4c71ace90d822a990e87",
+        "3D Model Title": "R0603",
+        "3D Model Transform": "31.8897,63.7794,0,90,0,0,0,0,0",
+        "Type": "Thick Film Resistor",
+        "Value": "5.1k\u03a9",
+        "Tolerance": "\u00b11%",
+        "Power(Watts)": "100mW",
+        "Voltage-Supply(Max)": "75V",
+        "Temperature Coefficient": "\u00b1100ppm/\u2103",
+        "Operating Temperature": "-55\u2103~+155\u2103",
+        "Description": "Type:Thick Film Resistor Resistance:5.1k\u03a9 Tolerance:\u00b11% Tolerance:\u00b11% Power(Watts):100mW Voltage-Supply(Max):75V Temperature Coefficient:\u00b1100ppm/\u2103 Temperature Coefficient:\u00b1100ppm/\u2103 Operating Temperature:-55\u2103~+155\u2103 Operating Temperature:-55\u2103~+155\u2103",
+        "Device": "0603WAF5101T5E",
+        "Reuse Block": "",
+        "Group ID": "",
+        "Channel ID": "$1I734"
+      }
+    },
+    {
+      "async": true,
+      "primitiveType": "Component",
+      "layer": 1,
+      "x": 367,
+      "y": 1220,
+      "rotation": 90,
+      "primitiveLock": false,
+      "addIntoBom": true,
+      "component": {
+        "libraryUuid": "eaeb453561334991933e309d30646366",
+        "uuid": "eec4b48e772df4c3",
+        "name": "0603WAF5101T5E"
+      },
+      "primitiveId": "8433d19d68f97c43",
+      "footprint": {
+        "libraryUuid": "eaeb453561334991933e309d30646366",
+        "uuid": "dfb7fb1817038c03",
+        "name": "R0603"
+      },
+      "model3D": {
+        "libraryUuid": "0819f05c4eef4c71ace90d822a990e87",
+        "uuid": "112863783b5b41f1b5254f87eedc7932|0819f05c4eef4c71ace90d822a990e87",
+        "name": "R0603"
+      },
+      "designator": "R4",
+      "pads": [
+        {
+          "primitiveId": "e7",
+          "net": "GND",
+          "padNumber": "2"
+        },
+        {
+          "primitiveId": "e8",
+          "net": "USB_CC2",
+          "padNumber": "1"
+        }
+      ],
+      "name": "={Value}",
+      "uniqueId": "link_R4",
+      "manufacturer": "UNI-ROYAL(\u539a\u58f0)",
+      "manufacturerId": "0603WAF5101T5E",
+      "supplier": "LCSC",
+      "supplierId": "C23186",
+      "otherProperty": {
+        "Footprint": "R0603",
+        "LCSC Part Name": "5.1k\u03a9 \u00b11% 100mW \u539a\u819c\u7535\u963b",
+        "Supplier Footprint": "0603",
+        "JLCPCB Part Class": "Basic Part",
+        "Datasheet": "https://item.szlcsc.com/datasheet/0603WAF5101T5E/23913.html",
+        "3D Model": "112863783b5b41f1b5254f87eedc7932|0819f05c4eef4c71ace90d822a990e87",
+        "3D Model Title": "R0603",
+        "3D Model Transform": "31.8897,63.7794,0,90,0,0,0,0,0",
+        "Type": "Thick Film Resistor",
+        "Value": "5.1k\u03a9",
+        "Tolerance": "\u00b11%",
+        "Power(Watts)": "100mW",
+        "Voltage-Supply(Max)": "75V",
+        "Temperature Coefficient": "\u00b1100ppm/\u2103",
+        "Operating Temperature": "-55\u2103~+155\u2103",
+        "Description": "Type:Thick Film Resistor Resistance:5.1k\u03a9 Tolerance:\u00b11% Tolerance:\u00b11% Power(Watts):100mW Voltage-Supply(Max):75V Temperature Coefficient:\u00b1100ppm/\u2103 Temperature Coefficient:\u00b1100ppm/\u2103 Operating Temperature:-55\u2103~+155\u2103 Operating Temperature:-55\u2103~+155\u2103",
+        "Device": "0603WAF5101T5E",
+        "Reuse Block": "",
+        "Group ID": "",
+        "Channel ID": "$1I735"
+      }
+    },
+    {
+      "async": true,
+      "primitiveType": "Component",
+      "layer": 1,
+      "x": 1102,
+      "y": 866,
+      "rotation": 0,
+      "primitiveLock": false,
+      "addIntoBom": true,
+      "component": {
+        "libraryUuid": "eaeb453561334991933e309d30646366",
+        "uuid": "ff3c26ad48521d07",
+        "name": "0603WAF1002T5E"
+      },
+      "primitiveId": "8ecb332d0cac2c8f",
+      "footprint": {
+        "libraryUuid": "eaeb453561334991933e309d30646366",
+        "uuid": "dfb7fb1817038c03",
+        "name": "R0603"
+      },
+      "model3D": {
+        "libraryUuid": "0819f05c4eef4c71ace90d822a990e87",
+        "uuid": "112863783b5b41f1b5254f87eedc7932|0819f05c4eef4c71ace90d822a990e87",
+        "name": "R0603"
+      },
+      "designator": "R5",
+      "pads": [
+        {
+          "primitiveId": "e7",
+          "net": "ESP_EN",
+          "padNumber": "2"
+        },
+        {
+          "primitiveId": "e8",
+          "net": "VCC_3V3",
+          "padNumber": "1"
+        }
+      ],
+      "name": "={Value}",
+      "uniqueId": "link_R5",
+      "manufacturer": "UNI-ROYAL(\u539a\u58f0)",
+      "manufacturerId": "0603WAF1002T5E",
+      "supplier": "LCSC",
+      "supplierId": "C25804",
+      "otherProperty": {
+        "Footprint": "R0603",
+        "LCSC Part Name": "\u539a\u819c\u7535\u963b 10k\u03a9 \u00b11% 100mW",
+        "Supplier Footprint": "0603",
+        "JLCPCB Part Class": "Basic Part",
+        "Datasheet": "https://item.szlcsc.com/datasheet/0603WAF1002T5E/26547.html",
+        "3D Model": "112863783b5b41f1b5254f87eedc7932|0819f05c4eef4c71ace90d822a990e87",
+        "3D Model Title": "R0603",
+        "3D Model Transform": "31.8897,63.7794,0,90,0,0,0,0,0",
+        "Type": "Thick Film Resistor",
+        "Value": "10k\u03a9",
+        "Tolerance": "\u00b11%",
+        "Power(Watts)": "100mW",
+        "Voltage-Supply(Max)": "75V",
+        "Temperature Coefficient": "\u00b1100ppm/\u2103",
+        "Operating Temperature": "-55\u2103~+155\u2103",
+        "Description": "Type:Thick Film Resistor Resistance:10k\u03a9 Tolerance:\u00b11% Tolerance:\u00b11% Power(Watts):100mW Voltage-Supply(Max):75V Temperature Coefficient:\u00b1100ppm/\u2103 Temperature Coefficient:\u00b1100ppm/\u2103 Operating Temperature:-55\u2103~+155\u2103 Operating Temperature:-55\u2103~+155\u2103",
+        "Device": "0603WAF1002T5E",
+        "Reuse Block": "",
+        "Group ID": "",
+        "Channel ID": "$1I736"
+      }
+    },
+    {
+      "async": true,
+      "primitiveType": "Component",
+      "layer": 1,
+      "x": 2047,
+      "y": 866,
+      "rotation": 0,
+      "primitiveLock": false,
+      "addIntoBom": true,
+      "component": {
+        "libraryUuid": "eaeb453561334991933e309d30646366",
+        "uuid": "ff3c26ad48521d07",
+        "name": "0603WAF1002T5E"
+      },
+      "primitiveId": "b7ddae5a437a533c",
+      "footprint": {
+        "libraryUuid": "eaeb453561334991933e309d30646366",
+        "uuid": "dfb7fb1817038c03",
+        "name": "R0603"
+      },
+      "model3D": {
+        "libraryUuid": "0819f05c4eef4c71ace90d822a990e87",
+        "uuid": "112863783b5b41f1b5254f87eedc7932|0819f05c4eef4c71ace90d822a990e87",
+        "name": "R0603"
+      },
+      "designator": "R6",
+      "pads": [
+        {
+          "primitiveId": "e7",
+          "net": "ESP_IO0",
+          "padNumber": "2"
+        },
+        {
+          "primitiveId": "e8",
+          "net": "VCC_3V3",
+          "padNumber": "1"
+        }
+      ],
+      "name": "={Value}",
+      "uniqueId": "link_R6",
+      "manufacturer": "UNI-ROYAL(\u539a\u58f0)",
+      "manufacturerId": "0603WAF1002T5E",
+      "supplier": "LCSC",
+      "supplierId": "C25804",
+      "otherProperty": {
+        "Footprint": "R0603",
+        "LCSC Part Name": "\u539a\u819c\u7535\u963b 10k\u03a9 \u00b11% 100mW",
+        "Supplier Footprint": "0603",
+        "JLCPCB Part Class": "Basic Part",
+        "Datasheet": "https://item.szlcsc.com/datasheet/0603WAF1002T5E/26547.html",
+        "3D Model": "112863783b5b41f1b5254f87eedc7932|0819f05c4eef4c71ace90d822a990e87",
+        "3D Model Title": "R0603",
+        "3D Model Transform": "31.8897,63.7794,0,90,0,0,0,0,0",
+        "Type": "Thick Film Resistor",
+        "Value": "10k\u03a9",
+        "Tolerance": "\u00b11%",
+        "Power(Watts)": "100mW",
+        "Voltage-Supply(Max)": "75V",
+        "Temperature Coefficient": "\u00b1100ppm/\u2103",
+        "Operating Temperature": "-55\u2103~+155\u2103",
+        "Description": "Type:Thick Film Resistor Resistance:10k\u03a9 Tolerance:\u00b11% Tolerance:\u00b11% Power(Watts):100mW Voltage-Supply(Max):75V Temperature Coefficient:\u00b1100ppm/\u2103 Temperature Coefficient:\u00b1100ppm/\u2103 Operating Temperature:-55\u2103~+155\u2103 Operating Temperature:-55\u2103~+155\u2103",
+        "Device": "0603WAF1002T5E",
+        "Reuse Block": "",
+        "Group ID": "",
+        "Channel ID": "$1I738"
+      }
+    },
+    {
+      "async": true,
+      "primitiveType": "Component",
+      "layer": 1,
+      "x": 1457,
+      "y": 1417,
+      "rotation": 90,
+      "primitiveLock": false,
+      "addIntoBom": true,
+      "component": {
+        "libraryUuid": "eaeb453561334991933e309d30646366",
+        "uuid": "eec4b48e772df4c3",
+        "name": "0603WAF5101T5E"
+      },
+      "primitiveId": "4e187c51301e7a0e",
+      "footprint": {
+        "libraryUuid": "eaeb453561334991933e309d30646366",
+        "uuid": "dfb7fb1817038c03",
+        "name": "R0603"
+      },
+      "model3D": {
+        "libraryUuid": "0819f05c4eef4c71ace90d822a990e87",
+        "uuid": "112863783b5b41f1b5254f87eedc7932|0819f05c4eef4c71ace90d822a990e87",
+        "name": "R0603"
+      },
+      "designator": "R7",
+      "pads": [
+        {
+          "primitiveId": "e7",
+          "net": "VCC_3V3",
+          "padNumber": "2"
+        },
+        {
+          "primitiveId": "e8",
+          "net": "AMP_I2C_SDA",
+          "padNumber": "1"
+        }
+      ],
+      "name": "={Value}",
+      "uniqueId": "link_R7",
+      "manufacturer": "UNI-ROYAL(\u539a\u58f0)",
+      "manufacturerId": "0603WAF5101T5E",
+      "supplier": "LCSC",
+      "supplierId": "C23186",
+      "otherProperty": {
+        "Footprint": "R0603",
+        "LCSC Part Name": "5.1k\u03a9 \u00b11% 100mW \u539a\u819c\u7535\u963b",
+        "Supplier Footprint": "0603",
+        "JLCPCB Part Class": "Basic Part",
+        "Datasheet": "https://item.szlcsc.com/datasheet/0603WAF5101T5E/23913.html",
+        "3D Model": "112863783b5b41f1b5254f87eedc7932|0819f05c4eef4c71ace90d822a990e87",
+        "3D Model Title": "R0603",
+        "3D Model Transform": "31.8897,63.7794,0,90,0,0,0,0,0",
+        "Type": "Thick Film Resistor",
+        "Value": "5.1k\u03a9",
+        "Tolerance": "\u00b11%",
+        "Power(Watts)": "100mW",
+        "Voltage-Supply(Max)": "75V",
+        "Temperature Coefficient": "\u00b1100ppm/\u2103",
+        "Operating Temperature": "-55\u2103~+155\u2103",
+        "Description": "Type:Thick Film Resistor Resistance:5.1k\u03a9 Tolerance:\u00b11% Tolerance:\u00b11% Power(Watts):100mW Voltage-Supply(Max):75V Temperature Coefficient:\u00b1100ppm/\u2103 Temperature Coefficient:\u00b1100ppm/\u2103 Operating Temperature:-55\u2103~+155\u2103 Operating Temperature:-55\u2103~+155\u2103",
+        "Device": "0603WAF5101T5E",
+        "Reuse Block": "",
+        "Group ID": "",
+        "Channel ID": "$1I746"
+      }
+    },
+    {
+      "async": true,
+      "primitiveType": "Component",
+      "layer": 1,
+      "x": 1693,
+      "y": 1417,
+      "rotation": 90,
+      "primitiveLock": false,
+      "addIntoBom": true,
+      "component": {
+        "libraryUuid": "eaeb453561334991933e309d30646366",
+        "uuid": "eec4b48e772df4c3",
+        "name": "0603WAF5101T5E"
+      },
+      "primitiveId": "b2185189fee2b3a8",
+      "footprint": {
+        "libraryUuid": "eaeb453561334991933e309d30646366",
+        "uuid": "dfb7fb1817038c03",
+        "name": "R0603"
+      },
+      "model3D": {
+        "libraryUuid": "0819f05c4eef4c71ace90d822a990e87",
+        "uuid": "112863783b5b41f1b5254f87eedc7932|0819f05c4eef4c71ace90d822a990e87",
+        "name": "R0603"
+      },
+      "designator": "R8",
+      "pads": [
+        {
+          "primitiveId": "e7",
+          "net": "VCC_3V3",
+          "padNumber": "2"
+        },
+        {
+          "primitiveId": "e8",
+          "net": "AMP_I2C_SCL",
+          "padNumber": "1"
+        }
+      ],
+      "name": "={Value}",
+      "uniqueId": "link_R8",
+      "manufacturer": "UNI-ROYAL(\u539a\u58f0)",
+      "manufacturerId": "0603WAF5101T5E",
+      "supplier": "LCSC",
+      "supplierId": "C23186",
+      "otherProperty": {
+        "Footprint": "R0603",
+        "LCSC Part Name": "5.1k\u03a9 \u00b11% 100mW \u539a\u819c\u7535\u963b",
+        "Supplier Footprint": "0603",
+        "JLCPCB Part Class": "Basic Part",
+        "Datasheet": "https://item.szlcsc.com/datasheet/0603WAF5101T5E/23913.html",
+        "3D Model": "112863783b5b41f1b5254f87eedc7932|0819f05c4eef4c71ace90d822a990e87",
+        "3D Model Title": "R0603",
+        "3D Model Transform": "31.8897,63.7794,0,90,0,0,0,0,0",
+        "Type": "Thick Film Resistor",
+        "Value": "5.1k\u03a9",
+        "Tolerance": "\u00b11%",
+        "Power(Watts)": "100mW",
+        "Voltage-Supply(Max)": "75V",
+        "Temperature Coefficient": "\u00b1100ppm/\u2103",
+        "Operating Temperature": "-55\u2103~+155\u2103",
+        "Description": "Type:Thick Film Resistor Resistance:5.1k\u03a9 Tolerance:\u00b11% Tolerance:\u00b11% Power(Watts):100mW Voltage-Supply(Max):75V Temperature Coefficient:\u00b1100ppm/\u2103 Temperature Coefficient:\u00b1100ppm/\u2103 Operating Temperature:-55\u2103~+155\u2103 Operating Temperature:-55\u2103~+155\u2103",
+        "Device": "0603WAF5101T5E",
+        "Reuse Block": "",
+        "Group ID": "",
+        "Channel ID": "$1I747"
+      }
+    },
+    {
+      "async": true,
+      "primitiveType": "Component",
+      "layer": 1,
+      "x": 394,
+      "y": 1811,
+      "rotation": 0,
+      "primitiveLock": false,
+      "addIntoBom": true,
+      "component": {
+        "libraryUuid": "eaeb453561334991933e309d30646366",
+        "uuid": "f73bd4192655f932",
+        "name": "RMC060382K1%N"
+      },
+      "primitiveId": "f9c4fff448c53763",
+      "footprint": {
+        "libraryUuid": "eaeb453561334991933e309d30646366",
+        "uuid": "dfb7fb1817038c03",
+        "name": "R0603"
+      },
+      "model3D": {
+        "libraryUuid": "0819f05c4eef4c71ace90d822a990e87",
+        "uuid": "112863783b5b41f1b5254f87eedc7932|0819f05c4eef4c71ace90d822a990e87",
+        "name": "R0603"
+      },
+      "designator": "R9",
+      "pads": [
+        {
+          "primitiveId": "e7",
+          "net": "GND",
+          "padNumber": "2"
+        },
+        {
+          "primitiveId": "e8",
+          "net": "BOOST_FSET",
+          "padNumber": "1"
+        }
+      ],
+      "name": "={Value}",
+      "uniqueId": "link_R9",
+      "manufacturer": "Tyohm(\u5e78\u4e9a\u7535\u963b)",
+      "manufacturerId": "RMC060382K1%N",
+      "supplier": "LCSC",
+      "supplierId": "C325632",
+      "otherProperty": {
+        "Footprint": "R0603",
+        "LCSC Part Name": "82k\u03a9 \u00b11% 100mW",
+        "Supplier Footprint": "0603",
+        "JLCPCB Part Class": "Extended Part",
+        "Datasheet": "https://item.szlcsc.com/datasheet/RMC060382K1%2525N/305837.html",
+        "3D Model": "112863783b5b41f1b5254f87eedc7932|0819f05c4eef4c71ace90d822a990e87",
+        "3D Model Title": "R0603",
+        "3D Model Transform": "31.8897,63.7794,0,90,0,0,0,0,0",
+        "Type": "Thick Film Resistor",
+        "Value": "82k\u03a9",
+        "Tolerance": "\u00b11%",
+        "Power(Watts)": "100mW",
+        "Voltage-Supply(Max)": "50V",
+        "Temperature Coefficient": "\u00b1100ppm/\u2103",
+        "Operating Temperature": "-55\u2103~+155\u2103",
+        "Description": "Type:Thick Film Resistor Resistance:82k\u03a9 Tolerance:\u00b11% Tolerance:\u00b11% Power(Watts):100mW Voltage-Supply(Max):50V Temperature Coefficient:\u00b1100ppm/\u2103 Temperature Coefficient:\u00b1100ppm/\u2103 Operating Temperature:-55\u2103~+155\u2103 Operating Temperature:-55\u2103~+155\u2103",
+        "Device": "RMC060382K1%N",
+        "Reuse Block": "",
+        "Group ID": "",
+        "Channel ID": "$1I751"
+      }
+    },
+    {
+      "async": true,
+      "primitiveType": "Component",
+      "layer": 1,
+      "x": 394,
+      "y": 1693,
+      "rotation": 0,
+      "primitiveLock": false,
+      "addIntoBom": true,
+      "component": {
+        "libraryUuid": "eaeb453561334991933e309d30646366",
+        "uuid": "b5859b6bc0d8048f",
+        "name": "CL0603FN24K9P"
+      },
+      "primitiveId": "d7471a73bd491b29",
+      "footprint": {
+        "libraryUuid": "eaeb453561334991933e309d30646366",
+        "uuid": "dfb7fb1817038c03",
+        "name": "R0603"
+      },
+      "model3D": {
+        "libraryUuid": "0819f05c4eef4c71ace90d822a990e87",
+        "uuid": "112863783b5b41f1b5254f87eedc7932|0819f05c4eef4c71ace90d822a990e87",
+        "name": "R0603"
+      },
+      "designator": "R10",
+      "pads": [
+        {
+          "primitiveId": "e7",
+          "net": "COMP_RC",
+          "padNumber": "2"
+        },
+        {
+          "primitiveId": "e8",
+          "net": "BOOST_COMP",
+          "padNumber": "1"
+        }
+      ],
+      "name": "={Value}",
+      "uniqueId": "link_R10",
+      "manufacturer": "\u6636\u9f99\u79d1\u6280",
+      "manufacturerId": "CL0603FN24K9P",
+      "supplier": "LCSC",
+      "supplierId": "C48391802",
+      "otherProperty": {
+        "Footprint": "R0603",
+        "LCSC Part Name": "\u539a\u819c\u7535\u963b 24.9k\u03a9 \u00b11% 100mW",
+        "Supplier Footprint": "0603",
+        "JLCPCB Part Class": "Extended Part",
+        "Datasheet": "https://item.szlcsc.com/datasheet/CL0603FN24K9P/50640384.html",
+        "3D Model": "112863783b5b41f1b5254f87eedc7932|0819f05c4eef4c71ace90d822a990e87",
+        "3D Model Title": "R0603",
+        "3D Model Transform": "31.8897,63.7794,0,90,0,0,0,0,0",
+        "Type": "Thick Film Resistor",
+        "Value": "24.9k\u03a9",
+        "Tolerance": "\u00b11%",
+        "Power(Watts)": "100mW",
+        "Voltage-Supply(Max)": "75V",
+        "Temperature Coefficient": "\u00b1100ppm/\u2103",
+        "Operating Temperature": "-55\u2103~+70\u2103",
+        "Description": "Type:Thick Film Resistor Resistance:24.9k\u03a9 Tolerance:\u00b11% Tolerance:\u00b11% Power(Watts):100mW Voltage-Supply(Max):75V Temperature Coefficient:\u00b1100ppm/\u2103 Temperature Coefficient:\u00b1100ppm/\u2103 Operating Temperature:-55\u2103~+70\u2103 Operating Temperature:-55\u2103~+70\u2103",
+        "Device": "CL0603FN24K9P",
+        "Reuse Block": "",
+        "Group ID": "",
+        "Channel ID": "$1I752"
+      }
+    },
+    {
+      "async": true,
+      "primitiveType": "Component",
+      "layer": 1,
+      "x": 394,
+      "y": 1575,
+      "rotation": 0,
+      "primitiveLock": false,
+      "addIntoBom": true,
+      "component": {
+        "libraryUuid": "eaeb453561334991933e309d30646366",
+        "uuid": "fd4fc2f2468db979",
+        "name": "CRG0603F100K"
+      },
+      "primitiveId": "d84ad580796b9d45",
+      "footprint": {
+        "libraryUuid": "eaeb453561334991933e309d30646366",
+        "uuid": "dfb7fb1817038c03",
+        "name": "R0603"
+      },
+      "model3D": {
+        "libraryUuid": "0819f05c4eef4c71ace90d822a990e87",
+        "uuid": "112863783b5b41f1b5254f87eedc7932|0819f05c4eef4c71ace90d822a990e87",
+        "name": "R0603"
+      },
+      "designator": "R11",
+      "pads": [
+        {
+          "primitiveId": "e7",
+          "net": "GND",
+          "padNumber": "2"
+        },
+        {
+          "primitiveId": "e8",
+          "net": "BOOST_EN",
+          "padNumber": "1"
+        }
+      ],
+      "name": "={Value}",
+      "uniqueId": "link_R11",
+      "manufacturer": "TE Connectivity(\u6cf0\u79d1\u7535\u5b50)",
+      "manufacturerId": "CRG0603F100K",
+      "supplier": "LCSC",
+      "supplierId": "C2073721",
+      "otherProperty": {
+        "Footprint": "R0603",
+        "LCSC Part Name": "\u539a\u819c\u7535\u963b 100k\u03a9 \u00b11% 100mW",
+        "Supplier Footprint": "0603",
+        "JLCPCB Part Class": "Extended Part",
+        "Datasheet": "https://item.szlcsc.com/datasheet/CRG0603F100K/2165307.html",
+        "3D Model": "112863783b5b41f1b5254f87eedc7932|0819f05c4eef4c71ace90d822a990e87",
+        "3D Model Title": "R0603",
+        "3D Model Transform": "31.8897,63.7794,0,90,0,0,0,0,0",
+        "Type": "Thick Film Resistor",
+        "Value": "100k\u03a9",
+        "Tolerance": "\u00b11%",
+        "Power(Watts)": "100mW",
+        "Voltage-Supply(Max)": "75V",
+        "Temperature Coefficient": "\u00b1100ppm/\u2103",
+        "Operating Temperature": "-55\u2103~+155\u2103",
+        "Description": "Type:Thick Film Resistor Resistance:100k\u03a9 Tolerance:\u00b11% Tolerance:\u00b11% Power(Watts):100mW Voltage-Supply(Max):75V Temperature Coefficient:\u00b1100ppm/\u2103 Temperature Coefficient:\u00b1100ppm/\u2103 Operating Temperature:-55\u2103~+155\u2103 Operating Temperature:-55\u2103~+155\u2103",
+        "Device": "CRG0603F100K",
+        "Reuse Block": "",
+        "Group ID": "",
+        "Channel ID": "$1I753"
+      }
+    },
+    {
+      "async": true,
+      "primitiveType": "Component",
+      "layer": 1,
+      "x": 1575,
+      "y": 709,
+      "rotation": 0,
+      "primitiveLock": false,
+      "addIntoBom": true,
+      "component": {
+        "libraryUuid": "eaeb453561334991933e309d30646366",
+        "uuid": "0a2a390bccc9e803",
+        "name": "ESP32-WROOM-32E-N8"
+      },
+      "primitiveId": "9ccccb5af356dc9f",
+      "footprint": {
+        "libraryUuid": "eaeb453561334991933e309d30646366",
+        "uuid": "22319ba03b233603",
+        "name": "WIFI-SMD_ESP32-WROOM-32E"
+      },
+      "model3D": {
+        "libraryUuid": "0819f05c4eef4c71ace90d822a990e87",
+        "uuid": "32d362831e524a98b752e42c3a8d73a7|0819f05c4eef4c71ace90d822a990e87",
+        "name": "WIFI-SMD_L25.5-W18.0-H3.1-ESP32-WROOM-32E"
+      },
+      "designator": "U1",
+      "pads": [
+        {
+          "primitiveId": "e51",
+          "net": "GND",
+          "padNumber": "1"
+        },
+        {
+          "primitiveId": "e52",
+          "net": "VCC_3V3",
+          "padNumber": "2"
+        },
+        {
+          "primitiveId": "e53",
+          "net": "ESP_EN",
+          "padNumber": "3"
+        },
+        {
+          "primitiveId": "e54",
+          "net": "",
+          "padNumber": "4"
+        },
+        {
+          "primitiveId": "e55",
+          "net": "",
+          "padNumber": "5"
+        },
+        {
+          "primitiveId": "e56",
+          "net": "SENSOR_INT1",
+          "padNumber": "6"
+        },
+        {
+          "primitiveId": "e57",
+          "net": "",
+          "padNumber": "7"
+        },
+        {
+          "primitiveId": "e58",
+          "net": "",
+          "padNumber": "8"
+        },
+        {
+          "primitiveId": "e59",
+          "net": "",
+          "padNumber": "9"
+        },
+        {
+          "primitiveId": "e60",
+          "net": "I2S_LRCLK",
+          "padNumber": "10"
+        },
+        {
+          "primitiveId": "e61",
+          "net": "I2S_BCLK",
+          "padNumber": "11"
+        },
+        {
+          "primitiveId": "e62",
+          "net": "AMP_I2C_SCL",
+          "padNumber": "12"
+        },
+        {
+          "primitiveId": "e63",
+          "net": "",
+          "padNumber": "13"
+        },
+        {
+          "primitiveId": "e64",
+          "net": "",
+          "padNumber": "14"
+        },
+        {
+          "primitiveId": "e65",
+          "net": "GND",
+          "padNumber": "15"
+        },
+        {
+          "primitiveId": "e66",
+          "net": "",
+          "padNumber": "16"
+        },
+        {
+          "primitiveId": "e67",
+          "net": "",
+          "padNumber": "17"
+        },
+        {
+          "primitiveId": "e68",
+          "net": "",
+          "padNumber": "18"
+        },
+        {
+          "primitiveId": "e69",
+          "net": "",
+          "padNumber": "19"
+        },
+        {
+          "primitiveId": "e70",
+          "net": "",
+          "padNumber": "20"
+        },
+        {
+          "primitiveId": "e71",
+          "net": "",
+          "padNumber": "21"
+        },
+        {
+          "primitiveId": "e72",
+          "net": "",
+          "padNumber": "22"
+        },
+        {
+          "primitiveId": "e73",
+          "net": "AMP_PDN",
+          "padNumber": "23"
+        },
+        {
+          "primitiveId": "e74",
+          "net": "",
+          "padNumber": "24"
+        },
+        {
+          "primitiveId": "e75",
+          "net": "ESP_IO0",
+          "padNumber": "25"
+        },
+        {
+          "primitiveId": "e76",
+          "net": "BOOST_EN",
+          "padNumber": "26"
+        },
+        {
+          "primitiveId": "e77",
+          "net": "",
+          "padNumber": "27"
+        },
+        {
+          "primitiveId": "e78",
+          "net": "",
+          "padNumber": "28"
+        },
+        {
+          "primitiveId": "e79",
+          "net": "SPI_CS",
+          "padNumber": "29"
+        },
+        {
+          "primitiveId": "e80",
+          "net": "SPI_SCLK",
+          "padNumber": "30"
+        },
+        {
+          "primitiveId": "e81",
+          "net": "SPI_MISO",
+          "padNumber": "31"
+        },
+        {
+          "primitiveId": "e82",
+          "net": "",
+          "padNumber": "32"
+        },
+        {
+          "primitiveId": "e83",
+          "net": "AMP_I2C_SDA",
+          "padNumber": "33"
+        },
+        {
+          "primitiveId": "e84",
+          "net": "ESP_RXD",
+          "padNumber": "34"
+        },
+        {
+          "primitiveId": "e85",
+          "net": "ESP_TXD",
+          "padNumber": "35"
+        },
+        {
+          "primitiveId": "e86",
+          "net": "I2S_DIN",
+          "padNumber": "36"
+        },
+        {
+          "primitiveId": "e87",
+          "net": "SPI_MOSI",
+          "padNumber": "37"
+        },
+        {
+          "primitiveId": "e88",
+          "net": "GND",
+          "padNumber": "38"
+        },
+        {
+          "primitiveId": "e89",
+          "net": "GND",
+          "padNumber": "39"
+        },
+        {
+          "primitiveId": "e90",
+          "net": "GND",
+          "padNumber": "39"
+        },
+        {
+          "primitiveId": "e91",
+          "net": "GND",
+          "padNumber": "39"
+        },
+        {
+          "primitiveId": "e92",
+          "net": "GND",
+          "padNumber": "39"
+        },
+        {
+          "primitiveId": "e93",
+          "net": "GND",
+          "padNumber": "39"
+        },
+        {
+          "primitiveId": "e94",
+          "net": "GND",
+          "padNumber": "39"
+        },
+        {
+          "primitiveId": "e95",
+          "net": "GND",
+          "padNumber": "39"
+        },
+        {
+          "primitiveId": "e96",
+          "net": "GND",
+          "padNumber": "39"
+        },
+        {
+          "primitiveId": "e97",
+          "net": "GND",
+          "padNumber": "39"
+        }
+      ],
+      "name": "={Value}",
+      "uniqueId": "link_U1",
+      "manufacturer": "ESPRESSIF(\u4e50\u946b)",
+      "manufacturerId": "ESP32-WROOM-32UE-N8",
+      "supplier": "LCSC",
+      "supplierId": "C701345",
+      "otherProperty": {
+        "Footprint": "WIFI-SMD_ESP32-WROOM-32E",
+        "LCSC Part Name": "\u4e0d\u5e26\u56fa\u4ef6 \u901a\u7528\u578bWi-Fi+BT+BLE MCU\u6a21\u7ec4",
+        "Supplier Footprint": "SMD,25.5x18mm",
+        "JLCPCB Part Class": "Extended Part",
+        "Datasheet": "https://item.szlcsc.com/datasheet/ESP32-WROOM-32E-N8/736350.html",
+        "3D Model": "32d362831e524a98b752e42c3a8d73a7|0819f05c4eef4c71ace90d822a990e87",
+        "3D Model Title": "WIFI-SMD_L25.5-W18.0-H3.1-ESP32-WROOM-32E",
+        "3D Model Transform": "1003.935,708.66,0,180,0,0,-148.762,0,0",
+        "Utilized IC / Part": "ESP32-DOWD-V3",
+        "Wireless Standard": "Bluetooth4.2",
+        "Interface Type": "I2C\uff1bGPIO\uff1bUART\uff1bSPI\uff1bPWM\uff1bSDIO\uff1bI2S",
+        "Value": "2.4GHz",
+        "Antenna Type": "On-board PCB Antenna",
+        "Output Power": "20dBm",
+        "Voltage - Supply": "3V~3.6V",
+        "Receive  Current": "112mA",
+        "Send  Current": "239mA",
+        "Sensitivity": "-98dBm",
+        "Operating Temperature": "-40\u2103~+85\u2103",
+        "Description": "Utilized IC / Part:ESP32-DOWD-V3 Wireless Standard:Bluetooth4.2 Interface Type:I2C\uff1bGPIO\uff1bUART\uff1bSPI\uff1bPWM\uff1bSDIO\uff1bI2S Frequency:2.4GHz Antenna Type:On-board PCB Antenna Output Power:20dBm Output Power:20dBm Voltage - Supply:3V~3.6V Voltage - Supply:3V~3.6V Receiv",
+        "Device": "ESP32-WROOM-32E-N8",
+        "Reuse Block": "",
+        "Group ID": "",
+        "Channel ID": "$1I712"
+      }
+    },
+    {
+      "async": true,
+      "primitiveType": "Component",
+      "layer": 1,
+      "x": 984,
+      "y": 472,
+      "rotation": 90,
+      "primitiveLock": false,
+      "addIntoBom": true,
+      "component": {
+        "libraryUuid": "eaeb453561334991933e309d30646366",
+        "uuid": "ee3694e50c3e5a5b",
+        "name": "AP2112K-3.3TRG1"
+      },
+      "primitiveId": "21cd1a2b5ee72960",
+      "footprint": {
+        "libraryUuid": "eaeb453561334991933e309d30646366",
+        "uuid": "dce16fc98f3a25a0",
+        "name": "SOT-25-5_L2.9-W1.6-P0.95-LS2.8-BL"
+      },
+      "model3D": {
+        "libraryUuid": "0819f05c4eef4c71ace90d822a990e87",
+        "uuid": "6177bbcd6fc94df4b4ba2f22405723a0|0819f05c4eef4c71ace90d822a990e87",
+        "name": "SOT-25-5_L2.9-W1.6-P0.95-LS2.8-BL"
+      },
+      "designator": "U2",
+      "pads": [
+        {
+          "primitiveId": "e13",
+          "net": "",
+          "padNumber": "4"
+        },
+        {
+          "primitiveId": "e14",
+          "net": "VCC_3V3",
+          "padNumber": "5"
+        },
+        {
+          "primitiveId": "e15",
+          "net": "VBUS_5V",
+          "padNumber": "1"
+        },
+        {
+          "primitiveId": "e16",
+          "net": "GND",
+          "padNumber": "2"
+        },
+        {
+          "primitiveId": "e17",
+          "net": "VBUS_5V",
+          "padNumber": "3"
+        }
+      ],
+      "name": "={Manufacturer Part}",
+      "uniqueId": "link_U2",
+      "manufacturer": "DIODES(\u7f8e\u53f0)",
+      "manufacturerId": "AP2112K-3.3TRG1",
+      "supplier": "LCSC",
+      "supplierId": "C51118",
+      "otherProperty": {
+        "Footprint": "SOT-25-5_L2.9-W1.6-P0.95-LS2.8-BL",
+        "LCSC Part Name": "3.3V 600mA 6V",
+        "Supplier Footprint": "SOT-25-5",
+        "JLCPCB Part Class": "Extended Part",
+        "Datasheet": "https://item.szlcsc.com/datasheet/AP2112K-3.3TRG1/52131.html",
+        "3D Model": "6177bbcd6fc94df4b4ba2f22405723a0|0819f05c4eef4c71ace90d822a990e87",
+        "3D Model Title": "SOT-25-5_L2.9-W1.6-P0.95-LS2.8-BL",
+        "3D Model Transform": "114.173,110.236,0,0,0,0,0,0,0",
+        "Output Configuration": "Positive",
+        "Voltage - Supply": "6V",
+        "Output Voltage": "3.3V",
+        "Output Current": "600mA",
+        "Power Supply Rejection Ratio (PSRR)": "65dB@(1kHz)",
+        "Voltage Dropout": "250mV@(600mA)",
+        "standby current": "55uA",
+        "Noise": "50uVrms",
+        "Features": "Enable control\uff1bShort Circuit Protection\uff1bOutput discharge\uff1bOver Current Protection\uff1bThermal shutdown",
+        "Operating Temperature": "-40\u2103~+85\u2103@(Ta)",
+        "Output Type": "Fixed",
+        "Number of Outputs": "1",
+        "Description": "Output Configuration:Positive Voltage - Supply:6V Output Voltage:3.3V Output Voltage:3.3V Output Current:600mA Power Supply Rejection Ratio (PSRR):65dB@(1kHz) Voltage Dropout:250mV@(600mA) standby current:55uA Noise:50uVrms Features:Enable control\uff1bShort C",
+        "Device": "AP2112K-3.3TRG1",
+        "Reuse Block": "",
+        "Group ID": "",
+        "Channel ID": "$1I713"
+      }
+    },
+    {
+      "async": true,
+      "primitiveType": "Component",
+      "layer": 1,
+      "x": 709,
+      "y": 1693,
+      "rotation": 180,
+      "primitiveLock": false,
+      "addIntoBom": true,
+      "component": {
+        "libraryUuid": "eaeb453561334991933e309d30646366",
+        "uuid": "f9ee9ce157e089dc",
+        "name": "MP3426DL"
+      },
+      "primitiveId": "e3bbd7e350ec9ed4",
+      "footprint": {
+        "libraryUuid": "eaeb453561334991933e309d30646366",
+        "uuid": "120e009302500e16",
+        "name": "DFN-14_L4.0-W3.0-P0.50-BL-EP"
+      },
+      "model3D": {
+        "libraryUuid": "0819f05c4eef4c71ace90d822a990e87",
+        "uuid": "85fd6c0be3f64f25acfd3eac426240b3|0819f05c4eef4c71ace90d822a990e87",
+        "name": "DFN-14_L4.0-W3.0-P0.50-BL-EP"
+      },
+      "designator": "U3",
+      "pads": [
+        {
+          "primitiveId": "e11",
+          "net": "BOOST_COMP",
+          "padNumber": "1"
+        },
+        {
+          "primitiveId": "e12",
+          "net": "BOOST_EN",
+          "padNumber": "2"
+        },
+        {
+          "primitiveId": "e13",
+          "net": "VBUS_5V",
+          "padNumber": "3"
+        },
+        {
+          "primitiveId": "e14",
+          "net": "BOOST_SW",
+          "padNumber": "4"
+        },
+        {
+          "primitiveId": "e15",
+          "net": "BOOST_SW",
+          "padNumber": "5"
+        },
+        {
+          "primitiveId": "e16",
+          "net": "BOOST_SW",
+          "padNumber": "6"
+        },
+        {
+          "primitiveId": "e17",
+          "net": "BOOST_VDD",
+          "padNumber": "7"
+        },
+        {
+          "primitiveId": "e18",
+          "net": "GND",
+          "padNumber": "8"
+        },
+        {
+          "primitiveId": "e19",
+          "net": "GND",
+          "padNumber": "9"
+        },
+        {
+          "primitiveId": "e20",
+          "net": "GND",
+          "padNumber": "10"
+        },
+        {
+          "primitiveId": "e21",
+          "net": "GND",
+          "padNumber": "11"
+        },
+        {
+          "primitiveId": "e22",
+          "net": "BOOST_SS",
+          "padNumber": "12"
+        },
+        {
+          "primitiveId": "e23",
+          "net": "BOOST_FB",
+          "padNumber": "13"
+        },
+        {
+          "primitiveId": "e24",
+          "net": "BOOST_FSET",
+          "padNumber": "14"
+        },
+        {
+          "primitiveId": "e25",
+          "net": "GND",
+          "padNumber": "15"
+        }
+      ],
+      "name": "={Manufacturer Part}",
+      "uniqueId": "link_U3",
+      "manufacturer": "",
+      "manufacturerId": "MP3426DL",
+      "supplier": "LCSC",
+      "supplierId": "C2909511",
+      "otherProperty": {
+        "Footprint": "DFN-14_L4.0-W3.0-P0.50-BL-EP",
+        "LCSC Part Name": "MP3426DL",
+        "Supplier Footprint": "QFN-14(3x4x0.5)",
+        "JLCPCB Part Class": "Extended Part",
+        "Datasheet": "",
+        "3D Model": "85fd6c0be3f64f25acfd3eac426240b3|0819f05c4eef4c71ace90d822a990e87",
+        "3D Model Title": "DFN-14_L4.0-W3.0-P0.50-BL-EP",
+        "3D Model Transform": "157.48,118.18874,0,0,0,0,0,0,0",
+        "Description": "",
+        "Device": "MP3426DL",
+        "Reuse Block": "",
+        "Group ID": "",
+        "Channel ID": "$1I714"
+      }
+    },
+    {
+      "async": true,
+      "primitiveType": "Component",
+      "layer": 1,
+      "x": 1575,
+      "y": 1693,
+      "rotation": 0,
+      "primitiveLock": false,
+      "addIntoBom": true,
+      "component": {
+        "libraryUuid": "eaeb453561334991933e309d30646366",
+        "uuid": "9b1c67e4f23c836e",
+        "name": "TAS5805MPWPR"
+      },
+      "primitiveId": "5ac1f8bc1c94a1d7",
+      "footprint": {
+        "libraryUuid": "eaeb453561334991933e309d30646366",
+        "uuid": "cbdc5199ad96e58e",
+        "name": "HTSSOP-28_L9.7-W4.4-P0.65-LS6.4-BL-EP"
+      },
+      "model3D": {
+        "libraryUuid": "0819f05c4eef4c71ace90d822a990e87",
+        "uuid": "e8a410c55eab474c8619c269ff25181b|0819f05c4eef4c71ace90d822a990e87",
+        "name": "HTSSOP-28_L9.7-W4.4-P0.65-LS6.4-BL-EP"
+      },
+      "designator": "U4",
+      "pads": [
+        {
+          "primitiveId": "e10",
+          "net": "GND",
+          "padNumber": "1"
+        },
+        {
+          "primitiveId": "e11",
+          "net": "VCC_3V3",
+          "padNumber": "2"
+        },
+        {
+          "primitiveId": "e12",
+          "net": "AMP_ADR",
+          "padNumber": "3"
+        },
+        {
+          "primitiveId": "e13",
+          "net": "VR_DIG",
+          "padNumber": "4"
+        },
+        {
+          "primitiveId": "e14",
+          "net": "GND",
+          "padNumber": "5"
+        },
+        {
+          "primitiveId": "e15",
+          "net": "I2S_LRCLK",
+          "padNumber": "6"
+        },
+        {
+          "primitiveId": "e16",
+          "net": "I2S_BCLK",
+          "padNumber": "7"
+        },
+        {
+          "primitiveId": "e17",
+          "net": "I2S_DIN",
+          "padNumber": "8"
+        },
+        {
+          "primitiveId": "e18",
+          "net": "",
+          "padNumber": "9"
+        },
+        {
+          "primitiveId": "e19",
+          "net": "AMP_I2C_SDA",
+          "padNumber": "10"
+        },
+        {
+          "primitiveId": "e20",
+          "net": "AMP_I2C_SCL",
+          "padNumber": "11"
+        },
+        {
+          "primitiveId": "e21",
+          "net": "AMP_PDN",
+          "padNumber": "12"
+        },
+        {
+          "primitiveId": "e22",
+          "net": "AVDD",
+          "padNumber": "13"
+        },
+        {
+          "primitiveId": "e23",
+          "net": "GND",
+          "padNumber": "14"
+        },
+        {
+          "primitiveId": "e24",
+          "net": "PVDD_12V",
+          "padNumber": "28"
+        },
+        {
+          "primitiveId": "e25",
+          "net": "PVDD_12V",
+          "padNumber": "27"
+        },
+        {
+          "primitiveId": "e26",
+          "net": "AMP_OUT_A+",
+          "padNumber": "26"
+        },
+        {
+          "primitiveId": "e27",
+          "net": "BST_A+",
+          "padNumber": "25"
+        },
+        {
+          "primitiveId": "e28",
+          "net": "GND",
+          "padNumber": "24"
+        },
+        {
+          "primitiveId": "e29",
+          "net": "AMP_OUT_A-",
+          "padNumber": "23"
+        },
+        {
+          "primitiveId": "e30",
+          "net": "BST_A-",
+          "padNumber": "22"
+        },
+        {
+          "primitiveId": "e31",
+          "net": "BST_B-",
+          "padNumber": "21"
+        },
+        {
+          "primitiveId": "e32",
+          "net": "AMP_OUT_B-",
+          "padNumber": "20"
+        },
+        {
+          "primitiveId": "e33",
+          "net": "GND",
+          "padNumber": "19"
+        },
+        {
+          "primitiveId": "e34",
+          "net": "BST_B+",
+          "padNumber": "18"
+        },
+        {
+          "primitiveId": "e35",
+          "net": "AMP_OUT_B+",
+          "padNumber": "17"
+        },
+        {
+          "primitiveId": "e36",
+          "net": "PVDD_12V",
+          "padNumber": "16"
+        },
+        {
+          "primitiveId": "e37",
+          "net": "PVDD_12V",
+          "padNumber": "15"
+        },
+        {
+          "primitiveId": "e38",
+          "net": "GND",
+          "padNumber": "29"
+        }
+      ],
+      "name": "={Manufacturer Part}",
+      "uniqueId": "link_U4",
+      "manufacturer": "TI(\u5fb7\u5dde\u4eea\u5668)",
+      "manufacturerId": "TAS5805MPWPR",
+      "supplier": "LCSC",
+      "supplierId": "C478472",
+      "otherProperty": {
+        "Footprint": "HTSSOP-28_L9.7-W4.4-P0.65-LS6.4-BL-EP",
+        "LCSC Part Name": "23W\u7acb\u4f53\u58f0D\u7c7b\u97f3\u9891\u529f\u7387\u653e\u5927\u5668",
+        "Supplier Footprint": "HTSSOP-28-EP",
+        "JLCPCB Part Class": "Extended Part",
+        "Datasheet": "https://www.ti.com/cn/lit/gpn/tas5805m",
+        "3D Model": "e8a410c55eab474c8619c269ff25181b|0819f05c4eef4c71ace90d822a990e87",
+        "3D Model Title": "HTSSOP-28_L9.7-W4.4-P0.65-LS6.4-BL-EP",
+        "3D Model Transform": "381.889,251.968,0,0,0,0,0,0,0",
+        "Class": "Class D",
+        "Speaker Channels": "2-Channel",
+        "Output Power": "23W\u00d72@8\u03a9",
+        "Total Harmonic Distortion + Noise (THD+N)": "0.03%",
+        "Quiescent Current": "16.5mA",
+        "Signal-to-Noise Ratio": "107dB",
+        "Power Supply Rejection Ratio (PSRR)": "72dB",
+        "Efficiency": "-",
+        "Number of Inputs": "-",
+        "Features": "Digital programmable gain\uff1bOvervoltage protection\uff1bBuilt-in audio processing\uff1bConfigurable output topology",
+        "Voltage - Supply": "4.5V~26.4V",
+        "Operating Temperature": "-25\u2103~+85\u2103",
+        "Description": "Class:Class D Speaker Channels:2-Channel Output Power:23W\u00d72@8\u03a9 Total Harmonic Distortion + Noise (THD+N):0.03% Quiescent Current:16.5mA Signal-to-Noise Ratio:107dB Power Supply Rejection Ratio (PSRR):72dB Efficiency:- Number of Inputs:- Features:Digital p",
+        "Device": "TAS5805MPWPR",
+        "Reuse Block": "",
+        "Group ID": "",
+        "Channel ID": "$1I715"
+      }
+    },
+    {
+      "async": true,
+      "primitiveType": "Component",
+      "layer": 1,
+      "x": 2362,
+      "y": 630,
+      "rotation": -90,
+      "primitiveLock": false,
+      "addIntoBom": true,
+      "component": {
+        "libraryUuid": "eaeb453561334991933e309d30646366",
+        "uuid": "a629f4c2c0898ba5",
+        "name": "LSM6DSOXTR"
+      },
+      "primitiveId": "fcdc19ffa980d705",
+      "footprint": {
+        "libraryUuid": "eaeb453561334991933e309d30646366",
+        "uuid": "712f356e9f771777",
+        "name": "LGA-14L_L3.0-W2.5-P0.50-TL"
+      },
+      "model3D": {
+        "libraryUuid": "0819f05c4eef4c71ace90d822a990e87",
+        "uuid": "ba71f3cdab504178a9a45bd067d2295b|0819f05c4eef4c71ace90d822a990e87",
+        "name": "LGA-14_L2.5-W3.0-H0.9-P0.50"
+      },
+      "designator": "U5",
+      "pads": [
+        {
+          "primitiveId": "e9",
+          "net": "SPI_MISO",
+          "padNumber": "1"
+        },
+        {
+          "primitiveId": "e10",
+          "net": "GND",
+          "padNumber": "2"
+        },
+        {
+          "primitiveId": "e11",
+          "net": "GND",
+          "padNumber": "3"
+        },
+        {
+          "primitiveId": "e12",
+          "net": "SENSOR_INT1",
+          "padNumber": "4"
+        },
+        {
+          "primitiveId": "e13",
+          "net": "VCC_3V3",
+          "padNumber": "5"
+        },
+        {
+          "primitiveId": "e14",
+          "net": "GND",
+          "padNumber": "6"
+        },
+        {
+          "primitiveId": "e15",
+          "net": "GND",
+          "padNumber": "7"
+        },
+        {
+          "primitiveId": "e16",
+          "net": "VCC_3V3",
+          "padNumber": "8"
+        },
+        {
+          "primitiveId": "e17",
+          "net": "",
+          "padNumber": "9"
+        },
+        {
+          "primitiveId": "e18",
+          "net": "GND",
+          "padNumber": "10"
+        },
+        {
+          "primitiveId": "e19",
+          "net": "GND",
+          "padNumber": "11"
+        },
+        {
+          "primitiveId": "e20",
+          "net": "SPI_CS",
+          "padNumber": "12"
+        },
+        {
+          "primitiveId": "e21",
+          "net": "SPI_SCLK",
+          "padNumber": "13"
+        },
+        {
+          "primitiveId": "e22",
+          "net": "SPI_MOSI",
+          "padNumber": "14"
+        }
+      ],
+      "name": "={Manufacturer Part}",
+      "uniqueId": "link_U5",
+      "manufacturer": "ST(\u610f\u6cd5\u534a\u5bfc\u4f53)",
+      "manufacturerId": "LSM6DSOXTR",
+      "supplier": "LCSC",
+      "supplierId": "C481766",
+      "otherProperty": {
+        "Footprint": "LGA-14L_L3.0-W2.5-P0.50-TL",
+        "LCSC Part Name": "LSM6DSOXTR",
+        "Supplier Footprint": "LGA-14(2.5x3)",
+        "JLCPCB Part Class": "Extended Part",
+        "Datasheet": "https://item.szlcsc.com/datasheet/LSM6DSOXTR/489350.html",
+        "3D Model": "ba71f3cdab504178a9a45bd067d2295b|0819f05c4eef4c71ace90d822a990e87",
+        "3D Model Title": "LGA-14_L2.5-W3.0-H0.9-P0.50",
+        "3D Model Transform": "118.11,98.425,0,0,0,0,0,0.0005,0",
+        "Sensor Type": "Accelerometer Gyroscope",
+        "Operating Temperature": "-40\u2103~+85\u2103",
+        "Description": "Sensor Type:Accelerometer Gyroscope Operating Temperature:-40\u2103~+85\u2103 Operating Temperature:-40\u2103~+85\u2103",
+        "Device": "LSM6DSOXTR",
+        "Reuse Block": "",
+        "Group ID": "",
+        "Channel ID": "$1I716"
+      }
+    },
+    {
+      "async": true,
+      "primitiveType": "Component",
+      "layer": 1,
+      "x": 2835,
+      "y": 315,
+      "rotation": 0,
+      "primitiveLock": false,
+      "addIntoBom": true,
+      "component": {
+        "libraryUuid": "eaeb453561334991933e309d30646366",
+        "uuid": "65f09526a8cd10bc",
+        "name": "B-2100S06P-A110"
+      },
+      "primitiveId": "d198af688d4afed6",
+      "footprint": {
+        "libraryUuid": "eaeb453561334991933e309d30646366",
+        "uuid": "199c7ae4a88523a1",
+        "name": "HDR-TH_6P-P2.54-V_Z-211-0611-0021-001"
+      },
+      "model3D": {
+        "libraryUuid": "0819f05c4eef4c71ace90d822a990e87",
+        "uuid": "46ef4df9ae594cc085aa437facc0bc52|0819f05c4eef4c71ace90d822a990e87",
+        "name": "HDR2.54-M-LI-1X6P"
+      },
+      "designator": "UART_HDR",
+      "pads": [
+        {
+          "primitiveId": "e14",
+          "net": "VCC_3V3",
+          "padNumber": "1"
+        },
+        {
+          "primitiveId": "e15",
+          "net": "ESP_EN",
+          "padNumber": "2"
+        },
+        {
+          "primitiveId": "e16",
+          "net": "ESP_IO0",
+          "padNumber": "3"
+        },
+        {
+          "primitiveId": "e17",
+          "net": "ESP_TXD",
+          "padNumber": "4"
+        },
+        {
+          "primitiveId": "e18",
+          "net": "ESP_RXD",
+          "padNumber": "5"
+        },
+        {
+          "primitiveId": "e19",
+          "net": "GND",
+          "padNumber": "6"
+        }
+      ],
+      "name": "={Manufacturer Part}",
+      "uniqueId": "link_UART_HDR",
+      "manufacturer": "Ckmtw(\u707f\u79d1\u76df)",
+      "manufacturerId": "B-2100S06P-A110",
+      "supplier": "LCSC",
+      "supplierId": "C124380",
+      "otherProperty": {
+        "Footprint": "HDR-TH_6P-P2.54-V_Z-211-0611-0021-001",
+        "LCSC Part Name": "1x6P \u95f4\u8ddd:2.54mm \u65b9\u9488 \u76f4\u63d2",
+        "Supplier Footprint": "\u63d2\u4ef6,P=2.54mm",
+        "JLCPCB Part Class": "Extended Part",
+        "Datasheet": "https://item.szlcsc.com/datasheet/B-2100S06P-A110/125655.html",
+        "3D Model": "46ef4df9ae594cc085aa437facc0bc52|0819f05c4eef4c71ace90d822a990e87",
+        "3D Model Title": "HDR2.54-M-LI-1X6P",
+        "3D Model Transform": "599.999,100,0,0,0,0,0,0,-118.11",
+        "Pin Structure": "1x6P",
+        "Pitch": "2.54mm",
+        "Row Spacing": "-",
+        "Circluar Pins/Square Pins": "Pin Header",
+        "Mounting Type": "Through Hole",
+        "Number of Rows": "1",
+        "Number of Pins": "6P",
+        "Current Rating": "3A",
+        "Voltage Rating (Max)": "-",
+        "Length of Mating Pin": "6mm",
+        "Insulation Height": "2.54mm",
+        "Length of End Connection Pin": "3mm",
+        "Contact Material": "Brass",
+        "Contact Plating": "-",
+        "Operating Temperature": "-40\u2103~+105\u2103",
+        "Color": "Black",
+        "Description": "Pin Structure:1x6P Pitch:2.54mm Row Spacing:- Circluar Pins/Square Pins:Pin Header Mounting Type:Through Hole Number of Rows:1 Number of Pins:6P Current Rating:3A Voltage Rating (Max):- Length of Mating Pin:6mm Insulation Height:2.54mm Length of End Conne",
+        "Device": "B-2100S06P-A110",
+        "Reuse Block": "",
+        "Group ID": "",
+        "Channel ID": "$1I719"
+      }
+    },
+    {
+      "async": true,
+      "primitiveType": "Component",
+      "layer": 1,
+      "x": 197,
+      "y": 1102,
+      "rotation": 90,
+      "primitiveLock": false,
+      "addIntoBom": true,
+      "component": {
+        "libraryUuid": "eaeb453561334991933e309d30646366",
+        "uuid": "4697fb7ef0808be2",
+        "name": "TYPE-C-31-M-12"
+      },
+      "primitiveId": "8f91f7d279e23206",
+      "footprint": {
+        "libraryUuid": "eaeb453561334991933e309d30646366",
+        "uuid": "84f893b7fd71b5a6",
+        "name": "USB-C_SMD-TYPE-C-31-M-12_1"
+      },
+      "model3D": {
+        "libraryUuid": "0819f05c4eef4c71ace90d822a990e87",
+        "uuid": "8421221a464047838322348b3a9debc3|0819f05c4eef4c71ace90d822a990e87",
+        "name": "USB-C_SMD-TYPE-C-31-M-12_1"
+      },
+      "designator": "USB_C",
+      "pads": [
+        {
+          "primitiveId": "e26",
+          "net": "",
+          "padNumber": "B8"
+        },
+        {
+          "primitiveId": "e27",
+          "net": "USB_CC1",
+          "padNumber": "A5"
+        },
+        {
+          "primitiveId": "e28",
+          "net": "",
+          "padNumber": "B7"
+        },
+        {
+          "primitiveId": "e29",
+          "net": "",
+          "padNumber": "A6"
+        },
+        {
+          "primitiveId": "e30",
+          "net": "",
+          "padNumber": "A7"
+        },
+        {
+          "primitiveId": "e31",
+          "net": "",
+          "padNumber": "B6"
+        },
+        {
+          "primitiveId": "e32",
+          "net": "",
+          "padNumber": "A8"
+        },
+        {
+          "primitiveId": "e33",
+          "net": "USB_CC2",
+          "padNumber": "B5"
+        },
+        {
+          "primitiveId": "e34",
+          "net": "GND",
+          "padNumber": "A1B12"
+        },
+        {
+          "primitiveId": "e35",
+          "net": "GND",
+          "padNumber": "B1A12"
+        },
+        {
+          "primitiveId": "e36",
+          "net": "VBUS_5V",
+          "padNumber": "B4A9"
+        },
+        {
+          "primitiveId": "e37",
+          "net": "VBUS_5V",
+          "padNumber": "A4B9"
+        },
+        {
+          "primitiveId": "e56",
+          "net": "GND",
+          "padNumber": "2"
+        },
+        {
+          "primitiveId": "e57",
+          "net": "GND",
+          "padNumber": "1"
+        },
+        {
+          "primitiveId": "e58",
+          "net": "GND",
+          "padNumber": "4"
+        },
+        {
+          "primitiveId": "e59",
+          "net": "GND",
+          "padNumber": "3"
+        }
+      ],
+      "name": "={Manufacturer Part}",
+      "uniqueId": "link_USB_C",
+      "manufacturer": "\u97e9\u56fd\u97e9\u8363",
+      "manufacturerId": "TYPE-C-31-M-12",
+      "supplier": "LCSC",
+      "supplierId": "C165948",
+      "otherProperty": {
+        "Footprint": "USB-C_SMD-TYPE-C-31-M-12_1",
+        "LCSC Part Name": "Type-C \u6bcd \u5367\u8d34",
+        "Supplier Footprint": "SMD",
+        "JLCPCB Part Class": "Extended Part",
+        "Datasheet": "https://item.szlcsc.com/datasheet/TYPE-C-31-M-12/177331.html",
+        "3D Model": "8421221a464047838322348b3a9debc3|0819f05c4eef4c71ace90d822a990e87",
+        "3D Model Title": "USB-C_SMD-TYPE-C-31-M-12_1",
+        "3D Model Transform": "351.9678,311.023,0,180,0,0,0,-43.307,-33.465",
+        "Connector Type": "Type-C",
+        "Protocol Standard": "-",
+        "Gender": "Female",
+        "Mounting Type": "Surface Mount, Right Angle",
+        "Number of Contacts": "16P",
+        "Number of Ports": "1",
+        "Current Rating-Power": "5A",
+        "Voltage Rating": "20V",
+        "Connect-Disconnect Life": "10,000 cycles",
+        "Length": "7.35mm",
+        "Operating Temperature": "-30\u2103~+80\u2103",
+        "Description": "Connector Type:Type-C Protocol Standard:- Gender:Female Mounting Type:Surface Mount, Right Angle Number of Contacts:16P Number of Ports:1 Current Rating-Power:5A Voltage Rating:20V Connect-Disconnect Life:10,000 cycles Length:7.35mm Operating Temperature:",
+        "Device": "TYPE-C-31-M-12",
+        "Reuse Block": "",
+        "Group ID": "",
+        "Channel ID": "$1I718"
+      }
+    },
+    {
+      "async": true,
+      "primitiveType": "Component",
+      "x": 1460,
+      "y": 1535,
+      "rotation": 89.99999999999997,
+      "primitiveLock": false,
+      "addIntoBom": true,
+      "component": {
+        "libraryUuid": "eaeb453561334991933e309d30646366",
+        "uuid": "1e1fb949799bea2f",
+        "name": "0603WAF4701T5E"
+      },
+      "primitiveId": "eb4545c48e7c95e6",
+      "footprint": {
+        "libraryUuid": "eaeb453561334991933e309d30646366",
+        "uuid": "dfb7fb1817038c03",
+        "name": "R0603"
+      },
+      "model3D": {
+        "libraryUuid": "0819f05c4eef4c71ace90d822a990e87",
+        "uuid": "112863783b5b41f1b5254f87eedc7932|0819f05c4eef4c71ace90d822a990e87",
+        "name": "R0603"
+      },
+      "designator": "R12",
+      "pads": [
+        {
+          "primitiveId": "e7",
+          "net": "AMP_ADR",
+          "padNumber": "2"
+        },
+        {
+          "primitiveId": "e8",
+          "net": "VCC_3V3",
+          "padNumber": "1"
+        }
+      ],
+      "name": "={Value}",
+      "uniqueId": "link_R12",
+      "manufacturer": "UNI-ROYAL(\u539a\u58f0)",
+      "manufacturerId": "0603WAF4701T5E",
+      "supplier": "LCSC",
+      "supplierId": "C23162",
+      "otherProperty": {
+        "Footprint": "R0603",
+        "LCSC Part Name": "4.7k\u03a9 \u00b11% 100mW \u539a\u819c\u7535\u963b",
+        "Supplier Footprint": "0603",
+        "JLCPCB Part Class": "Basic Part",
+        "Datasheet": "https://item.szlcsc.com/datasheet/0603WAF4701T5E/23889.html",
+        "3D Model": "112863783b5b41f1b5254f87eedc7932|0819f05c4eef4c71ace90d822a990e87",
+        "3D Model Title": "R0603",
+        "3D Model Transform": "31.8897,63.7794,0,90,0,0,0,0,0",
+        "Type": "Thick Film Resistor",
+        "Value": "4.7k\u03a9",
+        "Tolerance": "\u00b11%",
+        "Power(Watts)": "100mW",
+        "Voltage-Supply(Max)": "75V",
+        "Temperature Coefficient": "\u00b1100ppm/\u2103",
+        "Operating Temperature": "-55\u2103~+155\u2103",
+        "Description": "Type:Thick Film Resistor Resistance:4.7k\u03a9 Tolerance:\u00b11% Tolerance:\u00b11% Power(Watts):100mW Voltage-Supply(Max):75V Temperature Coefficient:\u00b1100ppm/\u2103 Temperature Coefficient:\u00b1100ppm/\u2103 Operating Temperature:-55\u2103~+155\u2103 Operating Temperature:-55\u2103~+155\u2103",
+        "Device": "0603WAF4701T5E",
+        "Reuse Block": "",
+        "Group ID": "",
+        "Channel ID": "$1I765"
+      }
+    },
+    {
+      "async": true,
+      "primitiveType": "Component",
+      "layer": 1,
+      "x": 1995,
+      "y": 770,
+      "rotation": -90,
+      "primitiveLock": false,
+      "addIntoBom": true,
+      "component": {
+        "libraryUuid": "eaeb453561334991933e309d30646366",
+        "uuid": "ff3c26ad48521d07",
+        "name": "0603WAF1002T5E"
+      },
+      "primitiveId": "0dbaeab1e9ad1013",
+      "footprint": {
+        "libraryUuid": "eaeb453561334991933e309d30646366",
+        "uuid": "dfb7fb1817038c03",
+        "name": "R0603"
+      },
+      "model3D": {
+        "libraryUuid": "0819f05c4eef4c71ace90d822a990e87",
+        "uuid": "112863783b5b41f1b5254f87eedc7932|0819f05c4eef4c71ace90d822a990e87",
+        "name": "R0603"
+      },
+      "designator": "R13",
+      "pads": [
+        {
+          "primitiveId": "e7",
+          "net": "VCC_3V3",
+          "padNumber": "2"
+        },
+        {
+          "primitiveId": "e8",
+          "net": "AMP_PDN",
+          "padNumber": "1"
+        }
+      ],
+      "name": "={Value}",
+      "uniqueId": "link_R13",
+      "manufacturer": "UNI-ROYAL(\u539a\u58f0)",
+      "manufacturerId": "0603WAF1002T5E",
+      "supplier": "LCSC",
+      "supplierId": "C25804",
+      "otherProperty": {
+        "Footprint": "R0603",
+        "LCSC Part Name": "\u539a\u819c\u7535\u963b 10k\u03a9 \u00b11% 100mW",
+        "Supplier Footprint": "0603",
+        "JLCPCB Part Class": "Basic Part",
+        "Datasheet": "https://item.szlcsc.com/datasheet/0603WAF1002T5E/26547.html",
+        "3D Model": "112863783b5b41f1b5254f87eedc7932|0819f05c4eef4c71ace90d822a990e87",
+        "3D Model Title": "R0603",
+        "3D Model Transform": "31.8897,63.7794,0,90,0,0,0,0,0",
+        "Type": "Thick Film Resistor",
+        "Value": "10k\u03a9",
+        "Tolerance": "\u00b11%",
+        "Power(Watts)": "100mW",
+        "Voltage-Supply(Max)": "75V",
+        "Temperature Coefficient": "\u00b1100ppm/\u2103",
+        "Operating Temperature": "-55\u2103~+155\u2103",
+        "Description": "Type:Thick Film Resistor Resistance:10k\u03a9 Tolerance:\u00b11% Tolerance:\u00b11% Power(Watts):100mW Voltage-Supply(Max):75V Temperature Coefficient:\u00b1100ppm/\u2103 Temperature Coefficient:\u00b1100ppm/\u2103 Operating Temperature:-55\u2103~+155\u2103 Operating Temperature:-55\u2103~+155\u2103",
+        "Device": "0603WAF1002T5E",
+        "Reuse Block": "",
+        "Group ID": "",
+        "Channel ID": "$1I766"
+      }
+    },
+    {
+      "async": true,
+      "primitiveType": "Component",
+      "layer": 1,
+      "x": 2420,
+      "y": 450,
+      "rotation": 0,
+      "primitiveLock": false,
+      "addIntoBom": true,
+      "component": {
+        "libraryUuid": "eaeb453561334991933e309d30646366",
+        "uuid": "ff3c26ad48521d07",
+        "name": "0603WAF1002T5E"
+      },
+      "primitiveId": "523436d9a3b96395",
+      "footprint": {
+        "libraryUuid": "eaeb453561334991933e309d30646366",
+        "uuid": "dfb7fb1817038c03",
+        "name": "R0603"
+      },
+      "model3D": {
+        "libraryUuid": "0819f05c4eef4c71ace90d822a990e87",
+        "uuid": "112863783b5b41f1b5254f87eedc7932|0819f05c4eef4c71ace90d822a990e87",
+        "name": "R0603"
+      },
+      "designator": "R14",
+      "pads": [
+        {
+          "primitiveId": "e7",
+          "net": "VCC_3V3",
+          "padNumber": "2"
+        },
+        {
+          "primitiveId": "e8",
+          "net": "SPI_CS",
+          "padNumber": "1"
+        }
+      ],
+      "name": "={Value}",
+      "uniqueId": "link_R14",
+      "manufacturer": "UNI-ROYAL(\u539a\u58f0)",
+      "manufacturerId": "0603WAF1002T5E",
+      "supplier": "LCSC",
+      "supplierId": "C25804",
+      "otherProperty": {
+        "Footprint": "R0603",
+        "LCSC Part Name": "\u539a\u819c\u7535\u963b 10k\u03a9 \u00b11% 100mW",
+        "Supplier Footprint": "0603",
+        "JLCPCB Part Class": "Basic Part",
+        "Datasheet": "https://item.szlcsc.com/datasheet/0603WAF1002T5E/26547.html",
+        "3D Model": "112863783b5b41f1b5254f87eedc7932|0819f05c4eef4c71ace90d822a990e87",
+        "3D Model Title": "R0603",
+        "3D Model Transform": "31.8897,63.7794,0,90,0,0,0,0,0",
+        "Type": "Thick Film Resistor",
+        "Value": "10k\u03a9",
+        "Tolerance": "\u00b11%",
+        "Power(Watts)": "100mW",
+        "Voltage-Supply(Max)": "75V",
+        "Temperature Coefficient": "\u00b1100ppm/\u2103",
+        "Operating Temperature": "-55\u2103~+155\u2103",
+        "Description": "Type:Thick Film Resistor Resistance:10k\u03a9 Tolerance:\u00b11% Tolerance:\u00b11% Power(Watts):100mW Voltage-Supply(Max):75V Temperature Coefficient:\u00b1100ppm/\u2103 Temperature Coefficient:\u00b1100ppm/\u2103 Operating Temperature:-55\u2103~+155\u2103 Operating Temperature:-55\u2103~+155\u2103",
+        "Device": "0603WAF1002T5E",
+        "Reuse Block": "",
+        "Group ID": "",
+        "Channel ID": "$1I767"
+      }
+    }
+  ],
+  "windowId": "14ba7d64-5edd-43cc-aebc-c66986bc8300"
+}
