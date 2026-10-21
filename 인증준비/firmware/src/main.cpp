@@ -129,7 +129,11 @@ void setup() {
     MajnVibration::initVibrationController();
 
     // 6. Amplifier Layer (TAS5805M I2C & PDN - detects stable I2S clocks)
-    MajnAmplifier::initAmplifier();
+    if (!MajnAmplifier::initAmplifier()) {
+        Serial.println("[WARN] Amplifier initialization failed or in test mode. Vibration output offline.");
+    } else {
+        Serial.println("[OK] Amplifier initialized successfully in PLAY state.");
+    }
 
     // 7. BLE GATT Server (Starts advertising MAJN-Bassinet)
     if (!initBleServer()) {

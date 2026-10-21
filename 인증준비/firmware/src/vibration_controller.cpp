@@ -110,7 +110,7 @@ void tickControlLoop(float dt) {
 
 void renderAudioBlock() {
 #if !defined(MAJN_BLE_ONLY_TEST)
-    if (!gI2sReady) {
+    if (!gI2sReady || !MajnAmplifier::isAmplifierReady()) {
         vTaskDelay(pdMS_TO_TICKS(50));
         return;
     }

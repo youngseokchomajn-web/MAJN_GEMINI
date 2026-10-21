@@ -20,9 +20,17 @@ bool initAmplifier() {
 #if defined(MAJN_BLE_ONLY_TEST)
     Serial.println("[Amplifier] BLE-only test mode: TAS5805M held in shutdown (PDN LOW).");
     digitalWrite(PIN_AMP_PDN, LOW);
-    return true;
+    gAmpReady = false;
+    gAmpStandby = true;
+    return false;
 #else
-    gAmp.begin(PIN_I2C_SDA, PIN_I2C_SCL);
+    if (!gAmp.begin(PIN_I2C_SDA, PIN_I2C_SCL)) {
+        gAmpReady = false;
+        gAmpStandby = true;
+        digitalWrite(PIN_AMP_PDN, LOW); // Hold PDN LOW for safety if init failed
+        Serial.println("[Amplifier] ERROR: TAS5805M init failed! Hardware held in shutdown (PDN LOW).");
+        return false;
+    }
     gAmpReady = true;
     gAmpStandby = false;
     Serial.println("[Amplifier] TAS5805M Initialized and in Play State.");

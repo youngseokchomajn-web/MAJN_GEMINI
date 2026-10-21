@@ -8,47 +8,75 @@ bool TAS5805M::begin(int sdaPin, int sclPin) {
     Wire.begin(sdaPin, sclPin);
     Wire.setClock(100000); // 100kHz standard I2C speed
     
-    // Auto-probe possible TAS5805M addresses (0x2D is actual on PCB, 0x2C is alternate)
-    const uint8_t possibleAddrs[] = {0x2D, 0x2C, 0x2E, 0x2F};
+    // Auto-probe possible TAS5805M addresses (TI Datasheet Table: 0x2C for 4.7k, 0x2D for 15k, 0x2E for 47k, 0x2F for 100k)
+    const uint8_t possibleAddrs[] = {
+        TAS5805M_I2C_ADDR_4K7,
+        TAS5805M_I2C_ADDR_15K,
+        TAS5805M_I2C_ADDR_47K,
+        TAS5805M_I2C_ADDR_100K
+    };
     bool found = false;
     for (uint8_t a : possibleAddrs) {
         Wire.beginTransmission(a);
         if (Wire.endTransmission() == 0) {
             _addr = a;
             found = true;
-            Serial.printf("[TAS5805M] Successfully detected at I2C address 0x%02X\n", a);
+            Serial.printf("[TAS5805M] Detected device at I2C address 0x%02X\n", a);
             break;
         }
     }
     
     if (!found) {
-        Serial.println("[TAS5805M] I2C ping didn't respond, forcing 0x2D...");
-        _addr = TAS5805M_I2C_ADDR_PULLUP;
+        Serial.println("[TAS5805M] ERROR: No TAS5805M device responded on I2C (probed 0x2C, 0x2D, 0x2E, 0x2F).");
+        Serial.println("[TAS5805M] Check 3.3V DVDD, 12V PVDD, PDN pin (GPIO15), and I2C pull-up resistors.");
+        return false;
     }
     
     // Step 1: Initial register configurations
     // Select Book 0, Page 0
-    writeBookPage(0x00, 0x00);
+    if (!writeBookPage(0x00, 0x00)) {
+        Serial.println("[TAS5805M] Init Step Failed: writeBookPage(0x00, 0x00)");
+        return false;
+    }
     delay(2);
     
     // Transition to Hi-Z (0x02) before configuring
-    writeRegister(REG_DEVICE_CTRL_2, 0x02);
+    if (!writeRegister(REG_DEVICE_CTRL_2, 0x02)) {
+        Serial.println("[TAS5805M] Init Step Failed: Set Hi-Z (REG_DEVICE_CTRL_2 = 0x02)");
+        return false;
+    }
     delay(2);
     
     // Set standard I2S format & explicit 16-bit word length (SAP_CTRL1: 0x33 = 0x00)
-    writeRegister(0x33, 0x00);
-    writeRegister(REG_SIG_CH_CTRL, 0x00);
+    if (!writeRegister(0x33, 0x00)) {
+        Serial.println("[TAS5805M] Init Step Failed: Set SAP_CTRL1 (0x33 = 0x00)");
+        return false;
+    }
+    if (!writeRegister(REG_SIG_CH_CTRL, 0x00)) {
+        Serial.println("[TAS5805M] Init Step Failed: Set REG_SIG_CH_CTRL (0x28 = 0x00)");
+        return false;
+    }
     
     // Set full 0dB unity gain volume (0x4C: 0x00 is max unattenuated volume)
-    writeRegister(REG_MASTER_VOL, 0x00);
+    if (!writeRegister(REG_MASTER_VOL, 0x00)) {
+        Serial.println("[TAS5805M] Init Step Failed: Set REG_MASTER_VOL (0x4C = 0x00)");
+        return false;
+    }
     
     // Clear any previous fault flags (Write 0x80 to 0x78 FAULT_CLEAR)
-    writeRegister(0x78, 0x80);
+    if (!writeRegister(0x78, 0x80)) {
+        Serial.println("[TAS5805M] Init Step Failed: Clear FAULT_CLEAR (0x78 = 0x80)");
+        return false;
+    }
     delay(2);
     
-    // Enter Play State (0x02)
-    enterPlayState();
+    // Enter Play State (0x03)
+    if (!enterPlayState()) {
+        Serial.println("[TAS5805M] Init Step Failed: enterPlayState()");
+        return false;
+    }
     
+    Serial.println("[TAS5805M] Initialization completed successfully. Amplifier in PLAY state.");
     return true;
 }
 
