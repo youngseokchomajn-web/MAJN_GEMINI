@@ -64,18 +64,24 @@ async function selectProvider(mode) {
   const btnSim = document.getElementById('btn-mode-sim');
   const btnBle = document.getElementById('btn-mode-ble');
 
+  const headerSubtitle = document.querySelector('.header-title p');
+
   if (mode === 'simulation') {
     activeProvider = simProvider;
+    document.body.classList.remove('mode-ble');
     btnSim?.classList.add('active');
     btnBle?.classList.remove('active');
     document.getElementById('device-mode-val').textContent = '가상 시뮬레이션';
     document.getElementById('device-mode-val').className = 'highlight';
+    if (headerSubtitle) headerSubtitle.textContent = '가상 배시넷 모션 및 달래기 로직 시뮬레이션';
   } else {
     activeProvider = bleProvider;
+    document.body.classList.add('mode-ble');
     btnBle?.classList.add('active');
     btnSim?.classList.remove('active');
     document.getElementById('device-mode-val').textContent = 'ESP32 BLE 실물';
     document.getElementById('device-mode-val').className = 'highlight';
+    if (headerSubtitle) headerSubtitle.textContent = '실물 BLE 제어 · 진동 강도/주파수 설정 · 통신 로그';
   }
 
   attachProviderEvents(activeProvider);
