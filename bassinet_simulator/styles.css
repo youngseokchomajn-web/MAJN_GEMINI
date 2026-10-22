@@ -686,3 +686,63 @@ input:checked + .slider:before { transform: translateX(20px); }
   border-radius: 8px;
 }
 
+
+
+/* BLE real-device control view: keep only controls useful for the physical prototype. */
+body.mode-ble .sidebar,
+body.mode-ble .bassinet-view-card,
+body.mode-ble .graph-card,
+body.mode-ble .hardware-card,
+body.mode-ble .ota-card {
+  display: none !important;
+}
+
+body.mode-ble .main-content {
+  width: 100%;
+  min-width: 0;
+}
+
+body.mode-ble .soothing-control-card {
+  grid-column: 1 / -1;
+}
+
+body.mode-ble .soothing-control-card .switch,
+body.mode-ble .soothing-control-card .control-group:nth-child(2),
+body.mode-ble .soothing-control-card .control-group:nth-child(3),
+body.mode-ble #btn-device-reboot {
+  display: none !important;
+}
+
+body.mode-ble .dashboard-grid {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+body.mode-ble .log-card {
+  grid-column: 1 / -1;
+}
+
+@media (max-width: 760px) {
+  body.mode-ble .main-content {
+    padding: 16px;
+  }
+
+  body.mode-ble .top-header {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  body.mode-ble .header-actions {
+    width: 100%;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  body.mode-ble .header-actions .btn {
+    padding: 9px 12px;
+  }
+
+  body.mode-ble .soothing-control-card {
+    padding: 18px;
+  }
+}
