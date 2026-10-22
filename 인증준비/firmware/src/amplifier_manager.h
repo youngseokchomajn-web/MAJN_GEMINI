@@ -13,4 +13,6 @@ void enterStandbyState();
 void shutdownAmplifier();
 void setVolume(uint8_t volumePercent);
 bool isAmplifierReady();
+bool getDiagnostics(uint8_t &state, uint8_t &chanFault, uint8_t &globalFault1);
+const char* getStatusString();
 }

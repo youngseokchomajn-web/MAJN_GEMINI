@@ -18,6 +18,10 @@
 #define REG_MASTER_VOL      0x4C
 #define REG_ANALOG_GAIN     0x5C
 #define REG_AGL_CTRL        0x60
+#define REG_CHAN_FAULT      0x70
+#define REG_GLOBAL_FAULT1   0x71
+#define REG_GLOBAL_FAULT2   0x72
+#define REG_FAULT_CLEAR     0x78
 #define REG_BOOK_SEL        0x7F
 
 class TAS5805M {
@@ -27,18 +31,22 @@ public:
     // Initialize I2C interface and configure basic parameters
     bool begin(int sdaPin, int sclPin);
     
-    // Enter Play state from standby
+    // Enter Play state from standby (clears latched faults first)
     bool enterPlayState();
     
     // Enter Standby (HIZ) state
     bool enterStandbyState();
     
-    // Set digital volume and lock it to max safety threshold (85dB limit compliance)
-    // Range: 0 (Mute) to 255 (0dB), default safety limit is -12dB (0x48)
+    // Set digital volume
     bool setVolume(uint8_t volume);
     
-    // Enable Automatic Gain Limiter (AGL) for speaker protection and peak control
+    // Enable Automatic Gain Limiter (AGL)
     bool enableAGL(bool enable);
+
+    // Read operational state and fault registers
+    bool readRegister(uint8_t reg, uint8_t &val);
+    bool getDiagnostics(uint8_t &state, uint8_t &chanFault, uint8_t &globalFault1);
+    uint8_t getI2CAddress() const;
 
 private:
     uint8_t _addr;

@@ -20,7 +20,7 @@ void enableBoost() {
 #else
     digitalWrite(PIN_BOOST_EN, HIGH);
     gBoostActive = true;
-    delay(10); // Settle time for PVDD 12V rail
+    delay(100); // Adequate settle time for MP3426 soft-start and PVDD 12V rail
     Serial.println("[Power] MP3426 12V Boost Regulator enabled.");
 #endif
 }

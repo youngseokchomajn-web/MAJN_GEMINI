@@ -66,8 +66,9 @@ void initVibrationController() {
 }
 
 void setTarget(float frequencyHz, float amplitudeScale) {
-    gTargetFrequency = constrain(frequencyHz, 30.0f, 65.0f);
+    gTargetFrequency = constrain(frequencyHz, 30.0f, 250.0f);
     gTargetAmplitude = constrain(amplitudeScale, 0.0f, 1.0f);
+    gCurrentAmplitude = gTargetAmplitude; // Apply immediately to prevent ramp delay/starvation
 }
 
 float getTargetFrequency() {
@@ -110,17 +111,17 @@ void tickControlLoop(float dt) {
 
 void renderAudioBlock() {
 #if !defined(MAJN_BLE_ONLY_TEST)
-    if (!gI2sReady || !MajnAmplifier::isAmplifierReady()) {
+    if (!gI2sReady) {
         vTaskDelay(pdMS_TO_TICKS(50));
         return;
     }
 
     int16_t buffer[512];
-    if (!systemActive || MajnSafety::isSafetyLockTriggered() || gCurrentAmplitude <= 0.001f) {
+    // If not active or amplitude zero or amplifier not ready, stream silence to keep I2S clocks alive
+    if (!systemActive || MajnSafety::isSafetyLockTriggered() || gCurrentAmplitude <= 0.001f || !MajnAmplifier::isAmplifierReady()) {
         memset(buffer, 0, sizeof(buffer));
-        size_t bytes_written;
+        size_t bytes_written = 0;
         i2s_write(I2S_NUM_0, buffer, sizeof(buffer), &bytes_written, portMAX_DELAY);
-        vTaskDelay(pdMS_TO_TICKS(20));
         return;
     }
 
@@ -128,13 +129,13 @@ void renderAudioBlock() {
     for (int i = 0; i < 256; i++) {
         int index = (int)gLutPhase % LUT_SIZE;
         int16_t sample = (int16_t)((float)gSineLut[index] * gCurrentAmplitude);
-        buffer[i * 2]     = sample;
-        buffer[i * 2 + 1] = sample;
+        buffer[i * 2]     = sample; // Ch1 (Left / J1)
+        buffer[i * 2 + 1] = sample; // Ch2 (Right / J2)
         gLutPhase += step;
         if (gLutPhase >= (float)LUT_SIZE) gLutPhase -= (float)LUT_SIZE;
     }
 
-    size_t bytes_written;
+    size_t bytes_written = 0;
     i2s_write(I2S_NUM_0, buffer, sizeof(buffer), &bytes_written, portMAX_DELAY);
 #else
     vTaskDelay(pdMS_TO_TICKS(100));

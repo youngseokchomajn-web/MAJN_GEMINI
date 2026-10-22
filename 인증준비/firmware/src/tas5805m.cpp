@@ -57,18 +57,14 @@ bool TAS5805M::begin(int sdaPin, int sclPin) {
         return false;
     }
     
-    // Set full 0dB unity gain volume (0x4C: 0x00 is max unattenuated volume)
-    if (!writeRegister(REG_MASTER_VOL, 0x00)) {
-        Serial.println("[TAS5805M] Init Step Failed: Set REG_MASTER_VOL (0x4C = 0x00)");
-        return false;
-    }
+    // Set 0dB unity gain volume for Master, Ch1, and Ch2 (0x30 = 0dB in TAS5805M)
+    writeRegister(REG_MASTER_VOL, 0x30); // 0x4C
+    writeRegister(0x4D, 0x30);           // CH1 Volume
+    writeRegister(0x4E, 0x30);           // CH2 Volume (J2 speaker connector)
     
     // Clear any previous fault flags (Write 0x80 to 0x78 FAULT_CLEAR)
-    if (!writeRegister(0x78, 0x80)) {
-        Serial.println("[TAS5805M] Init Step Failed: Clear FAULT_CLEAR (0x78 = 0x80)");
-        return false;
-    }
-    delay(2);
+    writeRegister(0x78, 0x80);
+    delay(5);
     
     // Enter Play State (0x03)
     if (!enterPlayState()) {
@@ -80,10 +76,37 @@ bool TAS5805M::begin(int sdaPin, int sclPin) {
     return true;
 }
 
+uint8_t TAS5805M::getI2CAddress() const {
+    return _addr;
+}
+
 bool TAS5805M::enterPlayState() {
-    writeBookPage(0x00, 0x00);
+    if (!writeBookPage(0x00, 0x00)) return false;
+    // Clear latched faults before requesting Play mode
+    writeRegister(REG_FAULT_CLEAR, 0x80);
+    delay(5);
     // REG_DEVICE_CTRL_2 (0x03): 0x03 = PLAY Mode (0x02 = Hi-Z Mode)
     return writeRegister(REG_DEVICE_CTRL_2, 0x03);
+}
+
+bool TAS5805M::readRegister(uint8_t reg, uint8_t &val) {
+    Wire.beginTransmission(_addr);
+    Wire.write(reg);
+    if (Wire.endTransmission() != 0) return false;
+    if (Wire.requestFrom(_addr, (uint8_t)1) != 1) return false;
+    val = Wire.read();
+    return true;
+}
+
+bool TAS5805M::getDiagnostics(uint8_t &state, uint8_t &chanFault, uint8_t &globalFault1) {
+    if (!writeBookPage(0x00, 0x00)) return false;
+    state = 0xFF;
+    chanFault = 0xFF;
+    globalFault1 = 0xFF;
+    readRegister(REG_DEVICE_CTRL_2, state);
+    readRegister(REG_CHAN_FAULT, chanFault);
+    readRegister(REG_GLOBAL_FAULT1, globalFault1);
+    return true;
 }
 
 bool TAS5805M::enterStandbyState() {
@@ -94,30 +117,20 @@ bool TAS5805M::enterStandbyState() {
 
 bool TAS5805M::setVolume(uint8_t volume) {
     if (!writeBookPage(0x00, 0x00)) return false;
-    
-    // TAS5805M REG_MASTER_VOL (0x4C): 0x30 = 0dB default reset value.
-    // Clamping to maximum 0x30 ensures unity gain without over-driving.
     uint8_t safetyVolume = volume;
     if (safetyVolume > 0x30) {
         safetyVolume = 0x30;
     }
-    
     return writeRegister(REG_MASTER_VOL, safetyVolume);
 }
 
 bool TAS5805M::enableAGL(bool enable) {
-    // AGL configuration on Book 0, Page 0x3C (DSP control memory page)
     if (!writeBookPage(0x00, 0x3C)) return false;
-    
-    // Enable AGL threshold and analog/digital limits
     if (enable) {
-        // Mock register write for AGL activation
-        if (!writeRegister(REG_AGL_CTRL, 0x01)) return false; // Enable limiters
+        if (!writeRegister(REG_AGL_CTRL, 0x01)) return false;
     } else {
         if (!writeRegister(REG_AGL_CTRL, 0x00)) return false;
     }
-    
-    // Re-select page 0
     return writeBookPage(0x00, 0x00);
 }
 
@@ -129,17 +142,23 @@ bool TAS5805M::writeRegister(uint8_t reg, uint8_t value) {
     return (Wire.endTransmission() == 0);
 }
 
-// Private helper to change Book and Page selection in TAS5805M
+// Private helper to change Book and Page selection in TAS5805M (TI 3-step sequence)
 bool TAS5805M::writeBookPage(uint8_t book, uint8_t page) {
-    // 1. Write Book selection
+    // 1. Move to Page 0 first so register 0x7F operates as Book Select
     Wire.beginTransmission(_addr);
-    Wire.write(REG_BOOK_SEL);
+    Wire.write((uint8_t)0x00);
+    Wire.write((uint8_t)0x00);
+    if (Wire.endTransmission() != 0) return false;
+    
+    // 2. Write Book selection (0x7F)
+    Wire.beginTransmission(_addr);
+    Wire.write((uint8_t)REG_BOOK_SEL);
     Wire.write(book);
     if (Wire.endTransmission() != 0) return false;
     
-    // 2. Write Page selection (always at register 0x00)
+    // 3. Write target Page selection (0x00)
     Wire.beginTransmission(_addr);
-    Wire.write(0x00);
+    Wire.write((uint8_t)0x00);
     Wire.write(page);
     return (Wire.endTransmission() == 0);
 }

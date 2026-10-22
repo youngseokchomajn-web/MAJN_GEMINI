@@ -197,10 +197,10 @@ export class BleDeviceProvider extends DeviceProvider {
       const raw = this.decoder.decode(event.target.value);
       const data = JSON.parse(raw);
       if (data.type === 'ack') {
-        const isErr = (data.status === 'rejected' || data.status === 'fault');
+        const diagStr = data.diag ? ` [${data.diag}]` : '';
         this.emit('log', {
           type: isErr ? 'error' : 'info',
-          message: `[BLE ACK #${data.id}] ${data.cmd}: ${data.status}${data.state ? ` (State: ${data.state})` : ''}`
+          message: `[BLE ACK #${data.id}] ${data.cmd}: ${data.status}${data.state ? ` (State: ${data.state})` : ''}${diagStr}`
         });
         if (data.state && this.state !== data.state) {
           this.setState(data.state, `ACK ${data.cmd}`);

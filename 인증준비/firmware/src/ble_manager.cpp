@@ -45,6 +45,22 @@ void sendAck(int id, const char* cmd, const char* status, const char* state) {
     doc["cmd"] = cmd;
     doc["status"] = status;
     doc["state"] = state;
+
+    doc["amp_status"] = MajnAmplifier::getStatusString();
+    uint8_t aState = 0, cFault = 0, gFault = 0;
+    if (MajnAmplifier::getDiagnostics(aState, cFault, gFault)) {
+        doc["amp_state"] = aState;
+        doc["chan_fault"] = cFault;
+        doc["glob_fault"] = gFault;
+        char diagBuf[64];
+        snprintf(diagBuf, sizeof(diagBuf), "Amp:S=0x%02X,CF=0x%02X,GF=0x%02X [%s]", aState, cFault, gFault, MajnAmplifier::getStatusString());
+        doc["diag"] = diagBuf;
+    } else {
+        char diagBuf[64];
+        snprintf(diagBuf, sizeof(diagBuf), "Amp:[%s]", MajnAmplifier::getStatusString());
+        doc["diag"] = diagBuf;
+    }
+
     String out;
     serializeJson(doc, out);
     gEvent->setValue(out.c_str());
@@ -94,6 +110,11 @@ class CommandCallbacks : public BLECharacteristicCallbacks {
                 sendAck(id, cmd, "fault", "FAULT");
                 return;
             }
+            // Auto-retry amplifier init if it was not ready at boot
+            if (!MajnAmplifier::isAmplifierReady()) {
+                MajnAmplifier::initAmplifier();
+            }
+
             systemActive = true;
             activeStateStartTime = millis();
             float f = doc["frequency_hz"] | MajnVibration::getTargetFrequency();
@@ -257,6 +278,8 @@ void bleNotifyTelemetry(
     doc["pvdd_v"] = nullptr;
     doc["vdd_3v3_v"] = nullptr;
     doc["amp_temp_c"] = nullptr;
+    doc["amp_ready"] = MajnAmplifier::isAmplifierReady();
+    doc["amp_status"] = MajnAmplifier::getStatusString();
 
     String out;
     serializeJson(doc, out);
