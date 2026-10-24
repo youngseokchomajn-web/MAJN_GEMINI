@@ -62,6 +62,9 @@ bool TAS5805M::begin(int sdaPin, int sclPin) {
     writeRegister(0x4D, 0x30);           // CH1 Volume
     writeRegister(0x4E, 0x30);           // CH2 Volume (J2 speaker connector)
     
+    // Enable Spread Spectrum for EMI suppression (3~6dB peak reduction)
+    enableSpreadSpectrum(true);
+
     // Clear any previous fault flags (Write 0x80 to 0x78 FAULT_CLEAR)
     writeRegister(0x78, 0x80);
     delay(5);
@@ -132,6 +135,21 @@ bool TAS5805M::enableAGL(bool enable) {
         if (!writeRegister(REG_AGL_CTRL, 0x00)) return false;
     }
     return writeBookPage(0x00, 0x00);
+}
+
+bool TAS5805M::enableSpreadSpectrum(bool enable) {
+    if (!writeBookPage(0x00, 0x00)) return false;
+    if (enable) {
+        // SS_CTRL0 (0x6B) = 0x03 (Enable Spread Spectrum with triangle mode)
+        // SS_CTRL1 (0x6C) = 0x03 (24kHz triangle frequency, 25% spread range)
+        writeRegister(REG_SS_CTRL0, 0x03);
+        writeRegister(REG_SS_CTRL1, 0x03);
+        Serial.println("[TAS5805M] EMI Spread Spectrum Enabled (SS_CTRL0=0x03, SS_CTRL1=0x03)");
+    } else {
+        writeRegister(REG_SS_CTRL0, 0x00);
+        Serial.println("[TAS5805M] EMI Spread Spectrum Disabled");
+    }
+    return true;
 }
 
 // Private helper to write standard I2C register

@@ -18,6 +18,8 @@
 #define REG_MASTER_VOL      0x4C
 #define REG_ANALOG_GAIN     0x5C
 #define REG_AGL_CTRL        0x60
+#define REG_SS_CTRL0        0x6B
+#define REG_SS_CTRL1        0x6C
 #define REG_CHAN_FAULT      0x70
 #define REG_GLOBAL_FAULT1   0x71
 #define REG_GLOBAL_FAULT2   0x72
@@ -42,6 +44,9 @@ public:
     
     // Enable Automatic Gain Limiter (AGL)
     bool enableAGL(bool enable);
+
+    // Enable EMI Spread Spectrum (3~6dB peak EMI reduction)
+    bool enableSpreadSpectrum(bool enable);
 
     // Read operational state and fault registers
     bool readRegister(uint8_t reg, uint8_t &val);
