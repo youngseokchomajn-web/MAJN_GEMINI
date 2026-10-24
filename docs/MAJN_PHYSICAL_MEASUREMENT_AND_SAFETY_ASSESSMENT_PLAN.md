@@ -27,14 +27,21 @@
   - Class-D 앰프는 출력단 LC 필터($L \approx 10\mu\text{H}, C \approx 0.68\mu\text{F}$)를 포함합니다.
   - 부하(스피커/익사이터)가 완전히 개방된 무부하 상태에서 고진폭/고주파 신호를 인가하면 LC 공진 회로의 Q-factor가 급격히 상승하여 전압 스파이크 및 EMI가 발생할 수 있습니다.
   - 따라서 **무부하 시험은 전원 레일 확인 및 음소거(Mute) 명령, 극저레벨 디지털 버스 검증에만 한정**합니다.
-* **더미 부하 규격 및 방열/지속 시간 조건**:
-  - 권장 부하: $8\ \Omega$ (또는 $4\ \Omega$), 정격 **$10\text{ W} \sim 20\text{ W}$ 무유도 권선형 저항 (방열판 부착 필수)**.
-  - **열적 계산 및 듀티사이클 제한**:
-    - PVDD 12V BTL 구동 시 정현파 실효 전력 $P \approx \frac{V_{\text{rms}}^2}{R} = \frac{(12 / \sqrt{2})^2}{8} \approx 9\text{ W}$ (4Ω 연결 시 $\approx 18\text{ W}$).
-    - 저항 정격만으로 장시간 시험의 안전이 보장되지 않으므로, **시험 버스트 시간을 최대 5초로 제한하고 20초 이상의 냉각 휴지기(Duty cycle $\le 20\%$)를 준수**합니다.
-    - 비접촉 적외선 온도계(IR Thermometer)로 저항 표면 온도를 실시간 감시하여 $60^\circ\text{C}$ 초과 시 시험을 즉시 중단합니다.
+* **더미 부하 규격 및 전력 계산 기준 (물리 법칙 정합성)**:
+  - 권장 부하: $8\ \Omega$ (또는 $4\ \Omega$), 정격 **$20\text{ W} \sim 50\text{ W}$ 무유도 권선형 저항 (방열판 부착 필수)**.
+  - **전압 정의에 따른 부하 전력 비교 (이론치)**:
+    | 가정한 차동 출력 전압 | $8\ \Omega$ 부하 소모 전력 | $4\ \Omega$ 부하 소모 전력 |
+    |:---|:---:|:---:|
+    | **$12\text{ V}_{\text{rms}}$ (True RMS)** | $18\text{ W}$ | $36\text{ W}$ |
+    | **$12\text{ V}_{\text{peak}}$ 정현파 ($8.485\text{ V}_{\text{rms}}$)** | $9\text{ W}$ | $18\text{ W}$ |
+  - **실측 기반 전력 산출 원칙**: 
+    - 상기 $9\text{ W} / 18\text{ W}$는 전원 전압 12V가 차동 정현파의 "피크 전압"으로 온전히 전달된다고 가정한 이론치일 뿐입니다.
+    - 실제 출력은 PVDD 전압 강하, 스위칭 FET $R_{\text{ds(on)}}$, LC 필터 손실에 따라 달라지므로, 반드시 **계측기(True RMS 차동 프로브)로 실측된 실효 전압 $V_{\text{diff, rms}}$를 측정하여 $P_{\text{actual}} = \frac{V_{\text{diff, rms}}^2}{R_{\text{load}}}$로 계산**해야 합니다.
+  - **열적 안전성 및 냉각 기준**:
+    - "5초 구동 / 20초 휴지" 규칙은 단순 가이드라인일 뿐, 저항의 표면 온도가 $60^\circ\text{C}$ 이하로 유지된다는 물리적 보장이 아닙니다.
+    - 따라서 방열판(Heatsink) 체결 및 강제 팬 공랭을 기본으로 하며, **접촉식 열전대(Thermocouple) 또는 적외선 온도계로 표면 온도를 실시간 측정하여 $60^\circ\text{C}$에 도달하는 즉시 모든 전기적 구동을 중단**합니다.
 
-### ③ TAS5805M Fault 레지스터 처리 순서 및 의미 정합성
+### ③ Fault 진단(Observability)과 능동 안전 차단(Active Fail-safe Interlock)의 구분
 TAS5805M Datasheet(SLASEH8B Table 7-10)에 따른 레지스터 주소 및 결함 비트 정의:
 
 | 레지스터 주소 | 이름 | 주요 모니터링 비트 정의 |
@@ -45,8 +52,13 @@ TAS5805M Datasheet(SLASEH8B Table 7-10)에 따른 레지스터 주소 및 결함
 | **`0x73`** | `WARNING` | Bit 2: Over-temperature Warning (OTW)<br/>Bit 1: Left Channel CB Fault / Bit 0: Right Channel CB Fault |
 | **`0x78`** | `FAULT_CLEAR` | Write `0x80`: 모든 래치된 결함 플래그 클리어 |
 
-> [!IMPORTANT] **Fault 읽기 및 클리어 순서 엄수 (Read-before-Clear)**
-> `0x78`에 `0x80`을 쓰면 하드웨어 래치 플래그가 초기화되므로, **클리어 전에 반드시 `0x70~0x72`를 먼저 읽어 고장 원인을 콘솔/로그에 보존한 후 클리어를 수행**해야 합니다(펌웨어 `enterPlayState` 및 `getDiagnostics`에 반영 완료). 또한 Fault 레지스터가 `0x00`이라 하더라도 전원 공급 차단, I2C 통신 두절, 부하 단선 등은 감지되지 않으므로, **I2C 트랜잭션 성공 여부와 하드웨어 물리 전압을 반드시 교차 검증**해야 합니다.
+> [!CAUTION] **진단과 안전 차단의 분리 및 ESP32 능동 인터록 구현**
+> 1. **단순 진단(Diagnostics)**: `getDiagnostics()`가 레지스터를 읽어오는 것은 상태 관측일 뿐 고장 방어가 아닙니다. Fault 레지스터가 `0x00`이라도 전원 미인가나 부하 단선은 감지되지 않습니다.
+> 2. **읽기 실패와 실제 Fault 구분**: I²C 읽기 실패(통신 두절)는 정상 상태(`0x00`)가 아니므로, **통신 NACK 즉시 "I2C 통신 두절 결함"으로 분류하여 하드웨어 셧다운**을 트리거해야 합니다.
+> 3. **능동 안전 차단(Fail-safe Action)**: 
+>    - `main.cpp`의 제어 루프(100ms 주기)에서 실시간으로 앰프를 감독합니다.
+>    - `cFault != 0` or `gFault != 0` (하드웨어 결함 검출) 또는 `!getDiagnostics()` (통신 두절) 발생 시, **ESP32는 즉시 `MajnSafety::requestEmergencyStop()`을 실행**합니다.
+>    - 이 동작은 즉시 ① `PIN_AMP_PDN` LOW 하드웨어 셧다운, ② 12V 승압 회로 차단(`BOOST_EN` LOW), ③ 진동 진폭 0.0f 강제, ④ BLE `FAULT` 상태 천이 및 재시작 래치(`gSafetyLock = true`)를 수행하여 **시스템이 스스로 안전 상태로 수렴하도록 하드웨어-소프트웨어 인터록을 완성**했습니다.
 
 ### ④ 가속도 센서 계측학적(Metrological) 신뢰성 확보 조건
 * **측정 범위 (Full Scale)**: 배시넷 미세 진동 계측을 위해 분해능이 높은 $\pm 2\text{ g}$ 또는 $\pm 4\text{ g}$ 레인지 선정.
