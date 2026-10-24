@@ -22,17 +22,20 @@
   - 일반 상용 오실로스코프의 프로브 접지선(GND 클립)을 $\text{OUT}_-$ 단자에 직접 연결할 경우, $\approx 6\text{ V}$ 바이어스 전압이 대지 접지를 통해 단락(Short)되어 앰프 내부 FET가 파손됩니다.
   - **반드시 차동 프로브(Differential Probe)를 사용하거나, 채널 2개를 이용한 차동 연산(Ch1 - Ch2) 또는 배터리 구동 절연형 계측기를 사용**해야 합니다.
 
-### ② 제조사 권장 부하 조건 및 무부하 구동 제한
+### ② 더미 부하(Dummy Load) 열적·시간적 구동 조건
 * **무부하(Open Load) 구동 시 주의**:
   - Class-D 앰프는 출력단 LC 필터($L \approx 10\mu\text{H}, C \approx 0.68\mu\text{F}$)를 포함합니다.
   - 부하(스피커/익사이터)가 완전히 개방된 무부하 상태에서 고진폭/고주파 신호를 인가하면 LC 공진 회로의 Q-factor가 급격히 상승하여 전압 스파이크 및 EMI가 발생할 수 있습니다.
   - 따라서 **무부하 시험은 전원 레일 확인 및 음소거(Mute) 명령, 극저레벨 디지털 버스 검증에만 한정**합니다.
-* **더미 부하(Dummy Load) 사양**:
-  - 권장 부하: $4\ \Omega$ 또는 $8\ \Omega$, 정격 **$10\text{ W} \sim 20\text{ W}$ 무유도 권선형 저항 (방열판 부착 권장)**.
-  - PVDD 12V 풀스윙 시 $P = \frac{V_{\text{rms}}^2}{R} = \frac{(12 / \sqrt{2})^2}{4} \approx 18\text{ W}$의 순간 피크 전력이 소모될 수 있으므로 저항의 허용 전력과 방열 대책을 확인해야 합니다.
+* **더미 부하 규격 및 방열/지속 시간 조건**:
+  - 권장 부하: $8\ \Omega$ (또는 $4\ \Omega$), 정격 **$10\text{ W} \sim 20\text{ W}$ 무유도 권선형 저항 (방열판 부착 필수)**.
+  - **열적 계산 및 듀티사이클 제한**:
+    - PVDD 12V BTL 구동 시 정현파 실효 전력 $P \approx \frac{V_{\text{rms}}^2}{R} = \frac{(12 / \sqrt{2})^2}{8} \approx 9\text{ W}$ (4Ω 연결 시 $\approx 18\text{ W}$).
+    - 저항 정격만으로 장시간 시험의 안전이 보장되지 않으므로, **시험 버스트 시간을 최대 5초로 제한하고 20초 이상의 냉각 휴지기(Duty cycle $\le 20\%$)를 준수**합니다.
+    - 비접촉 적외선 온도계(IR Thermometer)로 저항 표면 온도를 실시간 감시하여 $60^\circ\text{C}$ 초과 시 시험을 즉시 중단합니다.
 
-### ③ TAS5805M Fault 레지스터 데이터시트 대조 (Book 0 / Page 0)
-TAS5805M Datasheet(SLASEH8B) Table 7-10에 따른 레지스터 주소 및 결함 비트 정의:
+### ③ TAS5805M Fault 레지스터 처리 순서 및 의미 정합성
+TAS5805M Datasheet(SLASEH8B Table 7-10)에 따른 레지스터 주소 및 결함 비트 정의:
 
 | 레지스터 주소 | 이름 | 주요 모니터링 비트 정의 |
 |:---|:---|:---|
@@ -41,6 +44,30 @@ TAS5805M Datasheet(SLASEH8B) Table 7-10에 따른 레지스터 주소 및 결함
 | **`0x72`** | `GLOBAL_FAULT2` | Bit 0: Over-temperature Shutdown (OTS) |
 | **`0x73`** | `WARNING` | Bit 2: Over-temperature Warning (OTW)<br/>Bit 1: Left Channel CB Fault / Bit 0: Right Channel CB Fault |
 | **`0x78`** | `FAULT_CLEAR` | Write `0x80`: 모든 래치된 결함 플래그 클리어 |
+
+> [!IMPORTANT] **Fault 읽기 및 클리어 순서 엄수 (Read-before-Clear)**
+> `0x78`에 `0x80`을 쓰면 하드웨어 래치 플래그가 초기화되므로, **클리어 전에 반드시 `0x70~0x72`를 먼저 읽어 고장 원인을 콘솔/로그에 보존한 후 클리어를 수행**해야 합니다(펌웨어 `enterPlayState` 및 `getDiagnostics`에 반영 완료). 또한 Fault 레지스터가 `0x00`이라 하더라도 전원 공급 차단, I2C 통신 두절, 부하 단선 등은 감지되지 않으므로, **I2C 트랜잭션 성공 여부와 하드웨어 물리 전압을 반드시 교차 검증**해야 합니다.
+
+### ④ 가속도 센서 계측학적(Metrological) 신뢰성 확보 조건
+* **측정 범위 (Full Scale)**: 배시넷 미세 진동 계측을 위해 분해능이 높은 $\pm 2\text{ g}$ 또는 $\pm 4\text{ g}$ 레인지 선정.
+* **주파수 대역폭 및 평탄도**: 목표 대역(30Hz ~ 100Hz)에서 진폭 평탄도 $\pm 5\%$ 이내, 센서 차단 주파수(Cutoff) $\ge 500\text{ Hz}$, 샘플링 주파수 $\ge 1\text{ kHz}$.
+* **노이즈 플로어 (Noise Density)**: 미세 달래기 진동의 노이즈 묻힘을 방지하기 위해 $< 150\,\mu\text{g}/\sqrt{\text{Hz}}$ 성능 센서 사용.
+* **질량 부하 효과 (Mass Loading Effect) 억제**:
+  - 패드 표면은 연질 우레탄 폼이므로 센서 자체 중량이 크면 국소 함몰로 기구계의 유효 질량과 댐핑이 왜곡됩니다.
+  - 센서 자체 질량 $\le 5\text{ g}$의 초경량 MEMS 센서를 얇은 박막 양면테이프로 부착하여 패드 표면 거동과 일체화시킵니다.
+* **센서 교정**: 1G 정적 중력장 교정(Static Gravity Calibration, $\pm 1\text{ g}$ 반전 측정)을 시험 전 반드시 실시하여 오프셋을 보정합니다.
+
+---
+
+## 2. MAJN 핵심 실증 5대 질문 (Research Objectives)
+
+본 계측은 연구기관(소아과, 공학 연구소) 협업 및 후속 양산 설계를 위해 다음 5가지 핵심 질문에 정량적 데이터로 답하는 것을 목표로 합니다:
+
+1. **주파수 응답 (Frequency Response)**: 입력 주파수(30Hz ~ 80Hz)에 따라 패드 상면의 진동 가속도와 음향 소음은 어떻게 변화하는가?
+2. **하중 민감도 (Mass & Damping Sensitivity)**: 무하중, 3kg, 5kg 적재 조건에 따라 합판-매트리스 계통의 공진 주파수와 진폭 감쇄량은 얼마나 달라지는가?
+3. **제어 선형성 (Linearity & Monotonicity)**: 소프트웨어 진폭(0.1 ~ 0.5)과 볼륨 레지스터를 단계별로 조절할 때 패드 상면 가속도(G)가 단조 증가(Monotonic Increase)하는가?
+4. **잔류 진동 감쇄 (Ring-down & Settling Time)**: 진동 정지(STOP / PDN LOW) 명령 인가 후 매트리스 상면 진동이 완전히 멈출 때까지 몇 밀리초(ms)가 소요되는가?
+5. **고장 안전 거동 (Fail-safe & Fault Interlock)**: 전원 전압 강하나 부하 단락 발생 시 TAS5805M 및 ESP32가 출력을 몇 밀리초 내에 안전 차단(HIZ / Mute)하는가?
 
 ---
 

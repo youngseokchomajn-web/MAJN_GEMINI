@@ -23,6 +23,7 @@
 #define REG_CHAN_FAULT      0x70
 #define REG_GLOBAL_FAULT1   0x71
 #define REG_GLOBAL_FAULT2   0x72
+#define REG_WARNING         0x73
 #define REG_FAULT_CLEAR     0x78
 #define REG_BOOK_SEL        0x7F
 
@@ -33,7 +34,7 @@ public:
     // Initialize I2C interface and configure basic parameters
     bool begin(int sdaPin, int sclPin);
     
-    // Enter Play state from standby (clears latched faults first)
+    // Enter Play state from standby (logs latched faults, then clears, then requests Play)
     bool enterPlayState();
     
     // Enter Standby (HIZ) state
@@ -51,6 +52,7 @@ public:
     // Read operational state and fault registers
     bool readRegister(uint8_t reg, uint8_t &val);
     bool getDiagnostics(uint8_t &state, uint8_t &chanFault, uint8_t &globalFault1);
+    bool getFullDiagnostics(uint8_t &state, uint8_t &chanFault, uint8_t &globalFault1, uint8_t &globalFault2, uint8_t &warning);
     uint8_t getI2CAddress() const;
 
 private:

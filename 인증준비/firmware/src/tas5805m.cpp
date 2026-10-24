@@ -91,9 +91,24 @@ uint8_t TAS5805M::getI2CAddress() const {
 
 bool TAS5805M::enterPlayState() {
     if (!writeBookPage(0x00, 0x00)) return false;
-    // Clear latched faults before requesting Play mode
-    writeRegister(REG_FAULT_CLEAR, 0x80);
+    
+    // Read and log latched fault state before clearing to preserve root cause
+    uint8_t cFault = 0, gFault1 = 0, gFault2 = 0;
+    if (readRegister(REG_CHAN_FAULT, cFault) && 
+        readRegister(REG_GLOBAL_FAULT1, gFault1) && 
+        readRegister(REG_GLOBAL_FAULT2, gFault2)) {
+        if (cFault != 0 || gFault1 != 0 || gFault2 != 0) {
+            Serial.printf("[TAS5805M] Notice: Latched faults before clear -> Chan=0x%02X, Glob1=0x%02X, Glob2=0x%02X\n",
+                          cFault, gFault1, gFault2);
+        }
+    }
+    
+    // Clear latched faults before requesting Play mode (Write 0x80 to 0x78)
+    if (!writeRegister(REG_FAULT_CLEAR, 0x80)) {
+        Serial.println("[TAS5805M] Warning: Failed to write FAULT_CLEAR");
+    }
     delay(5);
+    
     // REG_DEVICE_CTRL_2 (0x03): 0x03 = PLAY Mode (0x02 = Hi-Z Mode)
     return writeRegister(REG_DEVICE_CTRL_2, 0x03);
 }
@@ -109,13 +124,20 @@ bool TAS5805M::readRegister(uint8_t reg, uint8_t &val) {
 
 bool TAS5805M::getDiagnostics(uint8_t &state, uint8_t &chanFault, uint8_t &globalFault1) {
     if (!writeBookPage(0x00, 0x00)) return false;
-    state = 0xFF;
-    chanFault = 0xFF;
-    globalFault1 = 0xFF;
-    readRegister(REG_DEVICE_CTRL_2, state);
-    readRegister(REG_CHAN_FAULT, chanFault);
-    readRegister(REG_GLOBAL_FAULT1, globalFault1);
-    return true;
+    bool ok1 = readRegister(REG_DEVICE_CTRL_2, state);
+    bool ok2 = readRegister(REG_CHAN_FAULT, chanFault);
+    bool ok3 = readRegister(REG_GLOBAL_FAULT1, globalFault1);
+    return (ok1 && ok2 && ok3);
+}
+
+bool TAS5805M::getFullDiagnostics(uint8_t &state, uint8_t &chanFault, uint8_t &globalFault1, uint8_t &globalFault2, uint8_t &warning) {
+    if (!writeBookPage(0x00, 0x00)) return false;
+    bool ok1 = readRegister(REG_DEVICE_CTRL_2, state);
+    bool ok2 = readRegister(REG_CHAN_FAULT, chanFault);
+    bool ok3 = readRegister(REG_GLOBAL_FAULT1, globalFault1);
+    bool ok4 = readRegister(REG_GLOBAL_FAULT2, globalFault2);
+    bool ok5 = readRegister(REG_WARNING, warning);
+    return (ok1 && ok2 && ok3 && ok4 && ok5);
 }
 
 bool TAS5805M::enterStandbyState() {
