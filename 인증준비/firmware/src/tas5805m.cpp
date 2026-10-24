@@ -118,13 +118,18 @@ bool TAS5805M::enterStandbyState() {
     return writeRegister(REG_DEVICE_CTRL_2, 0x02);
 }
 
-bool TAS5805M::setVolume(uint8_t volume) {
+bool TAS5805M::setVolume(uint8_t volumeReg) {
     if (!writeBookPage(0x00, 0x00)) return false;
-    uint8_t safetyVolume = volume;
-    if (safetyVolume > 0x30) {
+    // TAS5805M REG_MASTER_VOL (0x4C): 0x00 = +24dB, 0x30 = 0dB (Unity Gain), 0xFF = Mute
+    // Clamping to minimum 0x30 prevents over-amplification beyond 0dB (infant ear protection)
+    uint8_t safetyVolume = volumeReg;
+    if (safetyVolume < 0x30) {
         safetyVolume = 0x30;
     }
-    return writeRegister(REG_MASTER_VOL, safetyVolume);
+    writeRegister(REG_MASTER_VOL, safetyVolume); // 0x4C
+    writeRegister(0x4D, safetyVolume);           // CH1 Volume
+    writeRegister(0x4E, safetyVolume);           // CH2 Volume
+    return true;
 }
 
 bool TAS5805M::enableAGL(bool enable) {

@@ -79,7 +79,18 @@ void setVolume(uint8_t volumePercent) {
     gCurrentVolume = constrain(volumePercent, (uint8_t)0, (uint8_t)100);
 #if !defined(MAJN_BLE_ONLY_TEST)
     if (gAmpReady) {
-        // Map 0~100% to volume register if needed
+        // Map 0~100% to TAS5805M attenuation register:
+        // 100% -> 0x30 (0dB max), 0% -> 0xFF (Mute)
+        uint8_t regVal;
+        if (gCurrentVolume == 0) {
+            regVal = 0xFF; // Complete Mute
+        } else {
+            // Linear mapping: 100% -> 0x30 (48), 1% -> 0xFE (254)
+            regVal = 0x30 + (uint8_t)(((100 - gCurrentVolume) * 206) / 100);
+            if (regVal > 0xFE) regVal = 0xFE;
+        }
+        gAmp.setVolume(regVal);
+        Serial.printf("[Amplifier] Volume updated: %d%% -> Reg 0x%02X\n", gCurrentVolume, regVal);
     }
 #endif
 }
