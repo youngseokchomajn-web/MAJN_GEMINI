@@ -118,7 +118,7 @@ class CommandCallbacks : public BLECharacteristicCallbacks {
             systemActive = true;
             activeStateStartTime = millis();
             float f = doc["frequency_hz"] | MajnVibration::getTargetFrequency();
-            float a = doc["amplitude"] | (MajnVibration::getTargetAmplitude() > 0.05f ? MajnVibration::getTargetAmplitude() : 0.6f);
+            float a = doc["amplitude"] | (MajnVibration::getTargetAmplitude() > 0.05f ? MajnVibration::getTargetAmplitude() : 0.4f);
             MajnVibration::setTarget(f, a);
             MajnAmplifier::enterPlayState();
             sendAck(id, cmd, "applied", "RUNNING");
@@ -166,13 +166,13 @@ class CommandCallbacks : public BLECharacteristicCallbacks {
             return;
         }
         if (strcmp(cmd, "SET_VOLUME") == 0) {
-            uint8_t v = doc["volume"] | 0;
-            if (v > 100) {
+            int v = doc["volume"] | -1;
+            if (v < 0 || v > 100) {
                 sendAck(id, cmd, "rejected", stateName(MajnSafety::getSystemState(systemActive)));
                 return;
             }
-            MajnAmplifier::setVolume(v);
-            sendAck(id, cmd, "applied", stateName(MajnSafety::getSystemState(systemActive)));
+            bool ok = MajnAmplifier::setVolume((uint8_t)v);
+            sendAck(id, cmd, ok ? "applied" : "failed", stateName(MajnSafety::getSystemState(systemActive)));
             return;
         }
         if (strcmp(cmd, "SET_PRESET") == 0) {

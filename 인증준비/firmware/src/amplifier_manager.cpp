@@ -75,7 +75,7 @@ void shutdownAmplifier() {
     Serial.println("[Amplifier] TAS5805M PDN asserted LOW (Hardware Mute/Shutdown).");
 }
 
-void setVolume(uint8_t volumePercent) {
+bool setVolume(uint8_t volumePercent) {
     gCurrentVolume = constrain(volumePercent, (uint8_t)0, (uint8_t)100);
 #if !defined(MAJN_BLE_ONLY_TEST)
     if (gAmpReady) {
@@ -89,10 +89,15 @@ void setVolume(uint8_t volumePercent) {
             regVal = 0x30 + (uint8_t)(((100 - gCurrentVolume) * 206) / 100);
             if (regVal > 0xFE) regVal = 0xFE;
         }
-        gAmp.setVolume(regVal);
+        if (!gAmp.setVolume(regVal)) {
+            Serial.printf("[Amplifier] ERROR: Volume write failed: %d%% -> Reg 0x%02X\n", gCurrentVolume, regVal);
+            return false;
+        }
         Serial.printf("[Amplifier] Volume updated: %d%% -> Reg 0x%02X\n", gCurrentVolume, regVal);
+        return true;
     }
 #endif
+    return false;
 }
 
 bool isAmplifierReady() {

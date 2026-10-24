@@ -58,15 +58,21 @@ bool TAS5805M::begin(int sdaPin, int sclPin) {
     }
     
     // Set 0dB unity gain volume for Master, Ch1, and Ch2 (0x30 = 0dB in TAS5805M)
-    writeRegister(REG_MASTER_VOL, 0x30); // 0x4C
-    writeRegister(0x4D, 0x30);           // CH1 Volume
-    writeRegister(0x4E, 0x30);           // CH2 Volume (J2 speaker connector)
+    if (!writeRegister(REG_MASTER_VOL, 0x30) ||
+        !writeRegister(0x4D, 0x30) ||
+        !writeRegister(0x4E, 0x30)) {
+        Serial.println("[TAS5805M] Init Step Failed: Set Volume Registers (0x4C, 0x4D, 0x4E)");
+        return false;
+    }
     
     // Enable Spread Spectrum for EMI suppression (3~6dB peak reduction)
     enableSpreadSpectrum(true);
 
     // Clear any previous fault flags (Write 0x80 to 0x78 FAULT_CLEAR)
-    writeRegister(0x78, 0x80);
+    if (!writeRegister(0x78, 0x80)) {
+        Serial.println("[TAS5805M] Init Step Failed: FAULT_CLEAR (0x78)");
+        return false;
+    }
     delay(5);
     
     // Enter Play State (0x03)
@@ -126,10 +132,10 @@ bool TAS5805M::setVolume(uint8_t volumeReg) {
     if (safetyVolume < 0x30) {
         safetyVolume = 0x30;
     }
-    writeRegister(REG_MASTER_VOL, safetyVolume); // 0x4C
-    writeRegister(0x4D, safetyVolume);           // CH1 Volume
-    writeRegister(0x4E, safetyVolume);           // CH2 Volume
-    return true;
+    bool ok1 = writeRegister(REG_MASTER_VOL, safetyVolume); // 0x4C
+    bool ok2 = writeRegister(0x4D, safetyVolume);           // CH1 Volume
+    bool ok3 = writeRegister(0x4E, safetyVolume);           // CH2 Volume
+    return (ok1 && ok2 && ok3);
 }
 
 bool TAS5805M::enableAGL(bool enable) {
