@@ -95,3 +95,48 @@
 - **정정:** SHARED-2026-10-25-002의 결과 커밋은 더 이상 '진행 중'이 아니다. 위 문서 반영 커밋을 결과 커밋으로 연결했다. 이는 펌웨어 소스 변경의 커밋 SHA를 뜻하지 않는다.
 - **검증 상태:** 원격 커밋 존재와 변경 파일 목록 확인 완료. 실물 보드 검증 상태는 기존 기록대로 미실시/미검증이다.
 - **다음 작업:** 펌웨어 소스 변경 커밋과 빌드 로그·바이너리 SHA-256의 대응을 Git history 및 로컬 빌드 증거로 확인한다. 근거 없이 여러 커밋의 파일을 하나의 커밋에서 변경한 것으로 합쳐 기록하지 않는다.
+
+---
+
+### SHARED-2026-10-25-004 — 소스 커밋-바이너리 대응 확정, ELF 섹션 정밀 분석 및 실물 안전 시험 5단계 수립
+- **작성자:** Gemini (Antigravity)
+- **작업 일시:** 2026-10-25 12:15 KST
+- **작업 ID:** VERIFY-001 / DOC-004
+- **시작 커밋:** [ed109afbc141309e6ebdb5385754ff819d7149d9](https://github.com/youngseokchomajn-web/MAJN_GEMINI/commit/ed109afbc141309e6ebdb5385754ff819d7149d9) (ChatGPT의 빌드 이력 보완 커밋)
+- **커밋-파일 맵핑 전수 대조 결과 (Git History 확정):**
+  1. [펌웨어 소스 및 마스터 로그북 커밋 `81bb9e5`](https://github.com/youngseokchomajn-web/MAJN_GEMINI/commit/81bb9e592d8e8d45f953712d2507cc76adb63746):
+     - `인증준비/firmware/src/ble_manager.cpp` (`RESET_FAULT` 명령 추가, 잠금 중 파라미터 조작 차단)
+     - `인증준비/firmware/src/tas5805m.cpp` (`Wire.setTimeOut(25)` 타임아웃 25ms 바운딩)
+     - `인증준비/firmware/majn_latest_firmware.bin` (바이너리 파일 갱신)
+     - `docs/MAJN_PCB_0005_MASTER_TROUBLESHOOTING_AND_SYSTEM_CHARACTERISTICS_LOGBOOK.md` (12대 결함 및 물리 특성 신규 작성)
+  2. [문서 및 원시 빌드 로그 커밋 `5ee3a00`](https://github.com/youngseokchomajn-web/MAJN_GEMINI/commit/5ee3a00ee4699d4a46bd71163e654c8b67579400):
+     - `docs/troubleshooting/AGENT_SHARED_LOG.md`, `BUILD_AND_TEST_HISTORY.md`, `README.md`
+     - `logs/firmware/2026-10-25_esp32_full_hw_build.log` (원시 빌드 로그)
+  3. [문서 정합성 보완 커밋 `096b88e`, `ed109af`](https://github.com/youngseokchomajn-web/MAJN_GEMINI/commit/ed109afbc141309e6ebdb5385754ff819d7149d9) (ChatGPT 세션 작성):
+     - 공용 로그 SHARED-003 추가 및 빌드 이력 맵핑 한계 명시
+- **Flash 사용량(1,805,827B) vs .bin 파일(1,806,224B) 397바이트 차이의 실증 분석:**
+  - `xtensa-esp32-elf-size -A firmware.elf` 실행 결과:
+    - `.flash.text`: 1,403,008 B
+    - `.flash.rodata`: 254,888 B
+    - `.flash.appdesc`: 256 B
+    - `.dram0.data`: 26,984 B
+    - `.iram0.text`: 119,919 B
+    - `.iram0.vectors`: 1,028 B
+    - `.rtc.force_slow`: 32 B / `.rtc_fast_reserved`: 16 B / `.rtc_slow_reserved`: 24 B
+    - **플래시 적재 세그먼트 순수 데이터 합계: 1,806,155 bytes**
+    - `esptool.py`가 플래시 이미지(`.bin`) 생성 시 ESP32 이미지 헤더(24B), 세그먼트 헤더(각 8B * 4 = 32B), 체크섬 바이트 및 섹터 정렬 패딩을 추가하여 **최종 파일 크기가 1,806,224 bytes로 정확히 산출됨을 확인**.
+- **안전 제어 루프 상태 머신 코드 경로 검토 결과:**
+  | 동작 상황 | 트리거 및 감시 조건 | ESP32 출력 및 상태 전이 | 재활성화 허용 여부 |
+  |:---|:---|:---|:---|
+  | **정상 구동** | `systemActive && getDiagnostics()` 통과, 결함 0 | I²S 오디오 스트림 송출, 상태 `RUNNING` | 정상 유지 |
+  | **I²C 통신 두절** | `Wire.setTimeOut(25)` 경과 후 `!getDiagnostics()` 반환 | 즉시 `PIN_AMP_PDN` LOW, `BOOST_EN` LOW, `gSafetyLock = true`, 상태 `FAULT` | 재시작 불가 (`START` 거부) |
+  | **앰프 결함 발생** | `cFault != 0` (OCP/DC) 또는 `gFault != 0` (UVLO/OTS) | 즉시 `PIN_AMP_PDN` LOW, `BOOST_EN` LOW, `gSafetyLock = true`, 상태 `FAULT` | 재시작 불가 (`START` 거부) |
+  | **결함 지속 중 복구 시도** | `RESET_FAULT` 명령 수신, but I2C NACK 또는 Fault 비트 잔존 | 리셋 거부 (`sendAck("rejected", "FAULT")`), 하드웨어 셧다운 유지 | **해제 거부 (보호 유지)** |
+  | **결함 해소 후 정상 복구** | `RESET_FAULT` 명령 수신, I2C 통신 성공 및 Fault 비트 전부 0 | `enterStandbyState()`, `resetSafetyLock()`, `sendAck("applied", "READY")` | **복구 승인 (READY 천이)** |
+- **실물 시험 전 안전 절차 5단계 및 중단 조건 확정 (영아 대상 시험 절대 금지):**
+  - **Phase 1 (익사이터 분리 전원 확인):** J1/J2 Open, VBUS(5V), 3.3V, PVDD(12.12V) 전압 및 대기 전류(<250mA) 멀티미터 계측. (중단 조건: 대기전류 500mA 초과 시 즉시 차단)
+  - **Phase 2 (무부하 음소거 및 Fault 인터록):** 스코프로 J1 차동 실효치($0.0\text{ V}_{\text{rms}}$) 확인. I2C 단절 모사 시 100ms 내 PDN LOW 차단 시간 계측.
+  - **Phase 3 (더미 부하 8Ω 20W 전력·온도):** 방열판 장착 8Ω 저항에 50Hz 정현파 5초 버스트 인가. True RMS 차동 전압($V_{\text{diff, rms}}$) 계측 및 전력 산출, 적외선 온도계 측정. (중단 조건: 저항 표면 $60^\circ\text{C}$ 도달 시 중단)
+  - **Phase 4 (기구 조립 패드 상면 3축 가속도):** 합판+익사이터+매트리스 조립. 상면에 초경량(5g 이하) MEMS 센서 거치. 3.5kg 더미 인형 적재 하에서 30~80Hz 스윕 가속도(Peak G, RMS) 원시 CSV 저장.
+  - **Phase 5 (전문가 검토):** 원시 데이터를 소아과/시험기관에 전달하여 안전 범위 자문.
+- **검증 상태:** 분석 및 프로토콜 수립 완료 / 실물 계측 대기 (실측값 미확보 상태 유지).

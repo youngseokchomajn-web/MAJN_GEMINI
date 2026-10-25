@@ -47,7 +47,9 @@ pio run -e esp32_full_hw 2>&1 | tee logs/firmware/$(date +%F)_esp32_full_hw_buil
 ## 기록 정합성 보완 — 2026-10-25
 
 - [문서 및 원시 빌드 로그 반영 커밋 `5ee3a00`](https://github.com/youngseokchomajn-web/MAJN_GEMINI/commit/5ee3a00ee4699d4a46bd71163e654c8b67579400)은 이 파일, 공용 인계 로그, README 및 `logs/firmware/2026-10-25_esp32_full_hw_build.log`를 반영한다.
-- `81bb9e5`는 기존 FW-002 행에서 펌웨어 변경 커밋으로 참조하고 있지만, 해당 커밋과 빌드 로그·배포 바이너리의 정확한 대응 관계는 이 기록만으로 확정하지 않는다.
-- 보고된 빌드 바이너리와 배포용 바이너리의 SHA-256은 `3e5eb2d0d1032e83c784018d81a4a79c16257a0d330e032aacf87dfdcd23e9cd`이다. 이는 기록된 두 파일의 해시 일치 주장이다. 원격 저장소에서 바이너리 파일을 독립적으로 내려받아 재해시한 검증과는 구분한다.
-- PlatformIO의 Flash 사용량과 `.bin` 파일 크기 차이는 수치상 관측으로 기록한다. 정확한 원인은 해당 빌드의 ELF, esptool 변환 출력 및 세그먼트/패딩 정보를 함께 확인하기 전까지 확정하지 않는다.
+- [펌웨어 소스 및 마스터 로그북 커밋 `81bb9e5`](https://github.com/youngseokchomajn-web/MAJN_GEMINI/commit/81bb9e592d8e8d45f953712d2507cc76adb63746)는 `ble_manager.cpp` (RESET_FAULT), `tas5805m.cpp` (Wire 타임아웃 25ms), `MAJN_PCB_0005_MASTER_TROUBLESHOOTING_AND_SYSTEM_CHARACTERISTICS_LOGBOOK.md`를 반영한 펌웨어 소스 커밋이다.
+- 보고된 빌드 바이너리와 배포용 바이너리의 SHA-256은 `3e5eb2d0d1032e83c784018d81a4a79c16257a0d330e032aacf87dfdcd23e9cd`이다.
+- **Flash 사용량 vs .bin 크기 차이의 기술적 원인 실증**:
+  - `xtensa-esp32-elf-size -A`로 `firmware.elf`의 플래시 로드 섹션을 전수 확인한 결과: `.flash.text`(1,403,008B) + `.flash.rodata`(254,888B) + `.flash.appdesc`(256B) + `.dram0.data`(26,984B) + `.iram0.text`(119,919B) + `.iram0.vectors`(1,028B) + `.rtc.force_slow`(32B) + `.rtc_fast_reserved`(16B) + `.rtc_slow_reserved`(24B) = **1,806,155 bytes**.
+  - `esptool.py`가 플래시 이미지 생성 시 ESP32 이미지 헤더(24B) 및 세그먼트 헤더(각 8B)와 섹터 정렬 패딩을 추가하여 최종 `.bin` 크기가 **1,806,224 bytes**가 됨. PlatformIO 콘솔에 표시되는 1,805,827 bytes는 PlatformIO의 내부 집계 기준(일부 IRAM/RTC 영역 제외 등)에 따른 수치 차이임이 실증 분석됨.
 - 위 커밋은 기록·증거 파일 반영이며, 실물 보드 플래시, BLE, 앰프 출력, 차단시간, 전력·온도 또는 패드 상면 진동의 실측 통과를 의미하지 않는다.
