@@ -51,22 +51,30 @@ bool initAmplifier() {
 #endif
 }
 
-void enterPlayState() {
+bool enterPlayState() {
 #if !defined(MAJN_BLE_ONLY_TEST)
-    if (gAmpReady && gAmpStandby) {
-        gAmp.enterPlayState();
-        gAmpStandby = false;
+    if (gAmpReady) {
+        if (gAmp.enterPlayState()) {
+            gAmpStandby = false;
+            return true;
+        }
+        return false;
     }
 #endif
+    return false;
 }
 
-void enterStandbyState() {
+bool enterStandbyState() {
 #if !defined(MAJN_BLE_ONLY_TEST)
-    if (gAmpReady && !gAmpStandby) {
-        gAmp.enterStandbyState();
-        gAmpStandby = true;
+    if (gAmpReady) {
+        if (gAmp.enterStandbyState()) {
+            gAmpStandby = true;
+            return true;
+        }
+        return false;
     }
 #endif
+    return false;
 }
 
 void shutdownAmplifier() {

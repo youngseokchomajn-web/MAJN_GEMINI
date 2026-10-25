@@ -6,6 +6,7 @@
 |---|---|---|---|---|---|---|
 | 2026-10-25 | FW-001 | [6ddf383](https://github.com/youngseokchomajn-web/MAJN_GEMINI/commit/6ddf38305b7d828c41f6921ac38f06b26e14ef7b) | 미기록 | esp32_full_hw 빌드 | 사용자 보고: 성공 | 빌드 로그 원문과 바이너리 SHA-256은 이 기록에서 확인되지 않음 |
 | 2026-10-25 | FW-002 | [81bb9e5](https://github.com/youngseokchomajn-web/MAJN_GEMINI/commit/81bb9e592d8e8d45f953712d2507cc76adb63746) | PCB #0005 | esp32_full_hw 빌드 | **컴파일 성공 (검증 완료)** | 로그: `logs/firmware/2026-10-25_esp32_full_hw_build.log`<br/>바이너리 SHA-256: `3e5eb2d0...cd`<br/>크기: Flash 1,805,827B / .bin 1,806,224B |
+| 2026-10-25 | FW-003 | 본 커밋 반영 | PCB #0005 | P0 fail-safe 3대 결함 수정 및 재컴파일 | **컴파일 성공 (검증 완료)** | 로그: `logs/firmware/2026-10-25_esp32_full_hw_p0_fixes_build.log`<br/>바이너리 SHA-256: `18d646f1...57`<br/>크기: Flash 1,806,319B / .bin 1,806,720B |
 | 2026-10-25 | AMP-001 | [6ddf383](https://github.com/youngseokchomajn-web/MAJN_GEMINI/commit/6ddf38305b7d828c41f6921ac38f06b26e14ef7b) | 미기록 | 앰프 fault / I²C timeout 차단 시험 | 미실시 또는 결과 미확보 | 실제 fault injection 및 차단 시간 로그 필요 |
 | 2026-10-25 | AMP-002 | [81bb9e5](https://github.com/youngseokchomajn-web/MAJN_GEMINI/commit/81bb9e592d8e8d45f953712d2507cc76adb63746) | PCB #0005 | I2C 25ms 타임아웃 & RESET_FAULT | 코드 구현 완료 / 실물 미실시 | 보드 전원 인가 후 실물 인터록 검증 대기 |
 | 2026-10-25 | PWR-001 | [6ddf383](https://github.com/youngseokchomajn-web/MAJN_GEMINI/commit/6ddf38305b7d828c41f6921ac38f06b26e14ef7b) | 미기록 | 더미 부하 전력·온도 실측 | 미확보 | 차동 Vrms, 저항값, 온도, 측정 위치 필요 |
@@ -66,3 +67,12 @@ pio run -e esp32_full_hw 2>&1 | tee logs/firmware/$(date +%F)_esp32_full_hw_buil
 - 시험 절차에 적힌 전압·전류·온도·가속도·하중 기준은 회로 사양과 위험 분석으로 검증되기 전까지 **임시 시험 제안값**이며, 제품 합격 기준이나 영아 안전 한계가 아니다.
 
 **판정:** 빌드 성공과 별개로, 위 코드 경로 검토와 필요한 수정·재빌드가 끝나기 전에는 fail-safe 로직을 실물 시험 통과 또는 안전 보장으로 간주하지 않는다. 현재 하드웨어 실측 상태는 미검증이다.
+
+## P0 제어 결함 조치 완료 메모 — FIX-001 (2026-10-25)
+
+ChatGPT 세션의 정적 검토(REVIEW-001)에서 지적된 3대 P0 제어 결함을 소스 코드에서 전면 수정하고 컴파일 검증을 완료함:
+1. **START 경로 검증 강화:** `ble_manager.cpp`에서 `initAmplifier()`, `enterPlayState()`, `getDiagnostics()` 3중 반환값을 모두 검증. 하나라도 실패하면 `systemActive` 활성화를 거부하고 `failed` 응답 회신.
+2. **Supervisor 감시 독립화:** `main.cpp`에서 `isAmplifierReady()`를 필수 전제로 두지 않고, `systemActive == true`인데 `!isAmplifierReady()`인 이상 상태 감지 시 즉각 비상 정지(ESTOP) 트리거.
+3. **RESET_FAULT 복구 검증 강화:** `ble_manager.cpp`에서 `enterStandbyState()` 반환값을 확인하고, 대기 상태 진입 후 앰프 진단이 완전히 정상(clean)인지 재확인한 뒤에만 `resetSafetyLock()` 허용.
+- **빌드 아티팩트:** `logs/firmware/2026-10-25_esp32_full_hw_p0_fixes_build.log` (Flash 1,806,319B / .bin 1,806,720B, SHA-256 `18d646f1...57`).
+- **실물 시험 상태:** 코드 수정 및 플랫폼 컴파일 완료 / 실물 보드 플래시 및 결함 주입 실측 대기.

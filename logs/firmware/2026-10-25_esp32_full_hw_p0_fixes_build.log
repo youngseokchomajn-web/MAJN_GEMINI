@@ -1,0 +1,81 @@
+Processing esp32_full_hw (platform: espressif32; board: esp32dev; framework: arduino)
+--------------------------------------------------------------------------------
+Verbose mode can be enabled via `-v, --verbose` option
+CONFIGURATION: https://docs.platformio.org/page/boards/espressif32/esp32dev.html
+PLATFORM: Espressif 32 (55.3.38+sha.669bcf7) > Espressif ESP32 Dev Module
+HARDWARE: ESP32 240MHz, 320KB RAM, 4MB Flash
+DEBUG: Current (cmsis-dap) External (cmsis-dap, esp-bridge, esp-prog, esp-prog-2, iot-bus-jtag, jlink, minimodule, olimex-arm-usb-ocd, olimex-arm-usb-ocd-h, olimex-arm-usb-tiny-h, olimex-jtag-tiny, tumpa)
+PACKAGES: 
+ - contrib-piohome @ 3.4.4 
+ - framework-arduinoespressif32 @ 3.3.8 
+ - framework-arduinoespressif32-libs @ 5.5.4+sha.735507283d 
+ - tool-esptoolpy @ 5.2.0 
+ - tool-xtensa-esp-elf-gdb @ 16.3.0+20250913 
+ - toolchain-xtensa-esp-elf @ 14.2.0+20260121
+LDF: Library Dependency Finder -> https://bit.ly/configure-pio-ldf
+LDF Modes: Finder ~ chain, Compatibility ~ soft
+Found 45 compatible libraries
+Scanning dependencies...
+Dependency Graph
+|-- ArduinoJson @ 7.4.3
+|-- BLE @ 3.3.8
+|-- SPI @ 3.3.8
+|-- Update @ 3.3.8
+|-- ArduinoOTA @ 3.3.8
+|-- WiFi @ 3.3.8
+|-- Wire @ 3.3.8
+Building in release mode
+Compiling .pio/build/esp32_full_hw/src/amplifier_manager.cpp.o
+Compiling .pio/build/esp32_full_hw/src/ble_manager.cpp.o
+Compiling .pio/build/esp32_full_hw/src/main.cpp.o
+Compiling .pio/build/esp32_full_hw/src/vibration_controller.cpp.o
+In file included from /Users/youngseok/.platformio/packages/framework-arduinoespressif32-libs/esp32/include/driver/deprecated/driver/i2s.h:23,
+                 from src/vibration_controller.cpp:2:
+/Users/youngseok/.platformio/packages/framework-arduinoespressif32-libs/esp32/include/driver/deprecated/driver/adc.h:19:2: warning: #warning "legacy adc driver is deprecated, please migrate to use esp_adc/adc_oneshot.h and esp_adc/adc_continuous.h for oneshot mode and continuous mode drivers respectively" [-Wcpp]
+   19 | #warning "legacy adc driver is deprecated, please migrate to use esp_adc/adc_oneshot.h and esp_adc/adc_continuous.h for oneshot mode and continuous mode drivers respectively"
+      |  ^~~~~~~
+/Users/youngseok/.platformio/packages/framework-arduinoespressif32-libs/esp32/include/driver/deprecated/driver/i2s.h:27:2: warning: #warning "This set of I2S APIs has been deprecated, please include 'driver/i2s_std.h', 'driver/i2s_pdm.h' or 'driver/i2s_tdm.h' instead. if you want to keep using the old APIs and ignore this warning, you can enable 'Suppress legacy driver deprecated warning' option under 'I2S Configuration' menu in Kconfig" [-Wcpp]
+   27 | #warning "This set of I2S APIs has been deprecated, \
+      |  ^~~~~~~
+Linking .pio/build/esp32_full_hw/firmware.elf
+                            Memory Type Usage Summary                             
+┏━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━┓
+┃ Memory Type/Section ┃ Used [bytes] ┃ Used [%] ┃ Remain [bytes] ┃ Total [bytes] ┃
+┡━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━┩
+│ Flash Code          │      1403132 │          │                │               │
+│    .text            │      1403132 │          │                │               │
+│ Flash Data          │       255512 │          │                │               │
+│    .rodata          │       255256 │          │                │               │
+│    .appdesc         │          256 │          │                │               │
+│ IRAM                │       120947 │    92.28 │          10125 │        131072 │
+│    .text            │       119919 │    91.49 │                │               │
+│    .vectors         │         1028 │     0.78 │                │               │
+│ DRAM                │        69272 │     55.6 │          55308 │        124580 │
+│    .bss             │        42288 │    33.94 │                │               │
+│    .data            │        26984 │    21.66 │                │               │
+└─────────────────────┴──────────────┴──────────┴────────────────┴───────────────┘
+Total image size: 1806575 bytes (.bin may be padded larger)
+Note: The reported total sizes may be smaller than those in the technical reference manual due to reserved memory and application configuration. The total flash size available for the application is not included by default, as it cannot be reliably determined due to the presence of other data like the bootloader, partition table, and application partition size. The total external RAM size is not included either, because the amount of RAM connected to the chip is detected at boot and is not known during the build.
+Retrieving maximum program size .pio/build/esp32_full_hw/firmware.elf
+Checking size .pio/build/esp32_full_hw/firmware.elf
+Advanced Memory Usage is available via "PlatformIO Home > Project Inspect"
+RAM:   [==        ]  21.1% (used 69272 bytes from 327680 bytes)
+Flash: [=====     ]  54.0% (used 1806319 bytes from 3342336 bytes)
+Building .pio/build/esp32_full_hw/firmware.bin
+esptool v5.2.0
+Creating ESP32 image...
+Merged 2 ELF sections.
+Successfully created ESP32 image.
+Creating binary "firmware.factory.bin" with:
+    Offset   | File
+ -  0x1000   | bootloader.bin
+ -  0x8000   | partitions.bin
+ -  0xe000   | boot_app0.bin
+ -  0x10000  | firmware.bin
+Successfully created combined binary image.
+========================= [SUCCESS] Took 20.61 seconds =========================
+
+Environment    Status    Duration
+-------------  --------  ------------
+esp32_full_hw  SUCCESS   00:00:20.610
+========================= 1 succeeded in 00:00:20.610 =========================

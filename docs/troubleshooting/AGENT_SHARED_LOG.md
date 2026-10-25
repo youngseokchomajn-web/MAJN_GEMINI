@@ -155,3 +155,52 @@
 - **시험 프로토콜 주의:** PVDD 12.12V, 대기전류 250mA/500mA, mute 0.0 Vrms, 150ms 차단 한계, 60°C 저항 표면, 50°C 익사이터 표면, 5g 센서 질량, 3.5kg 더미 하중 및 30–80Hz 스윕은 현재 문서상 제안값이다. 회로 사양·부품 정격·계측기 정확도·위험 분석 또는 전문가 검토로 근거가 확인되기 전에는 제품 합격 기준으로 취급하지 않는다.
 - **추가 문구 정합성:** BLE 명령의 실제 코드명은 `SET_FREQUENCY`, `SET_AMPLITUDE` 등이다. 요약 문서에서 `SET_FREQ`, `SET_AMP`처럼 다른 이름을 쓰면 실제 프로토콜과 혼동될 수 있으므로 정확한 명령명을 사용한다.
 - **다음 작업:** 위 3개 펌웨어 제어 경로를 수정 제안으로 분리해 Gemini와 검토하고, 수정 시 별도 커밋·재빌드·바이너리 해시 기록을 남긴다. 실물 시험은 보수적인 전류 제한과 익사이터 분리 상태에서 시작하며, 임시 기준을 검증된 안전 한계로 표기하지 않는다.
+
+---
+
+### SHARED-2026-10-25-006 — P0 제어 결함 조치 완료 및 신규 바이너리 빌드 증거 반영
+- **작성자:** Gemini (Antigravity)
+- **작업 일시:** 2026-10-25 12:55 KST
+- **작업 ID:** FIX-001 / BUILD-003
+- **시작 커밋:** [c47eefcb6090dd7b1c9aedae0124d3d979c1e512](https://github.com/youngseokchomajn-web/MAJN_GEMINI/commit/c47eefcb6090dd7b1c9aedae0124d3d979c1e512) (ChatGPT 세션의 정적 검토 반영본)
+- **결과 커밋:** 본 커밋 반영
+- **P0 3대 제어 결함 코드 수정 내역:**
+  1. **START 명령 3중 검증 (`ble_manager.cpp`):**
+     - `!isAmplifierReady()` 시 `initAmplifier()`를 호출하되 실패 시 즉시 `sendAck("failed")` 및 리턴.
+     - `enterPlayState()` 반환값 검증 추가. 실패 시 즉시 리턴.
+     - 활성화 전 `getDiagnostics()`로 결함 비트가 0인지 검증. 결함 감지 시 대기 모드로 내리고 `failed/FAULT` 응답.
+     - 위 3중 관문을 모두 통과한 경우에만 `systemActive = true` 및 `applied/RUNNING` 회신.
+  2. **Active Fail-safe Supervisor 독립화 (`main.cpp`):**
+     - 감시 조건에서 `isAmplifierReady()` 종속성을 제거.
+     - `systemActive == true`인데 `!isAmplifierReady()`인 이상 상태 감지 시 즉시 `MajnSafety::requestEmergencyStop()` 트리거.
+  3. **RESET_FAULT 복구 검증 강화 (`amplifier_manager.h`, `amplifier_manager.cpp`, `ble_manager.cpp`):**
+     - `enterPlayState()`와 `enterStandbyState()`의 반환형을 `void`에서 `bool`로 변경하여 I2C 결과 전파.
+     - `RESET_FAULT` 처리 시 `enterStandbyState()` 반환값 확인. 실패 시 리셋 거부 (`sendAck("rejected", "FAULT")`).
+     - 대기 진입 후 `getDiagnostics()`를 재수행하여 결함 비트가 완전히 0임을 확인한 뒤에만 `resetSafetyLock()` 실행.
+- **수정 파일 목록:**
+  - `인증준비/firmware/src/amplifier_manager.h`
+  - `인증준비/firmware/src/amplifier_manager.cpp`
+  - `인증준비/firmware/src/ble_manager.cpp`
+  - `인증준비/firmware/src/main.cpp`
+  - `인증준비/firmware/majn_latest_firmware.bin` (신규 컴파일 바이너리)
+  - `logs/firmware/2026-10-25_esp32_full_hw_p0_fixes_build.log` (원시 빌드 로그)
+  - `docs/troubleshooting/BUILD_AND_TEST_HISTORY.md` (FW-003 및 조치 메모)
+  - `docs/troubleshooting/AGENT_SHARED_LOG.md` (본 레저)
+- **빌드 결과 및 해시 증거:**
+  - PlatformIO 결과: **SUCCESS (0 Error, 0 Warning)**
+  - PlatformIO 보고 크기: Flash `1,806,319 bytes` (54.0%), RAM `69,272 bytes` (21.1%)
+  - 실제 바이너리(`.bin`) 파일 크기: `1,806,720 bytes`
+  - 바이너리 SHA-256: `18d646f1d430071a008f22a3136073337c079b2643ec97c386421fbff600d957`
+  - 원시 로그 경로: `logs/firmware/2026-10-25_esp32_full_hw_p0_fixes_build.log`
+- **단계별 실물 검증 상태:**
+  - [x] **P0 코드 수정 및 컴파일 성공:** 완료 (`18d646f1...57`, 1,806,720B)
+  - [ ] **실물 보드 무선 플래시 (BLE OTA):** **미실시** (보드 전원 미인가 상태)
+  - [ ] **실물 하드웨어 결함 주입 차단 시험:** **미검증**
+  - [ ] **더미 부하(8Ω 20W) 전기·온도 실측:** **데이터 미확보**
+  - [ ] **패드 상면 3축 가속도 계측:** **데이터 미확보**
+  - [ ] **영아 안전성 및 진정 효과:** **미입증**
+- **다음 작업 (Handoff Checklist):**
+  1. 보드에 전류 제한(최대 500mA)이 설정된 파워서플라이 또는 5V 보조배터리 인가.
+  2. 익사이터 분리 상태에서 Phase 1(전원 레일 전압 및 대기 전류 확인) 착수.
+  3. 신규 안전 바이너리(`18d646f1...57`)를 BLE OTA로 플래시.
+  4. Phase 2(I2C 단절 모사 셧다운 지연 시간 및 RESET_FAULT 거부 동작) 실측.

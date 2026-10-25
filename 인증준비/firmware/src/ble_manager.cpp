@@ -110,9 +110,29 @@ class CommandCallbacks : public BLECharacteristicCallbacks {
                 sendAck(id, cmd, "fault", "FAULT");
                 return;
             }
-            // Auto-retry amplifier init if it was not ready at boot
+            // Auto-retry amplifier init if it was not ready at boot, with strict return check
             if (!MajnAmplifier::isAmplifierReady()) {
-                MajnAmplifier::initAmplifier();
+                if (!MajnAmplifier::initAmplifier()) {
+                    Serial.println("[BLE] START rejected: Amplifier init failed.");
+                    sendAck(id, cmd, "failed", stateName(MajnSafety::getSystemState(systemActive)));
+                    return;
+                }
+            }
+
+            // Verify Play state transition success
+            if (!MajnAmplifier::enterPlayState()) {
+                Serial.println("[BLE] START rejected: enterPlayState() failed.");
+                sendAck(id, cmd, "failed", stateName(MajnSafety::getSystemState(systemActive)));
+                return;
+            }
+
+            // Verify hardware diagnostics are completely clean before activating output
+            uint8_t aState = 0, cFault = 0, gFault = 0;
+            if (!MajnAmplifier::getDiagnostics(aState, cFault, gFault) || cFault != 0 || gFault != 0) {
+                Serial.printf("[BLE] START rejected: Diagnostics fault detected (CF=0x%02X, GF=0x%02X).\n", cFault, gFault);
+                MajnAmplifier::enterStandbyState();
+                sendAck(id, cmd, "failed", "FAULT");
+                return;
             }
 
             systemActive = true;
@@ -120,12 +140,12 @@ class CommandCallbacks : public BLECharacteristicCallbacks {
             float f = doc["frequency_hz"] | MajnVibration::getTargetFrequency();
             float a = doc["amplitude"] | (MajnVibration::getTargetAmplitude() > 0.05f ? MajnVibration::getTargetAmplitude() : 0.4f);
             MajnVibration::setTarget(f, a);
-            MajnAmplifier::enterPlayState();
             sendAck(id, cmd, "applied", "RUNNING");
             return;
         }
         if (strcmp(cmd, "STOP") == 0) {
             MajnSafety::requestSafeStop();
+            MajnAmplifier::enterStandbyState();
             sendAck(id, cmd, "applied", "READY");
             return;
         }
@@ -139,7 +159,7 @@ class CommandCallbacks : public BLECharacteristicCallbacks {
                 sendAck(id, cmd, "applied", stateName(MajnSafety::getSystemState(systemActive)));
                 return;
             }
-            // Strict recovery check: do not unlock unless root cause is actually resolved
+            // Strict recovery check: verify communication and clean fault registers
             uint8_t aState = 0, cFault = 0, gFault = 0;
             if (!MajnAmplifier::getDiagnostics(aState, cFault, gFault)) {
                 // I2C bus still offline or failing
@@ -151,8 +171,19 @@ class CommandCallbacks : public BLECharacteristicCallbacks {
                 sendAck(id, cmd, "rejected", "FAULT");
                 return;
             }
-            // Safe to clear: Transition amplifier to Standby, reset safety lock
-            MajnAmplifier::enterStandbyState();
+            // Transition amplifier to Standby and strictly verify transition success
+            if (!MajnAmplifier::enterStandbyState()) {
+                Serial.println("[BLE] RESET_FAULT rejected: enterStandbyState() failed.");
+                sendAck(id, cmd, "rejected", "FAULT");
+                return;
+            }
+            // Re-verify diagnostics post-standby
+            if (!MajnAmplifier::getDiagnostics(aState, cFault, gFault) || cFault != 0 || gFault != 0) {
+                Serial.println("[BLE] RESET_FAULT rejected: Fault re-asserted in standby.");
+                sendAck(id, cmd, "rejected", "FAULT");
+                return;
+            }
+            // Safe to unlock
             MajnSafety::resetSafetyLock();
             sendAck(id, cmd, "applied", "READY");
             return;

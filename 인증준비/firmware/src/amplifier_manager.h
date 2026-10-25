@@ -8,8 +8,8 @@ namespace MajnAmplifier {
 #define PIN_I2C_SCL 27
 
 bool initAmplifier();
-void enterPlayState();
-void enterStandbyState();
+bool enterPlayState();
+bool enterStandbyState();
 void shutdownAmplifier();
 bool setVolume(uint8_t volumePercent);
 bool isAmplifierReady();

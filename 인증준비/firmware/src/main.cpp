@@ -75,14 +75,19 @@ void VibrationControlTask(void *pvParameters) {
         static uint8_t sAmpSuperviseCounter = 0;
         if (++sAmpSuperviseCounter >= 5) {
             sAmpSuperviseCounter = 0;
-            if (systemActive && MajnAmplifier::isAmplifierReady()) {
-                uint8_t aState = 0, cFault = 0, gFault = 0;
-                if (!MajnAmplifier::getDiagnostics(aState, cFault, gFault)) {
-                    Serial.println("[Safety] CRITICAL: TAS5805M I2C communication lost! Engaging Emergency Stop.");
+            if (systemActive) {
+                if (!MajnAmplifier::isAmplifierReady()) {
+                    Serial.println("[Safety] CRITICAL: systemActive is TRUE but Amplifier is NOT ready! Engaging Emergency Stop.");
                     MajnSafety::requestEmergencyStop();
-                } else if (cFault != 0 || gFault != 0) {
-                    Serial.printf("[Safety] CRITICAL: TAS5805M Hardware Fault! CFault=0x%02X, GFault=0x%02X. Engaging Emergency Stop.\n", cFault, gFault);
-                    MajnSafety::requestEmergencyStop();
+                } else {
+                    uint8_t aState = 0, cFault = 0, gFault = 0;
+                    if (!MajnAmplifier::getDiagnostics(aState, cFault, gFault)) {
+                        Serial.println("[Safety] CRITICAL: TAS5805M I2C communication lost! Engaging Emergency Stop.");
+                        MajnSafety::requestEmergencyStop();
+                    } else if (cFault != 0 || gFault != 0) {
+                        Serial.printf("[Safety] CRITICAL: TAS5805M Hardware Fault! CFault=0x%02X, GFault=0x%02X. Engaging Emergency Stop.\n", cFault, gFault);
+                        MajnSafety::requestEmergencyStop();
+                    }
                 }
             }
         }
