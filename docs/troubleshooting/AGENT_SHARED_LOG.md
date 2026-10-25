@@ -457,3 +457,10 @@
 - **추가 ID:** IA-046~IA-048.
 - **직접 확인한 불일치:** 오래된 `netlist_report.md`의 U2=SGM2036/L1=10µH/D3=MBR140과 생산 사양·2026-07-09 BOM의 U2=AP2112K/L1=4.7µH/D3=SS34가 다름. 회로도 검증 보고서의 “0 errors/100%” 주장과 별도 감사 보고서의 누락 부품/PARTIAL 넷 기록이 충돌. 7월 8일/9일 BOM에서 R12 부품번호가 달라짐.
 - **판정:** 이것만으로 실물 PCB 부품이 잘못됐다고 단정하지 않는다. 리비전·보고서 시점·실장 기록을 맞춰야 한다. 최신 EasyEDA 클라우드 설계는 직접 확인하지 못했으며, 발주/설계 동결은 보류 상태다.
+
+
+### SHARED-2026-10-25-017 — 기계 판독형 PCB/넷리스트 데이터 대조
+- **감사 마스터 업데이트:** `docs/MAJN_INTEGRATED_AUDIT.md` — commit `4565675f0619ef978cc4f180e1ad62833938a5fe`
+- **추가 ID:** IA-049~IA-051.
+- **검증:** `mcp_design_flow.json`의 v1.9.2 및 `pcb_comps.json` 주요 부품(U2/L1/D3/R1/R2)을 `netlist_pcb.json`, `pcb_netlist_final.json`, `netlist_sch_live.json`과 대조했다. 후자 파일들은 U2=SGM2036, L1=5.6kΩ, D3=3.9kΩ, R1=169kΩ, R2=15Ω 등 서로 다른 데이터를 보유한다. `netlist_pcb2.json`은 strict JSON parsing에 실패했다.
+- **판정:** 현재 넷리스트 파일은 정본으로 사용하지 않는다. 실제 PCB가 잘못됐다는 뜻은 아니며, 원본 export의 리비전·생성 경로를 확인해 일관된 산출물을 재생성해야 한다. 이 불일치는 설계 동결/발주 판정을 막는 P0 설계 데이터 문제로 승격했다.
