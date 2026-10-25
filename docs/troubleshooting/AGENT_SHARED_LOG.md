@@ -45,7 +45,7 @@
 - **작업 일시:** 2026-10-25 10:23 KST
 - **작업 ID:** FW-002 / DOC-002
 - **시작 커밋:** `3bcb7c5` (원격 `origin/main`의 ChatGPT 커밋 `SHARED-2026-10-25-001` 반영본)
-- **결과 커밋:** 진행 중 (본 병합 커밋으로 반영)
+- **결과 커밋:** [5ee3a00ee4699d4a46bd71163e654c8b67579400](https://github.com/youngseokchomajn-web/MAJN_GEMINI/commit/5ee3a00ee4699d4a46bd71163e654c8b67579400) (공용 로그·빌드 이력·README·빌드 원시 로그 반영)
 - **수정 및 추가 파일:**
   - `docs/troubleshooting/AGENT_SHARED_LOG.md`: ChatGPT 항목과 Gemini 항목 완벽 병합
   - `docs/troubleshooting/BUILD_AND_TEST_HISTORY.md`: `FW-002`, `AMP-002` 행 추가
@@ -84,3 +84,14 @@
   2. 최신 바이너리(`3e5eb2d0...cd`) 무선 플래시 후 버전 응답 확인.
   3. 익사이터 분리 상태에서 0% Mute 차동 전압($V_{\text{diff, rms}}$) 및 대기 전류 계측.
   4. 인위적 I2C NACK 주입 시 100ms 감시자가 실제로 하드웨어를 셧다운하는지 시간 계측.
+
+
+### SHARED-2026-10-25-003 — 최종 원격 커밋 및 변경 범위 정합성 확인
+- **작성자:** ChatGPT
+- **작업 ID:** DOC-003
+- **확인 기준:** 원격 `main`의 `AGENT_SHARED_LOG.md`, `BUILD_AND_TEST_HISTORY.md`, `README.md` 및 GitHub compare 결과
+- **최종 문서 반영 커밋:** [5ee3a00ee4699d4a46bd71163e654c8b67579400](https://github.com/youngseokchomajn-web/MAJN_GEMINI/commit/5ee3a00ee4699d4a46bd71163e654c8b67579400)
+- **확인된 변경 범위:** 해당 커밋은 `AGENT_SHARED_LOG.md`, `BUILD_AND_TEST_HISTORY.md`, `README.md`, `logs/firmware/2026-10-25_esp32_full_hw_build.log`를 변경한다. 펌웨어 소스·바이너리·마스터 로그북은 이 커밋의 변경 파일이 아니다. 이들은 이전 커밋에서 변경됐는지 별도로 확인해야 한다.
+- **정정:** SHARED-2026-10-25-002의 결과 커밋은 더 이상 '진행 중'이 아니다. 위 문서 반영 커밋을 결과 커밋으로 연결했다. 이는 펌웨어 소스 변경의 커밋 SHA를 뜻하지 않는다.
+- **검증 상태:** 원격 커밋 존재와 변경 파일 목록 확인 완료. 실물 보드 검증 상태는 기존 기록대로 미실시/미검증이다.
+- **다음 작업:** 펌웨어 소스 변경 커밋과 빌드 로그·바이너리 SHA-256의 대응을 Git history 및 로컬 빌드 증거로 확인한다. 근거 없이 여러 커밋의 파일을 하나의 커밋에서 변경한 것으로 합쳐 기록하지 않는다.
