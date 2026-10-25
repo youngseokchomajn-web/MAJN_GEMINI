@@ -450,3 +450,10 @@
 - **정적 근거:** `platformio.ini`, `partitions_8mb_ota.csv`, `main.cpp`, `ble_manager.cpp`, `ota_ble_service.cpp`, `vibration_controller.cpp`, `amplifier_manager.cpp`, `imu_manager.cpp`, `lsm6dsox.cpp`, `MAJN_PCB_0005_FIRMWARE_AUDIT_AND_MEASUREMENT_CROSSCHECK.md`, `MAJN_PCB_0005_FIRMWARE_SAFETY_AND_VOLUME_AUDIT.md`, `MAJN_PCB_0005_MASTER_TROUBLESHOOTING_AND_SYSTEM_CHARACTERISTICS_LOGBOOK.md`, `MAJN_PHYSICAL_MEASUREMENT_AND_SAFETY_ASSESSMENT_PLAN.md`, build log.
 - **검증 경계:** 1,420개 항목을 전부 개별 열람하거나 모든 하위 프로젝트를 실행한 것은 아니다. 이번 단계는 저장소 인벤토리 및 주요 코드·증거 문서의 교차 검토이며, 코드 변경·새 빌드·실물 계측은 수행하지 않았다.
 - **다음 단계:** 코드 수정 전 IA-001/IA-042 Flash 파티션 정합성, IA-031 실물 진동 증거 충돌, 정지 상태 정책을 명확히 하고, 이후 P0/P1 수정 묶음 및 회귀 시험을 수행한다.
+
+
+### SHARED-2026-10-25-016 — 3차 설계 자료 교차검증
+- **감사 마스터 업데이트:** `docs/MAJN_INTEGRATED_AUDIT.md` — commit `e026cb3982db0a9b2a648105265c375c5fe982cb`
+- **추가 ID:** IA-046~IA-048.
+- **직접 확인한 불일치:** 오래된 `netlist_report.md`의 U2=SGM2036/L1=10µH/D3=MBR140과 생산 사양·2026-07-09 BOM의 U2=AP2112K/L1=4.7µH/D3=SS34가 다름. 회로도 검증 보고서의 “0 errors/100%” 주장과 별도 감사 보고서의 누락 부품/PARTIAL 넷 기록이 충돌. 7월 8일/9일 BOM에서 R12 부품번호가 달라짐.
+- **판정:** 이것만으로 실물 PCB 부품이 잘못됐다고 단정하지 않는다. 리비전·보고서 시점·실장 기록을 맞춰야 한다. 최신 EasyEDA 클라우드 설계는 직접 확인하지 못했으며, 발주/설계 동결은 보류 상태다.
