@@ -440,3 +440,13 @@
 - **핵심 P1:** I²S/태스크/IMU/앰프 초기화 fail-closed, STOP 램프와 물리 출력 불일치, STOP/REBOOT/OTA 안전 상태 확인, OTA abort/인증·서명 검증, SET_PRESET 기능 정합성, 진단 실패 처리.
 - **검증 경계:** 이번 작업은 원격 저장소의 정적 검토와 통합 문서 작성이다. 코드 수정, 새 빌드, 실제 바이너리 해시 재계산, 보드 플래시, 실물 계측, 임상·규제 검증은 수행하지 않았다.
 - **운영 변경:** 새 발견을 별도 미니 감사 문서로 분산시키지 않고 `docs/MAJN_INTEGRATED_AUDIT.md`의 기존 ID/우선순위 목록에 병합한다. 이 로그에는 작업 이력과 증거만 추가한다. 다음 작업은 P0 의존성부터 한 번에 정리한 수정 계획을 만들고, 전체 변경 묶음을 구현·빌드한 뒤 독립 재검토한다.
+
+
+### SHARED-2026-10-25-015 — 2차 통합 교차검증: 문서 모순·센서·OTA·실제 상태 경로
+- **작성자:** ChatGPT
+- **감사 마스터 업데이트:** `3e104ee3f8ad1faf518b2f75b45f0f41b05ce058` — `docs/MAJN_INTEGRATED_AUDIT.md`
+- **확장 범위:** GitHub main tree 1,420개 파일 항목 인벤토리 후 펌웨어 소스, 빌드 로그, PCB/안전 보고서 및 물리 측정 계획을 교차 대조.
+- **추가 항목:** IA-031~IA-045. 특히 기존 보고서의 “물리 진동 성공”과 최신 현장 “익사이터 무반응” 보고 간 증거 불일치, 빌드 로그의 deprecation 경고와 “0-warning” 문서 모순, 측정표의 70% 진폭과 50% 펌웨어 상한 불일치, IMU SPI 설정 실패 미검출, PID 미사용인데 폐루프라고 표기, STOP/OTA의 물리 정지 확인 부족, 로컬 절대경로 근거, 4MB 빌드 로그와 8MB 파티션 정합성 문제를 추가했다.
+- **정적 근거:** `platformio.ini`, `partitions_8mb_ota.csv`, `main.cpp`, `ble_manager.cpp`, `ota_ble_service.cpp`, `vibration_controller.cpp`, `amplifier_manager.cpp`, `imu_manager.cpp`, `lsm6dsox.cpp`, `MAJN_PCB_0005_FIRMWARE_AUDIT_AND_MEASUREMENT_CROSSCHECK.md`, `MAJN_PCB_0005_FIRMWARE_SAFETY_AND_VOLUME_AUDIT.md`, `MAJN_PCB_0005_MASTER_TROUBLESHOOTING_AND_SYSTEM_CHARACTERISTICS_LOGBOOK.md`, `MAJN_PHYSICAL_MEASUREMENT_AND_SAFETY_ASSESSMENT_PLAN.md`, build log.
+- **검증 경계:** 1,420개 항목을 전부 개별 열람하거나 모든 하위 프로젝트를 실행한 것은 아니다. 이번 단계는 저장소 인벤토리 및 주요 코드·증거 문서의 교차 검토이며, 코드 변경·새 빌드·실물 계측은 수행하지 않았다.
+- **다음 단계:** 코드 수정 전 IA-001/IA-042 Flash 파티션 정합성, IA-031 실물 진동 증거 충돌, 정지 상태 정책을 명확히 하고, 이후 P0/P1 수정 묶음 및 회귀 시험을 수행한다.
