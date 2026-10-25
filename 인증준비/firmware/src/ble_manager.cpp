@@ -134,7 +134,34 @@ class CommandCallbacks : public BLECharacteristicCallbacks {
             sendAck(id, cmd, "applied", "FAULT");
             return;
         }
+        if (strcmp(cmd, "RESET_FAULT") == 0) {
+            if (!MajnSafety::isSafetyLockTriggered()) {
+                sendAck(id, cmd, "applied", stateName(MajnSafety::getSystemState(systemActive)));
+                return;
+            }
+            // Strict recovery check: do not unlock unless root cause is actually resolved
+            uint8_t aState = 0, cFault = 0, gFault = 0;
+            if (!MajnAmplifier::getDiagnostics(aState, cFault, gFault)) {
+                // I2C bus still offline or failing
+                sendAck(id, cmd, "rejected", "FAULT");
+                return;
+            }
+            if (cFault != 0 || gFault != 0) {
+                // Hardware fault still asserted (OCP/UVLO/OTS)
+                sendAck(id, cmd, "rejected", "FAULT");
+                return;
+            }
+            // Safe to clear: Transition amplifier to Standby, reset safety lock
+            MajnAmplifier::enterStandbyState();
+            MajnSafety::resetSafetyLock();
+            sendAck(id, cmd, "applied", "READY");
+            return;
+        }
         if (strcmp(cmd, "SET_VIBRATION") == 0) {
+            if (MajnSafety::isSafetyLockTriggered()) {
+                sendAck(id, cmd, "rejected", "FAULT");
+                return;
+            }
             float f = doc["frequency_hz"] | MajnVibration::getTargetFrequency();
             float a = doc["amplitude"] | MajnVibration::getTargetAmplitude();
             if (f < 30.0f || f > 65.0f || a < 0.0f || a > 0.5f) {
@@ -146,6 +173,10 @@ class CommandCallbacks : public BLECharacteristicCallbacks {
             return;
         }
         if (strcmp(cmd, "SET_FREQUENCY") == 0) {
+            if (MajnSafety::isSafetyLockTriggered()) {
+                sendAck(id, cmd, "rejected", "FAULT");
+                return;
+            }
             float f = doc["frequency_hz"] | MajnVibration::getTargetFrequency();
             if (f < 30.0f || f > 65.0f) {
                 sendAck(id, cmd, "rejected", stateName(MajnSafety::getSystemState(systemActive)));
@@ -156,6 +187,10 @@ class CommandCallbacks : public BLECharacteristicCallbacks {
             return;
         }
         if (strcmp(cmd, "SET_AMPLITUDE") == 0) {
+            if (MajnSafety::isSafetyLockTriggered()) {
+                sendAck(id, cmd, "rejected", "FAULT");
+                return;
+            }
             float a = doc["amplitude"] | MajnVibration::getTargetAmplitude();
             if (a < 0.0f || a > 0.5f) {
                 sendAck(id, cmd, "rejected", stateName(MajnSafety::getSystemState(systemActive)));
@@ -166,6 +201,10 @@ class CommandCallbacks : public BLECharacteristicCallbacks {
             return;
         }
         if (strcmp(cmd, "SET_VOLUME") == 0) {
+            if (MajnSafety::isSafetyLockTriggered()) {
+                sendAck(id, cmd, "rejected", "FAULT");
+                return;
+            }
             int v = doc["volume"] | -1;
             if (v < 0 || v > 100) {
                 sendAck(id, cmd, "rejected", stateName(MajnSafety::getSystemState(systemActive)));
@@ -176,6 +215,10 @@ class CommandCallbacks : public BLECharacteristicCallbacks {
             return;
         }
         if (strcmp(cmd, "SET_PRESET") == 0) {
+            if (MajnSafety::isSafetyLockTriggered()) {
+                sendAck(id, cmd, "rejected", "FAULT");
+                return;
+            }
             const char* p = doc["preset"] | "pink";
             strncpy(gCurrentPreset, p, sizeof(gCurrentPreset) - 1);
             gCurrentPreset[sizeof(gCurrentPreset) - 1] = '\0';

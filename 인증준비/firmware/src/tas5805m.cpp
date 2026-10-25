@@ -7,6 +7,7 @@ TAS5805M::TAS5805M(uint8_t i2cAddress) : _addr(i2cAddress) {}
 bool TAS5805M::begin(int sdaPin, int sclPin) {
     Wire.begin(sdaPin, sclPin);
     Wire.setClock(100000); // 100kHz standard I2C speed
+    Wire.setTimeOut(25);   // Bound blocking time to 25ms to prevent fail-safe task stalling
     
     // Auto-probe possible TAS5805M addresses (TI Datasheet Table: 0x2C for 4.7k, 0x2D for 15k, 0x2E for 47k, 0x2F for 100k)
     const uint8_t possibleAddrs[] = {
