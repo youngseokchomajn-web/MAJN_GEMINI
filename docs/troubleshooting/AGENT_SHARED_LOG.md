@@ -367,3 +367,34 @@
   3. 신규 안전 바이너리(`55287307...29`)를 BLE OTA로 주입 후 통신 무결성 확인.
   4. Phase 2(차동 잔류 전압 0.0V 확인 및 0~65Hz 제어 응답 계측) 착수.
 
+
+
+---
+
+### SHARED-2026-10-25-012 — FW-004 커밋 후 독립 후속 감사: 복구 불가 경로 및 플래시 구성 불일치
+- **작성자:** ChatGPT
+- **기준 커밋:** `e1ba3537717d0edf0cbe9164c3feb1df566b271e`
+- **상태:** 정적 소스·빌드 로그 검토. 아래 항목은 아직 수정/실물 검증되지 않았다.
+
+#### P0 — 먼저 처리할 항목
+1. **[P0] ESTOP 후 RESET_FAULT가 복구되지 않는 코드 경로:** `hardwareEmergencyShutdown()` → `shutdownAmplifier()`가 `gAmpReady=false`로 설정한다. 이후 BLE `RESET_FAULT`는 `MajnAmplifier::getDiagnostics()`를 먼저 호출하는데, 이 함수는 `gAmpReady`가 false이면 즉시 false를 반환한다. 따라서 정상적인 ESTOP 후 RESET_FAULT가 진단 단계에서 거부되고, `initAmplifier()`/PDN 재활성화/진단 복구 경로가 없다. 재초기화 상태 전이를 설계하고 ESTOP→RESET_FAULT→START를 검증한다.
+2. **[P0] 실제 Flash 크기와 OTA 파티션 테이블 불일치 가능성:** `partitions_8mb_ota.csv`는 app1 종료 오프셋이 `0x670000`이고 coredump가 `0x7F0000`에 있어 4MB를 초과한다. 저장된 빌드 로그는 `HARDWARE: ... 4MB Flash`를 보고한다. `board_upload.flash_size = 8MB`만으로 물리 Flash가 8MB가 되는 것은 아니다. 실제 PCB의 JEDEC Flash ID/용량을 확인하고, 빌드용 Flash 설정·파티션 테이블·실물 용량을 일치시켜야 한다. 4MB 칩이라면 현재 OTA app1 및 후반 파티션은 유효하지 않을 수 있다. 실물 확인 전 OTA 플래시는 보류한다.
+3. **[P0] ISR 안전성 결함 잔존:** `safetyLockISR()`는 여전히 `hardwareEmergencyShutdown()`을 호출한다. 이 경로의 `shutdownAmplifier()`와 `disableBoost()`에는 `digitalWrite`, 일반 상태 변경, `Serial.println`이 포함된다. 이 경로를 실제 하드웨어 ISR에서 호출한다면 ISR-safe하지 않다. 최소한의 IRAM-safe GPIO/플래그와 태스크 문맥의 I²C·로그·정리를 분리한다.
+
+#### P1 — 기능/상태 정합성
+4. **[P1] 소프트 스톱은 여전히 실제 파형에 적용되지 않을 수 있음:** `setTarget()`에서 즉시 진폭 대입을 제거했지만, `renderAudioBlock()`은 `!systemActive`이면 현재 진폭과 무관하게 즉시 무음 버퍼를 출력한다. `requestSafeStop()`는 즉시 `systemActive=false`로 바꾸므로 현재 구조에서 정상 STOP/OTA의 오디오 램프다운이 실제 출력에 반영되지 않는다. 정상 소프트 스톱과 비상 즉시 무음을 분리해 설계한다.
+5. **[P1] I²S 초기화 실패가 START 차단으로 연결되지 않음:** `initVibrationController()`는 `void`이며 `gI2sReady`는 내부 상태로만 유지된다. `setup()`은 실패 여부를 상위에서 검사하지 않고 BOOST/앰프 초기화를 계속하며, START도 I²S 준비 상태를 검사하지 않는다. 부분 초기화 정리 및 fail-closed START 게이트가 필요하다.
+6. **[P1] FreeRTOS 태스크 생성 결과 미검사:** `xTaskCreatePinnedToCore()` 세 호출의 반환값을 검사하지 않은 채 시스템 준비 메시지를 출력한다. 태스크 생성 실패 시 READY/START를 허용하지 않도록 한다.
+7. **[P1] 부팅 중 필수 구성요소 실패가 전체 시작을 막지 않음:** IMU 초기화 실패는 경고만 남기고 진행하며, I²S 준비 상태도 확인하지 않는다. 앰프 초기화 실패 뒤에도 BLE 서버 및 태스크가 시작되어 READY처럼 보일 수 있다. 센서가 필수인지 선택인지 명시하고, 필수 요소 실패 시 명확한 DEGRADED/FAULT 상태를 사용한다.
+8. **[P1] REBOOT가 안전 정지 없이 즉시 재부팅:** BLE `REBOOT` 경로는 ACK 후 delay와 `esp_restart()`를 실행할 뿐, 명시적인 출력 차단/안전 상태 확인을 하지 않는다. 재부팅 요청 전에 하드웨어 출력 차단을 보장한다.
+9. **[P1] 앰프 초기화 시 진단 실패 무시:** `initAmplifier()`는 `gAmp.begin()` 성공 후 `gAmpReady=true`로 설정하고 `gAmp.getDiagnostics()` 반환값을 무시한 채 초기화 성공을 반환한다. 진단 통신 실패나 읽지 못한 레지스터를 정상 상태로 취급하지 않도록 한다.
+10. **[P1] I²C 접근 직렬화 확인 불가:** BLE 명령 콜백과 주기적 감독 태스크가 동일 앰프 객체를 사용할 수 있으며, 공통 뮤텍스/단일 소유 태스크가 확인되지 않았다. I²C 레지스터 시퀀스와 Book/Page 선택까지 포함해 직렬화한다.
+11. **[P1] OTA 중 연결 해제 시 세션 정리 불명확:** OTA 콜백에는 클라이언트 연결 해제 시 `Update.abort()`와 세션 상태 초기화를 수행하는 경로가 보이지 않는다. 연결 해제 후 OTA가 계속 잠긴 상태로 남는지 시험하고, 명시적 취소/복구 정책을 구현한다.
+12. **[P1] OTA 인증/이미지 진위 검증 미확인:** OTA GATT 특성은 쓰기 가능하며, 이 경로에서 페어링/암호화 요구 또는 이미지 서명 검증이 확인되지 않았다. BLE 보안 설정과 Secure Boot/서명 검증을 별도 확인하기 전에는 무단 업데이트 방지 완료로 간주하지 않는다.
+13. **[P1] 2MB OTA 상한과 실제 파티션 크기 정책 불일치:** OTA 코드에 2MB 상한이 하드코딩되어 있고 CSV의 앱 슬롯은 `0x330000`이다. 현재 바이너리는 상한 아래지만, 실제 Update 파티션 용량을 기준으로 제한을 계산하고 보드 구성과 단일 출처로 관리한다.
+14. **[P1] 설정 ACK/기능 의미:** `SET_PRESET`은 문자열을 저장하고 applied ACK를 반환하지만, 파형 생성 코드에서 사용되지 않는다. 실제 적용 기능으로 구현하거나 미지원 명령으로 응답한다. `REBOOT`/STOP ACK도 요청 수락과 실제 하드웨어 상태를 구분한다.
+
+#### 빌드 증거 주의
+- 저장된 로그에는 legacy ADC/I²S API deprecation 경고가 2건 있다. 따라서 “0 warnings”라고 표현하지 않는다.
+- 로그의 ESP32 Flash 4MB 표기와 8MB 파티션 파일의 불일치가 해결되기 전, 빌드 성공만으로 실물 보드의 OTA 부팅 가능성을 주장하지 않는다.
+- 이 감사는 정적 검토이며, 실물 Flash 용량, ISR 호출 문맥, 전원 차단시간, 영아 안전성은 아직 측정/입증되지 않았다.
