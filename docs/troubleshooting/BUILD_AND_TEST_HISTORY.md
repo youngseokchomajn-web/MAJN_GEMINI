@@ -53,3 +53,16 @@ pio run -e esp32_full_hw 2>&1 | tee logs/firmware/$(date +%F)_esp32_full_hw_buil
   - `xtensa-esp32-elf-size -A`로 `firmware.elf`의 플래시 로드 섹션을 전수 확인한 결과: `.flash.text`(1,403,008B) + `.flash.rodata`(254,888B) + `.flash.appdesc`(256B) + `.dram0.data`(26,984B) + `.iram0.text`(119,919B) + `.iram0.vectors`(1,028B) + `.rtc.force_slow`(32B) + `.rtc_fast_reserved`(16B) + `.rtc_slow_reserved`(24B) = **1,806,155 bytes**.
   - `esptool.py`가 플래시 이미지 생성 시 ESP32 이미지 헤더(24B) 및 세그먼트 헤더(각 8B)와 섹터 정렬 패딩을 추가하여 최종 `.bin` 크기가 **1,806,224 bytes**가 됨. PlatformIO 콘솔에 표시되는 1,805,827 bytes는 PlatformIO의 내부 집계 기준(일부 IRAM/RTC 영역 제외 등)에 따른 수치 차이임이 실증 분석됨.
 - 위 커밋은 기록·증거 파일 반영이며, 실물 보드 플래시, BLE, 앰프 출력, 차단시간, 전력·온도 또는 패드 상면 진동의 실측 통과를 의미하지 않는다.
+
+
+## 정적 코드 검토 메모 — REVIEW-001 (2026-10-25)
+
+공용 인계 로그의 [SHARED-2026-10-25-005](AGENT_SHARED_LOG.md)에 기록한 정적 검토 결과를 반영한다.
+
+- START 경로에서 앰프 초기화 반환값을 무시할 수 있음: 실패 후에도 RUNNING ACK가 나갈 가능성.
+- supervisor 감시가 `systemActive && isAmplifierReady()` 조건에 묶여 있어 앰프 미준비 상태의 오류 감시가 빠질 가능성.
+- RESET_FAULT 경로에서 `enterStandbyState()` 반환값을 확인하지 않고 safety lock을 해제할 가능성.
+- 25ms I²C timeout + 약 100ms supervisor 주기만으로 전체 차단시간 상한을 보장할 수 없음. fault injection 및 핀/레일 계측 필요.
+- 시험 절차에 적힌 전압·전류·온도·가속도·하중 기준은 회로 사양과 위험 분석으로 검증되기 전까지 **임시 시험 제안값**이며, 제품 합격 기준이나 영아 안전 한계가 아니다.
+
+**판정:** 빌드 성공과 별개로, 위 코드 경로 검토와 필요한 수정·재빌드가 끝나기 전에는 fail-safe 로직을 실물 시험 통과 또는 안전 보장으로 간주하지 않는다. 현재 하드웨어 실측 상태는 미검증이다.
