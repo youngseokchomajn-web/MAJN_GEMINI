@@ -130,3 +130,38 @@
 - `docs/troubleshooting/BUILD_AND_TEST_HISTORY.md`에는 빌드/시험의 세부 이력을 유지한다.
 - 중복 발견은 기존 ID에 연결한다. 우선순위가 바뀌면 근거와 변경 이유를 기록한다.
 - 정적 검토, 코드 수정, 빌드 성공, 플래시 성공, 실물 동작, 계측 검증, 임상·규제 근거는 서로 다른 상태로 유지한다.
+
+
+## 8. 2차 교차검증 — 저장소 간·문서 간 모순 및 추가 코드 경로
+
+**검토 범위 확장:** GitHub main 트리(1,420개 파일 항목)를 열거해 펌웨어 소스, 빌드 설정/로그, PCB·안전 문서 및 시험 계획을 교차 대조했다. 전체 파일을 한 줄씩 전부 읽거나 모든 하위 프로젝트를 실행한 것은 아니다. 아래는 실제 파일 내용으로 확인된 추가 사항이다.
+
+### 추가 결함 / 증거 정합성 항목
+
+| ID | 우선순위 | 확인 근거 | 위험 / 조치 |
+|---|---|---|---|
+| IA-031 | P0 증거 게이트 | `docs/MAJN_PCB_0005_FIRMWARE_AUDIT_AND_MEASUREMENT_CROSSCHECK.md`는 전원 레일 실측, 48kHz I²S, I²C PLAY, 24.8Ω 부하, J1/J2의 물리 진동을 완료했다고 기술한다. 반면 사용자 최신 현장 보고는 PCB #0005에서 BLE START/RUNNING에도 익사이터가 반응하지 않는다고 한다. 마스터 로그북은 원시 로그가 없으면 통합 검증 완료로 취급하지 말라고 규정한다. | **두 상태를 같은 시험 구성/PCB/펌웨어의 결과로 합쳐서 해석할 수 없다.** 각 결과의 날짜, PCB/배선, 펌웨어 커밋·바이너리 해시, 전원, 익사이터 연결, 측정기·원시 자료를 연결해 재현 여부를 확인한다. 재현 전에는 “출력 구동 검증 완료” 주장을 보류한다. |
+| IA-032 | P1 문서 신뢰성 | `logs/firmware/2026-10-25_esp32_full_hw_boot_and_p0_fixes_build.log`에는 legacy ADC 및 legacy I²S deprecation 경고가 존재한다. 그러나 `docs/MAJN_PCB_0005_FIRMWARE_SAFETY_AND_VOLUME_AUDIT.md`는 해당 빌드를 “0 Error, 0 Warning”이라고 적는다. | 문서 표현을 “컴파일 성공, 경고 2건”으로 수정한다. 다른 빌드의 수치를 재사용하지 말고 해당 빌드 로그에 연결한다. |
+| IA-033 | P1 시험 절차 정합성 | 물리 측정 계획의 V-07~V-10 행은 진폭 `0.4 / 70%`로 표기하지만 펌웨어 `setTarget()`은 공통 상한을 0.5로 제한하고 BLE도 0.5 초과를 거부한다. `SET_VOLUME`의 0~100%는 별도 앰프 감쇄 제어이므로 진폭 백분율과 동일 개념이 아니다. | 시험표에서 “진폭 스케일”과 “디지털 볼륨”을 별도 열로 분리한다. 현재 펌웨어로 불가능한 70% 진폭 시험 행을 삭제/수정한다. 실제 진동량은 센서 실측으로만 기록한다. |
+| IA-034 | P1/P2 안전 주장 | `main.cpp`와 `MAJN_PCB_0005_MASTER_TROUBLESHOOTING_AND_SYSTEM_CHARACTERISTICS_LOGBOOK.md`에 30분 제한을 “KC infant safety standard”로 부르는 문구가 있다. 현 감사 자료에는 정확한 적용 규격·조항이 없다. | 규격 원문과 조항을 확인하기 전 “내부 자동정지 정책”으로만 표현한다. |
+| IA-035 | P1 센서 신뢰성 | `lsm6dsox.cpp`의 `begin()`은 WHO_AM_I만 확인하고 가속도 설정 레지스터 쓰기의 성공을 확인하지 않는다. `configureSafetyInterrupt()`는 여러 레지스터 쓰기 결과를 확인하지 않고 항상 `true`를 반환한다. `main.cpp`는 `readAcceleration(latestAccel)` 반환값을 무시한다. | IMU가 안전 인터록인지 단순 텔레메트리인지 요구사항을 먼저 확정한다. SPI 설정 read-back/실패 감지, stale 데이터 표시, 읽기 실패 카운터를 구현하고 필수 안전 센서라면 실패 시 START를 차단한다. |
+| IA-036 | P1 상태·제어 정확성 | `main.cpp`는 제어 태스크를 “Closed-loop”라 부르고 PID를 전진하지만 `vibration_controller.cpp`의 `gPid`는 초기화/출력 한계 설정 외에 `compute()`로 호출되지 않는다. 진폭 제어는 정해진 램프다. | UI·주석·제품 문서에서 폐루프라고 표현하지 말고 “개루프 목표 사인파 + 소프트웨어 램프”로 통일한다. 향후 피드백 구현 시 센서 위치/단위/대역폭과 안정성 검증을 별도 작업으로 둔다. |
+| IA-037 | P1 안전 정지 | `requestSafeStop()`은 `systemActive=false`로 즉시 바꾸며 `renderAudioBlock()`은 비활성 상태에서 바로 무음 블록을 출력한다. 따라서 `tickControlLoop()`의 진폭 램프다운은 물리 출력에 적용되지 않는다. BLE STOP은 곧바로 `enterStandbyState()`를 호출하고, disconnect/heartbeat/30분 cutoff/OTA 경로는 별도 대기 없이 안전 정지만 요청한다. | “램프다운”과 “즉시 무음”을 분리해 정책을 정한다. 정상 STOP은 실제 출력에 램프가 적용되도록 한 뒤 standby, ESTOP은 즉시 하드웨어 차단, disconnect/timeout/OTA는 정해진 제한시간 안에 출력 차단·standby 확인하도록 통일한다. |
+| IA-038 | P1 OTA 안전 인터록 | `OTA_BEGIN`은 `requestSafeStop()` 후 `Update.begin()`을 즉시 실행하며, 앰프 standby 성공이나 BOOST/PDN 상태를 확인하지 않는다. | OTA 진입을 안전 상태 머신으로 옮기고 출력 정지·PDN/BOOST 상태를 확인한 뒤에만 플래시 쓰기를 시작한다. |
+| IA-039 | P1 OTA 동시성/세션 | OTA control/data는 별도 GATT 콜백에서 `gOtaRunning`, `gTotalBytesExpected`, `gBytesReceived` 및 `Update`를 공유한다. 상호 배제/단일 소유자 경로가 확인되지 않았다. | OTA를 단일 상태 머신/작업 큐로 직렬화한다. BEGIN/END/ABORT/data/disconnect 경합과 재연결 반복 시험을 추가한다. |
+| IA-040 | P1 문서 경로 무결성 | 펌웨어 대조 보고서의 BOM 근거 링크는 `file:///Users/youngseok/Desktop/majn/...` 로컬 절대경로다. GitHub 독자가 접근할 수 있는 저장소 상대 경로가 아니다. | 원본 문서를 저장소에 넣고 상대 경로/커밋 링크로 교체하거나, 파일이 없다면 근거 미확보로 표시한다. “BOM 56개 전수 분석 완료”를 주장할 때 해당 BOM과 분석 스크립트/결과가 저장소에서 재현 가능해야 한다. |
+| IA-041 | P1 부품·설계 정합성 | README는 EasyEDA 클라우드 PCB가 정본이라고 밝히지만 일부 보고서는 BOM/회로도 대조가 “완벽히 해소”됐다고 표현한다. Git 트리의 PDF/Gerber와 최신 클라우드 Schematic1/PCB1 간 동기화는 확인되지 않았다. | 발주/설계 동결 판단 전 최신 Schematic1, PCB1, BOM, Gerber, DRC 결과의 리비전·해시를 한 세트로 고정하고 SSOT와 넷/부품/풋프린트를 대조한다. |
+| IA-042 | P1 빌드 재현성 | `platformio.ini`는 `board = esp32dev`, `board_upload.flash_size = 8MB`를 쓰며, 기록된 빌드 로그의 보드 요약은 4MB Flash로 표시된다. 파티션 표는 8MB 공간을 사용한다. | 이 설정 조합은 정적 증거상 불일치다. 실제 보드 칩 용량과 PlatformIO 보드 메타데이터/flash_size 설정을 맞추고 clean build에서 파티션 및 업로드 명령을 확인한다. 실제 용량 확인 전 OTA/업로드 보류. |
+| IA-043 | P2 OTA 제한 단일 출처 | OTA는 `MAX_OTA_PARTITION_SIZE=2097152`를 하드코딩하지만 CSV 앱 슬롯 크기는 `0x330000`이다. | 현재 바이너리가 제한 이내라는 사실과 정책이 파티션 기반이라는 사실을 구분한다. 실제 선택된 OTA 슬롯 크기에서 상한을 도출하고 테스트한다. |
+| IA-044 | P2 센서 텔레메트리 | 텔레메트리의 `accel_g`는 보드 장착 IMU 값이며, 물리 측정 계획은 패드 상면의 3축 가속도를 별도 계측하도록 설계한다. IMU 읽기 실패 시 현재 값이 유지될 수 있다. | 필드명/문서에 “보드 IMU”라고 명시하고 센서 상태·샘플 나이·읽기 오류를 추가한다. 패드 상면 실측값과 혼용하지 않는다. |
+| IA-045 | P2 로그·원자료 추적성 | 일부 문서는 실측 성공·OTA 무손실·출력 차단을 강하게 단정하지만 같은 저장소에 원시 측정 파일·계측기 설정·시험 ID가 항상 함께 있지는 않다. | 완료 주장은 시험 ID, 원시 로그/CSV, 장비/조건, 소스·바이너리 SHA와 함께 있어야 한다. 원시 증거가 없으면 “보고서에 기록됨, 독립 재현 미확인”으로 낮춘다. |
+
+### 코드 수정 전 추가로 확정할 사항
+
+1. **Flash/파티션:** build log의 4MB 표기와 8MB 파티션 CSV를 먼저 해결한다.
+2. **물리 출력 상태:** 이전의 “진동 성공” 보고와 현재 “익사이터 무반응” 현장 보고를 시험 구성/펌웨어 해시로 분리해 재현한다.
+3. **정지 정책:** STOP, disconnect, heartbeat timeout, runtime cutoff, OTA_BEGIN의 출력 차단·standby 정책을 하나의 상태표로 정의한다.
+4. **IMU 역할:** 실제 안전 차단 입력인지, 연구용 텔레메트리인지 확정하고 초기화/읽기 실패 정책을 그에 맞춘다.
+5. **문서 주장 정리:** “KC 기준”, “0-warning”, “100% 무손실”, “완벽히 해소”, “물리 진동 확인”은 각각 출처·원자료가 없는 경우 주장 강도를 낮춘다.
+
+이 섹션은 기존 ID를 대체하지 않고 추가한 2차 교차검증이다. 아직 코드 수정이나 새 빌드를 수행하지 않았다.
