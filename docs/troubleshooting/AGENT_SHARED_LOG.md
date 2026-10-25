@@ -259,3 +259,33 @@
 
 - **우선 검증 시나리오 추가:** RUNNING 중 START 재호출에서 앰프 진단 실패; BLE 연결 해제 및 heartbeat timeout 시 실제 출력 잔류 시간; OTA 쓰기 중 일반 명령; 진단 읽기 실패를 주입한 부팅; master/CH1/CH2 볼륨 쓰기 중간 실패.
 - 이 기록은 추가 정적 검토다. 임시 가속도/시간/온도 수치는 검증된 안전 한계로 간주하지 않는다.
+
+
+---
+
+### SHARED-2026-10-25-009 — 추가 제어 루프·OTA 경계 조건 점검
+- **작성자:** ChatGPT
+- **기준 브랜치:** `main`
+- **검토 범위:** `main.cpp`, `ble_manager.cpp`, `ota_ble_service.cpp`, `vibration_controller.cpp`, `amplifier_manager.cpp`, `power_manager.cpp`
+- **상태:** 정적 검토 후보. 펌웨어 수정, 빌드, 보드 실험은 이번 기록에서 수행하지 않았다.
+
+#### 추가로 분리한 누락 후보
+1. **[P1 후보] 정지 상태에서 앰프 standby 반복 호출:** `VibrationControlTask`는 20ms마다 `tickControlLoop()`를 부르고, `systemActive == false`이며 `gCurrentAmplitude == 0`이면 매 주기 `enterStandbyState()`를 호출하는 경로가 있다. 현재 `setTarget()`은 진폭을 즉시 0으로 바꾸므로 정상 정지 뒤에도 초당 약 50회 I²C/레지스터 접근이 반복될 수 있다. 상태 전이 시 한 번만 standby를 요청하고 결과를 기록하는 구조로 바꾸며, 반복 쓰기/통신 버스 점유를 시험한다.
+2. **[P0 후보] OTA 예상 크기 초과/비정상 크기:** `OTA_BEGIN`은 0보다 큰 크기만 검사하며 `gBytesReceived + len`이 `gTotalBytesExpected`를 넘는지 쓰기 전에 확인하지 않는다. 최대 허용 크기와 업데이트 파티션 크기도 명시적으로 검사하지 않는다. 예상 크기보다 큰 데이터, 매우 큰 size, 누적 덧셈 경계 조건을 차단하고 OTA 상태를 안전하게 종료해야 한다.
+3. **[P1 후보] OTA 완료 후 상태 초기화 불일치:** `OTA_END`에서 실패 시 `gOtaRunning`을 false로 바꾸지만 예상/수신 바이트 수와 진행 알림 상태를 초기화하지 않는다. `OTA_ABORT`와 쓰기 실패 경로도 상태 초기화·Update.abort 결과·재시작 가능성을 일관되게 관리해야 한다.
+4. **[P1 후보] OTA 데이터 진행률 분모 보호:** 쓰기 실패 알림에서 `gBytesReceived * 100 / gTotalBytesExpected`를 계산한다. 현재 정상 경로에서는 OTA 실행 중 예상 크기가 설정되지만, 예외/상태 경쟁 시 0 분모 가능성을 명시적으로 방어하고 진행률을 0~100%로 제한해야 한다.
+5. **[P1 후보] STOP 성공 응답의 근거 부족:** STOP은 `requestSafeStop()` 뒤 `enterStandbyState()` 반환값을 무시하고 READY/applied를 전송한다. 소프트웨어 상태 변경, 앰프 standby 명령 성공, PDN/BOOST 실제 차단은 별개의 결과로 분리해서 ACK/telemetry에 표현해야 한다.
+6. **[P1 후보] 출력 차단 순서와 ISR 문맥:** `hardwareEmergencyShutdown()`은 `disableBoost()` 다음 `shutdownAmplifier()`를 호출한다. 두 함수의 로그/상태 변경이 포함되어 ISR-safe하지 않을 가능성이 있고, 실제 차단 핀 전이 순서 및 지연도 측정되지 않았다. ISR에서는 안전 GPIO를 최소 동작으로 처리하고, 태스크 문맥에서 나머지 정리와 로그를 수행한다. 전원 회로 기준으로 PDN/BOOST 순서를 검토하고 계측한다.
+7. **[P1 후보] 설정 명령이 비활성 상태에서도 상태 변경:** `SET_VIBRATION`, `SET_FREQUENCY`, `SET_AMPLITUDE`, `SET_VOLUME`, `SET_PRESET`은 안전 잠금이 없으면 READY 상태에서도 처리된다. READY에서 파라미터 사전 설정을 허용할지 정책을 정하고, 특히 앰프 레지스터 쓰기 허용 조건과 실제 출력 차단 상태를 분리해 검증한다.
+8. **[P1 후보] START 파라미터 범위 검증 재확인:** START는 JSON의 `frequency_hz`와 `amplitude`를 직접 읽은 뒤 `setTarget()`의 30~250Hz / 0~0.5 clamp에 의존한다. 다른 설정 명령은 30~65Hz를 검사하므로 START가 다른 범위를 허용한다. 공통 validator를 사용하고 잘못된 입력은 clamp 후 적용이 아니라 명시적으로 reject한다.
+9. **[P1 후보] 앰프 ready 상태와 물리 상태 불일치:** `shutdownAmplifier()`가 `gAmpReady`를 false로 설정하지 않아 PDN LOW 이후에도 API가 앰프 준비 상태라고 보고할 수 있다. 상태를 “통신/초기화 가능”, “PDN 활성”, “PLAY/standby” 등으로 분리하고, 복구 때 명시적 reset/re-init 후 진단을 수행한다.
+10. **[P2 후보] 진동 제어 태스크의 비활성 반복 처리:** `systemActive == false` 상태에서 `tickControlLoop()`가 매번 standby를 쓰는 것 외에, 정상 정지와 부팅 초기화가 동일한 경로를 반복할 수 있다. 상태 기반 전이와 idempotent 명령 처리로 정리하고 정지 상태에서 I²C 호출 횟수를 계측한다.
+
+#### 시험 추가
+- READY 상태 60초 유지 시 앰프 standby/I²C 호출 횟수와 버스 점유율 측정
+- OTA size=0, size=1, 파티션 초과, 예상 크기보다 짧거나 긴 데이터, 중복 BEGIN, ABORT 후 재시도, 연결 해제 시험
+- STOP/ESTOP/REBOOT 각각에서 PDN·BOOST_EN 핀 전이와 패드 상면 잔류 진동 시간 계측
+- START에 65Hz 초과 및 음수/범위 초과 amplitude 입력 시 명시적 거부 확인
+- READY 상태에서 SET_VOLUME 등 설정 명령을 허용할지 요구사항과 실제 레지스터 쓰기를 대조
+
+이 문서는 정적 검토 후보 기록이다. OTA 취약점 악용 가능성, 실제 전원 차단시간, 영아 안전성은 이 기록만으로 확정할 수 없다.
