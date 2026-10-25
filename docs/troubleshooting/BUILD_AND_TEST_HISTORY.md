@@ -162,3 +162,24 @@ ChatGPT 세션의 정적 검토(REVIEW-001)에서 지적된 3대 P0 제어 결�
   - 코드 수정 및 PlatformIO 컴파일 성공.
   - 실물 보드 플래시, BLE OTA 통신, 12V/Standby 실측, 패드 진동 계측은 **미실시(데이터 미확보)** 상태 유지.
 
+
+
+## FW-004 후속 독립 감사 — REVIEW-006 (2026-10-25)
+기준 커밋: `e1ba3537717d0edf0cbe9164c3feb1df566b271e`. 상세 내용은 `AGENT_SHARED_LOG.md`의 SHARED-2026-10-25-012를 참조한다. 정적 검토이며 코드 수정/실물 시험 완료가 아니다.
+
+- **P0 — 복구 경로:** ESTOP 경로에서 `shutdownAmplifier()`가 `gAmpReady=false`로 설정하지만 RESET_FAULT는 `getDiagnostics()`부터 호출한다. 이 함수는 준비 플래그가 false이면 즉시 실패하므로, 재초기화 없이 정상 RESET_FAULT 복구가 막히는 코드 경로다.
+- **P0 — Flash/partition 불일치 가능성:** `partitions_8mb_ota.csv`는 0x670000 및 0x7F0000 오프셋까지 사용하지만 빌드 로그는 ESP32 Flash 4MB를 보고한다. 실물 JEDEC 용량 확인 전 OTA 플래시를 보류하고 빌드 설정·파티션·실물 용량을 일치시킨다.
+- **P0 — ISR:** `safetyLockISR()`에서 호출되는 셧다운 경로에 `digitalWrite` 및 `Serial` 로그가 남아 있다.
+- **P1 — 소프트 스톱:** `systemActive=false`면 오디오 렌더러가 즉시 무음 버퍼를 출력하므로, 램프다운은 실제 출력에 반영되지 않을 수 있다.
+- **P1 — 초기화/태스크 실패:** I²S 준비 상태와 `xTaskCreatePinnedToCore()` 반환값이 검사되지 않으며, IMU 초기화 실패도 경고 후 진행한다.
+- **P1 — REBOOT/앰프 진단:** REBOOT 전에 출력 차단을 보장하지 않으며, `initAmplifier()`는 진단 함수 반환값을 무시할 수 있다.
+- **P1 — I²C/OTA:** 앰프 I²C 접근 직렬화, OTA 연결 해제 시 세션 abort/정리, OTA 인증 및 이미지 서명 검증이 추가 확인 필요.
+- **P1 — 기능 정합성:** SET_PRESET은 저장 및 ACK만 하고 파형 적용 경로에서 사용되지 않는 것으로 보인다. OTA 2MB 하드코딩 상한은 CSV 앱 슬롯 크기와 별도 정책이다.
+- **빌드 로그:** legacy ADC/I²S deprecation 경고 2건 존재. 0 warnings로 기록하지 않는다.
+
+### 즉시 권고
+1. 실물 Flash 용량을 확인하고 partition table을 고치기 전에는 OTA 플래시하지 않는다.
+2. RESET_FAULT 재초기화, ISR-safe 셧다운, I²S/태스크 fail-closed 동작을 수정하고 재빌드한다.
+3. ESTOP 복구, 초기화 실패 주입, 정상 STOP 램프, OTA 연결 해제/잘못된 이미지 시험을 수행한다.
+
+실물 보드 플래시, 전원 차단시간, 패드 상면 가속도 및 영아 안전성은 미검증이다.
