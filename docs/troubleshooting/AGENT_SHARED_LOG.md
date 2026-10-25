@@ -204,3 +204,37 @@
   2. 익사이터 분리 상태에서 Phase 1(전원 레일 전압 및 대기 전류 확인) 착수.
   3. 신규 안전 바이너리(`18d646f1...57`)를 BLE OTA로 플래시.
   4. Phase 2(I2C 단절 모사 셧다운 지연 시간 및 RESET_FAULT 거부 동작) 실측.
+
+
+---
+
+### SHARED-2026-10-25-007 — 후속 정적 재검토: 안전 상태·OTA·태스크 상호작용
+- **작성자:** ChatGPT
+- **기준 브랜치:** `main`
+- **검토 범위:** `main.cpp`, `ble_manager.cpp`, `ota_ble_service.cpp`, `safety_manager.cpp`, `vibration_controller.cpp`, `amplifier_manager.cpp`, `power_manager.cpp`, `imu_manager.cpp`
+- **판정:** 소스 정적 검토. 이번 기록은 펌웨어 수정이나 실물 시험 완료를 뜻하지 않는다.
+
+#### 새로 분리해 기록한 문제/검증 항목
+1. **[P0 검토] 앰프 셧다운 후 상태 불일치:** `shutdownAmplifier()`는 PDN LOW 및 standby 표시만 수행하고 `gAmpReady`를 false로 바꾸지 않는다. `RESET_FAULT`는 진단 I²C 통신을 먼저 시도하므로, PDN LOW 상태에서 칩이 응답하지 않는 조건이면 복구가 막힐 수 있다. 데이터시트/보드에서 PDN 상태별 I²C 동작을 확인하고, 복구를 위해 명시적인 재초기화 상태 전이를 설계한다.
+2. **[P0 검토] 앰프 I²C 접근 직렬화:** BLE 콜백 경로의 START/STOP/SET_VOLUME/RESET_FAULT와 제어 태스크의 주기적 진단이 동일한 앰프 객체·I²C 버스를 사용할 수 있다. 검토한 경로에서 일관된 직렬화가 확인되지 않았다. I²C 트랜잭션 전체를 단일 소유 태스크 또는 공통 뮤텍스로 보호하되, 하드웨어 비상 차단은 잠금에 의존하지 않는다.
+3. **[P0 검토] 램프 제어 우회:** `setTarget()`가 `gCurrentAmplitude = gTargetAmplitude`를 즉시 수행하므로 정상 START/STOP의 램프 동작과 주석이 일치하지 않는다. 목표값과 현재값을 분리하고 정상 램프와 비상 즉시 차단을 별도 설계한다.
+4. **[P0 검토] OTA 중 명령 차단:** `OTA_BEGIN`은 `requestSafeStop()`만 호출하며, 확인한 START 경로에는 `isOtaInProgress()` 검사가 없다. OTA 전 구간에 출력 활성화·파라미터 변경을 거부하는 상태 게이트가 필요하다.
+5. **[P0 검토] I²S 준비/태스크 생성 게이트:** `initVibrationController()` 결과가 성공/실패 반환값으로 상위에 전달되지 않고 START도 I²S 준비 상태를 확인하지 않는다. `xTaskCreatePinnedToCore()` 반환값도 검사하지 않는다. 필수 초기화 및 태스크 생성 실패 시 READY/START를 허용하지 않도록 해야 한다.
+6. **[P1 검토] OTA 재진입 및 전송 길이:** OTA_BEGIN 재호출 시 이미 진행 중인 업데이트를 명시적으로 거부하는 검사가 없다. OTA_END는 `Update.end(true)`를 호출하면서 `gBytesReceived == gTotalBytesExpected`를 먼저 확인하지 않는다. 정확한 전송 길이 검사, 최대 이미지 크기/파티션 범위 검사, 실패·중단·연결 해제 시 상태 초기화와 복구 동작을 확인한다.
+7. **[P1 검토] OTA 무결성·권한:** 코드 경로에서 이미지 서명/해시 검증이나 OTA 명령별 권한 검사가 확인되지 않았다. BLE 페어링/암호화 및 ESP32 Secure Boot/서명 검증 설정까지 함께 확인하기 전에는 외부 공격 가능성을 확정하지 않는다.
+8. **[P1 검토] ISR 경로:** `safetyLockISR()`에서 `hardwareEmergencyShutdown()`을 호출하며, 실제 하위 경로에 `digitalWrite`, `Serial` 및 일반 태스크용 상태 조작이 포함될 수 있다. ISR에서 허용되는 최소 원자 플래그/직접 안전 GPIO 경로와 태스크 문맥의 정리·로그를 분리한다. `requestEmergencyStop()`이 ISR 함수를 일반 문맥에서 직접 호출하는 구조도 분리한다.
+9. **[P1 검토] 센서 유효성:** IMU 초기화 및 `configureSafetyInterrupt()` 결과를 상위에서 확인하지 않고, 주기적 `readAcceleration()` 반환값도 무시한다. 텔레메트리에 센서 준비·유효성·샘플 갱신 시각을 명시하고, 실패 시 기본 1g를 실측으로 표시하지 않는다.
+10. **[P1 검토] 정지 ACK/재부팅:** STOP은 `enterStandbyState()` 실패 여부와 관계없이 READY ACK를 보낼 수 있다. REBOOT는 안전 정지·출력 차단 확인 없이 재부팅한다. 실제 출력 차단 확인과 부팅 후 자동 재시작 금지를 검증한다.
+11. **[P1 검토] 출력·센서 데이터 경쟁:** `systemActive`, 진폭/주파수, `latestAccel` 등 여러 태스크가 공유하는 값의 일관된 스냅샷/동기화가 확인되지 않았다. `volatile`만으로 복합 상태의 동기화가 보장되는 것은 아니다.
+12. **[P1 검토] I²S 실패 복구:** 드라이버 설치 성공 후 핀 설정 실패 시 드라이버 정리 경로가 보이지 않는다. 초기화 실패 뒤 재시도 가능 여부와 부분 설치 상태를 검증한다.
+13. **[P1 검토] 명령·상태 의미:** START 주파수 검증이 SET_FREQUENCY/SET_VIBRATION과 일치하지 않는다. `SET_PRESET`은 문자열 저장 후 ACK하지만 검토한 파형 생성 경로에는 사용이 보이지 않는다. 실제 기능이 아니라면 명령을 제거/미지원 처리하거나 파형 적용을 구현한다.
+14. **[P1 검토] 진단 완전성:** 앰프 준비 시 `getDiagnostics()`의 반환값을 확인하지 않은 채 READY를 설정할 수 있다. START/감시/복구 경로는 상태·채널 Fault·Global Fault 1 중심이므로, Global Fault 2·Warning 및 예상 상태 레지스터를 데이터시트에 따라 평가한다.
+15. **[P1 검토] 부팅 전원 순서:** 현재 `setup()`은 IMU 초기화 반환값을 무시하고 BOOST를 켠 다음 I²S와 앰프를 초기화한다. 앰프 `begin()`의 PLAY 상태 진입도 포함되므로, 모든 필수 구성요소가 정상임을 확인하기 전 전력단 활성화 여부와 안전 기본 상태를 재설계한다.
+16. **[기록 정합성] 빌드 주장:** SHARED-006의 “0 Warning” 표기는 과거 검토에서 확인된 ADC/I²S deprecation 경고 기록과 대조가 필요하다. 해당 빌드 원문 로그를 다시 확인해 정확한 경고 수를 기록한다. PlatformIO Flash 사용량, .bin 크기, 해시는 서로 다른 항목으로 유지하고 같은 산출물이라는 증거 없이 혼합하지 않는다.
+
+#### 다음 우선순위
+- 코드 수정 전 P0 항목을 이슈 단위로 분리하고, 책임자/수정 커밋/빌드 로그/바이너리 SHA-256을 연결한다.
+- OTA: 길이 불일치·중복 BEGIN·중단·연결 해제·잘못된 이미지 시험.
+- 상태 복구: ESTOP → PDN LOW → RESET_FAULT → 원인 제거 → 재초기화 → START 시험.
+- 고장 주입: IMU 미검출, I²C 중단, I²S 초기화 실패, 태스크 생성 실패.
+- 실물 보드 시험 전에는 안전성 통과 또는 영아 사용 가능으로 표현하지 않는다.
