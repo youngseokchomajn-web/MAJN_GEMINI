@@ -185,3 +185,22 @@
 - **부품값·풋프린트 변경 승인:** BOM 리비전 차이가 해결될 때까지 설계 동결/추가 발주 판정을 보류한다.
 
 이 섹션도 정적 문서 교차검증이다. 최신 EasyEDA 원본 열람, PCB 리비전 확인, DRC 재실행 및 실물 부품 식별은 수행하지 않았다.
+
+
+## 10. 4차 기계 판독형 설계 파일 검증 — BOM/넷리스트 데이터 품질
+
+이번에는 Git의 기계 판독형 설계 파일을 JSON 파싱하고 주요 designator의 부품 필드를 직접 비교했다. 이는 문서 설명만 읽는 것보다 강한 검증이며, 다음 불일치를 확인했다.
+
+| ID | 우선순위 | 확인 근거 | 필요한 조치 |
+|---|---|---|---|
+| IA-049 | P0 설계 데이터 차단 | `pcb_comps.json`의 현재 저장 내용은 U2=AP2112K-3.3TRG1, L1=SWPA6045S4R7MT, D3=SS34, R1=143kΩ, R2=16kΩ로 나타난다. 그러나 `netlist_pcb.json`, `pcb_netlist_final.json`, `netlist_sch_live.json`에는 U2=SGM2036, L1이 5.6kΩ 저항, D3가 3.9kΩ 저항, R1=169kΩ, R2=15Ω 등으로 나타난다. `mcp_design_flow.json`은 v1.9.2이며 AP2112K·4.7µH·SS34·143kΩ·16kΩ를 기술한다. | **현재 저장소의 넷리스트 산출물은 SSOT/pcb_comps와 서로 일치하지 않는다.** 해당 넷리스트 파일을 현재 회로/PCB의 신뢰 가능한 근거로 사용하지 않는다. 입력 원본의 리비전/생성일/도구 실행을 확인하고 최신 원본에서 재생성한 뒤 designator·value·manufacturer part·footprint·net을 자동 비교한다. 불일치 0건이 확인되기 전 설계 동결/발주 판정 보류. |
+| IA-050 | P1 데이터 무결성 | `인증준비/mcp_development/netlist_pcb2.json`은 GitHub에서 읽은 전체 내용이 JSON 파싱에 실패하며, 오류가 line 2974 끝부분 이후 추가 문자가 존재한다고 보고한다. | 해당 파일은 현재 자동 파서의 입력으로 사용하지 않는다. 원본 생성물을 다시 export하고 strict JSON parse/JSON schema validation을 CI 또는 검증 스크립트에 추가한다. |
+| IA-051 | P1 설계 재현성 | `mcp_design_flow.json`의 리비전 메모에는 부품 교체·핀 수정·추가 필터 변경 기록이 누적돼 있지만 일부 넷리스트/감사 보고서는 과거 설계와 다른 부품값을 포함한다. 파일명만으로 생성 시점과 설계 리비전을 식별하기 어렵다. | 각 산출물에 source commit, SSOT version/hash, EasyEDA export timestamp, PCB revision, generator version을 manifest로 기록한다. 과거 산출물은 `historical/stale`로 격리하고 현재 산출물과 혼동되지 않게 한다. |
+
+### 설계 데이터 검증 판정
+
+- `pcb_comps.json`은 저장소에 존재하는 PCB 구성요소 export로서 주요 부품이 SSOT/생산 사양과 맞는 부분이 확인됐다. 다만 이 파일이 실제 클라우드 PCB의 최신 버전인지, 실물 PCB #0005와 동일한 리비전인지는 별도 확인이 필요하다.
+- 넷리스트 파일은 현재 서로 다른 부품 데이터가 혼재되어 있어 최신 회로 검증 근거로 신뢰할 수 없다.
+- “회로도/넷리스트 검증 완료”를 선언하려면 같은 원본 리비전에서 추출한 Schematic·PCB·BOM·Gerber가 같은 부품과 연결을 표현하는지 재생성 가능한 비교 결과가 있어야 한다.
+
+이 단계는 저장된 JSON 파일의 파싱 및 필드 대조이며, EasyEDA 클라우드 원본이나 실물 보드에 대한 직접 검증은 아니다.
