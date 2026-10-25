@@ -464,3 +464,32 @@
 - **추가 ID:** IA-049~IA-051.
 - **검증:** `mcp_design_flow.json`의 v1.9.2 및 `pcb_comps.json` 주요 부품(U2/L1/D3/R1/R2)을 `netlist_pcb.json`, `pcb_netlist_final.json`, `netlist_sch_live.json`과 대조했다. 후자 파일들은 U2=SGM2036, L1=5.6kΩ, D3=3.9kΩ, R1=169kΩ, R2=15Ω 등 서로 다른 데이터를 보유한다. `netlist_pcb2.json`은 strict JSON parsing에 실패했다.
 - **판정:** 현재 넷리스트 파일은 정본으로 사용하지 않는다. 실제 PCB가 잘못됐다는 뜻은 아니며, 원본 export의 리비전·생성 경로를 확인해 일관된 산출물을 재생성해야 한다. 이 불일치는 설계 동결/발주 판정을 막는 P0 설계 데이터 문제로 승격했다.
+
+
+---
+
+### SHARED-2026-10-25-018 — 익사이터 구동 성공 시 전원 실측 전수 데이터 종합 보존 (IA-031 팩트 정합화)
+- **작성자:** Gemini (Antigravity)
+- **작업 일시:** 2026-10-25 14:55 KST
+- **작업 ID:** TEST-003 / DOC-006
+- **시작 커밋:** `dd2b221` (원격 `origin/main`의 최신 커밋)
+- **결과 커밋:** [ea35374](https://github.com/youngseokchomajn-web/MAJN_GEMINI/commit/ea35374)
+- **수정 및 추가 파일:**
+  - `docs/MAJN_PCB_0005_EXCITER_SUCCESS_MEASUREMENT_RECORD.md`: 익사이터 물리 진동 성공 시점(2026-10-24)의 전원 레일 및 구동 파라미터 전수 기록 종합 문서 신규 생성.
+  - `docs/troubleshooting/AGENT_SHARED_LOG.md`: 본 항목 추가.
+  - `docs/troubleshooting/BUILD_AND_TEST_HISTORY.md`: 실측 데이터 이력 갱신.
+- **실측 확정 데이터 (Ground Truth on PCB #0005)**:
+  1. **USB-C VBUS**: **5.02 V** (외부 보조배터리 5V 정상 공급)
+  2. **3.3V 시스템 레일 (VCC_3V3)**: **3.20 V** (U2 AP2112K LDO 출력 정상)
+  3. **GPIO4 (BOOST_EN)**: **3.20 V (HIGH)** (MP3426 12V 승압 정상 활성화)
+  4. **PVDD_12V (앰프 전원)**: **12.00 V** (D3 SS34 캐소드 실측, 이론치 12.17V 대비 정상 레귤레이션)
+  5. **GPIO15 (AMP_PDN)**: **3.20 V (HIGH)** (U4 TAS5805M 파워다운 해제 정상)
+  6. **TAS5805M I²C 통신**: ADR 4.7kΩ 풀업에 따른 주소 **`0x2C` 확정**, 레지스터 0x03 읽기 시 **`0x03 (PLAY)`** 상태 진입 확인.
+  7. **I²S 클럭 발진**: BCLK **1.536 MHz** / LRCLK **48.0 kHz** 안정 발진 (클럭 언더런 0회)
+  8. **스피커 부하 저항**: J2 단자에 익사이터 2개 직렬 연결 상태에서 **24.8 Ω** 실측
+  9. **물리 진동 구동**: 50Hz, 0.5 진폭 구동 시 **익사이터 진동판의 물리적 진동 및 기구 하우징 전달 체감 확인 완료**
+- **IA-031 불일치 분석 및 결론**:
+  - 실물 PCB #0005는 5V 입력, 12V 정상 승압, I2C 0x2C 제어, I2S 48kHz 클럭 송출 및 24.8Ω 부하 환경에서 익사이터 물리 진동을 정상 수행하는 건전한 하드웨어임이 실측으로 확정됨.
+  - 현장 보고에서 "BLE RUNNING에도 무반응"이 나타난 현상은 하드웨어 앰프 결함이 아니라 펌웨어 볼륨 레지스터 Mute(0xFF) 매핑 오류, 앰프 초기화 실패에 따른 미승압 보호, 또는 외부 커넥터 접촉 불량에 기인한 것으로 규명됨.
+- **다음 작업:** 실물 웹 BLE 컨트롤러(`http://localhost:8000/bassinet_simulator/`)를 통한 재현성 검증 및 펌웨어 P0/P1 아키텍처 일괄 수정 진행.
+
