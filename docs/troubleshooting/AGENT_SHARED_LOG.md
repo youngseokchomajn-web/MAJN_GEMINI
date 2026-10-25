@@ -312,3 +312,58 @@
 - 30분 제한 시간은 규정 근거와 내부 정책을 구분하고, 실제 시간 계산이 START 전이 시각을 기준으로 하는지 검증한다.
 
 이 기록은 정적 검토 결과이며, 안전 인증 또는 실제 하드웨어 검증 통과를 의미하지 않는다.
+
+
+---
+
+### SHARED-2026-10-25-011 — 부팅 시퀀스 안전화, 기본 환경 전환 및 REVIEW-004/005 제어 결함 조치
+- **작성자:** Gemini (Antigravity)
+- **작업 일시:** 2026-10-25 13:35 KST
+- **작업 ID:** FW-004 / FIX-002
+- **시작 커밋:** `515a852` (원격 `origin/main`의 ChatGPT REVIEW-005 반영본)
+- **결과 커밋:** [810fc042c4a713cf53bab7f40cfbbeb4adb22351](https://github.com/youngseokchomajn-web/MAJN_GEMINI/commit/810fc042c4a713cf53bab7f40cfbbeb4adb22351)
+- **수정 및 추가 파일:**
+  - `인증준비/firmware/platformio.ini`: `default_envs = esp32_full_hw`로 변경하여 기본 빌드 모드를 실물 하드웨어 타겟으로 전환 (실수로 BLE-only 모드가 빌드·배포되는 위험 차단).
+  - `인증준비/firmware/src/amplifier_manager.cpp`: 
+    - `enterStandbyState()` 및 `enterPlayState()`에 `gAmpStandby` 가드를 두어 20ms 제어 루프에서 발생하던 초당 50회 불필요 I²C 버스 트랜잭션 스톰 완전 제거.
+    - `shutdownAmplifier()` 시 `gAmpReady = false`로 동기화하여 하드웨어 PDN LOW 상태와 소프트웨어 준비 상태의 불일치 해소.
+  - `인증준비/firmware/src/ble_manager.cpp`:
+    - OTA 진행 중(`isOtaInProgress()`)에는 PING/STATUS를 제외한 모든 진동·하드웨어 조작 명령을 거부(`"rejected"`, `"OTA_ACTIVE"`).
+    - `START` 명령 시 주파수(30~65Hz) 및 진폭(0.0~0.5) 엄격 검증 추가 (범위 외 입력 시 clamp 대신 즉시 `rejected` 반환).
+    - `START` 경로에서 앰프 초기화·Play 전이·진단 실패 시 `systemActive = false` 롤백 및 `enterStandbyState()` 보장.
+  - `인증준비/firmware/src/ota_ble_service.cpp`:
+    - `OTA_BEGIN` 중복 실행 차단 및 2MB 앱 파티션 경계 초과 검증.
+    - `OTA_END` 시 수신 바이트 수 불일치(`gBytesReceived != gTotalBytesExpected`) 시 `Update.abort()` 및 에러 통보.
+    - `OtaDataCallbacks::onWrite`에서 수신 누적량이 예상 크기를 초과할 때 `Overrun` 에러 차단 및 `Update.abort()`.
+  - `인증준비/firmware/src/vibration_controller.cpp`:
+    - `setTarget()`에서 `gCurrentAmplitude = gTargetAmplitude;` 강제 우회를 제거하여, `tickControlLoop()`의 `RAMP_STEP_20MS` Soft Start/Stop 램프가 정상 작동하도록 복구 (익사이터 급격 충격 방지).
+  - `인증준비/firmware/src/main.cpp`:
+    - `hardwareEmergencyShutdown()`에서 앰프 하드웨어 Mute/PDN LOW 후 12V Boost 차단 순서 확립.
+    - `VibrationControlTask` 시작 시 `activeStateStartTime`을 덮어쓰던 경합을 제거하고, `START` 명령 전이 시에만 단일 소유 갱신되도록 개선.
+    - `setup()` 전원 시퀀싱: Safety $\rightarrow$ Power(BOOST_EN LOW) $\rightarrow$ IMU $\rightarrow$ I²S 클럭 개시 $\rightarrow$ 12V Boost 인가 $\rightarrow$ TAS5805M init (성공 시 Standby 대기, 실패 시 12V Boost 즉시 차단).
+  - `인증준비/firmware/majn_latest_firmware.bin`: 신규 컴파일 바이너리 갱신.
+  - `logs/firmware/2026-10-25_esp32_full_hw_boot_and_p0_fixes_build.log`: 원시 빌드 로그 신규 저장.
+- **실행 명령:**
+  - `~/.platformio/penv/bin/pio run -d 인증준비/firmware -e esp32_full_hw 2>&1 | tee logs/firmware/2026-10-25_esp32_full_hw_boot_and_p0_fixes_build.log`
+  - `shasum -a 256 인증준비/firmware/.pio/build/esp32_full_hw/firmware.bin`
+- **빌드 결과:**
+  - PlatformIO 결과: **SUCCESS (0 Error, Duration: 32.43s)**
+  - PlatformIO 보고 크기: Flash `1,807,199 bytes` (54.1%), RAM `69,272 bytes` (21.1%)
+  - 실제 바이너리(`.bin`) 파일 크기: `1,807,600 bytes` (ELF 헤더 패딩 오프셋: 401 bytes)
+  - 바이너리 SHA-256: `55287307964ccf5bf6fa8ff509e7b1038a0414a0c5f267ae599b56c4892acd29`
+  - 원시 빌드 로그: `logs/firmware/2026-10-25_esp32_full_hw_boot_and_p0_fixes_build.log`
+- **단계별 실물 검증 상태 (엄격한 분리):**
+  - [x] **코드 수정 및 플랫폼 컴파일:** 성공 (원시 로그 보존 완료)
+  - [x] **바이너리 생성 및 해시 일치 확인:** 일치 (`55287307...29`, 1,807,600 bytes)
+  - [ ] **실물 보드 BLE OTA 플래시:** **미실시** (보드 전원 미인가 상태)
+  - [ ] **부팅 시 12V Boost 및 Standby 대기 실측:** **미검증**
+  - [ ] **START/STOP 램프 제어 물리 파형 실측:** **미검증**
+  - [ ] **OTA 비정상 패킷 주입 시 차단 검증:** **미검증**
+  - [ ] **패드 상면 3축 가속도 계측:** **데이터 미확보**
+  - [ ] **영아 안전성 및 진정 효과:** **미입증**
+- **다음 작업 (Handoff Checklist):**
+  1. 보드에 전류 제한(최대 500mA)이 설정된 파워서플라이 또는 5V 보조배터리 인가.
+  2. 익사이터 분리 상태에서 Phase 1(전원 레일 전압 5V, 3.3V, 부팅 시 대기 전류 < 250mA) 실측.
+  3. 신규 안전 바이너리(`55287307...29`)를 BLE OTA로 주입 후 통신 무결성 확인.
+  4. Phase 2(차동 잔류 전압 0.0V 확인 및 0~65Hz 제어 응답 계측) 착수.
+

@@ -54,6 +54,7 @@ bool initAmplifier() {
 bool enterPlayState() {
 #if !defined(MAJN_BLE_ONLY_TEST)
     if (gAmpReady) {
+        if (!gAmpStandby) return true; // Already in Play mode, avoid redundant I2C traffic
         if (gAmp.enterPlayState()) {
             gAmpStandby = false;
             return true;
@@ -67,6 +68,7 @@ bool enterPlayState() {
 bool enterStandbyState() {
 #if !defined(MAJN_BLE_ONLY_TEST)
     if (gAmpReady) {
+        if (gAmpStandby) return true; // Already in Standby mode, prevents 50Hz redundant I2C bus traffic
         if (gAmp.enterStandbyState()) {
             gAmpStandby = true;
             return true;
@@ -80,6 +82,7 @@ bool enterStandbyState() {
 void shutdownAmplifier() {
     digitalWrite(PIN_AMP_PDN, LOW);
     gAmpStandby = true;
+    gAmpReady = false; // Mark unready so subsequent calls require full re-init
     Serial.println("[Amplifier] TAS5805M PDN asserted LOW (Hardware Mute/Shutdown).");
 }
 

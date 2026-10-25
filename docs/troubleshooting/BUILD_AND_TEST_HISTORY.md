@@ -139,3 +139,26 @@ ChatGPT 세션의 정적 검토(REVIEW-001)에서 지적된 3대 P0 제어 결�
 - OTA 이미지가 현재 보드의 파티션 구성과 빌드 환경에 맞는지 확인한다. OTA 성공 응답만으로 이미지의 실제 부팅 가능성을 단정하지 않는다.
 
 검증 계획: 기본 `pio run`과 `pio run -e esp32_full_hw` 산출물 비교; IMU/I²S/앰프 초기화 실패 주입; 가상 센서 표시 검증; 타이머 경합 시험. 실물 시험은 아직 미실시다.
+
+
+## REVIEW-004/005 제어 결함 조치 및 부팅 시퀀스 안전화 빌드 — FIX-002 / FW-004 (2026-10-25)
+공용 인계 로그 `SHARED-2026-10-25-011`에 대응한다.
+
+- **조치 내역:**
+  - `platformio.ini`: `default_envs = esp32_full_hw`로 변경하여 기본 빌드 환경을 실제 하드웨어 타겟으로 설정.
+  - `amplifier_manager.cpp`: Standby 50Hz I²C 트랜잭션 중복 호출 방지 가드(`gAmpStandby`), `shutdownAmplifier()` 시 `gAmpReady = false` 동기화.
+  - `ble_manager.cpp`: OTA 중 진동 제어 거부(`OTA_ACTIVE`), `START` 파라미터 엄격 검증(30~65Hz, 0~0.5 범위 외 즉시 `rejected`), `START` 실패 시 `systemActive = false` 롤백 및 Standby 대기.
+  - `ota_ble_service.cpp`: `OTA_BEGIN` 중복 차단 및 2MB 파티션 경계 검사, `OTA_END` 수신 바이트 불일치 시 `Update.abort()`, 수신 누적 오버런 방어.
+  - `vibration_controller.cpp`: `setTarget()`에서 `gCurrentAmplitude` 강제 우회 제거하여 `RAMP_STEP_20MS` Soft Start/Stop 램프 복구.
+  - `main.cpp`: 앰프 Mute 후 Boost 차단 순서 확립, `activeStateStartTime` 단일 소유화, 부팅 시 Standby 대기 및 앰프 초기화 실패 시 12V Boost 즉시 차단.
+- **빌드 결과:**
+  - 환경: `esp32_full_hw`
+  - 플래시 사용량: `1,807,199 bytes` (54.1%)
+  - RAM 사용량: `69,272 bytes` (21.1%)
+  - `.bin` 파일 크기: `1,807,600 bytes`
+  - SHA-256: `55287307964ccf5bf6fa8ff509e7b1038a0414a0c5f267ae599b56c4892acd29`
+  - 원시 로그: `logs/firmware/2026-10-25_esp32_full_hw_boot_and_p0_fixes_build.log`
+- **검증 상태:**
+  - 코드 수정 및 PlatformIO 컴파일 성공.
+  - 실물 보드 플래시, BLE OTA 통신, 12V/Standby 실측, 패드 진동 계측은 **미실시(데이터 미확보)** 상태 유지.
+

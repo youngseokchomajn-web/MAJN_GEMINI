@@ -42,9 +42,16 @@ class OtaControlCallbacks : public BLECharacteristicCallbacks {
         const char* cmd = doc["cmd"] | "";
 
         if (strcmp(cmd, "OTA_BEGIN") == 0) {
+            if (gOtaRunning) {
+                notifyOtaStatus("error", 0, "OTA already in progress");
+                return;
+            }
+
             size_t fwSize = doc["size"] | 0;
-            if (fwSize == 0) {
-                notifyOtaStatus("error", 0, "Invalid firmware size");
+            const size_t MAX_OTA_PARTITION_SIZE = 2097152; // 2MB app partition boundary
+            if (fwSize == 0 || fwSize > MAX_OTA_PARTITION_SIZE) {
+                Serial.printf("[BLE-OTA] Invalid firmware size: %u bytes (Max %u)\n", fwSize, MAX_OTA_PARTITION_SIZE);
+                notifyOtaStatus("error", 0, "Invalid firmware size or partition overflow");
                 return;
             }
 
@@ -67,7 +74,15 @@ class OtaControlCallbacks : public BLECharacteristicCallbacks {
         if (strcmp(cmd, "OTA_END") == 0) {
             if (!gOtaRunning) return;
 
-            Serial.printf("[BLE-OTA] Finishing OTA transfer. Total: %u bytes\n", gBytesReceived);
+            Serial.printf("[BLE-OTA] Finishing OTA transfer. Total: %u / Expected: %u bytes\n", gBytesReceived, gTotalBytesExpected);
+            if (gBytesReceived != gTotalBytesExpected) {
+                Serial.printf("[BLE-OTA] Incomplete payload: %u != %u\n", gBytesReceived, gTotalBytesExpected);
+                Update.abort();
+                gOtaRunning = false;
+                notifyOtaStatus("error", 0, "Payload size mismatch");
+                return;
+            }
+
             if (Update.end(true)) {
                 if (Update.isFinished()) {
                     Serial.println("[BLE-OTA] Update SUCCESS! Rebooting in 500ms...");
@@ -105,6 +120,15 @@ class OtaDataCallbacks : public BLECharacteristicCallbacks {
         size_t len = characteristic->getLength();
 
         if (len > 0 && data) {
+            // Guard against buffer overrun beyond expected payload size
+            if (gBytesReceived + len > gTotalBytesExpected) {
+                Serial.printf("[BLE-OTA] Overrun rejected: received %u + %u > total %u\n", gBytesReceived, len, gTotalBytesExpected);
+                notifyOtaStatus("error", (int)((gBytesReceived * 100) / gTotalBytesExpected), "Overrun error");
+                Update.abort();
+                gOtaRunning = false;
+                return;
+            }
+
             size_t written = Update.write(data, len);
             if (written != len) {
                 Serial.printf("[BLE-OTA] Write error: expected %u, wrote %u\n", len, written);

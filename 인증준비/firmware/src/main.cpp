@@ -26,8 +26,10 @@ TaskHandle_t audioTaskHandle = NULL;
 // Hardware Emergency Shutdown Callback (Invoked by SafetyManager)
 // -------------------------------------------------------------------------
 void hardwareEmergencyShutdown() {
-    MajnPower::disableBoost();
+    // 1. Hardware Mute/Shutdown amplifier outputs immediately
     MajnAmplifier::shutdownAmplifier();
+    // 2. Disable 12V Boost Regulator to kill high-voltage power rail
+    MajnPower::disableBoost();
 }
 
 // -------------------------------------------------------------------------
@@ -53,8 +55,6 @@ void VibrationControlTask(void *pvParameters) {
     const TickType_t xFrequency = pdMS_TO_TICKS(20);
     const float dt = 0.02f;
 
-    activeStateStartTime = millis();
-
     for (;;) {
         vTaskDelayUntil(&xLastWakeTime, xFrequency);
 
@@ -63,7 +63,7 @@ void VibrationControlTask(void *pvParameters) {
         }
 
         // Automatic run-time cutoff (KC infant safety standard: 30 minutes)
-        if (systemActive && (millis() - activeStateStartTime > MAX_RUNNING_TIME_MS)) {
+        if (systemActive && (activeStateStartTime > 0) && (millis() - activeStateStartTime > MAX_RUNNING_TIME_MS)) {
             Serial.println("[Safety] 30 minutes limit exceeded. Soft Stop engaged.");
             MajnSafety::requestSafeStop();
         }
@@ -141,19 +141,24 @@ void setup() {
     MajnPower::initPower();
 
     // 3. Sensor Layer (LSM6DSOX SPI or Virtual Baseline)
-    MajnImu::initImu();
+    if (!MajnImu::initImu()) {
+        Serial.println("[WARN] IMU initialization failed or sensor not detected.");
+    }
 
-    // 4. Power up 12V Boost Regulator and Settle
-    MajnPower::enableBoost();
-
-    // 5. Vibration Control & I2S Peripheral (Start clocks first)
+    // 4. Vibration Control & I2S Peripheral (Start clocks first)
     MajnVibration::initVibrationController();
+
+    // 5. Power up 12V Boost Regulator and Settle only after clocks are stable
+    MajnPower::enableBoost();
 
     // 6. Amplifier Layer (TAS5805M I2C & PDN - detects stable I2S clocks)
     if (!MajnAmplifier::initAmplifier()) {
-        Serial.println("[WARN] Amplifier initialization failed or in test mode. Vibration output offline.");
+        Serial.println("[WARN] Amplifier initialization failed! Disabling 12V Boost for safety.");
+        MajnPower::disableBoost();
     } else {
-        Serial.println("[OK] Amplifier initialized successfully in PLAY state.");
+        // Safe default: boot into Standby (Hi-Z), NOT Play state!
+        MajnAmplifier::enterStandbyState();
+        Serial.println("[OK] Amplifier initialized successfully and placed in STANDBY.");
     }
 
     // 7. BLE GATT Server (Starts advertising MAJN-Bassinet)

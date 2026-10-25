@@ -69,7 +69,7 @@ void setTarget(float frequencyHz, float amplitudeScale) {
     gTargetFrequency = constrain(frequencyHz, 30.0f, 250.0f);
     // Hard safety cap: clamp maximum amplitude to 0.5f (50%) across ALL caller paths
     gTargetAmplitude = constrain(amplitudeScale, 0.0f, 0.5f);
-    gCurrentAmplitude = gTargetAmplitude; // Apply immediately to prevent ramp delay/starvation
+    // Note: gCurrentAmplitude is gradually ramped to gTargetAmplitude via tickControlLoop
 }
 
 float getTargetFrequency() {

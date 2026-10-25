@@ -97,6 +97,14 @@ class CommandCallbacks : public BLECharacteristicCallbacks {
         int id = doc["id"] | -1;
         const char* cmd = doc["cmd"] | "";
 
+        // Reject active vibration/hardware commands during wireless OTA update
+        if (MajnBleOta::isOtaInProgress()) {
+            if (strcmp(cmd, "PING") != 0 && strcmp(cmd, "STATUS") != 0) {
+                sendAck(id, cmd, "rejected", "OTA_ACTIVE");
+                return;
+            }
+        }
+
         if (strcmp(cmd, "PING") == 0) {
             sendAck(id, cmd, "applied", stateName(MajnSafety::getSystemState(systemActive)));
             return;
@@ -110,10 +118,20 @@ class CommandCallbacks : public BLECharacteristicCallbacks {
                 sendAck(id, cmd, "fault", "FAULT");
                 return;
             }
+            // Strict parameter range validation before activating output
+            float f = doc["frequency_hz"] | MajnVibration::getTargetFrequency();
+            float a = doc["amplitude"] | (MajnVibration::getTargetAmplitude() > 0.05f ? MajnVibration::getTargetAmplitude() : 0.4f);
+            if (f < 30.0f || f > 65.0f || a < 0.0f || a > 0.5f) {
+                Serial.printf("[BLE] START rejected: Invalid parameters f=%.1f, a=%.2f (Must be 30~65Hz, 0~0.5)\n", f, a);
+                sendAck(id, cmd, "rejected", stateName(MajnSafety::getSystemState(systemActive)));
+                return;
+            }
+
             // Auto-retry amplifier init if it was not ready at boot, with strict return check
             if (!MajnAmplifier::isAmplifierReady()) {
                 if (!MajnAmplifier::initAmplifier()) {
                     Serial.println("[BLE] START rejected: Amplifier init failed.");
+                    systemActive = false;
                     sendAck(id, cmd, "failed", stateName(MajnSafety::getSystemState(systemActive)));
                     return;
                 }
@@ -122,6 +140,7 @@ class CommandCallbacks : public BLECharacteristicCallbacks {
             // Verify Play state transition success
             if (!MajnAmplifier::enterPlayState()) {
                 Serial.println("[BLE] START rejected: enterPlayState() failed.");
+                systemActive = false;
                 sendAck(id, cmd, "failed", stateName(MajnSafety::getSystemState(systemActive)));
                 return;
             }
@@ -130,6 +149,7 @@ class CommandCallbacks : public BLECharacteristicCallbacks {
             uint8_t aState = 0, cFault = 0, gFault = 0;
             if (!MajnAmplifier::getDiagnostics(aState, cFault, gFault) || cFault != 0 || gFault != 0) {
                 Serial.printf("[BLE] START rejected: Diagnostics fault detected (CF=0x%02X, GF=0x%02X).\n", cFault, gFault);
+                systemActive = false;
                 MajnAmplifier::enterStandbyState();
                 sendAck(id, cmd, "failed", "FAULT");
                 return;
@@ -137,8 +157,6 @@ class CommandCallbacks : public BLECharacteristicCallbacks {
 
             systemActive = true;
             activeStateStartTime = millis();
-            float f = doc["frequency_hz"] | MajnVibration::getTargetFrequency();
-            float a = doc["amplitude"] | (MajnVibration::getTargetAmplitude() > 0.05f ? MajnVibration::getTargetAmplitude() : 0.4f);
             MajnVibration::setTarget(f, a);
             sendAck(id, cmd, "applied", "RUNNING");
             return;
