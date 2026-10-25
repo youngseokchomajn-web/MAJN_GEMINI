@@ -12,11 +12,13 @@ SSOT의 현재 부품 구성과 EasyEDA 클라우드 PCB가 일치하는지는 �
 | `인증준비/mcp_development/mcp_design_flow.json` | **SSOT** — 전체 넷리스트·부품(56개), v1.9.2 (파일의 실제 version 필드 기준) |
 | `인증준비/mcp_development/run_draw_schematic.py` | SSOT에서 **회로도 자동 재생성** (EasyEDA 브릿지) |
 | `인증준비/mcp_development/a1_symbol_verify.json` | 검증된 라이브 심볼 핀맵(222핀) |
-| `인증준비/mcp_development/MAJN_*.md` | 설계기록·fresh-eye 리뷰·ECO 절차 문서 |
+| `인증준비/mcp_development/MAJN_*.md` | 설계기록·fresh-eye 리뷰·ECO 절차 |
 
 ## 🔬 연구 증거·제품 요구사항·의료협업 문서
 
 마중의 효과·안전성 근거, 제품 요구사항 초안, 설계 검증 실행계획, 측정 절차 및 연구자 전달 자료는 [연구 문서 색인](docs/MAJUNG_INDEX.md)에서 확인합니다.
+
+**트러블슈팅·로그 이력:** 빌드·펌웨어·하드웨어 시험의 기록 기준과 확인된 이력은 [트러블슈팅 문서](docs/troubleshooting/README.md)에서 관리합니다. 과거 원시 로그가 없으면 추정으로 채우지 않고 미확보로 표시합니다.
 
 **설계 생애주기 원칙:** 현재 회로·PCB는 변경 가능한 개발안입니다. SSOT v1.9.2는 현재 설계 상태를 추적하는 기준이며 최종 사양이 아닙니다. 제품 요구사항과 위험·검증 근거를 먼저 정리하고, 측정 결과에 따라 설계를 수정·재검증한 뒤 별도 검토를 거쳐 설계를 동결합니다.
 
