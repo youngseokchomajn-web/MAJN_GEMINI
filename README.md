@@ -18,6 +18,8 @@ SSOT의 현재 부품 구성과 EasyEDA 클라우드 PCB가 일치하는지는 �
 
 마중의 효과·안전성 근거, 제품 요구사항 초안, 설계 검증 실행계획, 측정 절차 및 연구자 전달 자료는 [연구 문서 색인](docs/MAJUNG_INDEX.md)에서 확인합니다.
 
+- **통합 감사 마스터:** [MAJN_INTEGRATED_AUDIT.md](docs/MAJN_INTEGRATED_AUDIT.md)는 펌웨어·하드웨어·OTA·안전·검증 공백을 하나의 우선순위 목록으로 관리합니다.
+
 **트러블슈팅·로그 이력:** 빌드·펌웨어·하드웨어 시험의 기록 기준과 확인된 이력은 [트러블슈팅 문서](docs/troubleshooting/README.md)에서 관리합니다. 과거 원시 로그가 없으면 추정으로 채우지 않고 미확보로 표시합니다.
 
 PCB #0005의 주요 결함 조치, 시스템 특성 및 계측 주의사항은 [마스터 트러블슈팅 로그북](docs/MAJN_PCB_0005_MASTER_TROUBLESHOOTING_AND_SYSTEM_CHARACTERISTICS_LOGBOOK.md)에서 확인합니다. 로그북에 기재된 해결 내용은 코드/문서 기록과 실제 하드웨어 검증 결과를 구분해 해석합니다.
