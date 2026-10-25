@@ -14,6 +14,7 @@ Gemini 다음 실행: WP-0 잔여 원문 locator·수치 대조 작업지시서 
 - 숫자 기준(진동·소음·온도·표본 수·MCID): 제품별 시험 및 전문가 검토 전 잠정값으로만 관리.
 
 ## 먼저 읽을 문서
+- [MAJN 통합 감사 마스터 — 펌웨어·하드웨어·OTA·안전·시험 전체 점검 (2026-10-25)](MAJN_INTEGRATED_AUDIT.md)
 - [HW 회로 현황 및 센서 확장 포트 설계·인증 방어 인수인계서 (2026-10-22)](MAJUNG_HW_CIRCUIT_AND_SENSOR_PORT_EXPANSION_HANDOFF_2026-10-22.md)
 - [Gemini 다음 실행 작업지시서 — WP-0 E001-C/E 정합성 마감 (2026-10-13)](MAJUNG_GEMINI_NEXT_RUN_WORK_ORDER_2026-10-13.md)
 - [통합 자료 구조 재분석·문서 간 불일치 감사 (2026-10-13)](MAJUNG_INTEGRATED_STRUCTURAL_REANALYSIS_2026-10-13.md)
