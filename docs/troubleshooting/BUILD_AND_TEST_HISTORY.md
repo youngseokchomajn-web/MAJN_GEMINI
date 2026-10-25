@@ -9,6 +9,11 @@
 | 2026-10-25 | PWR-001 | [6ddf383](https://github.com/youngseokchomajn-web/MAJN_GEMINI/commit/6ddf38305b7d828c41f6921ac38f06b26e14ef7b) | 미기록 | 더미 부하 전력·온도 실측 | 미확보 | 차동 Vrms, 저항값, 온도, 측정 위치 필요 |
 | 2026-10-25 | VIB-001 | 미기록 | PCB #0005 관련 이전 보고, 시험 리비전 재확인 필요 | 익사이터 및 패드 상면 진동 계측 | 데이터 미확보 | BLE START 이후 익사이터 무반응을 보고한 이력은 있으나 현재 상태와 원인은 미확정 |
 
+| 2026-10-25 | FW-002 | [81bb9e5](https://github.com/youngseokchomajn-web/MAJN_GEMINI/commit/81bb9e592d8e8d45f953712d2507cc76adb63746) | PCB #0005 대상, 실제 시험 리비전 미기록 | Wire timeout 25 ms / RESET_FAULT 코드 반영 | 원격 소스 변경 확인; 빌드 로그 원문 미확보 | 로그북에는 빌드 SUCCESS와 메모리 수치가 기록되어 있으나, 실행 기록상 빌드 대기/바이너리 복사 후 push 재시도 로그가 있어 동일 커밋·바이너리의 빌드 산출물 연결은 추가 확인 필요 |
+| 2026-10-25 | SAFE-002 | [81bb9e5](https://github.com/youngseokchomajn-web/MAJN_GEMINI/commit/81bb9e592d8e8d45f953712d2507cc76adb63746) | PCB #0005 대상, 실측 미확인 | RESET_FAULT / Safety Lock 복구 시험 | 하드웨어 시험 결과 미확보 | I²C 정상·fault 해소·fault 잔류·통신 실패 조건별 ACK와 출력 차단 상태를 기록해야 함 |
+
+> **바이너리 일치성 주의:** 로그북의 PlatformIO Flash 수치(1,805,827 bytes)와 대화에 보고된 다른 빌드 수치(1,805,443 bytes), 바이너리 파일 크기(1,806,224 bytes)는 서로 다른 산출물일 수 있다. 빌드 원문 로그와 해당 바이너리 SHA-256이 연결되기 전에는 같은 빌드의 수치로 합치지 않는다.
+
 ## 각 시험에서 반드시 추가할 필드
 - 시작 시각 / 종료 시각 / 시험자
 - Git commit SHA / 바이너리 SHA-256 / 빌드 명령과 도구 버전
