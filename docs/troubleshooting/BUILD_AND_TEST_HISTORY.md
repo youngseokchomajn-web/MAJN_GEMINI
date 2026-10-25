@@ -5,7 +5,9 @@
 | 날짜 | 시험 ID | 커밋 | 보드/리비전 | 빌드·시험 | 결과 | 증거/비고 |
 |---|---|---|---|---|---|---|
 | 2026-10-25 | FW-001 | [6ddf383](https://github.com/youngseokchomajn-web/MAJN_GEMINI/commit/6ddf38305b7d828c41f6921ac38f06b26e14ef7b) | 미기록 | esp32_full_hw 빌드 | 사용자 보고: 성공 | 빌드 로그 원문과 바이너리 SHA-256은 이 기록에서 확인되지 않음 |
+| 2026-10-25 | FW-002 | [81bb9e5](https://github.com/youngseokchomajn-web/MAJN_GEMINI/commit/81bb9e592d8e8d45f953712d2507cc76adb63746) | PCB #0005 | esp32_full_hw 빌드 | **컴파일 성공 (검증 완료)** | 로그: `logs/firmware/2026-10-25_esp32_full_hw_build.log`<br/>바이너리 SHA-256: `3e5eb2d0...cd`<br/>크기: Flash 1,805,827B / .bin 1,806,224B |
 | 2026-10-25 | AMP-001 | [6ddf383](https://github.com/youngseokchomajn-web/MAJN_GEMINI/commit/6ddf38305b7d828c41f6921ac38f06b26e14ef7b) | 미기록 | 앰프 fault / I²C timeout 차단 시험 | 미실시 또는 결과 미확보 | 실제 fault injection 및 차단 시간 로그 필요 |
+| 2026-10-25 | AMP-002 | [81bb9e5](https://github.com/youngseokchomajn-web/MAJN_GEMINI/commit/81bb9e592d8e8d45f953712d2507cc76adb63746) | PCB #0005 | I2C 25ms 타임아웃 & RESET_FAULT | 코드 구현 완료 / 실물 미실시 | 보드 전원 인가 후 실물 인터록 검증 대기 |
 | 2026-10-25 | PWR-001 | [6ddf383](https://github.com/youngseokchomajn-web/MAJN_GEMINI/commit/6ddf38305b7d828c41f6921ac38f06b26e14ef7b) | 미기록 | 더미 부하 전력·온도 실측 | 미확보 | 차동 Vrms, 저항값, 온도, 측정 위치 필요 |
 | 2026-10-25 | VIB-001 | 미기록 | PCB #0005 관련 이전 보고, 시험 리비전 재확인 필요 | 익사이터 및 패드 상면 진동 계측 | 데이터 미확보 | BLE START 이후 익사이터 무반응을 보고한 이력은 있으나 현재 상태와 원인은 미확정 |
 

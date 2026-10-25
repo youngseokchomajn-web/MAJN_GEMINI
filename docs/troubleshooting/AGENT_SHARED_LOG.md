@@ -37,3 +37,50 @@
 - **확인된 소스/기록:** 원격 로그북에는 12개 주요 결함 항목과 계측 주의사항이 기재되어 있다. 문서의 해결 서술만으로 실제 하드웨어 시험 통과를 뜻하지 않는다.
 - **미해결/검증 대기:** 실제 fault injection 및 차단시간, `RESET_FAULT` 복구 조건의 실물 검증, OTA 성공 후 플래시 검증·재부팅, 더미 부하 전력/온도, 패드 상면 진동 계측, 빌드 로그와 바이너리 SHA-256 대응.
 - **다음 작업:** Gemini 또는 ChatGPT가 수행하는 다음 작업부터 이 문서에 작업 항목을 추가하고, 빌드 원문 로그와 바이너리 해시를 `logs/firmware/`에 연결한다.
+
+---
+
+### SHARED-2026-10-25-002 — 빌드 아티팩트 해시 보존, Wire 타임아웃, RESET_FAULT 복구 검증 상태 기록
+- **작성자:** Gemini (Antigravity)
+- **작업 일시:** 2026-10-25 10:23 KST
+- **작업 ID:** FW-002 / DOC-002
+- **시작 커밋:** `3bcb7c5` (원격 `origin/main`의 ChatGPT 커밋 `SHARED-2026-10-25-001` 반영본)
+- **결과 커밋:** 진행 중 (본 병합 커밋으로 반영)
+- **수정 및 추가 파일:**
+  - `docs/troubleshooting/AGENT_SHARED_LOG.md`: ChatGPT 항목과 Gemini 항목 완벽 병합
+  - `docs/troubleshooting/BUILD_AND_TEST_HISTORY.md`: `FW-002`, `AMP-002` 행 추가
+  - `docs/troubleshooting/README.md`: 공용 인계 로그 링크 추가
+  - `logs/firmware/2026-10-25_esp32_full_hw_build.log`: 원시 빌드 로그 신규 저장
+  - `docs/MAJN_PCB_0005_MASTER_TROUBLESHOOTING_AND_SYSTEM_CHARACTERISTICS_LOGBOOK.md`: 12대 결함 및 물리적 특성 총괄 정리
+  - `인증준비/firmware/src/ble_manager.cpp`: `RESET_FAULT` 명령 신설 및 잠금 중 파라미터 조작 차단
+  - `인증준비/firmware/src/tas5805m.cpp`: `Wire.setTimeOut(25)` 바운딩 (I2C 지연 25ms 제한)
+  - `인증준비/firmware/majn_latest_firmware.bin`: 최신 컴파일 바이너리 복사
+- **실행 명령:**
+  - `~/.platformio/penv/bin/pio run -d 인증준비/firmware -e esp32_full_hw 2>&1 | tee logs/firmware/2026-10-25_esp32_full_hw_build.log`
+  - `shasum -a 256 인증준비/firmware/.pio/build/esp32_full_hw/firmware.bin`
+- **빌드 결과 및 수치 불일치 분석:**
+  - PlatformIO 결과: **SUCCESS (0 Error, 0 Warning)**
+  - PlatformIO 보고 크기: Flash `1,805,827 bytes` (54.0%), RAM `69,272 bytes` (21.1%)
+  - 실제 바이너리(`.bin`) 파일 크기: `1,806,224 bytes`
+  - **수치 불일치 원인:** `esptool.py`가 ELF 세그먼트를 flash image로 변환할 때 섹션 헤더 및 16B/32B 경계 정렬 패딩을 추가하므로 397바이트의 정상 오프셋 발생.
+  - 바이너리 SHA-256: `3e5eb2d0d1032e83c784018d81a4a79c16257a0d330e032aacf87dfdcd23e9cd`
+  - 원시 빌드 로그: `logs/firmware/2026-10-25_esp32_full_hw_build.log`
+- **Git Push/Rebase 충돌 및 극복 기록:**
+  - 이전 푸시 시 원격 저장소(`youngseokchomajn-web/MAJN_GEMINI`)에서 ChatGPT 세션의 커밋(`d8837bb`~`3bcb7c5`)이 선행 push되어 non-fast-forward 거절(exit code 1) 발생.
+  - `git fetch origin && git rebase origin/main`을 통해 ChatGPT 커밋들을 정상 보존한 후 병합 진행함.
+- **단계별 실물 검증 상태 (엄격한 분리):**
+  - [x] **코드 수정 및 플랫폼 컴파일:** 성공 (원시 로그 `logs/firmware/2026-10-25_esp32_full_hw_build.log`)
+  - [x] **바이너리 생성 및 해시 일치 확인:** 일치 (`3e5eb2d0...cd`, 1,806,224 bytes)
+  - [ ] **실물 보드 BLE OTA 플래시:** **미실시** (보드 전원 미인가로 주입 대기 중)
+  - [ ] **BLE 연결 및 통신 안정성:** **미검증**
+  - [ ] **I²C 25ms 타임아웃 실물 지연:** **미검증**
+  - [ ] **RESET_FAULT 복구 거부/승인 인터록:** **코드 구현 완료 / 실물 Fault 미검증**
+  - [ ] **능동 하드웨어 차단 (PDN/BOOST LOW 실측):** **미검증**
+  - [ ] **더미 부하(8Ω) 실효 전압 및 발열 측정:** **미검증 (데이터 미확보)**
+  - [ ] **패드 상면 3축 가속도 계측:** **미검증 (데이터 미확보)**
+  - [ ] **영아 안전성 및 임상 효능:** **미입증 (실측 전 자의적 기준 적용 배제)**
+- **다음 작업 (Handoff Checklist):**
+  1. 보드에 USB-C 5V 전원 인가 후 `MAJN-Bassinet` BLE 광고 확인.
+  2. 최신 바이너리(`3e5eb2d0...cd`) 무선 플래시 후 버전 응답 확인.
+  3. 익사이터 분리 상태에서 0% Mute 차동 전압($V_{\text{diff, rms}}$) 및 대기 전류 계측.
+  4. 인위적 I2C NACK 주입 시 100ms 감시자가 실제로 하드웨어를 셧다운하는지 시간 계측.
