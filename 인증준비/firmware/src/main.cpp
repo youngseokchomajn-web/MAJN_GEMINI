@@ -2,6 +2,10 @@
 
 #include "ble_protocol.h"
 #include "ble_manager.h"
+#include "system_controller.h"
+#if defined(MAJN_WIFI_CONTROL)
+#include "wifi_manager.h"
+#endif
 #include "safety_manager.h"
 #include "power_manager.h"
 #include "amplifier_manager.h"
@@ -98,12 +102,19 @@ void VibrationControlTask(void *pvParameters) {
 }
 
 // -------------------------------------------------------------------------
-// Core 0 Task: BLE Communication, Heartbeat Supervision & Telemetry
+// Core 0 Task: Wi-Fi / BLE Communication, Heartbeat Supervision & Telemetry
 // -------------------------------------------------------------------------
 void WiFiBTCommunicationTask(void *pvParameters) {
     (void)pvParameters;
+#if defined(MAJN_WIFI_CONTROL)
+    Serial.println("[Core 0] Wi-Fi SoftAP Web Server Task Running.");
+    for (;;) {
+        MajnWiFi::handleClient();
+        MajnWiFi::updateTelemetry(latestAccel);
+        vTaskDelay(pdMS_TO_TICKS(10));
+    }
+#else
     Serial.println("[Core 0] BLE Communication Task Running.");
-
     for (;;) {
         bleLoop();
         bleNotifyTelemetry(
@@ -117,6 +128,7 @@ void WiFiBTCommunicationTask(void *pvParameters) {
         );
         vTaskDelay(pdMS_TO_TICKS(20));
     }
+#endif
 }
 
 // -------------------------------------------------------------------------
@@ -134,8 +146,21 @@ void setup() {
 #endif
     Serial.println("=========================================");
 
+    // 0. Initialize Common System Controller
+    MajnSystemCtrl::init();
+
     // 1. Initialize Safety Layer (Lowest level gatekeeper)
     MajnSafety::initSafety();
+
+#if defined(MAJN_WIFI_CONTROL)
+    // Wi-Fi SoftAP & HTTP Server (Brought up FIRST so network is discoverable immediately)
+    if (!MajnWiFi::initWiFiServer("MAJN-Bassinet")) {
+        Serial.println("[FATAL] Wi-Fi SoftAP initialization failed.");
+        MajnSafety::requestEmergencyStop();
+        while (1);
+    }
+    Serial.println("[OK] Wi-Fi SoftAP & Web Server Initialized (SSID: MAJN-Bassinet, IP: 192.168.4.1).");
+#endif
 
     // 2. Power Sequencing: BOOST_EN held LOW initially
     MajnPower::initPower();
@@ -161,6 +186,7 @@ void setup() {
         Serial.println("[OK] Amplifier initialized successfully and placed in STANDBY.");
     }
 
+#if !defined(MAJN_WIFI_CONTROL)
     // 7. BLE GATT Server (Starts advertising MAJN-Bassinet)
     if (!initBleServer()) {
         Serial.println("[FATAL] BLE server initialization failed.");
@@ -168,6 +194,7 @@ void setup() {
         while (1);
     }
     Serial.println("[OK] BLE GATT Server Initialized.");
+#endif
 
     // -------------------------------------------------------------------------
     // Dual Core FreeRTOS Task Spawning
