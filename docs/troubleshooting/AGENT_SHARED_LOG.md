@@ -532,3 +532,23 @@
   - 배포 도구: `tools/run_wifi_ota.py` 신규 작성.
 - **다음 작업:** 외장 u.FL 안테나 결선 점검 후 최신 듀얼 펌웨어 OTA 주입 및 스마트폰 Wi-Fi/BLE 동시 제어 최종 실증.
 
+---
+
+### SHARED-2026-10-31-002 — d12d567 정적 기술 감사 결함 수정 및 안정화 마스터 플랜(P0~P5) 수립
+- **작성자:** Gemini (Antigravity)
+- **작업 일시:** 2026-10-31 09:27 KST
+- **작업 ID:** FW-006 / AUDIT-001 / PLAN-001
+- **기준 브랜치:** `feature/phone-wifi-control`
+- **정밀 감사 및 결함 수정 내역**:
+  1. **[Wi-Fi + BLE Coexistence 경합 및 버퍼 오버플로우 방어]**: `main.cpp`의 `WiFiBTCommunicationTask`에서 10ms마다 난사되던 BLE 텔레메트리 송출을 50ms (20Hz) 카운터 페이싱으로 최적화하여 2.4GHz RF 충돌 및 버퍼 적체 차단.
+  2. **[RF 송신 출력 안정화 (15.0 dBm SafePower)]**: 19.5dBm 포화 구동 시 LDO(AP2112K-3.3 600mA 한계) 피크 전력 부하 및 3.3V 전압 강하 위험을 방지하기 위해 `WiFi.setTxPower(WIFI_POWER_15dBm)`(피크 ~280mA)으로 하향 조정하여 전원 건전성 확보 (`wifi_manager.cpp`).
+  3. **[무선 OTA 방어 로직 강화]**: 첫 청크에서 ESP32 바이너리 매직 바이트(`0xE9`) 검증 로직 추가(비정상 파일 사전 거부), 업로드 오류 시 재부팅 억제(`500 Error`)하여 에러 로그 보존 및 안정성 강화 (`wifi_manager.cpp`).
+- **P0 클린 재빌드 결과**:
+  - `pio run -e esp32_wifi_phone`: **SUCCESS (0 Error, 0 Warning)**
+  - Flash: **1,895,135 bytes** (56.7%), DRAM: **70,160 bytes** (56.3%), IRAM: **121,263 bytes** (92.5%, 여유 9.8 KB).
+  - 아티팩트: `majn_wifi_phone_firmware.bin` 및 `/tmp/fw.bin` 갱신 완료.
+- **마스터 플랜 문서 수립**:
+  - [`docs/MAJN_FIRMWARE_STABILIZATION_AND_VERIFICATION_MASTER_PLAN.md`](../MAJN_FIRMWARE_STABILIZATION_AND_VERIFICATION_MASTER_PLAN.md): P0(빌드) $\rightarrow$ P1(외장 안테나 RSSI) $\rightarrow$ P2(아이폰 결속) $\rightarrow$ P3(듀얼 경합) $\rightarrow$ P4(OTA 복구력) $\rightarrow$ P5(24시간 및 영아 안전) 6단계 검증 로드맵 및 비상 롤백 매트릭스 제정.
+- **다음 작업:** 사용자 물리 안테나 체결 상태 확인 후 P1/P2 단계 실증 착수.
+
+
