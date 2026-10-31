@@ -9,6 +9,8 @@
 ## 프로젝트: 마중(MAJN) 스마트 요람/배시넷 PCB
 USB-C 5V → MP3426 부스트 12.12V(PVDD) → TAS5805M Class-D 앰프 → 2×8Ω 진동 트랜스듀서.
 ESP32-WROOM(BLE), LSM6DSOX(IMU), AP2112K-3.3(LDO). 80×60mm 4층. KC 국내인증. EasyEDA Pro `new start`/PCB1.
+- **목공 케이스 최신본**: **4.5T 자작합판** (홍대 해광레이저 가공, 외경 450×250×22.5mm, R20 코너, 캐비티 13.5mm, 4.5T_haptic DXF).
+
 
 ---
 
