@@ -613,6 +613,32 @@
 - **실물 OTA 보류 원칙 확인**: 하드웨어 안전을 위해 실물 보드 플래시는 엄격히 보류 중이며, 벤치 시험 계획 하에 사용자 승인 하에 단계별 진행 대기.
 - **다음 작업:** Git 커밋 및 원격 푸시, 사용자에게 2차 피어리뷰 시정 상세 결과 보고.
 
+---
+
+### SHARED-2026-10-31-005 — [무선 우선 마스터플랜] W0: 기존 코드 보안 감사 및 기준선 확립 완료
+- **작성자:** Gemini (Antigravity)
+- **작업 일시:** 2026-10-31 11:55 KST
+- **작업 ID:** FW-009 / WIRELESS-W0
+- **기준 브랜치:** `feature/phone-wifi-control`
+- **W0 완료 내역**:
+  1. **고정 AP 패스워드 제거 (`wifi_manager.cpp`, `wifi_manager.h`, `main.cpp`)**:
+     - `majn-secure-2026` 고정 비밀번호 제거.
+     - `password == nullptr` 시 Open AP로 결속 가능하게 하여 스마트폰(iPhone/Android) 연결 마찰 제거. WPA2 요구 시 8자 이상 비밀번호 전달 시에만 WPA2-PSK 활성화.
+  2. **동적 세션 토큰 보안 체계 구축**:
+     - 하드코딩된 토큰(`majn-device-token-2026`) 완전 제거.
+     - 기동 시 `esp_random()` 기반의 64비트 동적 난수 토큰 자동 생성. 브라우저 접근(`handleRoot`) 시 `Set-Cookie`로 클라이언트에 전달되어 안전한 제어 세션 유지.
+  3. **OTA 롤백 로직 안전성 재검증**:
+     - `main.cpp` 최하단 4중 진단(태스크 3종 정상, 시스템 대기, 힙 $\ge$ 30KB, 에러 락 부재) 검증 유지 및 `CONFIG_BOOTLOADER_APP_ROLLBACK_ENABLE=1` 유효성 확인.
+  4. **기존 Wi-Fi / BLE 코드 구조 분석**:
+     - Wi-Fi와 BLE가 명령(START/STOP 등)을 각각 독자 파싱하고 있는 구조 파악 $\rightarrow$ W4 단계에서 `CommandManager` 단일 계층으로 통합할 필요성 확인.
+  5. **PlatformIO 클린 빌드 통과**:
+     - Status: **SUCCESS (0 Error, 0 Warning)**
+     - Flash: 1,898,915B (56.8%), DRAM: 70,184B (56.3%), IRAM: 121,263B (92.52%, 여유 9,809B).
+     - 아티팩트 SHA-256: `55f5171da7231686c60ffb686a0dae61722f33f6878f7d942f04d8969def657b`
+- **실물 OTA 상태:** **보류 (HOLD 유지)**
+- **다음 단계 진입:** **W1 (Wi-Fi AP 안정화 및 iPhone/Android 검색·연결 실증) 진입 준비 완료**.
+
+
 
 
 

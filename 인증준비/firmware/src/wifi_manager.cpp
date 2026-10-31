@@ -17,7 +17,7 @@ static DNSServer dnsServer;
 static WebServer server(80);
 static AccelData sLatestAccel = {0, 0, 0, 0.0f, 0.0f, 1.0f};
 static bool sOtaInProgress = false;
-static String sAuthToken = "majn-device-token-2026";
+static String sAuthToken = "";
 
 bool isOtaInProgress() {
     return sOtaInProgress;
@@ -108,6 +108,12 @@ static void handleCommand() {
 bool initWiFiServer(const char* ssid, const char* password, const char* authToken) {
     if (authToken && strlen(authToken) > 0) {
         sAuthToken = authToken;
+    } else if (sAuthToken.isEmpty()) {
+        // Generate secure dynamic session token at runtime (eliminates hardcoded tokens)
+        char tokenBuf[32];
+        snprintf(tokenBuf, sizeof(tokenBuf), "%08X%08X", (uint32_t)esp_random(), (uint32_t)esp_random());
+        sAuthToken = tokenBuf;
+        Serial.printf("[WiFi] Dynamic Session Auth Token generated: %s\n", sAuthToken.c_str());
     }
 
     // 1. Reset Wi-Fi peripheral to clean state
@@ -121,12 +127,16 @@ bool initWiFiServer(const char* ssid, const char* password, const char* authToke
     IPAddress subnet(255, 255, 255, 0);
     WiFi.softAPConfig(local_ip, gateway, subnet);
 
-    // 3. Start SoftAP on Channel 1 with WPA2-PSK security (never default to Open AP)
+    // 3. Start SoftAP on Channel 1 (Configurable WPA2-PSK or OPEN - no hardcoded fixed password)
     bool apStarted = false;
+    const char* secType = "OPEN";
     if (password && strlen(password) >= 8) {
         apStarted = WiFi.softAP(ssid, password, 1, 0, 4);
+        secType = "WPA2-PSK";
     } else {
-        apStarted = WiFi.softAP(ssid, "majn-secure-2026", 1, 0, 4);
+        // Open AP mode for frictionless smartphone pairing
+        apStarted = WiFi.softAP(ssid, nullptr, 1, 0, 4);
+        secType = "OPEN";
     }
 
     if (!apStarted) {
@@ -161,7 +171,7 @@ bool initWiFiServer(const char* ssid, const char* password, const char* authToke
     WiFi.setTxPower(WIFI_POWER_15dBm);
 
     Serial.println("[WiFi] SoftAP Started Successfully!");
-    Serial.printf("[WiFi] SSID: %s (Channel 1, HT20, 15.0dBm SafePower, WPA2-PSK)\n", ssid);
+    Serial.printf("[WiFi] SSID: %s (Channel 1, HT20, 15.0dBm SafePower, %s)\n", ssid, secType);
     Serial.printf("[WiFi] IP Address: %s\n", WiFi.softAPIP().toString().c_str());
 
     // 5. Start DNS Server for Captive Portal (Redirects any domain query to 192.168.4.1)

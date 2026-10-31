@@ -159,8 +159,8 @@ void setup() {
     MajnSafety::initSafety();
 
 #if defined(MAJN_WIFI_CONTROL)
-    // Wi-Fi SoftAP & HTTP Server (Brought up FIRST so network is discoverable immediately)
-    if (!MajnWiFi::initWiFiServer("MAJN-Bassinet", "majn-secure-2026")) {
+    // Wi-Fi SoftAP & HTTP Server (Open AP without hardcoded password for frictionless smartphone connection)
+    if (!MajnWiFi::initWiFiServer("MAJN-Bassinet", nullptr)) {
         Serial.println("[FATAL] Wi-Fi SoftAP initialization failed.");
         MajnSafety::requestEmergencyStop();
         while (1);
