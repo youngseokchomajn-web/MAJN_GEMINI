@@ -5,6 +5,10 @@
 #include "power_manager.h"
 #include "amplifier_manager.h"
 #include "vibration_controller.h"
+#include "ota_ble_service.h"
+#if defined(MAJN_WIFI_CONTROL)
+#include "wifi_manager.h"
+#endif
 
 extern volatile bool systemActive;
 extern volatile unsigned long activeStateStartTime;
@@ -67,24 +71,43 @@ const char* getCurrentStateName() {
     return stateName(MajnSafety::getSystemState(systemActive));
 }
 
+static volatile bool sRebootPending = false;
+static uint32_t sRebootAt = 0;
+
+static void scheduleReboot(uint32_t delayMs) {
+    sRebootPending = true;
+    sRebootAt = millis() + delayMs;
+}
+
+void tickSystem() {
+    if (sRebootPending && millis() >= sRebootAt) {
+        Serial.println("[SystemCtrl] Executing scheduled reboot now.");
+        esp_restart();
+    }
+}
+
 void triggerSafeStop() {
     activeStateStartTime = 0;
-    MajnSafety::requestSafeStop();
-    MajnAmplifier::enterStandbyState();
     systemActive = false;
+    MajnSafety::requestSafeStop();
 }
 
 void triggerEmergencyStop() {
     activeStateStartTime = 0;
-    MajnSafety::requestEmergencyStop();
     systemActive = false;
+    MajnSafety::requestEmergencyStop();
 }
 
 void noteClientActivity() {
     gLastClientActivity = millis();
 }
 
+uint32_t getLastClientActivity() {
+    return gLastClientActivity;
+}
+
 void checkClientTimeout(uint32_t timeoutMs) {
+    tickSystem();
     if (systemActive && (millis() - gLastClientActivity > timeoutMs)) {
         Serial.printf("[SystemCtrl] Client connection timeout (%u ms). Safe Stop triggered!\n", timeoutMs);
         triggerSafeStop();
@@ -168,6 +191,19 @@ bool handleJsonCommand(const char* jsonStr, String& responseJson) {
     int id = doc["id"] | -1;
     const char* cmd = doc["cmd"] | "";
 
+    // Unified OTA Protection Gate: Reject all control commands during active Wi-Fi or BLE firmware update
+    bool isAnyOtaActive = MajnBleOta::isOtaInProgress();
+#if defined(MAJN_WIFI_CONTROL)
+    if (MajnWiFi::isOtaInProgress()) {
+        isAnyOtaActive = true;
+    }
+#endif
+    if (isAnyOtaActive && strcmp(cmd, "PING") != 0 && strcmp(cmd, "STATUS") != 0) {
+        Serial.printf("[SystemCtrl] Command '%s' rejected: Firmware OTA update is in progress.\n", cmd);
+        buildAckJson(id, cmd, "rejected", "OTA_ACTIVE", responseJson);
+        return false;
+    }
+
     if (strcmp(cmd, "PING") == 0) {
         buildAckJson(id, cmd, "applied", getCurrentStateName(), responseJson);
         return true;
@@ -190,6 +226,13 @@ bool handleJsonCommand(const char* jsonStr, String& responseJson) {
             Serial.printf("[SystemCtrl] START rejected: Invalid parameters f=%.1f, a=%.2f (Allowed 30~65Hz, 0~0.5)\n", f, a);
             buildAckJson(id, cmd, "rejected", getCurrentStateName(), responseJson);
             return false;
+        }
+
+        if (!doc["duration_min"].isNull()) {
+            uint16_t dm = doc["duration_min"].as<uint16_t>();
+            if (dm >= 1 && dm <= 30) {
+                setRunningDurationMinutes(dm);
+            }
         }
 
         // Auto-retry amplifier init if not ready
@@ -222,19 +265,19 @@ bool handleJsonCommand(const char* jsonStr, String& responseJson) {
 
         systemActive = true;
         activeStateStartTime = millis();
-        if (doc["duration_min"].is<uint16_t>()) {
-            setRunningDurationMinutes(doc["duration_min"]);
-        }
         MajnVibration::setTarget(f, a);
         buildAckJson(id, cmd, "applied", "RUNNING", responseJson);
         return true;
     }
 
     if (strcmp(cmd, "SET_DURATION") == 0) {
-        if (doc["duration_min"].is<uint16_t>()) {
-            setRunningDurationMinutes(doc["duration_min"]);
-            buildAckJson(id, cmd, "applied", getCurrentStateName(), responseJson);
-            return true;
+        if (!doc["duration_min"].isNull()) {
+            uint16_t dm = doc["duration_min"].as<uint16_t>();
+            if (dm >= 1 && dm <= 30) {
+                setRunningDurationMinutes(dm);
+                buildAckJson(id, cmd, "applied", getCurrentStateName(), responseJson);
+                return true;
+            }
         }
         buildAckJson(id, cmd, "rejected", getCurrentStateName(), responseJson);
         return false;
@@ -295,7 +338,11 @@ bool handleJsonCommand(const char* jsonStr, String& responseJson) {
             buildAckJson(id, cmd, "rejected", "FAULT", responseJson);
             return false;
         }
-        float f = doc["frequency_hz"] | MajnVibration::getTargetFrequency();
+        if (doc["frequency_hz"].isNull()) {
+            buildAckJson(id, cmd, "rejected", getCurrentStateName(), responseJson);
+            return false;
+        }
+        float f = doc["frequency_hz"].as<float>();
         if (f < 30.0f || f > 65.0f) {
             buildAckJson(id, cmd, "rejected", getCurrentStateName(), responseJson);
             return false;
@@ -310,7 +357,11 @@ bool handleJsonCommand(const char* jsonStr, String& responseJson) {
             buildAckJson(id, cmd, "rejected", "FAULT", responseJson);
             return false;
         }
-        float a = doc["amplitude"] | MajnVibration::getTargetAmplitude();
+        if (doc["amplitude"].isNull()) {
+            buildAckJson(id, cmd, "rejected", getCurrentStateName(), responseJson);
+            return false;
+        }
+        float a = doc["amplitude"].as<float>();
         if (a < 0.0f || a > 0.5f) {
             buildAckJson(id, cmd, "rejected", getCurrentStateName(), responseJson);
             return false;
@@ -325,7 +376,11 @@ bool handleJsonCommand(const char* jsonStr, String& responseJson) {
             buildAckJson(id, cmd, "rejected", "FAULT", responseJson);
             return false;
         }
-        int v = doc["volume"] | -1;
+        if (doc["volume"].isNull()) {
+            buildAckJson(id, cmd, "rejected", getCurrentStateName(), responseJson);
+            return false;
+        }
+        int v = doc["volume"].as<int>();
         if (v < 0 || v > 100) {
             buildAckJson(id, cmd, "rejected", getCurrentStateName(), responseJson);
             return false;
@@ -340,7 +395,15 @@ bool handleJsonCommand(const char* jsonStr, String& responseJson) {
             buildAckJson(id, cmd, "rejected", "FAULT", responseJson);
             return false;
         }
-        const char* p = doc["preset"] | "pink";
+        if (doc["preset"].isNull()) {
+            buildAckJson(id, cmd, "rejected", getCurrentStateName(), responseJson);
+            return false;
+        }
+        const char* p = doc["preset"].as<const char*>();
+        if (!p || strlen(p) == 0) {
+            buildAckJson(id, cmd, "rejected", getCurrentStateName(), responseJson);
+            return false;
+        }
         strncpy(sCurrentPreset, p, sizeof(sCurrentPreset) - 1);
         sCurrentPreset[sizeof(sCurrentPreset) - 1] = '\0';
         buildAckJson(id, cmd, "applied", getCurrentStateName(), responseJson);
@@ -348,10 +411,9 @@ bool handleJsonCommand(const char* jsonStr, String& responseJson) {
     }
 
     if (strcmp(cmd, "REBOOT") == 0) {
+        scheduleReboot(500);
         buildAckJson(id, cmd, "applied", "REBOOTING", responseJson);
-        Serial.println("[SystemCtrl] Remote reboot requested. Restarting in 200ms...");
-        delay(200);
-        esp_restart();
+        Serial.println("[SystemCtrl] Remote reboot requested. Scheduled in 500ms.");
         return true;
     }
 

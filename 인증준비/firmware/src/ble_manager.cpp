@@ -90,19 +90,7 @@ class CommandCallbacks : public BLECharacteristicCallbacks {
         String raw = characteristic->getValue();
         if (raw.length() == 0) return;
 
-        // Reject active vibration/hardware commands during wireless OTA update
-        if (MajnBleOta::isOtaInProgress()) {
-            JsonDocument doc;
-            DeserializationError err = deserializeJson(doc, raw.c_str());
-            const char* cmd = doc["cmd"] | "";
-            if (strcmp(cmd, "PING") != 0 && strcmp(cmd, "STATUS") != 0) {
-                int id = doc["id"] | -1;
-                sendAck(id, cmd, "rejected", "OTA_ACTIVE");
-                return;
-            }
-        }
-
-        // Delegate entire command execution, range validation, amplifier sequencing, and ACK to Unified Command Manager
+        // Delegate entire command execution, range validation, amplifier sequencing, OTA locking, and ACK to Unified Command Manager
         String responseJson;
         MajnSystemCtrl::handleJsonCommand(raw.c_str(), responseJson);
 
@@ -166,8 +154,9 @@ void bleRegisterHeartbeat() {
 }
 
 void bleLoop() {
-    if (gConnected && millis() - gLastClientActivity > MajnBle::HEARTBEAT_TIMEOUT_MS) {
-        Serial.println("[BLE] Heartbeat timeout (5s). Requesting safe stop.");
+    if (gConnected && MajnSystemCtrl::isSystemActive() && 
+        (millis() - MajnSystemCtrl::getLastClientActivity() > MajnBle::HEARTBEAT_TIMEOUT_MS)) {
+        Serial.println("[BLE] Client activity timeout (5s) while RUNNING. Safe Stop triggered.");
         MajnSystemCtrl::triggerSafeStop();
         gLastClientActivity = millis();
     }

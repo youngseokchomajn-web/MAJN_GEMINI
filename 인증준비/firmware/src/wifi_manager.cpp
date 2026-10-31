@@ -18,6 +18,8 @@ static WebServer server(80);
 static AccelData sLatestAccel = {0, 0, 0, 0.0f, 0.0f, 1.0f};
 static bool sOtaInProgress = false;
 static bool sOtaActiveVibrationRejected = false;
+static bool sOtaSuccess = false;
+static bool sOtaHeaderValidated = false;
 static String sAuthToken = "";
 
 bool isOtaInProgress() {
@@ -71,19 +73,19 @@ static void handleStatus() {
                    String(",\"auth_token\":\"") + sAuthToken + "\"}";
     }
 
-    server.sendHeader("Access-Control-Allow-Origin", "http://192.168.4.1");
+    server.sendHeader("Access-Control-Allow-Origin", "*");
     server.send(200, "application/json", jsonOut);
 }
 
 static void handlePing() {
     MajnSystemCtrl::noteClientActivity();
-    server.sendHeader("Access-Control-Allow-Origin", "http://192.168.4.1");
+    server.sendHeader("Access-Control-Allow-Origin", "*");
     server.send(200, "application/json", "{\"status\":\"ok\"}");
 }
 
 static void handleCommand() {
     MajnSystemCtrl::noteClientActivity();
-    server.sendHeader("Access-Control-Allow-Origin", "http://192.168.4.1");
+    server.sendHeader("Access-Control-Allow-Origin", "*");
 
     if (!isRequestAuthorized()) {
         server.send(401, "application/json", "{\"error\":\"Unauthorized: Missing or invalid authentication token\"}");
@@ -191,11 +193,29 @@ bool initWiFiServer(const char* ssid, const char* password, const char* authToke
     const char* headerkeys[] = {"X-Auth-Token", "Cookie"};
     server.collectHeaders(headerkeys, 2);
 
-    // 11. Register Standard Web Routes
+    // 11. Register Standard Web Routes & CORS Preflight (OPTIONS)
     server.on("/", HTTP_GET, handleRoot);
     server.on("/api/status", HTTP_GET, handleStatus);
+    server.on("/api/status", HTTP_OPTIONS, []() {
+        server.sendHeader("Access-Control-Allow-Origin", "*");
+        server.sendHeader("Access-Control-Allow-Methods", "GET, OPTIONS");
+        server.sendHeader("Access-Control-Allow-Headers", "Content-Type, X-Auth-Token");
+        server.send(204);
+    });
     server.on("/api/ping", HTTP_GET, handlePing);
+    server.on("/api/ping", HTTP_OPTIONS, []() {
+        server.sendHeader("Access-Control-Allow-Origin", "*");
+        server.sendHeader("Access-Control-Allow-Methods", "GET, OPTIONS");
+        server.sendHeader("Access-Control-Allow-Headers", "Content-Type, X-Auth-Token");
+        server.send(204);
+    });
     server.on("/api/command", HTTP_POST, handleCommand);
+    server.on("/api/command", HTTP_OPTIONS, []() {
+        server.sendHeader("Access-Control-Allow-Origin", "*");
+        server.sendHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS");
+        server.sendHeader("Access-Control-Allow-Headers", "Content-Type, X-Auth-Token");
+        server.send(204);
+    });
 
     // 12. Register Captive Portal Detection Routes (Apple iOS & Android Auto-Login)
     server.on("/hotspot-detect.html", HTTP_GET, handleRoot);
@@ -236,9 +256,9 @@ bool initWiFiServer(const char* ssid, const char* password, const char* authToke
             return;
         }
 
-        if (Update.hasError()) {
-            server.send(500, "text/plain", "UPDATE FAILED: Write error or invalid ESP32 image format.");
-            Serial.println("[Web-OTA] Update failed. Reboot suppressed to preserve error diagnostics.");
+        if (!sOtaSuccess || Update.hasError()) {
+            server.send(500, "text/plain", "UPDATE FAILED: Write error, empty payload, or invalid ESP32 image format.");
+            Serial.println("[Web-OTA] Update failed or empty payload. Reboot suppressed to preserve error diagnostics.");
         } else {
             server.send(200, "text/plain", "UPDATE SUCCESS! Rebooting with verified new firmware...");
             Serial.println("[Web-OTA] Update successful. Rebooting in 1 second...");
@@ -249,8 +269,11 @@ bool initWiFiServer(const char* ssid, const char* password, const char* authToke
         HTTPUpload& upload = server.upload();
         if (upload.status == UPLOAD_FILE_START) {
             sOtaActiveVibrationRejected = false;
+            sOtaSuccess = false;
+            sOtaHeaderValidated = false;
             if (!isRequestAuthorized()) {
                 Serial.println("[Web-OTA] REJECTED: Unauthorized OTA attempt without valid token.");
+                Update.abort();
                 return;
             }
             if (MajnSystemCtrl::isSystemActive()) {
@@ -268,10 +291,12 @@ bool initWiFiServer(const char* ssid, const char* password, const char* authToke
         } else if (upload.status == UPLOAD_FILE_WRITE) {
             if (!isRequestAuthorized() || sOtaActiveVibrationRejected) return;
             // First chunk sanity check: ESP32 binary image magic byte must be 0xE9
-            if (upload.totalSize == 0 && upload.currentSize > 0) {
+            if (!sOtaHeaderValidated && upload.currentSize > 0) {
+                sOtaHeaderValidated = true;
                 if (upload.buf[0] != 0xE9) {
                     Serial.printf("[Web-OTA] REJECTED: Header magic byte 0x%02X != 0xE9. Not an ESP32 binary!\n", upload.buf[0]);
                     Update.abort();
+                    sOtaInProgress = false;
                     return;
                 }
             }
@@ -281,17 +306,23 @@ bool initWiFiServer(const char* ssid, const char* password, const char* authToke
                 }
             }
         } else if (upload.status == UPLOAD_FILE_END) {
-            if (sOtaActiveVibrationRejected) {
+            if (sOtaActiveVibrationRejected || !sOtaHeaderValidated) {
                 Update.abort();
+                sOtaSuccess = false;
+                sOtaInProgress = false;
                 return;
             }
             if (Update.end(true)) {
                 Serial.printf("[Web-OTA] Successfully updated %u bytes\n", upload.totalSize);
+                sOtaSuccess = true;
             } else {
                 Update.printError(Serial);
+                sOtaSuccess = false;
             }
+            sOtaInProgress = false;
         } else if (upload.status == UPLOAD_FILE_ABORTED) {
             sOtaInProgress = false;
+            sOtaSuccess = false;
             Update.abort();
             Serial.println("[Web-OTA] Update transfer aborted by client.");
         }
@@ -307,6 +338,7 @@ void handleClient() {
     server.handleClient();
     // Heartbeat safety watchdog: auto safe-stop if no request for 5 seconds while RUNNING
     MajnSystemCtrl::checkClientTimeout(5000);
+    MajnSystemCtrl::tickSystem();
 }
 
 void updateTelemetry(const AccelData& accel) {

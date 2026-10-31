@@ -748,6 +748,38 @@
 - **실물 OTA 상태**: **보류 (HOLD 유지)**
 - **다음 작업**: W7 (무선 기능 통합 완료 및 전체 회귀 시험 버전 동결 준비).
 
+### SHARED-2026-10-31-010 — [무선 안정화 심층 감사 & 결함 격퇴] OTA 빈 POST 재부팅 차단, Soft Stop Ramping 복원, Wi-Fi/BLE 상호 OTA 차단, 비동기 리부트 및 CORS 프리플라이트 완비
+- **작성자:** Gemini (Antigravity Reviewer & Fixer)
+- **작업 일시:** 2026-10-31 13:05 KST
+- **작업 ID:** WIRELESS-AUDIT-FIX / FW-004
+- **기준 브랜치:** `feature/phone-wifi-control`
+- **심층 결함 격퇴 및 개선 내역**:
+  1. **[FATAL BUG 격퇴: /update 빈 POST 무조건 재부팅 차단]**:
+     - 원인: 이전 구현은 `HTTP_POST` 핸들러에서 `Update.hasError()`만 확인하였으나, 빈 POST나 본문 없는 업로드 시 `Update.begin()`이 호출되지 않아 `Update.hasError() == false`로 판정되어 즉시 기기가 재부팅되는 치명적 결함 존재.
+     - 조치: `sOtaSuccess` 및 `sOtaHeaderValidated` 상태 머신 플래그를 신설하고, `Update.end(true)`가 정상 바이트 쓰기를 완료한 경우에만 `sOtaSuccess = true`로 승인. 빈 POST 및 오류 시 500 에러 반환 및 재부팅 엄격 차단.
+  2. **[기능 결함 수정: Soft Stop Ramping (완만 감쇄) 정상 동작 복원]**:
+     - 원인: `triggerSafeStop()`에서 즉시 `MajnAmplifier::enterStandbyState()`를 강제하고, `renderAudioBlock()`에서 `!systemActive`일 때 즉시 무음 버퍼를 송출하여 20ms당 0.005f 단위의 완만 감쇄(Soft Stop Ramping) 코드가 물리적으로 완전히 우회되고 소리가 즉각 끊기던 문제.
+     - 조치: `triggerSafeStop()`은 `systemActive = false` 및 목표 진폭 0.0f 설정만 수행하고, `renderAudioBlock()`은 진폭이 0.001f 이하로 감쇄될 때까지 부드러운 감쇄 사운드를 지속 렌더링하도록 수정. 진폭 0.0f 도달 시 `tickControlLoop`가 정상적으로 Standby 모드로 전환.
+  3. **[크로스 프로토콜 상호 OTA 명령 차단 완비 (W4 결속)]**:
+     - 원인: Wi-Fi OTA 진행 중 BLE START 명령이 들어오거나, BLE OTA 중 Wi-Fi 명령이 유입될 때 한쪽 프로토콜만 체크하여 충돌 가능성 잔존.
+     - 조치: `MajnSystemCtrl::handleJsonCommand()` 진입점에 `MajnBleOta::isOtaInProgress()` 및 `MajnWiFi::isOtaInProgress()` 융합 가드를 배치하여 모든 채널의 하드웨어 조작 명령을 원천 차단 (`OTA_ACTIVE`).
+  4. **[BLE 워치독의 Wi-Fi 동작 오차단 해소]**:
+     - 원인: BLE 클라이언트가 접속된 상태에서 사용자가 Wi-Fi Web UI로 기기를 조작할 때, BLE 측 로컬 타이머만 검사하여 5초 후 비정상 Safe Stop을 유발하던 문제.
+     - 조치: `MajnSystemCtrl::getLastClientActivity()` 통합 타임스탬프를 공유하여 Wi-Fi와 BLE 간 활동 정보를 완전 동기화.
+  5. **[원격 REBOOT 명령 통신 단절 방지]**:
+     - 원인: `REBOOT` 명령 수신 시 200ms 동기식 딜레이 후 즉시 `esp_restart()`하여 클라이언트에 ACK가 전송되기 전에 소켓이 파괴되던 문제.
+     - 조치: 500ms 지연 비동기 재부팅 스케줄러(`tickSystem()`)를 구현하여 ACK JSON이 클라이언트에 정상 전송된 후 재부팅되도록 개선.
+  6. **[CORS 프리플라이트 및 mDNS 도메인 호환]**:
+     - `HTTP_OPTIONS` 프리플라이트 라우트(`Access-Control-Allow-Methods`, `Headers: X-Auth-Token`)를 추가하고 `Access-Control-Allow-Origin: *`로 확장하여 `majn.local` 및 captive network 환경 완벽 대응.
+- **P0 빌드 및 바이너리 검증**:
+  - `pio run -e esp32_wifi_phone`: **SUCCESS (0 Error, 0 Warning)**
+  - Flash: 1,902,867 bytes (56.9%), DRAM: 70,208 bytes (56.36%), IRAM: 121,275 bytes (92.53%, 9,797B 잔여)
+  - 바이너리 Magic Byte: `0xE9` (ESP32 Valid)
+  - 최신 바이너리 SHA-256: `9cd564e037d7dc0b10b637fccc433d944dc1de92750583a669236f13ef8b29bf`
+- **하드웨어 검증 스위트 (`tools/verify_hardware_review.py`)**:
+  - **11 / 11 LOGICAL RULES PASSED (100.0%)**
+- **실물 OTA 상태**: **보류 (HOLD 유지)**
+
 
 
 

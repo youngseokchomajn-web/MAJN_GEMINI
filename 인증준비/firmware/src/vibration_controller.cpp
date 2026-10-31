@@ -118,8 +118,8 @@ void renderAudioBlock() {
     }
 
     int16_t buffer[512];
-    // If not active or amplitude zero or amplifier not ready, stream silence to keep I2S clocks alive
-    if (!systemActive || MajnSafety::isSafetyLockTriggered() || gCurrentAmplitude <= 0.001f || !MajnAmplifier::isAmplifierReady()) {
+    // Stream silence if amplitude is negligible, safety lock triggered, or amplifier not ready (keeps I2S clocks active)
+    if (MajnSafety::isSafetyLockTriggered() || gCurrentAmplitude <= 0.001f || !MajnAmplifier::isAmplifierReady()) {
         memset(buffer, 0, sizeof(buffer));
         size_t bytes_written = 0;
         i2s_write(I2S_NUM_0, buffer, sizeof(buffer), &bytes_written, portMAX_DELAY);

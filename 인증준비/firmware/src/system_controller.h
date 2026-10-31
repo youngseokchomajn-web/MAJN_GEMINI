@@ -30,7 +30,9 @@ uint32_t getRemainingSeconds();
 
 // Heartbeat & Connection Supervision
 void noteClientActivity();
+uint32_t getLastClientActivity();
 void checkClientTimeout(uint32_t timeoutMs = 5000);
+void tickSystem();
 
 } // namespace MajnSystemCtrl
 
