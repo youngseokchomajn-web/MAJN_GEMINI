@@ -2,8 +2,8 @@
 
 > **문서 상태**: 공식 승인 (SSOT)  
 > **최신 개정일**: 2026년 10월 31일  
-> **적용 대상**: PCB Rev-C (Rel 3), ESP32 펌웨어, 목공 케이스(4.5T), 하네스 및 센서 연동  
-> **검증 스크립트**: `/Users/youngseok/Desktop/majn/tools/verify_hardware_review.py` (11/11 100% PASS)
+> **적용 대상**: PCB Rev-C (Rel 5), ESP32 펌웨어, 목공 케이스(4.5T), 하네스 및 센서 연동  
+> **검증 스크립트**: `/Users/youngseok/Desktop/majn/tools/verify_hardware_review.py` (21/21 100% PASS, v2.4 Deep Electrical & Mechanical Clearance)
 
 ---
 
@@ -113,15 +113,117 @@
 - **시리얼 플래시 불가**: CP2102 헤더에 DTR/RTS 리셋 회로가 없으므로 유선 `esptool` 다운로드 불가.
 - **배포 방식**: 오직 **무선 OTA (BLE GATT OTA 또는 Wi-Fi HTTP `/update`)**로만 펌웨어 업로드 실행.
 
+### [결정 12] MP3426 12V 승압 피드백 분배 저항 스왑 (R1 ↔ R2 정상화)
+- **발견된 문제**:
+  - 기존 설계에서 PVDD_12V ↔ BOOST_FB에 연결된 R1이 16kΩ, BOOST_FB ↔ GND에 연결된 R2가 150kΩ으로 역전 실장되어 승압 출력 전압이 $V_{OUT} = 1.2\text{V} \times (1 + 16/150) = 1.33\text{V}$로 심각하게 저하되는 결함 존재.
+- **의사결정**:
+  - `R1`(High-Side)을 **150kΩ (`0603WAF1503T5E`, LCSC: `C22807`)**, `R2`(Low-Side)를 **16kΩ (`0603WAF1602T5E`, LCSC: `C22818`)**으로 전격 교체.
+  - 출력 전압: $V_{OUT} = 1.20\text{V} \times (1 + 150\text{k}\Omega / 16\text{k}\Omega) = \mathbf{12.45\text{V}}$로 정상화 완료 (TAS5805M 정격 12V 완벽 충족).
+
+### [결정 13] PVDD_12V 라인 디커플링 MLCC 내압 25V 상향 (C8, C9 교체)
+- **발견된 문제**:
+  - 기존 C8, C9에 배치된 `CL10A106KP8NNNC`(`C19702`)는 10V 정격('P' 코드) 부품으로, 12V 전원 라인 인가 시 유전체 파괴(Dielectric Breakdown) 및 발열/쇼트 위험 상존.
+- **의사결정**:
+  - C8, C9을 **25V 정격 10µF 0805 X5R MLCC (`CL21A106KAYNNNE`, LCSC: `C96919`)**로 즉시 교체하여 2배 이상의 절연 내압 안전 마진 확보.
+
+### [결정 14] U3(MP3426) & U4(TAS5805M) 보조 핀 결선 완료 및 1-Pin Dead Net 전면 제거
+- **발견된 문제**:
+  - Netlist 상에 U3.7(VDD), U3.14(FSET), U3.1(COMP), U4.13(AVDD), U4.4(VR_DIG) 5개 핀이 단독 1-pin 상태로 방치되어 칩 기동 불능 위험 존재.
+- **의사결정 및 완비 회로**:
+  - **U3.7 (`BOOST_VDD`)**: 1µF 16V 바이패스 커패시터(`C_BVDD`, LCSC: `C15849`)를 GND에 결선.
+  - **U3.14 (`BOOST_FSET`)**: 600kHz 스위칭 주파수 설정용 100kΩ 저항(`R_FSET`, LCSC: `C25804`)을 GND에 결선.
+  - **U3.1 (`BOOST_COMP`)**: 피드백 루프 안정성 보상을 위해 10kΩ 저항(`R_COMP`, LCSC: `C25803`)과 2.2nF 50V 커패시터(`C_COMP`, LCSC: `C14668`) 직렬 네트워크(`NET_COMP_MID`)를 GND에 결선.
+  - **U4.13 (`AVDD`)**: 1µF 아날로그 디커플링 커패시터(`C_AVDD`, LCSC: `C15849`)를 GND에 결선.
+  - **U4.4 (`VR_DIG`)**: 1µF 디지털 코어 디커플링 커패시터(`C_VRDIG`, LCSC: `C15849`)를 GND에 결선.
+  - 결과: 설계 전체에서 **1-Pin Dead Net 개수 = 0건 완비**. (U4 Pin 3/Pin 9 결선 상세는 [결정 21] 참조).
+
+### [결정 15] 3.3V LDO 용량 1A급 상향 (U2: SGM2036 300mA → TLV75733 1A 교체)
+- **발견된 문제**:
+  - 기존 실장된 SGM2036-3.3(300mA, UTDFN-4L)은 ESP32의 Wi-Fi 19.5dBm 송신 시 발생하는 순간 피크 전류(350~490mA)를 감당하지 못해 브라운아웃(Brownout) 전압 강하 및 MCU 리셋을 초래할 치명적 위험 존재.
+- **의사결정**:
+  - TI 사의 저잡음 고신뢰 1A LDO인 **`TLV75733PDBVR` (SOT-23-5, LCSC: `C444158`)**로 전격 교체.
+  - 핀맵: 1(IN, VBUS_5V), 2(GND), 3(EN, VBUS_5V), 4(NC), 5(OUT, VCC_3V3). 상시 통신 및 송신 피크 시에도 안정적인 3.3V 정전압 공급 보장.
+
+### [결정 16] ESP32 Power-On Reset(POR) RC 시상수 100배 확대 (R5=10kΩ, C17=1µF)
+- **발견된 문제**:
+  - 물리 리셋 버튼이 일체 없는 배시넷 보드 특성 상, 기존 R5(1kΩ), C17(100nF)의 매우 짧은 시상수($\tau = 0.1\text{ms}$)로 인해 전원 투입 시 LDO 슬루율 지연에 따른 부팅 실패 및 래치업 위험 존재.
+- **의사결정**:
+  - `R5`를 10kΩ(`0603WAF1002T5E`, LCSC: `C25803`), `C17`을 1µF(`CL10A105KB8NNNC`, LCSC: `C15849`)로 교체하여 시상수를 $\tau = 10\text{k}\Omega \times 1\mu\text{F} = \mathbf{10.0\text{ms}}$로 100배 확대. Espressif 공식 권고(>1ms)를 완벽 충족하여 무버튼 완전 자동 Power-On Reset 신뢰성 확보.
+
+### [결정 17] 레거시 유령 부품(TYPE_C, D2, SOP16) 전면 제거 및 USB 입력 커패시터(C1, C2) 정상화
+- **발견된 문제**:
+  - 초기 프로토타입 잔재인 DIP-20 MCU 패드(`D2`), 미결선 USB-UART(`SOP16` CH340C), 중복 리셉터클(`TYPE_C`)이 BOM과 Netlist에 남아 있었으며, C1(10µF)과 C2(100nF)가 고립된 `NET_VBUS`에 연결되어 보드 메인 5V 전원 레일에 실질적으로 기여하지 못함.
+- **의사결정**:
+  - 레거시 유령 부품 3종(`D2`, `SOP16`, `TYPE_C`)을 BOM과 Netlist에서 완전 영구 제적.
+  - `C1`(10µF)과 `C2`(100nF)를 실제 전원 버스인 `VBUS_5V`에 직결하여 5V 입력단 서지 억제 및 벌크 디커플링 정상화.
+
+### [결정 18] I2S 클럭 댐핑(R_BCLK) 및 스피커 BTL 출력 EMI 필터링(C_SPK1~4) 추가
+- **발견된 문제**:
+  - 고속 오디오 비트클럭(I2S_BCLK) 분기 배선 시 발생하는 임피던스 불일치 및 링잉 노이즈 위험.
+  - TAS5805M Class-D 앰프의 고주파 스위칭 PWM 노이즈가 스피커 케이블(하네스)을 안테나 삼아 방사되어 전자파 인증(KC/FCC Class B)에 불합격할 위험.
+- **의사결정**:
+  - ESP32 Pad 11(DAC_2) 출력단에 **33Ω 직렬 댐핑 저항(`R_BCLK`, 0603, LCSC: `C23138`)**을 삽입하여 `NET_I2S_BCLK_MCU` $\rightarrow$ `I2S_BCLK` 구동.
+  - 스피커 커넥터 출력 4개 라인(`NET_SPK_A+`, `NET_SPK_A-`, `NET_SPK_B+`, `NET_SPK_B-`)에 각각 **1nF 50V 고주파 바이패스 커패시터(`C_SPK1` ~ `C_SPK4`, 0603 X7R, LCSC: `C14666`)**를 GND로 결선하여 전자파 노이즈 감쇄 대책 완비.
+
+### [결정 19] UART_HDR 6핀 헤더 동기화로 RXD/TXD 데드넷 해소
+- **발견된 문제**:
+  - BOM 상에 `UART_HDR`이 2핀(`B-2100S02P-A110`)으로 오기되어 있어, 실물 보드의 6핀 커넥터 규격과 불일치하고 U1.34(`ESP_RXD`), U1.35(`ESP_TXD`)가 Netlist에서 1-pin 상태로 고립됨.
+- **의사결정**:
+  - `UART_HDR`을 실물 표준 규격인 2.54mm 6핀 헤더(`B-2100S06P-A110`, LCSC: `C124380`)로 정정.
+  - 핀맵: 1(3.3V), 2(EN), 3(IO0), 4(TXD0), 5(RXD0), 6(GND) 완비로 1-pin 데드넷 원천 박멸.
+
+### [결정 20] BOM.csv RFC 4180 표준 콤마 이스케이프 및 verify_hardware_review.py v2.3 심층 검증 강화
+- **발견된 문제**:
+  - `BOM.csv`의 마지막 열('Category / Circuit Role')에 포함된 괄호 내 콤마(예: `R1`, `R5`, `R_L1~8`, `R_PU1~2`)가 따옴표로 감싸지지 않아, 표준 CSV 파서(Python csv.reader, Excel, LCSC/JLCPCB 발주기) 파싱 시 11번째 열로 쪼개지는 구문 오류 존재.
+  - 기존 `verify_hardware_review.py`가 단순 `csv.DictReader`를 사용하여 열 개수 불일치를 걸러내지 못하고 은폐하였으며, 보조 핀의 GND 리턴 및 루프 보상(R_COMP-C_COMP) 직렬 네트워크를 피상적으로만(`len >= 2`) 검증함.
+- **의사결정**:
+  - `BOM.csv`의 모든 콤마 포함 필드를 큰따옴표(`"..."`)로 감싸 RFC 4180 표준을 100% 준수하도록 정제.
+  - `verify_hardware_review.py`를 v2.3으로 개정하여 BOM 열 개수 전수 검사, MP3426 루프 보상 RC 직렬 네트워크(`U3.1` $\rightarrow$ `R_COMP` $\rightarrow$ `NET_COMP_MID` $\rightarrow$ `C_COMP` $\rightarrow$ `GND`), 보조 핀 디커플링 MLCC의 GND 리턴 및 용량/저항값 검증, ESP32 EN RC 시상수 결선 무결성 검증을 전면 통합.
+
+### [결정 21] TAS5805M(U4) SDOUT(Pin 9) NC 격리 및 ADR(Pin 3) 풀다운 저항(R_ADR) 정합화
+- **발견된 문제**:
+  - 초기 수정본에서 U4 Pin 9(`SDOUT`)가 `GND`에 직결되어 있었음. `SDOUT`은 I2S CMOS 직렬 오디오 데이터 출력 핀이므로 접지 단락 시 내부 드라이버 과전류 소손 치명적 결함 유발 (`pinmap_master.md` 기준 미연결 NC 필수).
+  - U4 Pin 3(`ADR/FAULT#`)이 `GND`에 0Ω 직결되어 있었음. Pin 3은 부팅 시 I2C 주소 래치 후 동작 중 Fault 알림 오픈드레인/출력으로 전환되므로 단락 전류 위험 존재. 또한 펌웨어 주소(`0x2C`)와의 7-bit/8-bit 표기 혼선 존재.
+- **의사결정**:
+  - `U4.9`를 `NET "GND"`에서 완전히 제거하여 **안전한 미연결(NC, Floating)** 상태로 격리.
+  - `U4.3`은 10kΩ 풀다운 저항 **`R_ADR` (`0603WAF1002T5E`, LCSC: `C25803`)**을 거쳐 GND에 연결하도록 신규 네트 `AMP_ADR` 신설.
+  - I2C 주소를 펌웨어(`Majn_Vibe_Controller.ino`)의 `0x2C`와 일치하도록 **7-bit `0x2C` (8-bit `0x58`)**로 공식 정렬.
+
+### [결정 22] 부팅 시퀀스 안전 스트래핑 저항 3종(R_BEN, R_PDN, R_CS) 하드웨어 결선
+- **발견된 문제**:
+  - ESP32 부팅 직후 GPIO 핀들이 High-Z 상태일 때, ① `BOOST_EN` 플로팅에 의한 12V 급격한 기동 및 돌입전류 셧다운, ② `AMP_PDN` 팝 노이즈 및 GPIO15 부트스트랩 위반 위험, ③ `SPI_CS` 핀 노이즈로 `LSM6DSOX` IMU의 I2C 모드 오진입 위험 상존 (`MAJN_펌웨어요구사항_HW-FW계약_2026-07-03.md` 필수 안전 사양).
+- **의사결정**:
+  - **`R_BEN` (100kΩ, LCSC: `C25804`, 0603)**: `BOOST_EN` ↔ `GND` 풀다운 결선. ESP32 기동 전 12V 승압 레귤레이터 기본 OFF 강제 보장.
+  - **`R_PDN` (10kΩ, LCSC: `C25803`, 0603)**: `VCC_3V3` ↔ `AMP_PDN` 풀업 결선. GPIO15 부팅 스트래핑 사양(High)을 충족하고 앰프 초기 팝 노이즈 억제.
+  - **`R_CS` (10kΩ, LCSC: `C25803`, 0603)**: `VCC_3V3` ↔ `SPI_CS` 풀업 결선. IMU CS 라인을 High로 고정하여 SPI 통신 모드 고정 보장.
+
+### [결정 23] D1 5V TVS 다이오드 복구, C_BULK 저배형 MLCC 추가 및 13.5mm 목공 캐비티 간섭 해소
+- **발견된 문제**:
+  - 목공 하우징(4.5T 자작합판) 내부 캐비티 높이는 **13.5mm**인데, `D1`에 높이 12.0mm의 스루홀 전해커패시터(`插件 D6.3xL12mm`, Jianghai `C106568`)가 등록되어 PCB(1.6mm) 및 리드 납땜부 포함 시 약 15.1mm로 케이스 조립 불가 간섭 발생.
+  - 또한 `D1`은 원래 KC/FCC 전자파 및 서지 보호를 위한 5V TVS 다이오드 위치였음.
+- **의사결정**:
+  - `D1`을 원래 목적인 SMD 5V 단방향 TVS 다이오드 **`SMAJ5.0A` (MDD, LCSC: `C15929`, Footprint: `SMA(DO-214AC)`, 높이 2.2mm)**로 원상 복구 (`D1.1`=`VBUS_5V`, `D1.2`=`GND`).
+  - 5V 레일 벌크 디커플링 용량 보강을 위해 초저배형 SMD MLCC **`C_BULK` (22µF 25V, YAGEO `CC0805MKX5R8BB226`, LCSC: `C784585`, Footprint: `0805`, 높이 1.25mm)**를 추가 결선 (`C_BULK.1`=`VBUS_5V`, `C_BULK.2`=`GND`).
+  - 13.5mm 캐비티 내에 최대 2.2mm 이내로 모든 부품을 완전 수용하여 기구 간섭 100% 해소.
+
+### [결정 24] J1/J2 2핀 스피커 커넥터 품번 정정 및 F1 PPTC 3.0A 상향 (45°C 열 디레이팅 대응)
+- **발견된 문제**:
+  - `J1`, `J2` 2핀 스피커 단자가 BOM 상에 10핀 헤더(`B-2100S10P-A110`, LCSC `C124372`)로 잘못 등재되어 SMT 발주 오작업 위험 존재.
+  - `F1` 폴리퓨즈가 1.5A 정격(`SMD1206P150TF`)으로 되어 있어, 12V 앰프 대음량 + ESP32 Wi-Fi 풀 파워(19.5dBm) + 60GHz 레이더 동시 구동 시의 5V 피크 전류(2.0~2.4A) 및 밀폐 케이스 내부 온도(45°C) 조건에서 트립 한계가 약 1.1A로 디레이팅되어 전원 차단 오작동 위험 상존.
+- **의사결정**:
+  - `J1`, `J2`를 실물 정격인 **2.54mm 2핀 헤더 (`B-2100S02P-A110`, LCSC: `C124375`, Footprint: `2.54mm 2P Pin Header`)**로 즉시 정정.
+  - `F1`을 45°C 열 디레이팅을 견디는 **3.0A 홀딩 정격 SMD PPTC (`SMD1206P300TF`, LCSC: `C269155`, 1206)**로 전격 상향.
+
 ---
 
 ## 3. 부품 수 및 설계 정합성 최종 현황 (BOM & Netlist Parity)
-- **총 부품 수**: **57개** (기존 55개 + I2C 풀업 저항 `R_PU1`, `R_PU2` 2개)
-- **총 네트 수**: **60개**
+- **총 부품 수**: **70개** (기존 65개 + R_ADR, R_BEN, R_PDN, R_CS, C_BULK)
+- **총 액티브 네트 수**: **59개** (기존 58개 + AMP_ADR)
+- **1-Pin 데드 네트 수**: **0개 (Zero Dead Nets)**
 - **정합성 검증 결과**:
   ```bash
   $ python3 /Users/youngseok/Desktop/majn/tools/verify_hardware_review.py
-  VERIFICATION SUMMARY: 11 / 11 LOGICAL RULES PASSED (100.0%)
+  VERIFICATION SUMMARY: 21 / 21 LOGICAL RULES PASSED (100.0%)
   ```
 
 ---
@@ -129,12 +231,12 @@
 ## 4. 설계 아티팩트별 실제 반영 상태 및 SSOT 구분 (정밀 감사 결과)
 
 > [!WARNING] 중요: EasyEDA Pro 에디터 물리 배치 동기화 필요
-> 자동 검증 스크립트(`verify_hardware_review.py`)의 11/11 PASS는 `BOM.csv`와 `Netlist.net`의 전기적·논리적 정합성 검증 결과입니다. `Rev_C.epro2` 바이너리 내부의 실제 회로도 심볼/배선 및 PCB 패턴은 EasyEDA Pro 에디터를 통해 실체화해야 합니다.
+> 자동 검증 스크립트(`verify_hardware_review.py`)의 21/21 PASS는 `BOM.csv`와 `Netlist.net`의 전기적·논리적 정합성 검증 결과입니다. `Rev_C.epro2` 바이너리 내부의 실제 회로도 심볼/배선 및 PCB 패턴은 EasyEDA Pro 에디터를 통해 실체화해야 합니다.
 
 1. **BOM.csv & Netlist.net (100% 신뢰 가능한 SSOT)**:
-   - 57개 부품 및 60개 넷이 완벽히 명세되어 있으며, 부품 간 전기적 결선 사양이 100% 확정됨.
+   - 70개 부품 및 59개 넷이 완벽히 명세되어 있으며, 12V 승압 저항비(12.45V), 25V MLCC 내압, 1A LDO, 10ms POR 지연, 오디오 EMI/댐핑, 제로 데드넷, U4.9 NC 격리, U4.3 R_ADR 풀다운(7-bit 0x2C), 부팅 스트래핑 저항(R_BEN/R_PDN/R_CS), 5V TVS(SMAJ5.0A) 및 13.5mm 캐비티 기구 간섭 배제, 2핀 스피커 헤더(J1/J2), 3.0A PPTC(F1) 사양이 100% 확정됨.
 2. **Rev_C.epro2 (에디터 실체화 대기 상태)**:
-   - 내부 메타데이터 및 프로젝트 타이틀/설명은 Rel 3로 업데이트되었으나, 실제 그래픽 엔티티(R_PU1, R_PU2, 0Ω 링크 8개, 스너버 등의 심볼 및 트랙)는 EasyEDA Pro GUI/브릿지를 통해 실장 배치가 동기화되어야 함.
+   - 내부 메타데이터 및 프로젝트 타이틀/설명은 Rel 5로 업데이트 준비 중이며, 실제 그래픽 엔티티(신규 저항 4종, C_BULK, TVS 심볼 및 트랙 등)는 EasyEDA Pro GUI/브릿지를 통해 실장 배치가 동기화되어야 함.
    - 현 상태의 `.epro2`로 직접 거버를 출력하여 발주해서는 안 되며, 에디터에서 부품 배치 완료 후 최종 거버를 생성해야 함.
 3. **ESP32-WROOM-32UE-N8 풋프린트 검토 사항**:
    - 모듈 외형 치수가 18.0 × 19.2 mm로 기존 32E(18.0 × 25.5 mm)보다 길이가 6.3mm 짧음.
