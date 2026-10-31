@@ -43,24 +43,34 @@ const L = (d, style) => k.lineSvg(d, style);
 const D = (points, style) => k.dotsSvg(points, style);
 const byDepth = (points) => [...points].sort((a, b) => k.depthOf([a[0], a[1], 0], P) - k.depthOf([b[0], b[1], 0], P));
 
-// Bolt positions (8 locations: 4 corners + 4 midpoints along long edges)
+// Bolt positions (10 locations: 4 corners + 4 long edge midpoints + 2 short edge centers)
 const BOLTS = [
-  [-PAD_W / 2 + 18, -PAD_D / 2 + 18],
-  [PAD_W / 2 - 18, -PAD_D / 2 + 18],
-  [-PAD_W / 2 + 18, PAD_D / 2 - 18],
-  [PAD_W / 2 - 18, PAD_D / 2 - 18],
-  [-PAD_W / 6, -PAD_D / 2 + 12],
-  [PAD_W / 6, -PAD_D / 2 + 12],
-  [-PAD_W / 6, PAD_D / 2 - 12],
-  [PAD_W / 6, PAD_D / 2 - 12]
+  // 4 Corners
+  [-168.8, -88.8],
+  [168.8, -88.8],
+  [-168.8, 88.8],
+  [168.8, 88.8],
+  // 4 Long edge midpoints (X = -60, +60, Y = ±91.6)
+  [-60.0, -91.6],
+  [60.0, -91.6],
+  [-60.0, 91.6],
+  [60.0, 91.6],
+  // 2 Short edge centers (X = ±171.6, Y = 0)
+  [-171.6, 0.0],
+  [171.6, 0.0]
 ];
 
-// Exciters (4 positions: golden ratio layout toward corners)
+// Exciters (4 positions: Haptic Rev 2 confirmed coordinates: X=±84mm, Y=±52mm)
+// Actual dimensions: 37 x 20 mm rect, voice coil dia 14 mm
+const EXC_W = 37.0 * 0.8; // 29.6
+const EXC_D = 20.0 * 0.8; // 16.0
+const EXC_COIL_R = (14.0 * 0.8) / 2.0; // 5.6
+
 const EXCITERS = [
-  [-PAD_W / 3, -PAD_D / 3.4],
-  [PAD_W / 3, -PAD_D / 3.4],
-  [-PAD_W / 3, PAD_D / 3.4],
-  [PAD_W / 3, PAD_D / 3.4]
+  [-84.0, -52.0],
+  [84.0, -52.0],
+  [-84.0, 52.0],
+  [84.0, 52.0]
 ];
 
 // 1. Workbench granite base with ruler & feet
@@ -171,18 +181,19 @@ function drawExplodedAssemblies() {
 
   layers.push({ id: "layer-frame", zRest: 16, zExplode: 60, svg: lFrame.join("") });
 
-  // LAYER 4: 4-CHANNEL TEAX14C02 EXCITERS
+  // LAYER 4: 4-CHANNEL TEAX14C02 EXCITERS (37 x 20 mm Rectangular Body)
   const lExciters = [];
   lExciters.push(`<g class="exciter-material">`);
   for (let i = 0; i < EXCITERS.length; i++) {
     const [ex, ey] = EXCITERS[i];
-    // Exciter outer mounting ring (⌀40mm)
-    lExciters.push(S(k.cylinder(ex, ey, 16, 0, 2.5, P, 24), { tone: "mid" }));
+    // Exciter rectangular mounting body (37 x 20 mm)
+    const excPlan = { x: ex - EXC_W / 2.0, y: ey - EXC_D / 2.0, w: EXC_W, d: EXC_D, r: 2 };
+    lExciters.push(S(k.slabOf(excPlan, 0, 3.5, P, 2, 0.4), { tone: "mid" }));
     // Voice coil center (⌀14mm)
-    lExciters.push(S(k.cylinder(ex, ey, 8, 2.5, 5.5, P, 20), { tone: "lit" }));
+    lExciters.push(S(k.cylinder(ex, ey, EXC_COIL_R, 3.5, 4.5, P, 20), { tone: "lit" }));
     // Contact pads & wire terminal
-    lExciters.push(D([at([ex - 4, ey, 8]), at([ex + 4, ey, 8])], { size: 0.5 }));
-    lExciters.push(L(k.ring(ex, ey, 8, 8, P, 16), { tone: "hi" }));
+    lExciters.push(D([at([ex - EXC_W / 2.0 + 3, ey, 3.5]), at([ex + EXC_W / 2.0 - 3, ey, 3.5])], { size: 0.5 }));
+    lExciters.push(L(k.ring(ex, ey, EXC_COIL_R, 8.0, P, 16), { tone: "hi" }));
   }
   lExciters.push(`</g>`);
   layers.push({ id: "layer-exciters", zRest: 26, zExplode: 88, svg: lExciters.join("") });
@@ -194,10 +205,11 @@ function drawExplodedAssemblies() {
   // Bevel line around smooth top edge
   lTop.push(L(k.planOutline(k.insetPlan(PAD_PLAN, 2), T_WOOD, P), { tone: "mid" }));
   
-  // Laser-marked INFO rings for exciter alignment on underside
+  // Laser-marked INFO rectangular outlines and coil circles for exciter alignment on underside
   for (const [ex, ey] of EXCITERS) {
-    lTop.push(L(k.ring(ex, ey, 15, 0.4, P, 20), { tone: "lo" }));
-    lTop.push(L(k.ring(ex, ey, 6, 0.4, P, 16), { tone: "lo" }));
+    const markPlan = { x: ex - EXC_W / 2.0, y: ey - EXC_D / 2.0, w: EXC_W, d: EXC_D, r: 1 };
+    lTop.push(L(k.planOutline(markPlan, 0.4, P), { tone: "lo" }));
+    lTop.push(L(k.ring(ex, ey, EXC_COIL_R, 0.4, P, 16), { tone: "lo" }));
   }
 
   // Micro brand engraving badge
@@ -367,23 +379,23 @@ function buildPage() {
       <div class="p-4 sm:p-5 border-t border-[var(--border,#e2e8f0)] bg-[var(--background,#f8fafc)]/80 grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
         <div class="p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm">
           <div class="text-[10px] text-slate-500 uppercase tracking-wider">체결 볼트 & 너트</div>
-          <div class="text-sm font-mono font-bold text-slate-900 dark:text-slate-100 mt-0.5">8× M3 황동 인서트</div>
-          <div class="text-[10px] text-emerald-600 font-semibold">100회+ 무손상 체결</div>
+          <div class="text-sm font-mono font-bold text-slate-900 dark:text-slate-100 mt-0.5">10× M3 황동 인서트</div>
+          <div class="text-[10px] text-emerald-600 font-semibold">100회+ 무손상 체결 (10볼트 균일압착)</div>
         </div>
         <div class="p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm">
           <div class="text-[10px] text-slate-500 uppercase tracking-wider">방수 실링재</div>
           <div class="text-sm font-mono font-bold text-slate-900 dark:text-slate-100 mt-0.5">1.2mm 실리콘 가스켓</div>
-          <div class="text-[10px] text-emerald-600 font-semibold">무접착 1초 탈착 (IPX5)</div>
+          <div class="text-[10px] text-emerald-600 font-semibold">10볼트 러그 일체형 (무접착 1초 교체)</div>
         </div>
         <div class="p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm">
-          <div class="text-[10px] text-slate-500 uppercase tracking-wider">리퍼비시 소요시간</div>
-          <div class="text-sm font-mono font-bold text-emerald-600 mt-0.5">2분 30초 / 대</div>
-          <div class="text-[10px] text-slate-500">기존 25분 대비 90% 절감</div>
+          <div class="text-[10px] text-slate-500 uppercase tracking-wider">익사이터 규격 (4개)</div>
+          <div class="text-sm font-mono font-bold text-amber-600 mt-0.5">37 × 20 mm 직사각형</div>
+          <div class="text-[10px] text-slate-500">TEAX14C02 + ⌀14mm 보이스코일</div>
         </div>
         <div class="p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm">
           <div class="text-[10px] text-slate-500 uppercase tracking-wider">조립 완성 외경</div>
           <div class="text-sm font-mono font-bold text-slate-900 dark:text-slate-100 mt-0.5">450 × 250 × 23.5 mm</div>
-          <div class="text-[10px] text-blue-600 font-semibold">홍대 해광레이저 4.5T 규격</div>
+          <div class="text-[10px] text-blue-600 font-semibold">해광레이저 4.5T Rev 2 규격</div>
         </div>
       </div>
 
