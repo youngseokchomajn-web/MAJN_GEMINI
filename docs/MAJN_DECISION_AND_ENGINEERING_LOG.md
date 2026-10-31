@@ -214,6 +214,26 @@
   - `J1`, `J2`를 실물 정격인 **2.54mm 2핀 헤더 (`B-2100S02P-A110`, LCSC: `C124375`, Footprint: `2.54mm 2P Pin Header`)**로 즉시 정정.
   - `F1`을 45°C 열 디레이팅을 견디는 **3.0A 홀딩 정격 SMD PPTC (`SMD1206P300TF`, LCSC: `C269155`, 1206)**로 전격 상향.
 
+### [결정 26] Rev-C 실제 제조 패키지(Rev_C_mfg) 정상화 및 4층 56부품 실증 기준 동결 (옵션 A 확정)
+- **발견된 사실 및 배경**:
+  - 로컬 EasyEDA Pro 프로젝트 DB(`/Users/youngseok/Documents/EasyEDA-Pro/projects/260627.eprj2`, `260627_backup`) 및 실물 제조 아카이브([`인증준비/pcb/260708/`](file:///Users/youngseok/Desktop/majn/인증준비/pcb/260708/)) 전수 조사 결과, #0005 실물 보드에 실증된 **진짜 4층 56부품 거버(`Gerber_InnerLayer1.G1`, `Gerber_InnerLayer2.G2` 포함 21개 파일)** 및 CPL/BOM이 존재함을 확인.
+  - 기존 텍스트 파일에서 임의의 이름(`R_ADR`, `R_BEN`, `C_AVDD` 등)으로 중복 가산되었던 보강 부품들은 이미 `rev-B` 4층 보드에 `R1~R14`, `C1~C27` 표준 연번으로 100% 라우팅 완료 상태였음.
+- **의사결정 (옵션 A 확정)**:
+  1. **독립 제조 디렉터리 구축**: [`/Users/youngseok/Desktop/majn/인증준비/pcb/Rev_C_mfg/`](file:///Users/youngseok/Desktop/majn/인증준비/pcb/Rev_C_mfg/)를 신설하여 4층 제조 패키지(`Gerber_MAJN_Rev_C.zip`, `BOM_MAJN_Rev_C.csv`, `CPL_MAJN_Rev_C.csv`, `MAJN_Rev_C.epro2`)를 독립 구축.
+  2. **오발주 방지 격리**: 루트의 레거시 37부품 2층 거버를 [`DEPRECATED_37part_2layer_Gerber_Output.zip`](file:///Users/youngseok/Desktop/majn/DEPRECATED_37part_2layer_Gerber_Output.zip)으로 격리 조치.
+  3. **회로 파라미터 동결**:
+     - 12V 승압: `R1`=143kΩ(`C22877`), `R2`=16kΩ(`C22818`) $\rightarrow$ $V_{OUT} = \mathbf{12.17V}$
+     - 칩 품번: `U3`=MP3426DL(`C133224`), `U2`=AP2112K-3.3(`C51118`, 600mA), `D1`=SMAJ5.0A(`C83329`)
+     - I2C 주소 및 시퀀싱: `R12`=4.7kΩ(7-bit `0x2C`), `R11`=100kΩ PD, `R13`/`R14`=10kΩ PU
+     - 오디오 EMI: `FB1~4` (220Ω 3A `C154119`) + `C24~27` (2.2nF 50V `C16033`)
+  4. **기구 간섭(13.5mm) 해소**:
+     - `J1`, `J2`, `UART_HDR`을 **직각(Right-Angle 90°) 저배형 커넥터**(`B-2100S02P-A120`, `B-2100S06P-A120`)로 변경하여 케이블 측면 인출 구조 확립.
+     - 수직 스택업 계산: 스페이서(3.0mm) + PCB(1.76mm) + 최고부품(5.0mm) = 9.76mm $\le$ 캐비티 최소 유효고 13.0mm (**+3.24mm 안전 여유고 확보**).
+  5. **RF 간섭 근본 해결**:
+     - `U1`을 외장 u.FL 안테나 모듈인 **`ESP32-WROOM-32UE-N8` (`C701345`)**로 확정.
+  6. **자동 검증기 통과**:
+     - 신규 [`tools/verify_mfg_package.py`](file:///Users/youngseok/Desktop/majn/tools/verify_mfg_package.py) 검증 스크립트 실행 결과 **5/5 GATES 100% PASS** 확인.
+
 ---
 
 ## 3. 부품 수 및 설계 정합성 최종 현황 (BOM & Netlist Parity)
