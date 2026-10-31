@@ -162,6 +162,7 @@ void initBleOta(BLEServer* server) {
         OTA_CONTROL_UUID,
         BLECharacteristic::PROPERTY_WRITE | BLECharacteristic::PROPERTY_NOTIFY
     );
+    gOtaControl->setAccessPermissions(ESP_GATT_PERM_READ_ENC_MITM | ESP_GATT_PERM_WRITE_ENC_MITM);
     gOtaControl->addDescriptor(new BLE2902());
     gOtaControl->setCallbacks(new OtaControlCallbacks());
 
@@ -169,6 +170,7 @@ void initBleOta(BLEServer* server) {
         OTA_DATA_UUID,
         BLECharacteristic::PROPERTY_WRITE | BLECharacteristic::PROPERTY_WRITE_NR
     );
+    gOtaData->setAccessPermissions(ESP_GATT_PERM_READ_ENC_MITM | ESP_GATT_PERM_WRITE_ENC_MITM);
     gOtaData->setCallbacks(new OtaDataCallbacks());
 
     otaService->start();

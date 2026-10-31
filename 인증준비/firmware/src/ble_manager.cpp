@@ -4,6 +4,8 @@
 #include <BLEServer.h>
 #include <BLEUtils.h>
 #include <BLE2902.h>
+#include <BLESecurity.h>
+#include <Preferences.h>
 #include <ArduinoJson.h>
 #include "soc/rtc_cntl_reg.h"
 
@@ -25,7 +27,7 @@ BLECharacteristic* gEvent = nullptr;
 volatile bool gConnected = false;
 volatile uint32_t gLastClientActivity = 0;
 uint32_t gLastTelemetry = 0;
-char gCurrentPreset[16] = "pink";
+uint32_t gBlePin = 123456;
 
 const char* stateName(MajnBle::SystemState state) {
     switch (state) {
@@ -33,39 +35,10 @@ const char* stateName(MajnBle::SystemState state) {
         case MajnBle::SystemState::SELF_TEST: return "SELF_TEST";
         case MajnBle::SystemState::READY: return "READY";
         case MajnBle::SystemState::RUNNING: return "RUNNING";
+        case MajnBle::SystemState::STOPPING: return "STOPPING";
         case MajnBle::SystemState::FAULT: return "FAULT";
     }
     return "FAULT";
-}
-
-void sendAck(int id, const char* cmd, const char* status, const char* state) {
-    if (!gConnected || !gEvent) return;
-    JsonDocument doc;
-    doc["type"] = "ack";
-    doc["id"] = id;
-    doc["cmd"] = cmd;
-    doc["status"] = status;
-    doc["state"] = state;
-
-    doc["amp_status"] = MajnAmplifier::getStatusString();
-    uint8_t aState = 0, cFault = 0, gFault = 0;
-    if (MajnAmplifier::getDiagnostics(aState, cFault, gFault)) {
-        doc["amp_state"] = aState;
-        doc["chan_fault"] = cFault;
-        doc["glob_fault"] = gFault;
-        char diagBuf[64];
-        snprintf(diagBuf, sizeof(diagBuf), "Amp:S=0x%02X,CF=0x%02X,GF=0x%02X [%s]", aState, cFault, gFault, MajnAmplifier::getStatusString());
-        doc["diag"] = diagBuf;
-    } else {
-        char diagBuf[64];
-        snprintf(diagBuf, sizeof(diagBuf), "Amp:[%s]", MajnAmplifier::getStatusString());
-        doc["diag"] = diagBuf;
-    }
-
-    String out;
-    serializeJson(doc, out);
-    gEvent->setValue(out.c_str());
-    gEvent->notify();
 }
 
 class ServerCallbacks : public BLEServerCallbacks {
@@ -100,13 +73,62 @@ class CommandCallbacks : public BLECharacteristicCallbacks {
         }
     }
 };
+
+class SecurityCallbacks : public BLESecurityCallbacks {
+    uint32_t onPassKeyRequest() override {
+        return gBlePin;
+    }
+    void onPassKeyNotify(uint32_t pass_key) override {
+        Serial.printf("[BLE-SEC] Passkey display notification: %06u\n", pass_key);
+    }
+    bool onSecurityRequest() override {
+        return true;
+    }
+    bool onConfirmPIN(uint32_t pin) override {
+        return pin == gBlePin;
+    }
+    void onAuthenticationComplete(esp_ble_auth_cmpl_t desc) override {
+        if (desc.success) {
+            Serial.println("[BLE-SEC] Pairing & Bonding complete successfully!");
+        } else {
+            Serial.printf("[BLE-SEC] Authentication failed! Reason: 0x%02X\n", desc.fail_reason);
+        }
+    }
+};
 }
 
 bool initBleServer() {
+    // 1. Retrieve or generate persistent 6-digit BLE PIN in NVS
+    Preferences prefs;
+    prefs.begin("majn", false);
+    uint32_t pin = prefs.getUInt("ble_pin", 0);
+    if (pin < 100000 || pin > 999999) {
+        pin = 100000 + (esp_random() % 900000);
+        prefs.putUInt("ble_pin", pin);
+        Serial.println("**************************************************");
+        Serial.printf("[SECURITY] Generated NEW BLE 6-Digit Passkey PIN: %06u\n", pin);
+        Serial.println("**************************************************");
+    } else {
+        Serial.println("[BLE] Loaded BLE Passkey PIN from NVS.");
+    }
+    prefs.end();
+    gBlePin = pin;
+
+    // 2. Initialize BLE Device
     BLEDevice::init("MAJN-Bassinet");
+
+    // 3. Configure MITM passkey entry & bonding
+    BLESecurity *pSecurity = new BLESecurity();
+    pSecurity->setPassKey(true, gBlePin);
+    pSecurity->setCapability(ESP_IO_CAP_OUT);
+    pSecurity->setAuthenticationMode(true, true, true);
+    BLESecurity::setEncryptionLevel(ESP_BLE_SEC_ENCRYPT_MITM);
+    BLEDevice::setSecurityCallbacks(new SecurityCallbacks());
+
     gServer = BLEDevice::createServer();
     gServer->setCallbacks(new ServerCallbacks());
 
+    // 4. Create GATT service & characteristics with MITM encrypted read/write permissions
     BLEService* service = gServer->createService(MajnBle::SERVICE_UUID);
     gCommand = service->createCharacteristic(
         MajnBle::COMMAND_UUID,
@@ -121,15 +143,20 @@ bool initBleServer() {
         BLECharacteristic::PROPERTY_NOTIFY
     );
 
+    gCommand->setAccessPermissions(ESP_GATT_PERM_READ_ENC_MITM | ESP_GATT_PERM_WRITE_ENC_MITM);
+    gTelemetry->setAccessPermissions(ESP_GATT_PERM_READ_ENC_MITM | ESP_GATT_PERM_WRITE_ENC_MITM);
+    gEvent->setAccessPermissions(ESP_GATT_PERM_READ_ENC_MITM | ESP_GATT_PERM_WRITE_ENC_MITM);
+
     gTelemetry->addDescriptor(new BLE2902());
     gEvent->addDescriptor(new BLE2902());
     gCommand->setCallbacks(new CommandCallbacks());
 
     service->start();
 
-    // Initialize Web Bluetooth Wireless OTA GATT Service
+    // 5. Initialize Web Bluetooth Wireless OTA GATT Service (also protected by MITM)
     MajnBleOta::initBleOta(gServer);
 
+    // 6. Start Advertising
     BLEAdvertising* advertising = BLEDevice::getAdvertising();
     advertising->addServiceUUID(MajnBle::SERVICE_UUID);
     advertising->addServiceUUID(OTA_SERVICE_UUID);
@@ -138,7 +165,7 @@ bool initBleServer() {
     advertising->setMinPreferred(0x12); // Helper for iOS max interval (22.5ms)
     advertising->start();
 
-    Serial.println("[BLE] Advertising as MAJN-Bassinet with Wireless OTA Service.");
+    Serial.println("[BLE] Advertising as MAJN-Bassinet with MITM Encryption & Passkey Security.");
     return true;
 }
 

@@ -1,0 +1,52 @@
+=== TEST SUITE 1: JSON Malformed & Empty Inputs ===
+  [PASS] Empty string handled: False
+  [PASS] Empty string status: rejected
+  [PASS] Malformed json handled: False
+  [PASS] Malformed json status: rejected
+
+=== TEST SUITE 2: Range & Boundary Validation ===
+  [PASS] Freq < 30 rejected: False
+  [PASS] Freq > 65 rejected: False
+  [PASS] Amp > 0.50 rejected: False
+  [PASS] Amp < 0.0 rejected: False
+  [PASS] Duration < 1 min rejected: False
+  [PASS] Duration > 30 min rejected: False
+  [PASS] Duration 15 min accepted: True
+
+=== TEST SUITE 3: STOPPING State Transition & Safe Stop ===
+  [PASS] START valid command: True
+  [PASS] State after START: RUNNING
+  [PASS] STOP command accepted: True
+  [PASS] State immediately on STOP with current_amp > 0: STOPPING
+  [PASS] State after amplitude decay reached 0: READY
+
+=== TEST SUITE 4: ESTOP and FAULT Lockout ===
+  [PASS] ESTOP command applied: True
+  [PASS] State after ESTOP: FAULT
+  [PASS] START locked out during FAULT: False
+  [PASS] START rejection state during FAULT: fault
+  [PASS] RESET_FAULT restores READY: True
+  [PASS] State after RESET_FAULT: READY
+
+=== TEST SUITE 5: OTA Cross-Locking Gate ===
+  [PASS] START rejected during OTA: False
+  [PASS] Rejection status during OTA: OTA_ACTIVE
+  [PASS] PING allowed during OTA: True
+
+=== TEST SUITE 6: RESET_WIFI_CRED Command ===
+  [PASS] RESET_WIFI_CRED applied: True
+  [PASS] RESET_WIFI_CRED flag set: True
+  [PASS] Reboot scheduled: True
+  [PASS] Rebooting state reported: REBOOTING
+
+=== TEST SUITE 7: Static Security & Endpoint Matrix Check ===
+  [PASS] /api/ping unauthenticated: False
+  [PASS] /api/status authenticated: True
+  [PASS] /api/command authenticated: True
+  [PASS] /update authenticated: True
+  [PASS] /generate_204 unauthenticated: False
+
+=======================================================
+Total Tests Run: 34
+Passed: 34, Failed: 0
+=======================================================

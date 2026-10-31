@@ -780,6 +780,42 @@
   - **11 / 11 LOGICAL RULES PASSED (100.0%)**
 - **실물 OTA 상태**: **보류 (HOLD 유지)**
 
+---
+
+### SHARED-2026-10-31-011 — [무선 보안·안정화 시정 실행] R1-R5 완수: WPA2 NVS 동적 패스프레이즈, 토큰 노출 차단, BLE Passkey(MITM), RF 15dBm 기본 복귀, 롤백 게이트 분리 및 STOPPING 상태 모델링
+- **작성자:** Gemini (Antigravity)
+- **작업 일시:** 2026-10-31 13:42 KST
+- **작업 ID:** WIRELESS-REMEDIATION-R1-R5 / FW-005
+- **기준 브랜치:** `feature/phone-wifi-control`
+- **시정 항목 및 구현 상세 내역**:
+  1. **[R1: Wi-Fi 접근 제어 복구 및 토큰 보안 (F1, F2, F3)]**:
+     - **WPA2-PSK 필수화 & NVS 동적 패스프레이즈**: 소스 코드 내 고정 비밀번호 완전 박멸. 최초 부팅 시 `esp_random()`으로 10자 영숫자 패스프레이즈를 생성하여 NVS(`Preferences`, 네임스페이스 `majn`, 키 `wifi_pass`)에 저장 후 SoftAP 기동. 최초 생성 시 시리얼(TX)에 1회 출력하여 라벨 기록용 제공.
+     - **비밀번호 분실 복구 경로**: 물리 버튼 부재 제약에 대응하여 인증된 BLE 연결에서 `RESET_WIFI_CRED` 명령을 수신하면 NVS 자격증명을 초기화하고 500ms 후 자동 재부팅되도록 구현.
+     - **토큰 노출 원천 차단**: `/api/status` JSON 응답에서 `auth_token` 필드를 완전히 삭제. 토큰은 `/` 응답 HTML에만 인라인 주입되고 `HttpOnly; SameSite=Strict` 쿠키로 안전하게 보관.
+     - **엔드포인트 인증 강제**: `/api/status`, `/api/command`, `/update` (GET & POST) 모두 유효한 세션 토큰(`X-Auth-Token` 헤더, `?token=...` 파라미터, 쿠키) 검증 필수. 무인증 허용은 `/api/ping`(`{"status":"ok"}`)과 캡티브 포털 감지 라우트로 엄격 제한.
+     - **CORS 와일드카드 제거**: 모든 엔드포인트 및 OPTIONS 핸들러에서 `Access-Control-Allow-Origin: *` 헤더를 제거하여 동일 출처 정책(SOP) 적용.
+  2. **[R2: BLE 접근 제어 및 암호화 본딩 (F4)]**:
+     - **Passkey Entry & Bonding**: `BLESecurity`를 적용하여 `ESP_BLE_SEC_ENCRYPT_MITM` 및 `ESP_IO_CAP_OUT` 모드 활성화. 최초 부팅 시 6자리 랜덤 PIN을 생성하여 NVS(`ble_pin`)에 저장하고 시리얼(TX) 1회 출력.
+     - **특성별 암호화 권한 부여**: Command, Telemetry, Event 및 OTA(Control, Data) 특성에 `ESP_GATT_PERM_READ_ENC_MITM | ESP_GATT_PERM_WRITE_ENC_MITM` 권한을 부여하여 페어링/본딩되지 않은 기기의 접근을 차단.
+  3. **[R3: RF 송신 출력 정책 분리 (F5)]**:
+     - 기본 송신 출력을 규제 표준인 15 dBm (`WIFI_POWER_15dBm`, 규제 도메인 KR max_tx_power = 60)으로 복귀.
+     - 19.5 dBm 부스팅 출력은 컴파일 플래그 `MAJN_WIFI_TX_DBM=19` 및 전용 시험 환경 `esp32_wifi_phone_txtest`로 분리하여 AP2112K LDO 과부하 및 규제 초과 리스크 원천 격리.
+  4. **[R4: 롤백 게이트 재정의 및 STOPPING 상태 모델 (F6, F7)]**:
+     - **OTA 롤백 게이트 정비**: 펌웨어 결함(태스크 핸들 NULL, 힙 < 30KB, 부팅 직후 안전 락)과 하드웨어 고장(앰프 I2C 미응답)을 엄격히 분리. 앰프 초기화 실패 시 롤백을 수행하여 무선 OTA 복구 경로를 영구 차단하는 대신, 앱을 VALID로 확정하고 시스템을 `FAULT`(`AMP_FAULT`) 상태로 잠그며 무선 통신을 유지하도록 개선.
+     - **STOPPING 상태 모델 추가**: 안전 정지, 타이머 만료, 하트비트 타임아웃 등으로 진동 정지 요청 시 진폭 감쇄(Ramping down, 20ms당 0.005f) 구간(`!systemActive && currentAmp > 0.001f`) 동안 시스템 상태를 `STOPPING`으로 정의하고 웹 UI 및 BLE 텔레메트리에 실시간 표출.
+  5. **[R5: 정적·구조 검증 및 테스트 스위트]**:
+     - **FreeRTOS 태스크 스택 감시**: `/api/status`에 `uxTaskGetStackHighWaterMark`를 연동하여 `stack_hwm_comm`, `stack_hwm_ctrl`, `stack_hwm_audio` 관측성 확보.
+     - **단위 테스트 스위트 (`tools/test_command_parser.py`)**: 비정상 JSON 입력, 주파수(30~65Hz) 및 진폭(0~0.5) 경계값, 타이머(1~30분) 범위, ESTOP/FAULT 잠금, STOPPING 상태 전이, OTA 교차 잠금, RESET_WIFI_CRED 동작, 엔드포인트 인증 매트릭스를 검증하는 34개 테스트 전건 통과 (**34 / 34 PASSED**).
+- **P0 빌드 및 산출물 검증**:
+  - `esp32_wifi_phone` 빌드: **SUCCESS (0 Error, 0 Warning)**
+  - Flash: 1,907,071 bytes (57.1%), DRAM: 70,216 bytes (21.4%), IRAM 잔여: 9,757 bytes (기준치 4,000B 대비 충분한 여유)
+  - 바이너리 Magic Byte: `0xE9` (ESP32 Valid)
+  - 바이너리 경로: `/tmp/majn_wifi_phone_firmware.bin` 및 `인증준비/firmware/majn_latest_firmware.bin`
+  - 바이너리 SHA-256: `169f770078a8c0e30dadc3ba5d68fba0e48f194e7c4888585236b45c5346fdbf`
+  - 하드웨어 검증 스위트: `tools/verify_hardware_review.py` **11 / 11 LOGICAL RULES PASSED (100.0%)**
+- **실물 OTA 상태**: **보류 (HOLD 유지 — R6 사용자 승인 대기)**
+
+
 
 
 

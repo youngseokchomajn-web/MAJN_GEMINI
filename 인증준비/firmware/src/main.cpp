@@ -161,8 +161,8 @@ void setup() {
     MajnSafety::initSafety();
 
 #if defined(MAJN_WIFI_CONTROL)
-    // Wi-Fi SoftAP & HTTP Server (Open AP without hardcoded password for frictionless smartphone connection)
-    if (!MajnWiFi::initWiFiServer("MAJN-Bassinet", nullptr)) {
+    // Wi-Fi SoftAP & HTTP Server (WPA2-PSK secured with NVS-backed credentials)
+    if (!MajnWiFi::initWiFiServer("MAJN-Bassinet")) {
         Serial.println("[FATAL] Wi-Fi SoftAP initialization failed.");
         MajnSafety::requestEmergencyStop();
         while (1);
@@ -229,10 +229,20 @@ void setup() {
             bool safetyHealthy = (!systemActive && !MajnSafety::isSafetyLockTriggered());
             bool ampHealthy = MajnAmplifier::isAmplifierReady();
             
-            if (tasksHealthy && heapHealthy && safetyHealthy && ampHealthy) {
+            // Rollback gate policy (F6/R4):
+            // Rollback ONLY on firmware bugs (task failure, heap < 30KB, or early safety lock).
+            // Hardware amplifier failure does NOT trigger rollback (which would brick OTA recovery path);
+            // instead mark app VALID and lock system in FAULT state so OTA remains functional.
+            if (tasksHealthy && heapHealthy && safetyHealthy) {
                 esp_err_t err = esp_ota_mark_app_valid_cancel_rollback();
-                Serial.printf("[OTA-Boot] Diagnostics PASSED (Heap: %u, Tasks: OK, Safety: OK, Amp: OK). Marked app VALID (result: %s).\n",
-                              ESP.getFreeHeap(), esp_err_to_name(err));
+                if (!ampHealthy) {
+                    Serial.printf("[OTA-Boot] Amplifier hardware init failed (AMP_FAULT)! App marked VALID (result: %s) to preserve OTA recovery path. Locking system in FAULT state.\n",
+                                  esp_err_to_name(err));
+                    MajnSafety::requestEmergencyStop(); // Locks system in FAULT state while preserving wireless communication & OTA
+                } else {
+                    Serial.printf("[OTA-Boot] Diagnostics PASSED (Heap: %u, Tasks: OK, Safety: OK, Amp: OK). Marked app VALID (result: %s).\n",
+                                  ESP.getFreeHeap(), esp_err_to_name(err));
+                }
             } else {
                 Serial.printf("[OTA-Boot] Diagnostics FAILED! (Heap: %u, Tasks: %s, Safety: %s, Amp: %s). Initiating automatic rollback...\n",
                               ESP.getFreeHeap(), tasksHealthy ? "OK" : "FAIL", safetyHealthy ? "OK" : "LOCK", ampHealthy ? "OK" : "FAIL");

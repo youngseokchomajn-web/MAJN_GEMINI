@@ -7,8 +7,13 @@
 #include <Update.h>
 #include <esp_wifi.h>
 #include <esp_heap_caps.h>
+#include <Preferences.h>
 #include "system_controller.h"
 #include "mobile_web_ui.h"
+
+extern TaskHandle_t commTaskHandle;
+extern TaskHandle_t controlTaskHandle;
+extern TaskHandle_t audioTaskHandle;
 
 namespace MajnWiFi {
 
@@ -27,7 +32,7 @@ bool isOtaInProgress() {
 }
 
 static bool isRequestAuthorized() {
-    if (sAuthToken.isEmpty()) return true;
+    if (sAuthToken.isEmpty()) return false;
     if (server.hasHeader("X-Auth-Token") && server.header("X-Auth-Token") == sAuthToken) {
         return true;
     }
@@ -47,45 +52,55 @@ static void handleRoot() {
     MajnSystemCtrl::noteClientActivity();
     server.sendHeader("Cache-Control", "no-cache, no-store, must-revalidate");
     server.sendHeader("Set-Cookie", String("majn_token=") + sAuthToken + "; Path=/; HttpOnly; SameSite=Strict");
-    server.send(200, "text/html", MOBILE_INDEX_HTML);
+    String html = FPSTR(MOBILE_INDEX_HTML);
+    html.replace("__AUTH_TOKEN_PLACEHOLDER__", sAuthToken);
+    server.send(200, "text/html", html);
 }
 
 static void handleCaptiveRedirect() {
     MajnSystemCtrl::noteClientActivity();
-    server.sendHeader("Location", String("http://") + WiFi.softAPIP().toString(), true);
+    server.sendHeader("Location", String("http://") + WiFi.softAPIP().toString() + "/", true);
     server.send(302, "text/plain", "");
 }
 
 static void handleStatus() {
     MajnSystemCtrl::noteClientActivity();
+    if (!isRequestAuthorized()) {
+        server.send(401, "application/json", "{\"error\":\"Unauthorized: Missing or invalid authentication token\"}");
+        return;
+    }
+
     String jsonOut;
     MajnSystemCtrl::getTelemetryJson(jsonOut, sLatestAccel);
 
     uint32_t freeHeap = ESP.getFreeHeap();
     uint32_t minFreeHeap = esp_get_minimum_free_heap_size();
     uint32_t largestBlock = heap_caps_get_largest_free_block(MALLOC_CAP_8BIT);
+    UBaseType_t commHwm = commTaskHandle ? uxTaskGetStackHighWaterMark(commTaskHandle) : 0;
+    UBaseType_t ctrlHwm = controlTaskHandle ? uxTaskGetStackHighWaterMark(controlTaskHandle) : 0;
+    UBaseType_t audioHwm = audioTaskHandle ? uxTaskGetStackHighWaterMark(audioTaskHandle) : 0;
 
+    // Security: auth_token is intentionally NOT included in telemetry response
     if (jsonOut.endsWith("}")) {
         jsonOut.remove(jsonOut.length() - 1);
         jsonOut += String(",\"free_heap\":") + freeHeap +
                    String(",\"min_free_heap\":") + minFreeHeap +
                    String(",\"largest_free_block\":") + largestBlock +
-                   String(",\"auth_token\":\"") + sAuthToken + "\"}";
+                   String(",\"stack_hwm_comm\":") + (uint32_t)commHwm +
+                   String(",\"stack_hwm_ctrl\":") + (uint32_t)ctrlHwm +
+                   String(",\"stack_hwm_audio\":") + (uint32_t)audioHwm + "}";
     }
 
-    server.sendHeader("Access-Control-Allow-Origin", "*");
     server.send(200, "application/json", jsonOut);
 }
 
 static void handlePing() {
     MajnSystemCtrl::noteClientActivity();
-    server.sendHeader("Access-Control-Allow-Origin", "*");
     server.send(200, "application/json", "{\"status\":\"ok\"}");
 }
 
 static void handleCommand() {
     MajnSystemCtrl::noteClientActivity();
-    server.sendHeader("Access-Control-Allow-Origin", "*");
 
     if (!isRequestAuthorized()) {
         server.send(401, "application/json", "{\"error\":\"Unauthorized: Missing or invalid authentication token\"}");
@@ -109,115 +124,128 @@ static void handleCommand() {
     server.send(success ? 200 : 400, "application/json", responseJson);
 }
 
-bool initWiFiServer(const char* ssid, const char* password, const char* authToken) {
-    if (authToken && strlen(authToken) > 0) {
-        sAuthToken = authToken;
-    } else if (sAuthToken.isEmpty()) {
-        // Generate secure dynamic session token at runtime (eliminates hardcoded tokens)
-        char tokenBuf[32];
-        snprintf(tokenBuf, sizeof(tokenBuf), "%08X%08X", (uint32_t)esp_random(), (uint32_t)esp_random());
-        sAuthToken = tokenBuf;
-        Serial.printf("[WiFi] Dynamic Session Auth Token generated: %s\n", sAuthToken.c_str());
-    }
+bool initWiFiServer(const char* ssid) {
+    // 1. Generate secure dynamic session token at runtime (regenerated on every boot)
+    char tokenBuf[32];
+    snprintf(tokenBuf, sizeof(tokenBuf), "%08X%08X", (uint32_t)esp_random(), (uint32_t)esp_random());
+    sAuthToken = tokenBuf;
 
-    // 1. Reset Wi-Fi peripheral to clean state
+    // 2. Load or generate persistent 10-char alphanumeric WPA2 passphrase from NVS
+    Preferences prefs;
+    prefs.begin("majn", false);
+    String wifiPass = prefs.getString("wifi_pass", "");
+    if (wifiPass.length() < 8) {
+        const char charset[] = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+        char passBuf[11];
+        for (int i = 0; i < 10; i++) {
+            passBuf[i] = charset[esp_random() % (sizeof(charset) - 1)];
+        }
+        passBuf[10] = '\0';
+        wifiPass = passBuf;
+        prefs.putString("wifi_pass", wifiPass);
+        Serial.println("**************************************************");
+        Serial.printf("[SECURITY] Generated NEW Wi-Fi WPA2 Passphrase: %s\n", wifiPass.c_str());
+        Serial.println("**************************************************");
+    } else {
+        Serial.println("[WiFi] Loaded Wi-Fi WPA2 Passphrase from NVS.");
+    }
+    prefs.end();
+
+    // 3. Reset Wi-Fi peripheral to clean state
     WiFi.disconnect(true);
     delay(50);
     WiFi.mode(WIFI_AP);
 
-    // 2. Configure IP (192.168.4.1)
+    // 4. Configure IP (192.168.4.1)
     IPAddress local_ip(192, 168, 4, 1);
     IPAddress gateway(192, 168, 4, 1);
     IPAddress subnet(255, 255, 255, 0);
     WiFi.softAPConfig(local_ip, gateway, subnet);
 
-    // 3. Start SoftAP on Channel 1 (Configurable WPA2-PSK or OPEN - no hardcoded fixed password)
-    bool apStarted = false;
-    const char* secType = "OPEN";
-    if (password && strlen(password) >= 8) {
-        apStarted = WiFi.softAP(ssid, password, 1, 0, 4);
-        secType = "WPA2-PSK";
-    } else {
-        // Open AP mode for frictionless smartphone pairing
-        apStarted = WiFi.softAP(ssid, nullptr, 1, 0, 4);
-        secType = "OPEN";
-    }
-
+    // 5. Start SoftAP with WPA2-PSK (no hardcoded password, strictly protected)
+    bool apStarted = WiFi.softAP(ssid, wifiPass.c_str(), 1, 0, 4);
     if (!apStarted) {
         Serial.println("[WiFi] Failed to start SoftAP.");
         return false;
     }
 
-    // 4. Disable Wi-Fi Modem Sleep (CRITICAL for mobile beacon detection)
+    // 6. Disable Wi-Fi Modem Sleep (CRITICAL for mobile beacon detection)
     WiFi.setSleep(false);
     esp_wifi_set_ps(WIFI_PS_NONE);
 
-    // 5. Force 20MHz bandwidth (HT20) & standard b/g/n protocols
+    // 7. Force 20MHz bandwidth (HT20) & standard b/g/n protocols
     esp_wifi_set_bandwidth(WIFI_IF_AP, WIFI_BW_HT20);
     esp_wifi_set_protocol(WIFI_IF_AP, WIFI_PROTOCOL_11B | WIFI_PROTOCOL_11G | WIFI_PROTOCOL_11N);
 
-    // 6. Set Regulatory Country Domain: Korea regulatory domain configuration (KR: Channels 1-13)
-    // max_tx_power unit is 0.25 dBm: 78 * 0.25 = 19.5 dBm
+    // 8. Regulatory Country Domain & RF Transmission Power
+#ifndef MAJN_WIFI_TX_DBM
+#define MAJN_WIFI_TX_DBM 15
+#endif
+
+#if MAJN_WIFI_TX_DBM >= 19
     wifi_country_t country = {
         .cc = "KR",
         .schan = 1,
         .nchan = 13,
-        .max_tx_power = 78, // ~19.5 dBm to compensate for missing external u.FL antenna cable
+        .max_tx_power = 78, // ~19.5 dBm to compensate for missing external u.FL antenna cable in test
         .policy = WIFI_COUNTRY_POLICY_MANUAL
     };
-    esp_err_t cErr = esp_wifi_set_country(&country);
-    if (cErr != ESP_OK) {
-        Serial.printf("[WiFi] WARN: Failed to apply regulatory country domain, err=0x%X\n", cErr);
-    } else {
-        Serial.println("[WiFi] Regulatory country domain applied: KR (Channels 1-13, 19.5dBm max).");
-    }
-
-    // 7. Set Safe Transmission RF Power (19.5 dBm boosted) AFTER SoftAP is started
+    esp_wifi_set_country(&country);
     WiFi.setTxPower(WIFI_POWER_19_5dBm);
+    Serial.println("[WiFi] Regulatory country domain applied: KR (Channels 1-13, 19.5dBm Boosted TEST MODE).");
+#else
+    wifi_country_t country = {
+        .cc = "KR",
+        .schan = 1,
+        .nchan = 13,
+        .max_tx_power = 60, // 15.0 dBm default
+        .policy = WIFI_COUNTRY_POLICY_MANUAL
+    };
+    esp_wifi_set_country(&country);
+    WiFi.setTxPower(WIFI_POWER_15dBm);
+    Serial.println("[WiFi] Regulatory country domain applied: KR (Channels 1-13, 15.0dBm Default).");
+#endif
 
     Serial.println("[WiFi] SoftAP Started Successfully!");
-    Serial.printf("[WiFi] SSID: %s (Channel 1, HT20, 19.5dBm BoostedPower, %s)\n", ssid, secType);
+    Serial.printf("[WiFi] SSID: %s (Channel 1, HT20, WPA2-PSK)\n", ssid);
     Serial.printf("[WiFi] IP Address: %s\n", WiFi.softAPIP().toString().c_str());
 
-    // 8. Start DNS Server for Captive Portal (Redirects any domain query to 192.168.4.1)
+    // 9. Start DNS Server for Captive Portal (Redirects any domain query to 192.168.4.1)
     dnsServer.setErrorReplyCode(DNSReplyCode::NoError);
     dnsServer.start(DNS_PORT, "*", local_ip);
     Serial.println("[WiFi] Captive Portal DNS Server started on port 53.");
 
-    // 9. Start mDNS (http://majn.local)
+    // 10. Start mDNS (http://majn.local)
     if (MDNS.begin("majn")) {
         Serial.println("[WiFi] mDNS Responder active: http://majn.local");
     }
 
-    // 10. Collect HTTP Headers for robust authentication
+    // 11. Collect HTTP Headers for robust authentication
     const char* headerkeys[] = {"X-Auth-Token", "Cookie"};
     server.collectHeaders(headerkeys, 2);
 
-    // 11. Register Standard Web Routes & CORS Preflight (OPTIONS)
+    // 12. Register Standard Web Routes & Same-Origin Preflight (OPTIONS)
     server.on("/", HTTP_GET, handleRoot);
     server.on("/api/status", HTTP_GET, handleStatus);
     server.on("/api/status", HTTP_OPTIONS, []() {
-        server.sendHeader("Access-Control-Allow-Origin", "*");
         server.sendHeader("Access-Control-Allow-Methods", "GET, OPTIONS");
         server.sendHeader("Access-Control-Allow-Headers", "Content-Type, X-Auth-Token");
         server.send(204);
     });
     server.on("/api/ping", HTTP_GET, handlePing);
     server.on("/api/ping", HTTP_OPTIONS, []() {
-        server.sendHeader("Access-Control-Allow-Origin", "*");
         server.sendHeader("Access-Control-Allow-Methods", "GET, OPTIONS");
         server.sendHeader("Access-Control-Allow-Headers", "Content-Type, X-Auth-Token");
         server.send(204);
     });
     server.on("/api/command", HTTP_POST, handleCommand);
     server.on("/api/command", HTTP_OPTIONS, []() {
-        server.sendHeader("Access-Control-Allow-Origin", "*");
         server.sendHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS");
         server.sendHeader("Access-Control-Allow-Headers", "Content-Type, X-Auth-Token");
         server.send(204);
     });
 
-    // 12. Register Captive Portal Detection Routes (Apple iOS & Android Auto-Login)
+    // 13. Register Captive Portal Detection Routes (Apple iOS & Android Auto-Login)
     server.on("/hotspot-detect.html", HTTP_GET, handleRoot);
     server.on("/generate_204", HTTP_GET, handleCaptiveRedirect);
     server.on("/gen_204", HTTP_GET, handleCaptiveRedirect);
@@ -225,9 +253,13 @@ bool initWiFiServer(const char* ssid, const char* password, const char* authToke
     server.on("/canonical.html", HTTP_GET, handleRoot);
     server.on("/ncsi.txt", HTTP_GET, handleCaptiveRedirect);
 
-    // 13. Web-based Wireless Firmware Update Route (/update) with Token Security
+    // 14. Web-based Wireless Firmware Update Route (/update) with Token Security
     server.on("/update", HTTP_GET, []() {
         server.sendHeader("Connection", "close");
+        if (!isRequestAuthorized()) {
+            server.send(401, "text/plain", "UNAUTHORIZED: Missing or invalid authentication token.");
+            return;
+        }
         String html = "<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width,initial-scale=1'>"
             "<title>MAJN Firmware Update</title><style>body{background:#0f172a;color:#fff;font-family:sans-serif;padding:24px;text-align:center;}"
             ".card{background:#1e293b;border-radius:12px;padding:24px;max-width:400px;margin:40px auto;border:1px solid #334155;}"

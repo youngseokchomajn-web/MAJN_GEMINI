@@ -6,7 +6,7 @@
 
 namespace MajnWiFi {
 
-bool initWiFiServer(const char* ssid = "MAJN-Bassinet", const char* password = nullptr, const char* authToken = nullptr);
+bool initWiFiServer(const char* ssid = "MAJN-Bassinet");
 void handleClient();
 void updateTelemetry(const AccelData& accel);
 bool isOtaInProgress();

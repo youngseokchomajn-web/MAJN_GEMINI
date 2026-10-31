@@ -1,6 +1,7 @@
 #include "system_controller.h"
 
 #include <ArduinoJson.h>
+#include <Preferences.h>
 #include "safety_manager.h"
 #include "power_manager.h"
 #include "amplifier_manager.h"
@@ -51,6 +52,7 @@ static const char* stateName(MajnBle::SystemState state) {
         case MajnBle::SystemState::SELF_TEST: return "SELF_TEST";
         case MajnBle::SystemState::READY: return "READY";
         case MajnBle::SystemState::RUNNING: return "RUNNING";
+        case MajnBle::SystemState::STOPPING: return "STOPPING";
         case MajnBle::SystemState::FAULT: return "FAULT";
     }
     return "FAULT";
@@ -285,7 +287,18 @@ bool handleJsonCommand(const char* jsonStr, String& responseJson) {
 
     if (strcmp(cmd, "STOP") == 0) {
         triggerSafeStop();
-        buildAckJson(id, cmd, "applied", "READY", responseJson);
+        buildAckJson(id, cmd, "applied", getCurrentStateName(), responseJson);
+        return true;
+    }
+
+    if (strcmp(cmd, "RESET_WIFI_CRED") == 0) {
+        Preferences prefs;
+        prefs.begin("majn", false);
+        prefs.remove("wifi_pass");
+        prefs.end();
+        Serial.println("[SystemCtrl] Wi-Fi passphrase cleared from NVS via authenticated command. Rebooting...");
+        scheduleReboot(500);
+        buildAckJson(id, cmd, "applied", "REBOOTING", responseJson);
         return true;
     }
 

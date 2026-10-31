@@ -120,6 +120,10 @@ const char MOBILE_INDEX_HTML[] PROGMEM = R"rawliteral(<!DOCTYPE html>
       background: #1e3a8a;
       color: #bfdbfe;
     }
+    .state-pill.STOPPING {
+      background: #854d0e;
+      color: #fef08a;
+    }
     .state-pill.FAULT {
       background: #7f1d1d;
       color: #fecaca;
@@ -390,7 +394,7 @@ const char MOBILE_INDEX_HTML[] PROGMEM = R"rawliteral(<!DOCTYPE html>
   <script>
     let reqId = 100;
     let selectedDurationMin = 15;
-    let authToken = '';
+    let authToken = '__AUTH_TOKEN_PLACEHOLDER__';
     const sliderFreq = document.getElementById('slider-freq');
     const sliderAmp = document.getElementById('slider-amp');
     const labelFreq = document.getElementById('slider-freq-val');
@@ -405,6 +409,10 @@ const char MOBILE_INDEX_HTML[] PROGMEM = R"rawliteral(<!DOCTYPE html>
     const fwVer = document.getElementById('fw-ver');
     const freeHeap = document.getElementById('free-heap');
     const otaLink = document.getElementById('ota-link');
+
+    if (otaLink && authToken && authToken !== '__AUTH_TOKEN_PLACEHOLDER__') {
+      otaLink.href = '/update?token=' + encodeURIComponent(authToken);
+    }
 
     sliderFreq.addEventListener('input', () => {
       labelFreq.textContent = sliderFreq.value + ' Hz';
@@ -466,17 +474,16 @@ const char MOBILE_INDEX_HTML[] PROGMEM = R"rawliteral(<!DOCTYPE html>
 
     async function pollStatus() {
       try {
-        const res = await fetch('/api/status');
+        const fetchHeaders = {};
+        if (authToken) {
+          fetchHeaders['X-Auth-Token'] = authToken;
+        }
+        const res = await fetch('/api/status', { headers: fetchHeaders });
         if (!res.ok) throw new Error('Status poll HTTP ' + res.status);
         const data = await res.json();
         
         badge.textContent = 'Wi-Fi 연결됨';
         badge.className = 'badge connected';
-
-        if (data.auth_token) {
-          authToken = data.auth_token;
-          if (otaLink) otaLink.href = '/update?token=' + encodeURIComponent(authToken);
-        }
 
         sysState.textContent = data.state;
         sysState.className = 'state-pill ' + data.state;

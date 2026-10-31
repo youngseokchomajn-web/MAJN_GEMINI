@@ -18,6 +18,7 @@ enum class SystemState : uint8_t {
     SELF_TEST,
     READY,
     RUNNING,
+    STOPPING,
     FAULT
 };
 }

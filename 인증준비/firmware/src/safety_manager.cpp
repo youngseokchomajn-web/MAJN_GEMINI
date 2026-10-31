@@ -52,6 +52,9 @@ bool resetSafetyLock() {
 MajnBle::SystemState getSystemState(bool active) {
     if (gSafetyLock) return MajnBle::SystemState::FAULT;
     if (active) return MajnBle::SystemState::RUNNING;
+    if (!active && MajnVibration::getCurrentAmplitude() > 0.001f) {
+        return MajnBle::SystemState::STOPPING;
+    }
     return MajnBle::SystemState::READY;
 }
 
