@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-50 -100 800 900" width="1200" height="1350" style="background:#12141a; font-family:sans-serif;">
+<defs><pattern id="grid" width="50" height="50" patternUnits="userSpaceOnUse"><path d="M 50 0 L 0 0 0 50" fill="none" stroke="#1e293b" stroke-width="1"/></pattern></defs>
+<rect x="-50" y="-100" width="800" height="900" fill="url(#grid)" />
+<path d="M 20.00 780.00 A 20.0 20.0 0 0 0 430.00 780.00 L 450.00 760.00 A 20.0 20.0 0 0 0 450.00 550.00 L 430.00 530.00 A 20.0 20.0 0 0 0 20.00 530.00 L 0.00 550.00 A 20.0 20.0 0 0 0 0.00 760.00 Z" fill="rgba(0, 255, 204, 0.05)" stroke="#00ffcc" stroke-width="1.5" />
+<text x="10.00" y="520.00" fill="#ffd166" font-size="12" font-weight="bold">상판 450x250x4mm - R20 4코너 - 타공없음 - 수량1</text>
+<path d="M 20.00 460.00 A 20.0 20.0 0 0 0 430.00 460.00 L 450.00 440.00 A 20.0 20.0 0 0 0 450.00 230.00 L 430.00 210.00 A 20.0 20.0 0 0 0 20.00 210.00 L 0.00 230.00 A 20.0 20.0 0 0 0 0.00 440.00 Z" fill="rgba(0, 255, 204, 0.05)" stroke="#00ffcc" stroke-width="1.5" />
+<circle cx="14.00" cy="446.00" r="1.60" fill="rgba(255, 82, 82, 0.3)" stroke="#ff5252" stroke-width="1.5" />
+<circle cx="436.00" cy="446.00" r="1.60" fill="rgba(255, 82, 82, 0.3)" stroke="#ff5252" stroke-width="1.5" />
+<circle cx="14.00" cy="224.00" r="1.60" fill="rgba(255, 82, 82, 0.3)" stroke="#ff5252" stroke-width="1.5" />
+<circle cx="436.00" cy="224.00" r="1.60" fill="rgba(255, 82, 82, 0.3)" stroke="#ff5252" stroke-width="1.5" />
+<circle cx="225.00" cy="453.00" r="1.60" fill="rgba(255, 82, 82, 0.3)" stroke="#ff5252" stroke-width="1.5" />
+<circle cx="225.00" cy="217.00" r="1.60" fill="rgba(255, 82, 82, 0.3)" stroke="#ff5252" stroke-width="1.5" />
+<text x="10.00" y="200.00" fill="#ffd166" font-size="12" font-weight="bold">하판 450x250x4mm - R20 4코너 - φ3.2 x6홀 (카운터싱크 가공) - 수량1</text>
+<path d="M 0.00 160.00 L 410.00 160.00 L 410.00 148.00 L 0.00 148.00 Z" fill="rgba(0, 255, 204, 0.05)" stroke="#00ffcc" stroke-width="1.5" />
+<text x="10.00" y="140.00" fill="#ffd166" font-size="12" font-weight="bold">전/후면 측판 410x12x4mm - 그레인:길이방향 - 수량2</text>
+<path d="M 0.00 120.00 L 410.00 120.00 L 410.00 108.00 L 0.00 108.00 Z" fill="rgba(0, 255, 204, 0.05)" stroke="#00ffcc" stroke-width="1.5" />
+<path d="M 0.00 80.00 L 210.00 80.00 L 210.00 68.00 L 0.00 68.00 Z" fill="rgba(0, 255, 204, 0.05)" stroke="#00ffcc" stroke-width="1.5" />
+<text x="10.00" y="60.00" fill="#ffd166" font-size="12" font-weight="bold">좌/우측 측판 210x12x4mm - 그레인:길이방향 - 수량2 (1장은 배선홀)</text>
+<path d="M 0.00 40.00 L 210.00 40.00 L 210.00 28.00 L 0.00 28.00 Z" fill="rgba(0, 255, 204, 0.05)" stroke="#00ffcc" stroke-width="1.5" />
+<circle cx="30.00" cy="34.00" r="2.75" fill="rgba(255, 82, 82, 0.3)" stroke="#ff5252" stroke-width="1.5" />
+<text x="480.00" y="710.00" fill="#ffd166" font-size="12" font-weight="bold">R20 코너블록 20x20(R20곡면) - 4mm x 12장 (3겹적층->코너기둥 4개)</text>
+<path d="M 480.00 780.00 A 20.0 20.0 0 0 0 500.00 780.00 L 480.00 760.00 Z" fill="rgba(0, 255, 204, 0.05)" stroke="#00ffcc" stroke-width="1.5" />
+<path d="M 506.00 780.00 A 20.0 20.0 0 0 0 526.00 780.00 L 506.00 760.00 Z" fill="rgba(0, 255, 204, 0.05)" stroke="#00ffcc" stroke-width="1.5" />
+<path d="M 532.00 780.00 A 20.0 20.0 0 0 0 552.00 780.00 L 532.00 760.00 Z" fill="rgba(0, 255, 204, 0.05)" stroke="#00ffcc" stroke-width="1.5" />
+<path d="M 558.00 780.00 A 20.0 20.0 0 0 0 578.00 780.00 L 558.00 760.00 Z" fill="rgba(0, 255, 204, 0.05)" stroke="#00ffcc" stroke-width="1.5" />
+<path d="M 584.00 780.00 A 20.0 20.0 0 0 0 604.00 780.00 L 584.00 760.00 Z" fill="rgba(0, 255, 204, 0.05)" stroke="#00ffcc" stroke-width="1.5" />
+<path d="M 610.00 780.00 A 20.0 20.0 0 0 0 630.00 780.00 L 610.00 760.00 Z" fill="rgba(0, 255, 204, 0.05)" stroke="#00ffcc" stroke-width="1.5" />
+<path d="M 480.00 754.00 A 20.0 20.0 0 0 0 500.00 754.00 L 480.00 734.00 Z" fill="rgba(0, 255, 204, 0.05)" stroke="#00ffcc" stroke-width="1.5" />
+<path d="M 506.00 754.00 A 20.0 20.0 0 0 0 526.00 754.00 L 506.00 734.00 Z" fill="rgba(0, 255, 204, 0.05)" stroke="#00ffcc" stroke-width="1.5" />
+<path d="M 532.00 754.00 A 20.0 20.0 0 0 0 552.00 754.00 L 532.00 734.00 Z" fill="rgba(0, 255, 204, 0.05)" stroke="#00ffcc" stroke-width="1.5" />
+<path d="M 558.00 754.00 A 20.0 20.0 0 0 0 578.00 754.00 L 558.00 734.00 Z" fill="rgba(0, 255, 204, 0.05)" stroke="#00ffcc" stroke-width="1.5" />
+<path d="M 584.00 754.00 A 20.0 20.0 0 0 0 604.00 754.00 L 584.00 734.00 Z" fill="rgba(0, 255, 204, 0.05)" stroke="#00ffcc" stroke-width="1.5" />
+<path d="M 610.00 754.00 A 20.0 20.0 0 0 0 630.00 754.00 L 610.00 734.00 Z" fill="rgba(0, 255, 204, 0.05)" stroke="#00ffcc" stroke-width="1.5" />
+<text x="480.00" y="630.00" fill="#ffd166" font-size="12" font-weight="bold">스크류보스 10x10 - 4mm x 6장 (3겹적층->중앙보스 2개)</text>
+<path d="M 480.00 670.00 L 490.00 670.00 L 490.00 660.00 L 480.00 660.00 Z" fill="rgba(0, 255, 204, 0.05)" stroke="#00ffcc" stroke-width="1.5" />
+<path d="M 496.00 670.00 L 506.00 670.00 L 506.00 660.00 L 496.00 660.00 Z" fill="rgba(0, 255, 204, 0.05)" stroke="#00ffcc" stroke-width="1.5" />
+<path d="M 512.00 670.00 L 522.00 670.00 L 522.00 660.00 L 512.00 660.00 Z" fill="rgba(0, 255, 204, 0.05)" stroke="#00ffcc" stroke-width="1.5" />
+<path d="M 528.00 670.00 L 538.00 670.00 L 538.00 660.00 L 528.00 660.00 Z" fill="rgba(0, 255, 204, 0.05)" stroke="#00ffcc" stroke-width="1.5" />
+<path d="M 544.00 670.00 L 554.00 670.00 L 554.00 660.00 L 544.00 660.00 Z" fill="rgba(0, 255, 204, 0.05)" stroke="#00ffcc" stroke-width="1.5" />
+<path d="M 560.00 670.00 L 570.00 670.00 L 570.00 660.00 L 560.00 660.00 Z" fill="rgba(0, 255, 204, 0.05)" stroke="#00ffcc" stroke-width="1.5" />
+<text x="0.00" y="815.00" fill="#ffd166" font-size="12" font-weight="bold">마중 스마트배시넷 - 목재 CNC 발주 도면 (4mm 자작합판 E0/SE0 일괄 가공)</text>
+<text x="0.00" y="830.00" fill="#ffd166" font-size="12" font-weight="bold">커프(Kerf 0.1~0.2mm) 보정 반영 요청. 외곽 R20 라운딩 및 전 부품 완벽 일체화 사양</text>
+</svg>

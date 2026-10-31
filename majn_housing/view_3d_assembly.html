@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>마중 스마트 배시넷 - 하우징 3D 정밀 조립 뷰어</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: #0f1218;
+      color: #e2e8f0;
+      overflow: hidden;
+      height: 100vh;
+      display: flex;
+    }
+    #sidebar {
+      width: 340px;
+      background: #171b24;
+      border-right: 1px solid #2d3748;
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      z-index: 10;
+      box-shadow: 4px 0 20px rgba(0,0,0,0.4);
+      overflow-y: auto;
+    }
+    h1 {
+      font-size: 16px;
+      font-weight: 700;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .subtitle {
+      font-size: 11.5px;
+      color: #94a3b8;
+      line-height: 1.4;
+      margin-top: 4px;
+    }
+    .badge-updated {
+      display: inline-block;
+      font-size: 10.5px;
+      font-weight: 700;
+      background: #10b981;
+      color: #fff;
+      padding: 2px 6px;
+      border-radius: 4px;
+      margin-bottom: 4px;
+    }
+    .control-card {
+      background: #202634;
+      border: 1px solid #2d3748;
+      border-radius: 8px;
+      padding: 12px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .control-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: #cbd5e1;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    input[type="range"] {
+      width: 100%;
+      cursor: pointer;
+      accent-color: #4f8df7;
+    }
+    .btn-group {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+    }
+    .btn {
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.05);
+      color: #f1f5f9;
+      padding: 7px 10px;
+      border-radius: 6px;
+      font-size: 11.5px;
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.15s ease;
+    }
+    .btn:hover {
+      background: #4f8df7;
+      color: #fff;
+    }
+    .btn.active {
+      background: #3b82f6;
+      color: #fff;
+    }
+    .legend-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 11.5px;
+      color: #cbd5e1;
+      padding: 3px 0;
+    }
+    .legend-left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .legend-color {
+      width: 12px;
+      height: 12px;
+      border-radius: 3px;
+    }
+    .spec-box {
+      font-size: 11.5px;
+      line-height: 1.6;
+      color: #94a3b8;
+      background: rgba(0,0,0,0.2);
+      padding: 8px 10px;
+      border-radius: 6px;
+      border-left: 3px solid #10b981;
+    }
+    #viewport {
+      flex: 1;
+      position: relative;
+    }
+    .tooltip {
+      position: absolute;
+      bottom: 20px;
+      right: 20px;
+      background: rgba(23, 27, 36, 0.88);
+      backdrop-filter: blur(8px);
+      border: 1px solid #2d3748;
+      border-radius: 6px;
+      padding: 10px 14px;
+      font-size: 11.5px;
+      color: #94a3b8;
+      line-height: 1.5;
+    }
+  </style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+</head>
+<body>
+
+  <aside id="sidebar">
+    <div>
+      <span class="badge-updated">코너 기둥 방향 정밀 수학 검증 완료</span>
+      <h1>🪵 3D R20 일체형 하우징</h1>
+      <div class="subtitle">상·하판 R20 + 측판 410/210 + R20 코너기둥 완벽 결합</div>
+    </div>
+
+    <!-- 분해도 컨트롤 -->
+    <div class="control-card">
+      <div class="control-label">
+        <span>📦 분해도 (Exploded View)</span>
+        <span id="explode-val" style="color: #4f8df7; font-weight: bold;">0%</span>
+      </div>
+      <input type="range" id="explodeSlider" min="0" max="100" value="0" oninput="updateExplode(this.value)">
+      <div class="btn-group">
+        <button class="btn" onclick="setExplode(0)">조립 완료</button>
+        <button class="btn" onclick="setExplode(100)">완전 분해</button>
+      </div>
+    </div>
+
+    <!-- 시점 전환 -->
+    <div class="control-card">
+      <div class="control-label"><span>📐 시점 전환 & 자동 회전</span></div>
+      <div class="btn-group">
+        <button class="btn" onclick="setCamera('iso')">입체 뷰 (ISO)</button>
+        <button class="btn" onclick="setCamera('top')">위 (Top)</button>
+        <button class="btn" onclick="setCamera('front')">앞 (Front)</button>
+        <button class="btn" onclick="setCamera('corner')">코너 초밀착</button>
+      </div>
+      <button class="btn" id="btn-rotate" onclick="toggleAutoRotate()" style="margin-top: 4px;">🔄 3D 턴테이블 자동 회전</button>
+    </div>
+
+    <!-- 부품 구성 -->
+    <div class="control-card">
+      <div class="control-label"><span>🧩 부품 구성 (4mm 자작합판)</span></div>
+      <div class="legend-item">
+        <div class="legend-left"><span class="legend-color" style="background: #e2b170;"></span> 상판 (450×250, R20)</div>
+        <span>1장</span>
+      </div>
+      <div class="legend-item">
+        <div class="legend-left"><span class="legend-color" style="background: #38bdf8;"></span> R20 코너기둥 4개 (12mm)</div>
+        <span>4개 (12장)</span>
+      </div>
+      <div class="legend-item">
+        <div class="legend-left"><span class="legend-color" style="background: #c59353;"></span> 전/후면 측판 (410×12)</div>
+        <span>2장</span>
+      </div>
+      <div class="legend-item">
+        <div class="legend-left"><span class="legend-color" style="background: #d97706;"></span> 좌/우측 측판 (210×12)</div>
+        <span>2장</span>
+      </div>
+      <div class="legend-item">
+        <div class="legend-left"><span class="legend-color" style="background: #64748b;"></span> 하판 (450×250, R20)</div>
+        <span>1장</span>
+      </div>
+      <div class="legend-item">
+        <div class="legend-left"><span class="legend-color" style="background: #3b82f6;"></span> 내부 익사이터</div>
+        <span>2개</span>
+      </div>
+    </div>
+
+    <!-- 검증 박스 -->
+    <div class="control-card">
+      <div class="control-label"><span>🔍 결합 치수 수학적 검증</span></div>
+      <div class="spec-box">
+        • <b>코너 곡면 방향</b>: 4개 외곽 모서리로 100% 볼록 일치<br>
+        • <b>측판-코너 틈새</b>: <b>0.00 mm</b> (밀착 결합)<br>
+        • <b>상하판 높이 스택</b>: 하판(4) + 캐비티(12) + 상판(4) = <b>총 20.0 mm</b>
+      </div>
+    </div>
+  </aside>
+
+  <div id="viewport">
+    <div class="tooltip">
+      🖱️ <b>마우스 좌클릭 드래그</b>: 3D 360도 회전<br>
+      🖱️ <b>마우스 우클릭 드래그</b>: 화면 이동 (Pan)<br>
+      🖱️ <b>마우스 휠</b>: 줌 인/아웃
+    </div>
+  </div>
+
+  <script>
+    const container = document.getElementById('viewport');
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x0f1218);
+
+    const camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 1, 3000);
+    camera.position.set(380, 320, 420);
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setSize(container.clientWidth, container.clientHeight);
+    renderer.shadowMap.enabled = true;
+    container.appendChild(renderer.domElement);
+
+    const controls = new THREE.OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.05;
+    controls.autoRotate = false;
+    controls.autoRotateSpeed = 1.5;
+    controls.target.set(0, 10, 0);
+
+    // 조명
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
+    scene.add(ambientLight);
+
+    const dirLight = new THREE.DirectionalLight(0xffffff, 0.9);
+    dirLight.position.set(350, 500, 350);
+    scene.add(dirLight);
+
+    const dirLight2 = new THREE.DirectionalLight(0xffffff, 0.4);
+    dirLight2.position.set(-350, -200, -350);
+    scene.add(dirLight2);
+
+    // 재질
+    const woodMatTop = new THREE.MeshStandardMaterial({ color: 0xe2b170, roughness: 0.45 });
+    const woodMatSideX = new THREE.MeshStandardMaterial({ color: 0xc59353, roughness: 0.55 });
+    const woodMatSideY = new THREE.MeshStandardMaterial({ color: 0xd97706, roughness: 0.55 });
+    const woodMatCorner = new THREE.MeshStandardMaterial({ color: 0x38bdf8, roughness: 0.4 });
+    const woodMatBottom = new THREE.MeshStandardMaterial({ color: 0x64748b, roughness: 0.6 });
+    const exciterMat = new THREE.MeshStandardMaterial({ color: 0x3b82f6, metalness: 0.6, roughness: 0.3 });
+
+    // 부품 메쉬 개별 저장 (분해도 애니메이션용)
+    const partMeshes = {
+      top: null,
+      bottom: null,
+      frontSide: null,
+      backSide: null,
+      leftSide: null,
+      rightSide: null,
+      corners: [], // { mesh, origX, origZ, dirX, dirZ }
+      exciters: []
+    };
+
+    // R20 라운딩 사각 형상 헬퍼 (450 x 250)
+    function createRoundedRectShape(w, h, r) {
+      const shape = new THREE.Shape();
+      const x = -w/2, y = -h/2;
+      shape.moveTo(x + r, y);
+      shape.lineTo(x + w - r, y);
+      shape.quadraticCurveTo(x + w, y, x + w, y + r);
+      shape.lineTo(x + w, y + h - r);
+      shape.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+      shape.lineTo(x + r, y + h);
+      shape.quadraticCurveTo(x, y + h, x, y + h - r);
+      shape.lineTo(x, y + r);
+      shape.quadraticCurveTo(x, y, x + r, y);
+      return shape;
+    }
+
+    // 1. 상판 (450 x 250 x 4) - 조립 시 Y=16~20
+    const topShape = createRoundedRectShape(450, 250, 20);
+    const topGeo = new THREE.ExtrudeGeometry(topShape, { depth: 4, bevelEnabled: false });
+    topGeo.rotateX(-Math.PI / 2);
+    partMeshes.top = new THREE.Mesh(topGeo, woodMatTop);
+    partMeshes.top.position.y = 16;
+    scene.add(partMeshes.top);
+
+    // 2. 하판 (450 x 250 x 4) - 조립 시 Y=0~4
+    const botShape = createRoundedRectShape(450, 250, 20);
+    const botGeo = new THREE.ExtrudeGeometry(botShape, { depth: 4, bevelEnabled: false });
+    botGeo.rotateX(-Math.PI / 2);
+    partMeshes.bottom = new THREE.Mesh(botGeo, woodMatBottom);
+    partMeshes.bottom.position.y = 0;
+    scene.add(partMeshes.bottom);
+
+    // 3. 전/후면 측판 (410 x 12 x 4) - 조립 시 Y=4~16 (중심 Y=10)
+    const frontGeo = new THREE.BoxGeometry(410, 12, 4);
+    partMeshes.frontSide = new THREE.Mesh(frontGeo, woodMatSideX);
+    partMeshes.frontSide.position.set(0, 10, 123);
+    scene.add(partMeshes.frontSide);
+
+    partMeshes.backSide = new THREE.Mesh(frontGeo, woodMatSideX);
+    partMeshes.backSide.position.set(0, 10, -123);
+    scene.add(partMeshes.backSide);
+
+    // 4. 좌/우측 측판 (4 x 12 x 210) - 조립 시 Y=4~16 (중심 Y=10)
+    const sideGeo = new THREE.BoxGeometry(4, 12, 210);
+    partMeshes.leftSide = new THREE.Mesh(sideGeo, woodMatSideY);
+    partMeshes.leftSide.position.set(-223, 10, 0);
+    scene.add(partMeshes.leftSide);
+
+    partMeshes.rightSide = new THREE.Mesh(sideGeo, woodMatSideY);
+    partMeshes.rightSide.position.set(223, 10, 0);
+    scene.add(partMeshes.rightSide);
+
+    // 5. R20 코너 기둥 (4개 모서리: 20x20 부채꼴, 바깥 볼록 R20 호)
+    function createQuarterCornerShape() {
+      const shape = new THREE.Shape();
+      shape.moveTo(0, 0);
+      shape.lineTo(20, 0);
+      shape.absarc(0, 0, 20, 0, Math.PI / 2, false);
+      shape.lineTo(0, 0);
+      return shape;
+    }
+
+    const cornerGeo = new THREE.ExtrudeGeometry(createQuarterCornerShape(), { depth: 12, bevelEnabled: false });
+    cornerGeo.rotateX(-Math.PI / 2);
+
+    // 수학적으로 정확히 검증된 4개 코너 설정:
+    // Front-Right: 중심 (+205, +105), angle = -PI/2 -> 곡면이 (+X, +Z)를 향함
+    // Back-Right:  중심 (+205, -105), angle = 0      -> 곡면이 (+X, -Z)를 향함
+    // Back-Left:   중심 (-205, -105), angle = +PI/2 -> 곡면이 (-X, -Z)를 향함
+    // Front-Left:  중심 (-205, +105), angle = Math.PI-> 곡면이 (-X, +Z)를 향함
+    const cornerConfigs = [
+      { cx: 205, cz: 105, angle: -Math.PI / 2, dx: 1, dz: 1 },
+      { cx: 205, cz: -105, angle: 0,           dx: 1, dz: -1 },
+      { cx: -205, cz: -105, angle: Math.PI / 2, dx: -1, dz: -1 },
+      { cx: -205, cz: 105, angle: Math.PI,     dx: -1, dz: 1 }
+    ];
+
+    cornerConfigs.forEach(cfg => {
+      const cm = new THREE.Mesh(cornerGeo, woodMatCorner);
+      cm.rotation.y = cfg.angle;
+      cm.position.set(cfg.cx, 4, cfg.cz); // 조립 시 Y=4~16
+      scene.add(cm);
+      partMeshes.corners.push({ mesh: cm, origX: cfg.cx, origZ: cfg.cz, dx: cfg.dx, dz: cfg.dz });
+    });
+
+    // 6. 내부 익사이터 2개
+    const exciterGeo = new THREE.CylinderGeometry(20, 20, 9.85, 32);
+    const ex1 = new THREE.Mesh(exciterGeo, exciterMat);
+    ex1.position.set(-80, 11, 0);
+    const ex2 = new THREE.Mesh(exciterGeo, exciterMat);
+    ex2.position.set(80, 11, 0);
+    scene.add(ex1);
+    scene.add(ex2);
+    partMeshes.exciters.push(ex1, ex2);
+
+    // 바닥 그리드
+    const grid = new THREE.GridHelper(800, 40, 0x334155, 0x1e293b);
+    grid.position.y = -40;
+    scene.add(grid);
+
+    // 분해도 제어 함수
+    function updateExplode(val) {
+      document.getElementById('explode-val').innerText = val + '%';
+      const factor = val / 100;
+
+      // 상판 (위로 상승)
+      partMeshes.top.position.y = 16 + factor * 80;
+
+      // 하판 (아래로 하강)
+      partMeshes.bottom.position.y = 0 - factor * 80;
+
+      // 측판 (앞뒤/좌우로 방사형 확장)
+      partMeshes.frontSide.position.z = 123 + factor * 40;
+      partMeshes.backSide.position.z = -123 - factor * 40;
+      partMeshes.leftSide.position.x = -223 - factor * 40;
+      partMeshes.rightSide.position.x = 223 + factor * 40;
+
+      // 코너 기둥 4개 (대각선 바깥쪽으로 확장)
+      partMeshes.corners.forEach(c => {
+        c.mesh.position.x = c.origX + c.dx * factor * 40;
+        c.mesh.position.z = c.origZ + c.dz * factor * 40;
+      });
+
+      // 익사이터 (상판과 함께 약간 상승)
+      partMeshes.exciters.forEach(ex => {
+        ex.position.y = 11 + factor * 35;
+      });
+    }
+
+    function setExplode(val) {
+      document.getElementById('explodeSlider').value = val;
+      updateExplode(val);
+    }
+
+    function setCamera(type) {
+      if (type === 'iso') {
+        camera.position.set(380, 320, 420);
+        controls.target.set(0, 10, 0);
+      } else if (type === 'top') {
+        camera.position.set(0, 550, 0);
+        controls.target.set(0, 10, 0);
+      } else if (type === 'front') {
+        camera.position.set(0, 10, 500);
+        controls.target.set(0, 10, 0);
+      } else if (type === 'corner') {
+        // 우측 전면 코너 초밀착 확대 뷰
+        camera.position.set(280, 40, 180);
+        controls.target.set(215, 10, 115);
+      }
+    }
+
+    function toggleAutoRotate() {
+      controls.autoRotate = !controls.autoRotate;
+      document.getElementById('btn-rotate').classList.toggle('active', controls.autoRotate);
+    }
+
+    updateExplode(0);
+
+    function animate() {
+      requestAnimationFrame(animate);
+      controls.update();
+      renderer.render(scene, camera);
+    }
+    animate();
+
+    window.addEventListener('resize', () => {
+      camera.aspect = container.clientWidth / container.clientHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(container.clientWidth, container.clientHeight);
+    });
+  </script>
+</body>
+</html>

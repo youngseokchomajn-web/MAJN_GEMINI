@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>마중 스마트배시넷 — 2D CAD 도면 (1:1 Nesting Layout)</title>
+  <style>
+    :root {
+      --bg: #1e1e1e; /* AutoCAD classic dark theme */
+      --panel-bg: #252526;
+      --border: #3c3c3c;
+      --cut-color: #00e5ff;
+      --hole-color: #ff334b;
+      --text-color: #d4d4d4;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, monospace;
+      background: var(--bg);
+      color: #cccccc;
+      height: 100vh;
+      display: flex;
+      overflow: hidden;
+    }
+    #sidebar {
+      width: 310px;
+      background: var(--panel-bg);
+      border-right: 1px solid var(--border);
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      z-index: 10;
+    }
+    h1 {
+      font-size: 14px;
+      font-weight: 600;
+      color: #ffffff;
+      letter-spacing: -0.2px;
+    }
+    .sub {
+      font-size: 11px;
+      color: #858585;
+      margin-top: 3px;
+    }
+    .card {
+      background: #2d2d2d;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 10px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .card-title {
+      font-size: 11px;
+      font-weight: 600;
+      color: #9cdcfe;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .part-btn {
+      background: #333333;
+      border: 1px solid transparent;
+      color: #d4d4d4;
+      padding: 6px 8px;
+      border-radius: 3px;
+      font-size: 11.5px;
+      cursor: pointer;
+      text-align: left;
+      display: flex;
+      justify-content: space-between;
+      transition: all 0.1s ease;
+    }
+    .part-btn:hover {
+      background: #094771;
+      color: #ffffff;
+    }
+    .layer-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 11.5px;
+      color: #cccccc;
+      cursor: pointer;
+    }
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 2px;
+    }
+    #viewport-container {
+      flex: 1;
+      position: relative;
+      background: #181818;
+      overflow: hidden;
+    }
+    canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+      cursor: crosshair;
+    }
+    .toolbar {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      background: rgba(37, 37, 38, 0.92);
+      backdrop-filter: blur(4px);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 4px 8px;
+      display: flex;
+      gap: 6px;
+      z-index: 5;
+    }
+    .btn {
+      background: #333333;
+      border: 1px solid var(--border);
+      color: #cccccc;
+      padding: 5px 10px;
+      border-radius: 3px;
+      font-size: 11px;
+      cursor: pointer;
+    }
+    .btn:hover {
+      background: #0e639c;
+      color: #ffffff;
+    }
+    .btn.active {
+      background: #0e639c;
+      color: #ffffff;
+    }
+    .hud {
+      position: absolute;
+      bottom: 12px;
+      right: 12px;
+      background: rgba(37, 37, 38, 0.9);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 4px 10px;
+      font-size: 11px;
+      font-family: monospace;
+      color: #858585;
+      z-index: 5;
+    }
+    .measure-box {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: rgba(37, 37, 38, 0.95);
+      border: 1px solid #dcdcaa;
+      border-radius: 4px;
+      padding: 6px 12px;
+      font-size: 11.5px;
+      color: #dcdcaa;
+      display: none;
+      z-index: 5;
+    }
+  </style>
+</head>
+<body>
+
+  <aside id="sidebar">
+    <div>
+      <h1>📐 2D CAD 네스팅 도면 (1:1)</h1>
+      <div class="sub">majung_bassinet_order.dxf (4.0T Birch Plywood)</div>
+    </div>
+
+    <!-- 부품 줌 바로가기 -->
+    <div class="card">
+      <div class="card-title">부품 바로가기</div>
+      <button class="part-btn" onclick="focusPart(0, 0, 450, 250)">
+        <span>TOP (상판 R20)</span>
+        <span>450×250</span>
+      </button>
+      <button class="part-btn" onclick="focusPart(0, 265, 450, 250)">
+        <span>BOTTOM (하판 R20+홀)</span>
+        <span>450×250</span>
+      </button>
+      <button class="part-btn" onclick="focusPart(0, 530, 410, 35)">
+        <span>SIDE-L (전/후면 측판 x2)</span>
+        <span>410×12</span>
+      </button>
+      <button class="part-btn" onclick="focusPart(0, 570, 210, 35)">
+        <span>SIDE-S (좌/우측 측판 x2)</span>
+        <span>210×12</span>
+      </button>
+      <button class="part-btn" onclick="focusPart(470, 0, 96, 72)">
+        <span>CORNER (R20 코너블록 x12)</span>
+        <span>20×20</span>
+      </button>
+      <button class="part-btn" onclick="focusPart(470, 100, 28, 42)">
+        <span>BOSS (스크류보스 x6)</span>
+        <span>10×10</span>
+      </button>
+    </div>
+
+    <!-- 레이어 가시성 -->
+    <div class="card">
+      <div class="card-title">도면 레이어</div>
+      <label class="layer-row">
+        <input type="checkbox" id="layer-cut" checked onchange="toggleLayer('CUT', this.checked)">
+        <span class="dot" style="background: var(--cut-color);"></span>
+        <span>CUT (절단 경로선)</span>
+      </label>
+      <label class="layer-row">
+        <input type="checkbox" id="layer-hole" checked onchange="toggleLayer('HOLE', this.checked)">
+        <span class="dot" style="background: var(--hole-color);"></span>
+        <span>HOLE (타공 중심/원)</span>
+      </label>
+      <label class="layer-row">
+        <input type="checkbox" id="layer-text" checked onchange="toggleLayer('TEXT', this.checked)">
+        <span class="dot" style="background: var(--text-color);"></span>
+        <span>TEXT (태그 라벨)</span>
+      </label>
+      <label class="layer-row">
+        <input type="checkbox" id="layer-grid" checked onchange="draw()">
+        <span class="dot" style="background: #444444;"></span>
+        <span>GRID (10/50mm 격자)</span>
+      </label>
+    </div>
+  </aside>
+
+  <main id="viewport-container">
+    <div class="toolbar">
+      <button class="btn" onclick="resetView()">전체 보기 (Fit)</button>
+      <button class="btn" onclick="zoomIn()">➕ 확대</button>
+      <button class="btn" onclick="zoomOut()">➖ 축소</button>
+      <button class="btn" id="btn-measure" onclick="toggleMeasure()">📏 치수 측정 (M)</button>
+    </div>
+
+    <div class="measure-box" id="measure-box"></div>
+    <div class="hud" id="hud">X: 0.00 | Y: 0.00 mm</div>
+
+    <canvas id="cadCanvas"></canvas>
+  </main>
+
+  <script>
+    let dxfEntities = [{"type": "LWPOLYLINE", "layer": "CUT", "pts": [[20.0, 0.0], [430.0, 0.0], [450.0, 20.0], [450.0, 230.0], [430.0, 250.0], [20.0, 250.0], [0.0, 230.0], [0.0, 20.0]], "bulges": {"1": 0.414213562373095, "3": 0.414213562373095, "5": 0.414213562373095, "7": 0.414213562373095}, "closed": true}, {"type": "TEXT", "layer": "TEXT", "text": "TOP 450x250", "pos": [20.0, 20.0], "height": 3.5}, {"type": "LWPOLYLINE", "layer": "CUT", "pts": [[20.0, 265.0], [430.0, 265.0], [450.0, 285.0], [450.0, 495.0], [430.0, 515.0], [20.0, 515.0], [0.0, 495.0], [0.0, 285.0]], "bulges": {"1": 0.414213562373095, "3": 0.414213562373095, "5": 0.414213562373095, "7": 0.414213562373095}, "closed": true}, {"type": "CIRCLE", "layer": "HOLE", "center": [14.0, 279.0], "radius": 1.6}, {"type": "CIRCLE", "layer": "HOLE", "center": [436.0, 279.0], "radius": 1.6}, {"type": "CIRCLE", "layer": "HOLE", "center": [14.0, 501.0], "radius": 1.6}, {"type": "CIRCLE", "layer": "HOLE", "center": [436.0, 501.0], "radius": 1.6}, {"type": "CIRCLE", "layer": "HOLE", "center": [225.0, 272.0], "radius": 1.6}, {"type": "CIRCLE", "layer": "HOLE", "center": [225.0, 508.0], "radius": 1.6}, {"type": "TEXT", "layer": "TEXT", "text": "BOTTOM 450x250 (6-M3 C/S)", "pos": [20.0, 285.0], "height": 3.5}, {"type": "LWPOLYLINE", "layer": "CUT", "pts": [[0.0, 530.0], [410.0, 530.0], [410.0, 542.0], [0.0, 542.0]], "bulges": {}, "closed": true}, {"type": "TEXT", "layer": "TEXT", "text": "SIDE-L 410x12", "pos": [10.0, 533.0], "height": 3.5}, {"type": "LWPOLYLINE", "layer": "CUT", "pts": [[0.0, 550.0], [410.0, 550.0], [410.0, 562.0], [0.0, 562.0]], "bulges": {}, "closed": true}, {"type": "TEXT", "layer": "TEXT", "text": "SIDE-L 410x12", "pos": [10.0, 553.0], "height": 3.5}, {"type": "LWPOLYLINE", "layer": "CUT", "pts": [[0.0, 570.0], [210.0, 570.0], [210.0, 582.0], [0.0, 582.0]], "bulges": {}, "closed": true}, {"type": "TEXT", "layer": "TEXT", "text": "SIDE-S 210x12", "pos": [10.0, 573.0], "height": 3.5}, {"type": "LWPOLYLINE", "layer": "CUT", "pts": [[0.0, 590.0], [210.0, 590.0], [210.0, 602.0], [0.0, 602.0]], "bulges": {}, "closed": true}, {"type": "TEXT", "layer": "TEXT", "text": "SIDE-S 210x12 (HOLE)", "pos": [10.0, 593.0], "height": 3.5}, {"type": "CIRCLE", "layer": "HOLE", "center": [30.0, 596.0], "radius": 2.75}, {"type": "LWPOLYLINE", "layer": "CUT", "pts": [[470.0, 0.0], [490.0, 0.0], [470.0, 20.0]], "bulges": {"1": -0.414213562373095}, "closed": true}, {"type": "LWPOLYLINE", "layer": "CUT", "pts": [[494.0, 0.0], [514.0, 0.0], [494.0, 20.0]], "bulges": {"1": -0.414213562373095}, "closed": true}, {"type": "LWPOLYLINE", "layer": "CUT", "pts": [[518.0, 0.0], [538.0, 0.0], [518.0, 20.0]], "bulges": {"1": -0.414213562373095}, "closed": true}, {"type": "LWPOLYLINE", "layer": "CUT", "pts": [[542.0, 0.0], [562.0, 0.0], [542.0, 20.0]], "bulges": {"1": -0.414213562373095}, "closed": true}, {"type": "LWPOLYLINE", "layer": "CUT", "pts": [[470.0, 24.0], [490.0, 24.0], [470.0, 44.0]], "bulges": {"1": -0.414213562373095}, "closed": true}, {"type": "LWPOLYLINE", "layer": "CUT", "pts": [[494.0, 24.0], [514.0, 24.0], [494.0, 44.0]], "bulges": {"1": -0.414213562373095}, "closed": true}, {"type": "LWPOLYLINE", "layer": "CUT", "pts": [[518.0, 24.0], [538.0, 24.0], [518.0, 44.0]], "bulges": {"1": -0.414213562373095}, "closed": true}, {"type": "LWPOLYLINE", "layer": "CUT", "pts": [[542.0, 24.0], [562.0, 24.0], [542.0, 44.0]], "bulges": {"1": -0.414213562373095}, "closed": true}, {"type": "LWPOLYLINE", "layer": "CUT", "pts": [[470.0, 48.0], [490.0, 48.0], [470.0, 68.0]], "bulges": {"1": -0.414213562373095}, "closed": true}, {"type": "LWPOLYLINE", "layer": "CUT", "pts": [[494.0, 48.0], [514.0, 48.0], [494.0, 68.0]], "bulges": {"1": -0.414213562373095}, "closed": true}, {"type": "LWPOLYLINE", "layer": "CUT", "pts": [[518.0, 48.0], [538.0, 48.0], [518.0, 68.0]], "bulges": {"1": -0.414213562373095}, "closed": true}, {"type": "LWPOLYLINE", "layer": "CUT", "pts": [[542.0, 48.0], [562.0, 48.0], [542.0, 68.0]], "bulges": {"1": -0.414213562373095}, "closed": true}, {"type": "TEXT", "layer": "TEXT", "text": "CORNER x12", "pos": [470.0, 75.0], "height": 3.5}, {"type": "LWPOLYLINE", "layer": "CUT", "pts": [[470.0, 100.0], [480.0, 100.0], [480.0, 110.0], [470.0, 110.0]], "bulges": {}, "closed": true}, {"type": "LWPOLYLINE", "layer": "CUT", "pts": [[484.0, 100.0], [494.0, 100.0], [494.0, 110.0], [484.0, 110.0]], "bulges": {}, "closed": true}, {"type": "LWPOLYLINE", "layer": "CUT", "pts": [[470.0, 114.0], [480.0, 114.0], [480.0, 124.0], [470.0, 124.0]], "bulges": {}, "closed": true}, {"type": "LWPOLYLINE", "layer": "CUT", "pts": [[484.0, 114.0], [494.0, 114.0], [494.0, 124.0], [484.0, 124.0]], "bulges": {}, "closed": true}, {"type": "LWPOLYLINE", "layer": "CUT", "pts": [[470.0, 128.0], [480.0, 128.0], [480.0, 138.0], [470.0, 138.0]], "bulges": {}, "closed": true}, {"type": "LWPOLYLINE", "layer": "CUT", "pts": [[484.0, 128.0], [494.0, 128.0], [494.0, 138.0], [484.0, 138.0]], "bulges": {}, "closed": true}, {"type": "TEXT", "layer": "TEXT", "text": "BOSS x6", "pos": [470.0, 145.0], "height": 3.5}, {"type": "TEXT", "layer": "TEXT", "text": "MAJUNG BASSINET HOUSING | 4.0T BIRCH PLYWOOD", "pos": [0.0, -15.0], "height": 4.0}];
+    const layerVisible = { 'CUT': true, 'HOLE': true, 'TEXT': true, '0': true };
+
+    let scale = 1.0;
+    let panX = 50;
+    let panY = 50;
+    let isDragging = false;
+    let dragStartX = 0;
+    let dragStartY = 0;
+
+    let measureMode = false;
+    let measurePoints = [];
+
+    const canvas = document.getElementById('cadCanvas');
+    const ctx = canvas.getContext('2d');
+    const hud = document.getElementById('hud');
+    const measureBox = document.getElementById('measure-box');
+
+    function resizeCanvas() {
+      const container = document.getElementById('viewport-container');
+      canvas.width = container.clientWidth * window.devicePixelRatio;
+      canvas.height = container.clientHeight * window.devicePixelRatio;
+      ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+      draw();
+    }
+    window.addEventListener('resize', resizeCanvas);
+
+    function worldToScreen(wx, wy) {
+      const h = canvas.height / window.devicePixelRatio;
+      return {
+        x: panX + wx * scale,
+        y: h - (panY + wy * scale)
+      };
+    }
+
+    function screenToWorld(sx, sy) {
+      const h = canvas.height / window.devicePixelRatio;
+      return {
+        x: (sx - panX) / scale,
+        y: (h - sy - panY) / scale
+      };
+    }
+
+    function toggleLayer(layer, val) {
+      layerVisible[layer] = val;
+      draw();
+    }
+
+    function resetView() {
+      const container = document.getElementById('viewport-container');
+      const w = container.clientWidth;
+      const h = container.clientHeight;
+
+      // 전체 바운딩 박스: X: 0~570, Y: -20~610 (약 600 x 650)
+      const bboxW = 620;
+      const bboxH = 680;
+      const scaleX = (w - 100) / bboxW;
+      const scaleY = (h - 100) / bboxH;
+      scale = Math.min(scaleX, scaleY);
+      
+      panX = 50;
+      panY = 50 * scale;
+      draw();
+    }
+
+    function focusPart(x, y, w, h) {
+      const container = document.getElementById('viewport-container');
+      const cw = container.clientWidth;
+      const ch = container.clientHeight;
+
+      const pad = 60;
+      const scaleX = (cw - pad * 2) / (w || 100);
+      const scaleY = (ch - pad * 2) / (h || 100);
+      scale = Math.min(scaleX, scaleY, 4.0);
+
+      const targetCenterX = x + w / 2;
+      const targetCenterY = y + h / 2;
+
+      panX = cw / 2 - targetCenterX * scale;
+      panY = ch / 2 - targetCenterY * scale;
+      draw();
+    }
+
+    function zoomIn() { scale *= 1.2; draw(); }
+    function zoomOut() { scale /= 1.2; draw(); }
+
+    function toggleMeasure() {
+      measureMode = !measureMode;
+      measurePoints = [];
+      document.getElementById('btn-measure').classList.toggle('active', measureMode);
+      measureBox.style.display = measureMode ? 'block' : 'none';
+      if (measureMode) measureBox.innerText = '측정: 첫 번째 점 클릭';
+      draw();
+    }
+
+    function draw() {
+      const w = canvas.width / window.devicePixelRatio;
+      const h = canvas.height / window.devicePixelRatio;
+      ctx.clearRect(0, 0, w, h);
+
+      // 격자
+      if (document.getElementById('layer-grid').checked) {
+        drawGrid(w, h);
+      }
+
+      // CAD 엔티티 렌더링 (얇고 선명한 1px 벡터)
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+
+      for (const ent of dxfEntities) {
+        const layer = ent.layer || '0';
+        if (layerVisible[layer] === false) continue;
+
+        if (ent.type === 'LWPOLYLINE') {
+          drawPolyline(ent);
+        } else if (ent.type === 'CIRCLE') {
+          drawCircle(ent);
+        } else if (ent.type === 'TEXT') {
+          drawText(ent);
+        }
+      }
+
+      // 측정 라인
+      if (measurePoints.length > 0) {
+        ctx.strokeStyle = '#dcdcaa';
+        ctx.fillStyle = '#dcdcaa';
+        ctx.lineWidth = 1.2;
+
+        const p1 = worldToScreen(measurePoints[0].x, measurePoints[0].y);
+        ctx.beginPath();
+        ctx.arc(p1.x, p1.y, 3, 0, Math.PI * 2);
+        ctx.fill();
+
+        if (measurePoints.length === 2) {
+          const p2 = worldToScreen(measurePoints[1].x, measurePoints[1].y);
+          ctx.beginPath();
+          ctx.arc(p2.x, p2.y, 3, 0, Math.PI * 2);
+          ctx.fill();
+
+          ctx.beginPath();
+          ctx.setLineDash([3, 3]);
+          ctx.moveTo(p1.x, p1.y);
+          ctx.lineTo(p2.x, p2.y);
+          ctx.stroke();
+          ctx.setLineDash([]);
+
+          const dist = Math.hypot(measurePoints[1].x - measurePoints[0].x, measurePoints[1].y - measurePoints[0].y);
+          const midX = (p1.x + p2.x) / 2;
+          const midY = (p1.y + p2.y) / 2;
+          ctx.font = '11px monospace';
+          ctx.fillText(` ${dist.toFixed(2)} mm`, midX + 5, midY - 5);
+        }
+      }
+    }
+
+    function drawGrid(w, h) {
+      const start = screenToWorld(0, h);
+      const end = screenToWorld(w, 0);
+
+      const step = scale > 1.5 ? 10 : 50;
+      const minX = Math.floor(start.x / step) * step;
+      const maxX = Math.ceil(end.x / step) * step;
+      const minY = Math.floor(start.y / step) * step;
+      const maxY = Math.ceil(end.y / step) * step;
+
+      ctx.strokeStyle = '#222222';
+      ctx.lineWidth = 1;
+
+      for (let x = minX; x <= maxX; x += step) {
+        const p = worldToScreen(x, 0);
+        ctx.beginPath();
+        ctx.moveTo(p.x, 0);
+        ctx.lineTo(p.x, h);
+        ctx.stroke();
+      }
+
+      for (let y = minY; y <= maxY; y += step) {
+        const p = worldToScreen(0, y);
+        ctx.beginPath();
+        ctx.moveTo(0, p.y);
+        ctx.lineTo(w, p.y);
+        ctx.stroke();
+      }
+
+      // X/Y 0축
+      const org = worldToScreen(0, 0);
+      ctx.strokeStyle = '#383838';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(org.x, 0); ctx.lineTo(org.x, h);
+      ctx.moveTo(0, org.y); ctx.lineTo(w, org.y);
+      ctx.stroke();
+    }
+
+    function drawPolyline(ent) {
+      const pts = ent.pts;
+      if (!pts || pts.length === 0) return;
+
+      ctx.strokeStyle = (ent.layer === 'CUT') ? '#00e5ff' : '#cccccc';
+      ctx.lineWidth = 1.2;
+      ctx.beginPath();
+
+      const start = worldToScreen(pts[0][0], pts[0][1]);
+      ctx.moveTo(start.x, start.y);
+
+      for (let i = 0; i < pts.length; i++) {
+        const nextIdx = (i + 1) % pts.length;
+        if (nextIdx === 0 && !ent.closed && i === pts.length - 1) break;
+
+        const p1 = pts[i];
+        const p2 = pts[nextIdx];
+        const bulge = ent.bulges ? ent.bulges[i + 1] || 0 : 0;
+
+        if (bulge && Math.abs(bulge) > 0.001) {
+          const theta = 4 * Math.atan(bulge);
+          const dx = p2[0] - p1[0];
+          const dy = p2[1] - p1[1];
+          const midX = (p1[0] + p2[0]) / 2 - (dy / 2) * bulge;
+          const midY = (p1[1] + p2[1]) / 2 + (dx / 2) * bulge;
+          const cp = worldToScreen(midX, midY);
+          const sp2 = worldToScreen(p2[0], p2[1]);
+          ctx.quadraticCurveTo(cp.x, cp.y, sp2.x, sp2.y);
+        } else {
+          const sp = worldToScreen(p2[0], p2[1]);
+          ctx.lineTo(sp.x, sp.y);
+        }
+      }
+      ctx.stroke();
+    }
+
+    function drawCircle(ent) {
+      const center = worldToScreen(ent.center[0], ent.center[1]);
+      const r = ent.radius * scale;
+
+      ctx.strokeStyle = '#ff334b';
+      ctx.lineWidth = 1.2;
+
+      ctx.beginPath();
+      ctx.arc(center.x, center.y, r, 0, Math.PI * 2);
+      ctx.stroke();
+
+      // 중심점 십자선 (2px)
+      ctx.beginPath();
+      ctx.moveTo(center.x - 2, center.y); ctx.lineTo(center.x + 2, center.y);
+      ctx.moveTo(center.x, center.y - 2); ctx.lineTo(center.x, center.y + 2);
+      ctx.stroke();
+    }
+
+    function drawText(ent) {
+      const p = worldToScreen(ent.pos[0], ent.pos[1]);
+      ctx.fillStyle = '#858585';
+      const fontSize = Math.max(9, Math.min(13, (ent.height || 3.5) * scale * 0.9));
+      ctx.font = `${fontSize}px monospace`;
+      ctx.fillText(ent.text, p.x, p.y);
+    }
+
+    canvas.addEventListener('mousedown', (e) => {
+      if (measureMode) {
+        const rect = canvas.getBoundingClientRect();
+        const worldPos = screenToWorld(e.clientX - rect.left, e.clientY - rect.top);
+        if (measurePoints.length >= 2) measurePoints = [];
+        measurePoints.push(worldPos);
+
+        if (measurePoints.length === 1) {
+          measureBox.innerText = `P1: (${worldPos.x.toFixed(1)}, ${worldPos.y.toFixed(1)}) → P2 클릭`;
+        } else if (measurePoints.length === 2) {
+          const dist = Math.hypot(measurePoints[1].x - measurePoints[0].x, measurePoints[1].y - measurePoints[0].y);
+          measureBox.innerText = `거리: ${dist.toFixed(2)} mm (dX: ${(measurePoints[1].x - measurePoints[0].x).toFixed(2)}, dY: ${(measurePoints[1].y - measurePoints[0].y).toFixed(2)})`;
+        }
+        draw();
+        return;
+      }
+      isDragging = true;
+      dragStartX = e.clientX - panX;
+      dragStartY = e.clientY - panY;
+    });
+
+    window.addEventListener('mousemove', (e) => {
+      const rect = canvas.getBoundingClientRect();
+      const sx = e.clientX - rect.left;
+      const sy = e.clientY - rect.top;
+      const wPos = screenToWorld(sx, sy);
+      hud.innerText = `X: ${wPos.x.toFixed(2)} | Y: ${wPos.y.toFixed(2)} mm | ${(scale * 100).toFixed(0)}%`;
+
+      if (isDragging) {
+        panX = e.clientX - dragStartX;
+        panY = e.clientY - dragStartY;
+        draw();
+      }
+    });
+
+    window.addEventListener('mouseup', () => { isDragging = false; });
+
+    canvas.addEventListener('wheel', (e) => {
+      e.preventDefault();
+      const rect = canvas.getBoundingClientRect();
+      const mouseX = e.clientX - rect.left;
+      const mouseY = e.clientY - rect.top;
+
+      const beforeZoom = screenToWorld(mouseX, mouseY);
+      const zoomFactor = e.deltaY < 0 ? 1.15 : 0.85;
+      scale *= zoomFactor;
+
+      const afterZoom = screenToWorld(mouseX, mouseY);
+      panX += (afterZoom.x - beforeZoom.x) * scale;
+      panY -= (afterZoom.y - beforeZoom.y) * scale;
+
+      draw();
+    }, { passive: false });
+
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'm' || e.key === 'M') toggleMeasure();
+      if (e.key === 'r' || e.key === 'R') resetView();
+    });
+
+    // 임베디드 DXF 데이터
+    dxfEntities = [{"type": "LWPOLYLINE", "layer": "CUT", "pts": [[20.0, 0.0], [430.0, 0.0], [450.0, 20.0], [450.0, 230.0], [430.0, 250.0], [20.0, 250.0], [0.0, 230.0], [0.0, 20.0]], "bulges": {"1": 0.414213562373095, "3": 0.414213562373095, "5": 0.414213562373095, "7": 0.414213562373095}, "closed": true}, {"type": "TEXT", "layer": "TEXT", "text": "TOP 450x250", "pos": [20.0, 20.0], "height": 3.5}, {"type": "LWPOLYLINE", "layer": "CUT", "pts": [[20.0, 265.0], [430.0, 265.0], [450.0, 285.0], [450.0, 495.0], [430.0, 515.0], [20.0, 515.0], [0.0, 495.0], [0.0, 285.0]], "bulges": {"1": 0.414213562373095, "3": 0.414213562373095, "5": 0.414213562373095, "7": 0.414213562373095}, "closed": true}, {"type": "CIRCLE", "layer": "HOLE", "center": [14.0, 279.0], "radius": 1.6}, {"type": "CIRCLE", "layer": "HOLE", "center": [436.0, 279.0], "radius": 1.6}, {"type": "CIRCLE", "layer": "HOLE", "center": [14.0, 501.0], "radius": 1.6}, {"type": "CIRCLE", "layer": "HOLE", "center": [436.0, 501.0], "radius": 1.6}, {"type": "CIRCLE", "layer": "HOLE", "center": [225.0, 272.0], "radius": 1.6}, {"type": "CIRCLE", "layer": "HOLE", "center": [225.0, 508.0], "radius": 1.6}, {"type": "TEXT", "layer": "TEXT", "text": "BOTTOM 450x250 (6-M3 C/S)", "pos": [20.0, 285.0], "height": 3.5}, {"type": "LWPOLYLINE", "layer": "CUT", "pts": [[0.0, 530.0], [410.0, 530.0], [410.0, 542.0], [0.0, 542.0]], "bulges": {}, "closed": true}, {"type": "TEXT", "layer": "TEXT", "text": "SIDE-L 410x12", "pos": [10.0, 533.0], "height": 3.5}, {"type": "LWPOLYLINE", "layer": "CUT", "pts": [[0.0, 550.0], [410.0, 550.0], [410.0, 562.0], [0.0, 562.0]], "bulges": {}, "closed": true}, {"type": "TEXT", "layer": "TEXT", "text": "SIDE-L 410x12", "pos": [10.0, 553.0], "height": 3.5}, {"type": "LWPOLYLINE", "layer": "CUT", "pts": [[0.0, 570.0], [210.0, 570.0], [210.0, 582.0], [0.0, 582.0]], "bulges": {}, "closed": true}, {"type": "TEXT", "layer": "TEXT", "text": "SIDE-S 210x12", "pos": [10.0, 573.0], "height": 3.5}, {"type": "LWPOLYLINE", "layer": "CUT", "pts": [[0.0, 590.0], [210.0, 590.0], [210.0, 602.0], [0.0, 602.0]], "bulges": {}, "closed": true}, {"type": "TEXT", "layer": "TEXT", "text": "SIDE-S 210x12 (HOLE)", "pos": [10.0, 593.0], "height": 3.5}, {"type": "CIRCLE", "layer": "HOLE", "center": [30.0, 596.0], "radius": 2.75}, {"type": "LWPOLYLINE", "layer": "CUT", "pts": [[470.0, 0.0], [490.0, 0.0], [470.0, 20.0]], "bulges": {"1": -0.414213562373095}, "closed": true}, {"type": "LWPOLYLINE", "layer": "CUT", "pts": [[494.0, 0.0], [514.0, 0.0], [494.0, 20.0]], "bulges": {"1": -0.414213562373095}, "closed": true}, {"type": "LWPOLYLINE", "layer": "CUT", "pts": [[518.0, 0.0], [538.0, 0.0], [518.0, 20.0]], "bulges": {"1": -0.414213562373095}, "closed": true}, {"type": "LWPOLYLINE", "layer": "CUT", "pts": [[542.0, 0.0], [562.0, 0.0], [542.0, 20.0]], "bulges": {"1": -0.414213562373095}, "closed": true}, {"type": "LWPOLYLINE", "layer": "CUT", "pts": [[470.0, 24.0], [490.0, 24.0], [470.0, 44.0]], "bulges": {"1": -0.414213562373095}, "closed": true}, {"type": "LWPOLYLINE", "layer": "CUT", "pts": [[494.0, 24.0], [514.0, 24.0], [494.0, 44.0]], "bulges": {"1": -0.414213562373095}, "closed": true}, {"type": "LWPOLYLINE", "layer": "CUT", "pts": [[518.0, 24.0], [538.0, 24.0], [518.0, 44.0]], "bulges": {"1": -0.414213562373095}, "closed": true}, {"type": "LWPOLYLINE", "layer": "CUT", "pts": [[542.0, 24.0], [562.0, 24.0], [542.0, 44.0]], "bulges": {"1": -0.414213562373095}, "closed": true}, {"type": "LWPOLYLINE", "layer": "CUT", "pts": [[470.0, 48.0], [490.0, 48.0], [470.0, 68.0]], "bulges": {"1": -0.414213562373095}, "closed": true}, {"type": "LWPOLYLINE", "layer": "CUT", "pts": [[494.0, 48.0], [514.0, 48.0], [494.0, 68.0]], "bulges": {"1": -0.414213562373095}, "closed": true}, {"type": "LWPOLYLINE", "layer": "CUT", "pts": [[518.0, 48.0], [538.0, 48.0], [518.0, 68.0]], "bulges": {"1": -0.414213562373095}, "closed": true}, {"type": "LWPOLYLINE", "layer": "CUT", "pts": [[542.0, 48.0], [562.0, 48.0], [542.0, 68.0]], "bulges": {"1": -0.414213562373095}, "closed": true}, {"type": "TEXT", "layer": "TEXT", "text": "CORNER x12", "pos": [470.0, 75.0], "height": 3.5}, {"type": "LWPOLYLINE", "layer": "CUT", "pts": [[470.0, 100.0], [480.0, 100.0], [480.0, 110.0], [470.0, 110.0]], "bulges": {}, "closed": true}, {"type": "LWPOLYLINE", "layer": "CUT", "pts": [[484.0, 100.0], [494.0, 100.0], [494.0, 110.0], [484.0, 110.0]], "bulges": {}, "closed": true}, {"type": "LWPOLYLINE", "layer": "CUT", "pts": [[470.0, 114.0], [480.0, 114.0], [480.0, 124.0], [470.0, 124.0]], "bulges": {}, "closed": true}, {"type": "LWPOLYLINE", "layer": "CUT", "pts": [[484.0, 114.0], [494.0, 114.0], [494.0, 124.0], [484.0, 124.0]], "bulges": {}, "closed": true}, {"type": "LWPOLYLINE", "layer": "CUT", "pts": [[470.0, 128.0], [480.0, 128.0], [480.0, 138.0], [470.0, 138.0]], "bulges": {}, "closed": true}, {"type": "LWPOLYLINE", "layer": "CUT", "pts": [[484.0, 128.0], [494.0, 128.0], [494.0, 138.0], [484.0, 138.0]], "bulges": {}, "closed": true}, {"type": "TEXT", "layer": "TEXT", "text": "BOSS x6", "pos": [470.0, 145.0], "height": 3.5}, {"type": "TEXT", "layer": "TEXT", "text": "MAJUNG BASSINET HOUSING | 4.0T BIRCH PLYWOOD", "pos": [0.0, -15.0], "height": 4.0}];
+    resizeCanvas();
+    resetView();
+  </script>
+</body>
+</html>
