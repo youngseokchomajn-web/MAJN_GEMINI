@@ -661,6 +661,32 @@
   - [`docs/MAJN_FIRMWARE_STABILIZATION_AND_VERIFICATION_MASTER_PLAN.md`](../MAJN_FIRMWARE_STABILIZATION_AND_VERIFICATION_MASTER_PLAN.md): W0~W7 무선 우선 체계로 전면 개정 완료.
 - **다음 작업**: W2 (스마트폰 웹 제어 완성 - 미실측 IMU 삭제, 타이머/버전/OTA링크 신설 및 빌드).
 
+---
+
+### SHARED-2026-10-31-007 — [무선 우선 마스터플랜] W2: 스마트폰 웹 제어 UI 정제 및 타이머 연동 완성
+- **작성자:** Gemini (Antigravity)
+- **작업 일시:** 2026-10-31 12:37 KST
+- **작업 ID:** WIRELESS-W2 / UI-001
+- **기준 브랜치:** `feature/phone-wifi-control`
+- **W2 완료 내역**:
+  1. **[미실측 가상 센서값 완전 삭제]**:
+     - `mobile_web_ui.h`에서 실측하지 않는 PCB 내장 센서 모니터링 카드(IMU X/Y/Z) 완전 제거.
+  2. **[작동 시간 설정 (타이머) 전면 신설]**:
+     - 5분, 10분, 15분, 30분 퀵 선택 칩 버튼 배치.
+     - 백엔드 `system_controller.cpp`에 `setRunningDurationMinutes()`, `getRemainingSeconds()` 및 `SET_DURATION` JSON API 연동.
+     - 실시간 잔여 시간 카운트다운(`MM:SS`) 표시 및 시간 만료 시 소프트웨어 안전 정지(Soft Stop) 인터록 (`main.cpp`).
+  3. **[시스템 정보 및 펌웨어 버전 표기]**:
+     - 펌웨어 버전 `v1.2-wireless (2026-10-31)` 및 기기 모델(`MAJN Smart Bassinet (#0005)`), 잔여 힙 메모리 표기.
+  4. **[무선 OTA 바로가기 버튼 제공]**:
+     - `/update` 보안 펌웨어 업데이트 페이지로 즉시 이동하는 버튼 배치.
+  5. **[P0 클린 빌드 검증]**:
+     - `pio run -e esp32_wifi_phone`: **SUCCESS (0 Error, 0 Warning)**
+     - Flash: 1,903,523 bytes (57.0%), DRAM: 70,200 bytes (56.35%), IRAM: 121,263 bytes (92.52%, 잔여 9,809B).
+     - 아티팩트 SHA-256: `b7256ddaeeff805b1c19e640e56cc42bdbfe76be277fdf23c5717efb1031644e` (`/tmp/majn_wifi_phone_firmware.bin`)
+- **실물 OTA 상태**: **보류 (HOLD 유지)**
+- **다음 단계 진입**: **W3 (BLE GATT 통신 및 상태 수신 완성) 진입 준비 완료**.
+
+
 
 
 

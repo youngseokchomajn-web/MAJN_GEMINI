@@ -22,6 +22,12 @@ void triggerSafeStop();
 void triggerEmergencyStop();
 void resetFault();
 
+// Runtime Duration & Safety Watchdog
+void setRunningDurationMinutes(uint16_t minutes);
+uint16_t getRunningDurationMinutes();
+uint32_t getTargetDurationMs();
+uint32_t getRemainingSeconds();
+
 // Heartbeat & Connection Supervision
 void noteClientActivity();
 void checkClientTimeout(uint32_t timeoutMs = 5000);

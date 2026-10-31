@@ -12,6 +12,32 @@ extern volatile unsigned long activeStateStartTime;
 namespace MajnSystemCtrl {
 
 static volatile uint32_t gLastClientActivity = 0;
+static volatile uint32_t gTargetDurationMs = 15 * 60 * 1000; // Default 15 minutes
+const uint32_t MAX_ALLOWED_DURATION_MS = 30 * 60 * 1000;    // Maximum device runtime watchdog (30 min)
+
+void setRunningDurationMinutes(uint16_t minutes) {
+    if (minutes < 1) minutes = 1;
+    if (minutes > 30) minutes = 30;
+    gTargetDurationMs = (uint32_t)minutes * 60 * 1000;
+    Serial.printf("[SystemCtrl] Target running duration set to %u minutes (%u ms)\n", minutes, gTargetDurationMs);
+}
+
+uint16_t getRunningDurationMinutes() {
+    return (uint16_t)(gTargetDurationMs / (60 * 1000));
+}
+
+uint32_t getTargetDurationMs() {
+    return gTargetDurationMs;
+}
+
+uint32_t getRemainingSeconds() {
+    if (!systemActive || activeStateStartTime == 0) {
+        return (uint32_t)(gTargetDurationMs / 1000);
+    }
+    uint32_t elapsed = millis() - activeStateStartTime;
+    if (elapsed >= gTargetDurationMs) return 0;
+    return (gTargetDurationMs - elapsed) / 1000;
+}
 
 static const char* stateName(MajnBle::SystemState state) {
     switch (state) {
@@ -168,9 +194,22 @@ bool handleJsonCommand(const char* jsonStr, String& responseJson) {
 
         systemActive = true;
         activeStateStartTime = millis();
+        if (doc["duration_min"].is<uint16_t>()) {
+            setRunningDurationMinutes(doc["duration_min"]);
+        }
         MajnVibration::setTarget(f, a);
         buildAckJson(id, cmd, "applied", "RUNNING", responseJson);
         return true;
+    }
+
+    if (strcmp(cmd, "SET_DURATION") == 0) {
+        if (doc["duration_min"].is<uint16_t>()) {
+            setRunningDurationMinutes(doc["duration_min"]);
+            buildAckJson(id, cmd, "applied", getCurrentStateName(), responseJson);
+            return true;
+        }
+        buildAckJson(id, cmd, "rejected", getCurrentStateName(), responseJson);
+        return false;
     }
 
     if (strcmp(cmd, "STOP") == 0) {
@@ -265,6 +304,10 @@ void getTelemetryJson(String& outJson, const AccelData& accel) {
     doc["target_freq"] = MajnVibration::getTargetFrequency();
     doc["current_amp"] = MajnVibration::getCurrentAmplitude();
     doc["target_amp"] = MajnVibration::getTargetAmplitude();
+    doc["duration_min"] = getRunningDurationMinutes();
+    doc["remaining_sec"] = getRemainingSeconds();
+    doc["fw_version"] = "v1.2-wireless";
+    doc["build_date"] = "2026-10-31";
 
     // Distinguish measured IMU vs board location
     JsonObject imu = doc["board_imu"].to<JsonObject>();

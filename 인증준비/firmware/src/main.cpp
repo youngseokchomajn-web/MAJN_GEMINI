@@ -67,9 +67,11 @@ void VibrationControlTask(void *pvParameters) {
             continue;
         }
 
-        // Device-level automatic run-time cutoff (30 minutes software safety watchdog)
-        if (systemActive && (activeStateStartTime > 0) && (millis() - activeStateStartTime > MAX_RUNNING_TIME_MS)) {
-            Serial.println("[Safety] 30 minutes limit exceeded. Soft Stop engaged.");
+        // Device-level automatic run-time cutoff (User duration setting with 30-minute maximum ceiling)
+        uint32_t activeDuration = MajnSystemCtrl::getTargetDurationMs();
+        if (activeDuration > MAX_RUNNING_TIME_MS) activeDuration = MAX_RUNNING_TIME_MS;
+        if (systemActive && (activeStateStartTime > 0) && (millis() - activeStateStartTime >= activeDuration)) {
+            Serial.printf("[Safety] Target duration (%u ms) reached. Soft Stop engaged.\n", activeDuration);
             MajnSafety::requestSafeStop();
         }
 

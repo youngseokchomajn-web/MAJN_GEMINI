@@ -54,7 +54,7 @@ const char MOBILE_INDEX_HTML[] PROGMEM = R"rawliteral(<!DOCTYPE html>
     .logo {
       font-size: 20px;
       font-weight: 800;
-      letter-spacing: 1px;
+      letter-spacing: 0.5px;
       color: var(--primary);
       display: flex;
       align-items: center;
@@ -63,23 +63,28 @@ const char MOBILE_INDEX_HTML[] PROGMEM = R"rawliteral(<!DOCTYPE html>
     .badge {
       font-size: 11px;
       font-weight: 600;
-      padding: 4px 8px;
+      padding: 4px 10px;
       border-radius: 9999px;
       background: #334155;
       color: var(--text-muted);
+      transition: all 0.3s;
     }
     .badge.connected {
       background: #14532d;
       color: #86efac;
     }
+    .badge.disconnected {
+      background: #7f1d1d;
+      color: #fca5a5;
+    }
     .card {
       background: var(--card-bg);
       border: 1px solid var(--card-border);
       border-radius: 16px;
-      padding: 16px;
+      padding: 18px;
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 14px;
       box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
     }
     .card-title {
@@ -88,6 +93,9 @@ const char MOBILE_INDEX_HTML[] PROGMEM = R"rawliteral(<!DOCTYPE html>
       text-transform: uppercase;
       letter-spacing: 0.5px;
       color: var(--text-muted);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
     .status-display {
       display: flex;
@@ -101,6 +109,7 @@ const char MOBILE_INDEX_HTML[] PROGMEM = R"rawliteral(<!DOCTYPE html>
       border-radius: 8px;
       background: #334155;
       color: #cbd5e1;
+      display: inline-block;
     }
     .state-pill.RUNNING {
       background: #166534;
@@ -128,7 +137,7 @@ const char MOBILE_INDEX_HTML[] PROGMEM = R"rawliteral(<!DOCTYPE html>
     .stat-box {
       background: #0f172a;
       border-radius: 10px;
-      padding: 10px;
+      padding: 12px;
       display: flex;
       flex-direction: column;
       gap: 4px;
@@ -138,14 +147,14 @@ const char MOBILE_INDEX_HTML[] PROGMEM = R"rawliteral(<!DOCTYPE html>
       color: var(--text-muted);
     }
     .stat-value {
-      font-size: 18px;
+      font-size: 20px;
       font-weight: 700;
       color: var(--text);
     }
     .control-row {
       display: flex;
       flex-direction: column;
-      gap: 6px;
+      gap: 8px;
     }
     .control-header {
       display: flex;
@@ -163,12 +172,39 @@ const char MOBILE_INDEX_HTML[] PROGMEM = R"rawliteral(<!DOCTYPE html>
     }
     .slider::-webkit-slider-thumb {
       -webkit-appearance: none;
-      width: 24px;
-      height: 24px;
+      width: 26px;
+      height: 26px;
       border-radius: 50%;
       background: var(--primary);
       cursor: pointer;
+      box-shadow: 0 0 8px rgba(56, 189, 248, 0.5);
     }
+    /* 시간 선택 칩 */
+    .chip-group {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      margin-top: 4px;
+    }
+    .chip {
+      background: #0f172a;
+      border: 1px solid var(--card-border);
+      color: var(--text-muted);
+      padding: 10px 0;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 700;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .chip.active {
+      background: var(--primary);
+      color: #0f172a;
+      border-color: var(--primary);
+      box-shadow: 0 0 8px rgba(56, 189, 248, 0.4);
+    }
+    /* 버튼 스타일 */
     .btn {
       width: 100%;
       padding: 14px;
@@ -201,8 +237,39 @@ const char MOBILE_INDEX_HTML[] PROGMEM = R"rawliteral(<!DOCTYPE html>
     .btn-reset {
       background: var(--warning);
       color: #451a03;
-      padding: 10px;
+      padding: 12px;
       font-size: 14px;
+    }
+    .btn-ota {
+      background: #334155;
+      color: #38bdf8;
+      border: 1px solid #475569;
+      font-size: 14px;
+      padding: 12px;
+      text-decoration: none;
+      border-radius: 10px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 6px;
+      font-weight: 600;
+    }
+    .btn-ota:active {
+      background: #475569;
+    }
+    .info-table {
+      width: 100%;
+      font-size: 12px;
+      color: var(--text-muted);
+      border-collapse: collapse;
+    }
+    .info-table td {
+      padding: 4px 0;
+    }
+    .info-table td:last-child {
+      text-align: right;
+      color: #cbd5e1;
+      font-weight: 600;
     }
     .notice {
       font-size: 11px;
@@ -225,34 +292,49 @@ const char MOBILE_INDEX_HTML[] PROGMEM = R"rawliteral(<!DOCTYPE html>
       <div id="conn-badge" class="badge">연결 대기중</div>
     </header>
 
-    <!-- 상태 요약 카드 -->
+    <!-- 기기 작동 상태 카드 -->
     <div class="card">
-      <div class="card-title">기기 동작 상태</div>
+      <div class="card-title">기기 작동 상태</div>
       <div class="status-display">
         <div>
-          <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 4px;">시스템 모드</div>
+          <div style="font-size: 11px; color: var(--text-muted); margin-bottom: 4px;">시스템 모드</div>
           <div id="sys-state" class="state-pill">WAIT</div>
         </div>
         <div style="text-align: right;">
-          <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 4px;">앰프 진단</div>
-          <div id="amp-state" style="font-size: 14px; font-weight: 700; color: #38bdf8;">초기화 중</div>
+          <div style="font-size: 11px; color: var(--text-muted); margin-bottom: 4px;">앰프 진단</div>
+          <div id="amp-state" style="font-size: 14px; font-weight: 700; color: #38bdf8;">대기 중</div>
         </div>
       </div>
       <div class="grid-2">
         <div class="stat-box">
           <div class="stat-label">목표 주파수</div>
-          <div class="stat-value"><span id="val-freq">45.0</span> Hz</div>
+          <div class="stat-value"><span id="val-freq">45.0</span> <span style="font-size:14px;font-weight:400;">Hz</span></div>
         </div>
         <div class="stat-box">
-          <div class="stat-label">출력 진폭 스케일</div>
-          <div class="stat-value"><span id="val-amp">0.30</span> / 0.50</div>
+          <div class="stat-label">진폭 세기</div>
+          <div class="stat-value"><span id="val-amp">0.30</span> <span style="font-size:12px;color:var(--text-muted);font-weight:400;">/ 0.50</span></div>
         </div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-label">잔여 작동 시간</div>
+        <div class="stat-value" id="val-timer" style="color: #38bdf8;">15:00</div>
       </div>
     </div>
 
-    <!-- 제어 슬라이더 카드 -->
+    <!-- 작동 시간 설정 카드 -->
     <div class="card">
-      <div class="card-title">진동 파라미터 설정</div>
+      <div class="card-title">작동 시간 설정 (타이머)</div>
+      <div class="chip-group">
+        <div class="chip" onclick="setDuration(5)">5분</div>
+        <div class="chip" onclick="setDuration(10)">10분</div>
+        <div class="chip active" id="chip-15" onclick="setDuration(15)">15분</div>
+        <div class="chip" onclick="setDuration(30)">30분</div>
+      </div>
+    </div>
+
+    <!-- 진동 파라미터 제어 카드 -->
+    <div class="card">
+      <div class="card-title">진동 파라미터 조절</div>
       <div class="control-row">
         <div class="control-header">
           <span>진동 주파수 (30 ~ 65 Hz)</span>
@@ -262,7 +344,7 @@ const char MOBILE_INDEX_HTML[] PROGMEM = R"rawliteral(<!DOCTYPE html>
       </div>
       <div class="control-row">
         <div class="control-header">
-          <span>진폭 세기 (0.00 ~ 0.50)</span>
+          <span>진폭 세기 (0.05 ~ 0.50)</span>
           <span id="slider-amp-val" style="color: var(--primary);">0.30</span>
         </div>
         <input type="range" id="slider-amp" class="slider" min="0.05" max="0.50" step="0.05" value="0.30">
@@ -279,7 +361,7 @@ const char MOBILE_INDEX_HTML[] PROGMEM = R"rawliteral(<!DOCTYPE html>
       </button>
     </div>
 
-    <!-- 비상 정지 및 복구 -->
+    <!-- 비상 정지 및 고장 복구 -->
     <button id="btn-estop" class="btn btn-estop" onclick="sendCommand('ESTOP')">
       ⚠ 비상정지 (ESTOP)
     </button>
@@ -287,30 +369,27 @@ const char MOBILE_INDEX_HTML[] PROGMEM = R"rawliteral(<!DOCTYPE html>
       안전 잠금 해제 (FAULT RESET)
     </button>
 
-    <!-- 센서 및 안전 공지 카드 -->
+    <!-- 시스템 정보 및 무선 OTA 카드 -->
     <div class="card">
-      <div class="card-title">보드 내장 센서 모니터링</div>
-      <div class="grid-2">
-        <div class="stat-box">
-          <div class="stat-label">보드 가속도 X/Y</div>
-          <div class="stat-value" style="font-size: 14px;"><span id="imu-xy">0.00 / 0.00</span> g</div>
-        </div>
-        <div class="stat-box">
-          <div class="stat-label">보드 가속도 Z</div>
-          <div class="stat-value" style="font-size: 14px;"><span id="imu-z">1.00</span> g</div>
-        </div>
-      </div>
+      <div class="card-title">시스템 정보 및 업데이트</div>
+      <table class="info-table">
+        <tr><td>기기 식별</td><td>MAJN Smart Bassinet (#0005)</td></tr>
+        <tr><td>펌웨어 버전</td><td id="fw-ver">v1.2-wireless</td></tr>
+        <tr><td>여유 힙 메모리</td><td id="free-heap">-</td></tr>
+      </table>
+      <a href="/update" class="btn-ota">
+        🚀 보안 무선 펌웨어 업데이트 (/update)
+      </a>
       <div class="notice">
-        <b>안전 안내:</b><br>
-        • RUNNING 표시는 펌웨어의 제어 신호 출력 상태를 의미합니다.<br>
-        • 가속도 수치는 PCB 보드 내장 센서(IMU) 값이며, 매트리스 상부의 물리적 계측값이 아닙니다.<br>
-        • 브라우저 창을 닫거나 Wi-Fi 연결이 끊어지면 안전을 위해 5초 후 자동 정지됩니다.
+        • 브라우저 접속이 끊기거나 5초 이상 응답이 없으면 안전을 위해 자동 정지됩니다.<br>
+        • 설정된 타이머 시간이 만료되면 출력이 자동으로 안전 정지(Soft Stop)됩니다.
       </div>
     </div>
   </div>
 
   <script>
     let reqId = 100;
+    let selectedDurationMin = 15;
     const sliderFreq = document.getElementById('slider-freq');
     const sliderAmp = document.getElementById('slider-amp');
     const labelFreq = document.getElementById('slider-freq-val');
@@ -320,9 +399,10 @@ const char MOBILE_INDEX_HTML[] PROGMEM = R"rawliteral(<!DOCTYPE html>
     const ampState = document.getElementById('amp-state');
     const valFreq = document.getElementById('val-freq');
     const valAmp = document.getElementById('val-amp');
-    const imuXY = document.getElementById('imu-xy');
-    const imuZ = document.getElementById('imu-z');
+    const valTimer = document.getElementById('val-timer');
     const btnReset = document.getElementById('btn-reset');
+    const fwVer = document.getElementById('fw-ver');
+    const freeHeap = document.getElementById('free-heap');
 
     sliderFreq.addEventListener('input', () => {
       labelFreq.textContent = sliderFreq.value + ' Hz';
@@ -338,12 +418,27 @@ const char MOBILE_INDEX_HTML[] PROGMEM = R"rawliteral(<!DOCTYPE html>
       sendCommand('SET_AMPLITUDE', { amplitude: parseFloat(sliderAmp.value) });
     });
 
+    function setDuration(minutes) {
+      selectedDurationMin = minutes;
+      document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+      const activeChip = Array.from(document.querySelectorAll('.chip')).find(c => c.textContent === (minutes + '분'));
+      if (activeChip) activeChip.classList.add('active');
+      sendCommand('SET_DURATION', { duration_min: minutes });
+    }
+
+    function formatTime(seconds) {
+      const m = Math.floor(seconds / 60);
+      const s = seconds % 60;
+      return String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0');
+    }
+
     async function sendCommand(cmd, extra = {}) {
       const payload = {
         id: ++reqId,
         cmd: cmd,
         frequency_hz: parseFloat(sliderFreq.value),
         amplitude: parseFloat(sliderAmp.value),
+        duration_min: selectedDurationMin,
         ...extra
       };
 
@@ -377,9 +472,16 @@ const char MOBILE_INDEX_HTML[] PROGMEM = R"rawliteral(<!DOCTYPE html>
         valFreq.textContent = Number(data.target_freq || 0).toFixed(1);
         valAmp.textContent = Number(data.current_amp || 0).toFixed(2);
 
-        if (data.board_imu) {
-          imuXY.textContent = Number(data.board_imu.x).toFixed(2) + ' / ' + Number(data.board_imu.y).toFixed(2);
-          imuZ.textContent = Number(data.board_imu.z).toFixed(2);
+        if (data.remaining_sec !== undefined) {
+          valTimer.textContent = formatTime(data.remaining_sec);
+        }
+
+        if (data.fw_version) {
+          fwVer.textContent = data.fw_version + ' (' + (data.build_date || '') + ')';
+        }
+
+        if (data.free_heap) {
+          freeHeap.textContent = Math.round(data.free_heap / 1024) + ' KB';
         }
 
         if (data.state === 'FAULT') {
@@ -389,7 +491,7 @@ const char MOBILE_INDEX_HTML[] PROGMEM = R"rawliteral(<!DOCTYPE html>
         }
       } catch (e) {
         badge.textContent = '연결 끊김';
-        badge.className = 'badge';
+        badge.className = 'badge disconnected';
       }
     }
 
