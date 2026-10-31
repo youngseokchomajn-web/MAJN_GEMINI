@@ -1,0 +1,46 @@
+Designator,Value,DeviceName,Package,Supplier_Part,Manufacturer,Description
+C1,10uF,CL10A106KP8NNNC,C0603,C19702,SAMSUNG(三星),Capacitance:10uF Tolerance:±10% Tolerance:±10% Voltage Ratin
+C10,100nF,CC0603KRX7R9BB104,C0603,C14663,YAGEO(国巨),Capacitance:100nF Tolerance:±10% Tolerance:±10% Voltage Rati
+C11,100nF,CC0603KRX7R9BB104,C0603,C14663,YAGEO(国巨),Capacitance:100nF Tolerance:±10% Tolerance:±10% Voltage Rati
+C12,100nF,CC0603KRX7R9BB104,C0603,C14663,YAGEO(国巨),Capacitance:100nF Tolerance:±10% Tolerance:±10% Voltage Rati
+C13,100nF,CC0603KRX7R9BB104,C0603,C14663,YAGEO(国巨),Capacitance:100nF Tolerance:±10% Tolerance:±10% Voltage Rati
+C14,100nF,CC0603KRX7R9BB104,C0603,C14663,YAGEO(国巨),Capacitance:100nF Tolerance:±10% Tolerance:±10% Voltage Rati
+C15,100nF,CC0603KRX7R9BB104,C0603,C14663,YAGEO(国巨),Capacitance:100nF Tolerance:±10% Tolerance:±10% Voltage Rati
+C17,100nF,CC0603KRX7R9BB104,C0603,C14663,YAGEO(国巨),Capacitance:100nF Tolerance:±10% Tolerance:±10% Voltage Rati
+C18,100nF,CC0603KRX7R9BB104,C0603,C14663,YAGEO(国巨),Capacitance:100nF Tolerance:±10% Tolerance:±10% Voltage Rati
+C19,100nF,CC0603KRX7R9BB104,C0603,C14663,YAGEO(国巨),Capacitance:100nF Tolerance:±10% Tolerance:±10% Voltage Rati
+C2,100nF,CC0603KRX7R9BB104,C0603,C14663,YAGEO(国巨),Capacitance:100nF Tolerance:±10% Tolerance:±10% Voltage Rati
+C20,100nF,CC0603KRX7R9BB104,C0603,C14663,YAGEO(国巨),Capacitance:100nF Tolerance:±10% Tolerance:±10% Voltage Rati
+C21,1uF,CC0603KRX7R8BB105,C0603,C106858,YAGEO(国巨),Capacitance:1uF Tolerance:±10% Tolerance:±10% Voltage Rating
+C22,4.7nF,CC0603KRX7RABB472,C0603,C596328,YAGEO(国巨),Capacitance:4.7nF Tolerance:±10% Tolerance:±10% Voltage Rati
+C3,10uF,CL10A106KP8NNNC,C0603,C19702,SAMSUNG(三星),Capacitance:10uF Tolerance:±10% Tolerance:±10% Voltage Ratin
+C4,10uF,CL10A106KP8NNNC,C0603,C19702,SAMSUNG(三星),Capacitance:10uF Tolerance:±10% Tolerance:±10% Voltage Ratin
+C5,4.7uF,CL10A475KO8NNNC,C0603,C19666,SAMSUNG(三星),Capacitance:4.7uF Tolerance:±10% Tolerance:±10% Voltage Rati
+C6,22uF,CC0805MKX5R8BB226,C0805,C784585,YAGEO(国巨),Capacitance:22uF Tolerance:±20% Tolerance:±20% Voltage Ratin
+C7,22uF,CC0805MKX5R8BB226,C0805,C784585,YAGEO(国巨),Capacitance:22uF Tolerance:±20% Tolerance:±20% Voltage Ratin
+C8,10uF,CL10A106KP8NNNC,C0603,C19702,SAMSUNG(三星),Capacitance:10uF Tolerance:±10% Tolerance:±10% Voltage Ratin
+C9,10uF,CL10A106KP8NNNC,C0603,C19702,SAMSUNG(三星),Capacitance:10uF Tolerance:±10% Tolerance:±10% Voltage Ratin
+D1,,SMAJ5.0A_C83329,SMA_L4.3-W2.6-LS5.2-RD,C83329,Littelfuse(美国力特),Polarity:Unidirectional Reverse Stand-Off Voltage (Vrwm):5V 
+D2,,USBLC6-2SC6_C2827654,SOT-23-6_L2.9-W1.6-P0.95-LS2.8-BL,C2827654,TECH PUBLIC(台舟),Polarity:Unidirectional Reverse Stand-Off Voltage (Vrwm):5V 
+D3,3.9kΩ,RN731JTTD3901B25,R0603,C186407,KOA,Type:Thin Film Resistor Resistance:3.9kΩ Tolerance:±0.1% Tol
+J1,,B-2100S02P-A110,HDR-TH_2P-P2.54-V-M-1,C124375,Ckmtw(灿科盟),Pin Structure:1x2P Pitch:2.54mm Row Spacing:- Circluar Pins/
+J2,,B-2100S02P-A110,HDR-TH_2P-P2.54-V-M-1,C124375,Ckmtw(灿科盟),Pin Structure:1x2P Pitch:2.54mm Row Spacing:- Circluar Pins/
+L1,5.6kΩ,WR04X5601FTL,R0402,C168239,Walsin(华新科),Type:Thick Film Resistor Resistance:5.6kΩ Tolerance:±1% Tole
+R1,169kΩ,0603WAF1693T5E,R0603,C22817,UNI-ROYAL(厚声),Type:Thick Film Resistors Resistance:169kΩ Tolerance:±1% Tol
+R10,24.9kΩ,CL0603FN24K9P,R0603,C48391802,昶龙科技,Type:Thick Film Resistor Resistance:24.9kΩ Tolerance:±1% Tol
+R11,100kΩ,CRG0603F100K,R0603,C2073721,TE Connectivity(泰科电子),Type:Thick Film Resistor Resistance:100kΩ Tolerance:±1% Tole
+R2,15Ω,0603WAF150JT5E,R0603,C22810,UNI-ROYAL(厚声),Type:Thick Film Resistor Resistance:15Ω Tolerance:±1% Tolera
+R3,14kΩ,0603WAF1402T5E,R0603,C22803,UNI-ROYAL(厚声),Type:Thick Film Resistor Resistance:14kΩ Tolerance:±1% Toler
+R4,14kΩ,0603WAF1402T5E,R0603,C22803,UNI-ROYAL(厚声),Type:Thick Film Resistor Resistance:14kΩ Tolerance:±1% Toler
+R5,1kΩ,RC0603FR-071KL,R0603,C22548,YAGEO(国巨),Type:Thick Film Resistor Resistance:1kΩ Tolerance:±1% Tolera
+R6,1kΩ,RC0603FR-071KL,R0603,C22548,YAGEO(国巨),Type:Thick Film Resistor Resistance:1kΩ Tolerance:±1% Tolera
+R7,14kΩ,0603WAF1402T5E,R0603,C22803,UNI-ROYAL(厚声),Type:Thick Film Resistor Resistance:14kΩ Tolerance:±1% Toler
+R8,14kΩ,0603WAF1402T5E,R0603,C22803,UNI-ROYAL(厚声),Type:Thick Film Resistor Resistance:14kΩ Tolerance:±1% Toler
+R9,82kΩ,RMC060382K1%N,R0603,C325632,Tyohm(幸亚电阻),Type:Thick Film Resistor Resistance:82kΩ Tolerance:±1% Toler
+U1,2.4GHz,ESP32-WROOM-32E-N8,WIFI-SMD_ESP32-WROOM-32E,C701342,ESPRESSIF(乐鑫),Utilized IC / Part:ESP32-DOWD-V3 Wireless Standard:Bluetooth
+U2,,SGM2036-3.3YUDH4G/TR,USPQ-4B04_L1.0-W1.0-P0.65-BL-EP,C81114,SGMICRO(圣邦微),Output Configuration:Positive Voltage - Supply:5.5V Output V
+U3,,MP3426DL,DFN-14_L4.0-W3.0-P0.50-BL-EP,C2909511,,
+U4,,TAS5805MPWPR,HTSSOP-28_L9.7-W4.4-P0.65-LS6.4-BL-EP,C478472,TI(德州仪器),Class:Class D Speaker Channels:2-Channel Output Power:23W×2@
+U5,,LSM6DSOXTR,LGA-14L_L3.0-W2.5-P0.50-TL,C481766,ST(意法半导体),Sensor Type:Accelerometer Gyroscope Operating Temperature:-4
+UART_HDR,,B-2100S06P-A110,HDR-TH_6P-P2.54-V_Z-211-0611-0021-001,C124380,Ckmtw(灿科盟),Pin Structure:1x6P Pitch:2.54mm Row Spacing:- Circluar Pins/
+USB_C,,TYPE-C-31-M-12,USB-C_SMD-TYPE-C-31-M-12_1,C165948,韩国韩荣,Connector Type:Type-C Protocol Standard:- Gender:Female Moun

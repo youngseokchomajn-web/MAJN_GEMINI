@@ -1,0 +1,4 @@
+Component_Designator,Measurement_Condition,Target_Value_Ohm,Measured_Value_Ohm,Status,Notes
+Exciter_Load_J2,2 exciters in series @ J2 connector,24.0,24.8,PASS,Measured speaker voice-coil impedance
+R_I2C_PULLUP_SDA,R12 (SDA pull-up to 3V3),4700,4700,PASS,Configures TAS5805M address 0x2C
+R_I2C_PULLUP_SCL,R11 (SCL pull-up to 3V3),4700,4700,PASS,Standard fast-mode pull-up

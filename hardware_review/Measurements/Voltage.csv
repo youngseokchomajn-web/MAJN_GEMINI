@@ -1,0 +1,6 @@
+Rail_Name,Measurement_Point,Nominal_V,Measured_V,Tolerance_Status,Notes
+USB_VBUS,USB-C Connector / D1 Cathode,5.00,5.02,PASS,External battery pack 5V supply
+VCC_3V3,U2 AP2112K Output / ESP32 3V3,3.30,3.20,PASS,Clean LDO output (within 5% spec)
+GPIO4_BOOST_EN,U3 MP3426 Pin 2 (EN),3.30,3.20,PASS,MCU active high logic level
+PVDD_12V,D3 SS34 Cathode / U4 Pin 15,12.00,12.00,PASS,MP3426 boost regulation target
+GPIO15_AMP_PDN,U4 TAS5805M Pin 12 (PDN),3.30,3.20,PASS,Power-down released active high

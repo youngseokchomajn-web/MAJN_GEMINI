@@ -107,21 +107,31 @@ void VibrationControlTask(void *pvParameters) {
 void WiFiBTCommunicationTask(void *pvParameters) {
     (void)pvParameters;
     Serial.println("[Core 0] Dual Wi-Fi SoftAP + BLE Task Running.");
+    
+    uint8_t bleNotifyCounter = 0;
+
     for (;;) {
 #if defined(MAJN_WIFI_CONTROL)
         MajnWiFi::handleClient();
         MajnWiFi::updateTelemetry(latestAccel);
 #endif
         bleLoop();
-        bleNotifyTelemetry(
-            MajnSafety::getSystemState(systemActive),
-            MajnSafety::isSafetyLockTriggered(),
-            MajnVibration::getTargetFrequency(),
-            MajnVibration::getCurrentAmplitude(),
-            latestAccel.x_g,
-            latestAccel.y_g,
-            latestAccel.z_g
-        );
+        
+        // Paced BLE telemetry notifications (Every 50ms: 5 ticks of 10ms)
+        // Prevents BLE buffer congestion and reduces 2.4GHz RF contention with Wi-Fi
+        if (++bleNotifyCounter >= 5) {
+            bleNotifyCounter = 0;
+            bleNotifyTelemetry(
+                MajnSafety::getSystemState(systemActive),
+                MajnSafety::isSafetyLockTriggered(),
+                MajnVibration::getTargetFrequency(),
+                MajnVibration::getCurrentAmplitude(),
+                latestAccel.x_g,
+                latestAccel.y_g,
+                latestAccel.z_g
+            );
+        }
+
         vTaskDelay(pdMS_TO_TICKS(10));
     }
 }

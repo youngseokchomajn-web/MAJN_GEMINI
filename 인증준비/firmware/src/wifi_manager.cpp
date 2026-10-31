@@ -102,12 +102,12 @@ bool initWiFiServer(const char* ssid, const char* password) {
     };
     esp_wifi_set_country(&country);
 
-    // 7. Set Max Transmission RF Power (19.5 dBm) AFTER SoftAP is started
-    // Calling setTxPower before softAP fails silently because AP interface is not yet active
-    WiFi.setTxPower(WIFI_POWER_19_5dBm);
+    // 7. Set Safe Transmission RF Power (15 dBm) AFTER SoftAP is started
+    // 15dBm balances mobile detection range while keeping peak TX current (~280mA) well within U2 AP2112K LDO limit (600mA)
+    WiFi.setTxPower(WIFI_POWER_15dBm);
 
     Serial.println("[WiFi] SoftAP Started Successfully!");
-    Serial.printf("[WiFi] SSID: %s (Channel 1, HT20, 19.5dBm, NoSleep)\n", ssid);
+    Serial.printf("[WiFi] SSID: %s (Channel 1, HT20, 15.0dBm SafePower, NoSleep)\n", ssid);
     Serial.printf("[WiFi] IP Address: %s\n", WiFi.softAPIP().toString().c_str());
 
     // 5. Start DNS Server for Captive Portal (Redirects any domain query to 192.168.4.1)
@@ -153,20 +153,37 @@ bool initWiFiServer(const char* ssid, const char* password) {
 
     server.on("/update", HTTP_POST, []() {
         server.sendHeader("Connection", "close");
-        server.send(200, "text/plain", (Update.hasError()) ? "UPDATE FAILED" : "UPDATE SUCCESS! Rebooting...");
-        delay(500);
-        ESP.restart();
+        if (Update.hasError()) {
+            server.send(500, "text/plain", "UPDATE FAILED: Write error or invalid ESP32 image format.");
+            Serial.println("[Web-OTA] Update failed. Reboot suppressed to preserve error diagnostics.");
+        } else {
+            server.send(200, "text/plain", "UPDATE SUCCESS! Rebooting with verified new firmware...");
+            Serial.println("[Web-OTA] Update successful. Rebooting in 1 second...");
+            delay(1000);
+            ESP.restart();
+        }
     }, []() {
         HTTPUpload& upload = server.upload();
         if (upload.status == UPLOAD_FILE_START) {
             Serial.printf("[Web-OTA] Starting update: %s\n", upload.filename.c_str());
             MajnSystemCtrl::triggerSafeStop();
+            Update.clearError();
             if (!Update.begin(UPDATE_SIZE_UNKNOWN)) {
                 Update.printError(Serial);
             }
         } else if (upload.status == UPLOAD_FILE_WRITE) {
-            if (Update.write(upload.buf, upload.currentSize) != upload.currentSize) {
-                Update.printError(Serial);
+            // First chunk sanity check: ESP32 binary image magic byte must be 0xE9
+            if (upload.totalSize == 0 && upload.currentSize > 0) {
+                if (upload.buf[0] != 0xE9) {
+                    Serial.printf("[Web-OTA] REJECTED: Header magic byte 0x%02X != 0xE9. Not an ESP32 binary!\n", upload.buf[0]);
+                    Update.abort();
+                    return;
+                }
+            }
+            if (!Update.hasError()) {
+                if (Update.write(upload.buf, upload.currentSize) != upload.currentSize) {
+                    Update.printError(Serial);
+                }
             }
         } else if (upload.status == UPLOAD_FILE_END) {
             if (Update.end(true)) {
@@ -174,6 +191,9 @@ bool initWiFiServer(const char* ssid, const char* password) {
             } else {
                 Update.printError(Serial);
             }
+        } else if (upload.status == UPLOAD_FILE_ABORTED) {
+            Update.abort();
+            Serial.println("[Web-OTA] Update transfer aborted by client.");
         }
     });
 
