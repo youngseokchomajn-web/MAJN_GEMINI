@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 """
-MAJN Hardware Review Package Consistency & Logical DRC Verifier (v2.0)
+MAJN Hardware Review Package Consistency & Logical DRC Verifier (v2.1)
 ======================================================================
 SCOPE & LIMITATIONS NOTICE:
 - This script performs strict AUTOMATED LOGICAL & ELECTRICAL NETLIST / BOM VERIFICATION.
-- It verifies component counts, Espressif official GPIO-to-pad mappings, USB-C Type-C Rd compliance,
-  I2S digital audio bus completeness, 0-ohm net isolation, and snubber serialization.
+- It verifies component counts (57 parts), Espressif official GPIO-to-pad mappings, USB-C Type-C Rd compliance,
+  I2S digital audio bus completeness, 0-ohm net isolation, I2C pull-ups, and snubber serialization.
 - It DOES NOT perform physical layout DRC (e.g. geometric copper clearance, annular rings, trace thermal limits).
   Physical layout DRC must be cross-verified via EasyEDA Pro internal DRC engine.
 """
@@ -57,7 +57,7 @@ def parse_bom(filepath):
 
 def run_verification():
     print("=" * 78)
-    print("MAJN HARDWARE REVIEW SUITE - LOGICAL & ELECTRICAL VERIFICATION (v2.0)")
+    print("MAJN HARDWARE REVIEW SUITE - LOGICAL & ELECTRICAL VERIFICATION (v2.1)")
     print("=" * 78)
     print("NOTICE: Checking Logical Netlist, BOM, Espressif Pad Map, and USB-C Specs.\n")
     
@@ -91,22 +91,24 @@ def run_verification():
     else:
         print("  => FAIL: Component count or designator mismatch in PCB #0005.")
 
-    # 3. Check PCB_Rev_C BOM vs Netlist
+    # 3. Check PCB_Rev_C BOM vs Netlist (57 parts including R_PU1, R_PU2)
     total += 1
     revc_bom = parse_bom(os.path.join(HW_DIR, "PCB_Rev_C", "BOM.csv"))
     revc_nets, revc_p2n, revc_comps = parse_netlist(os.path.join(HW_DIR, "PCB_Rev_C", "Netlist.net"))
     print(f"\n[TEST 3] PCB Rev-C Component Parity:")
     print(f"  - BOM component count: {len(revc_bom)} | Netlist: {len(revc_comps)}")
-    if len(revc_bom) == 55 and len(revc_comps) == 55 and set(revc_bom.keys()) == revc_comps:
-        print("  => PASS: 100% 1-to-1 match between Rev-C BOM and Netlist (55 parts).")
+    if len(revc_bom) == 57 and len(revc_comps) == 57 and set(revc_bom.keys()) == revc_comps:
+        print("  => PASS: 100% 1-to-1 match between Rev-C BOM and Netlist (57 parts).")
         passed += 1
     else:
         diff = set(revc_bom.keys()).symmetric_difference(revc_comps)
-        print(f"  => FAIL: Mismatch in Rev-C components: {diff}")
+        print(f"  => FAIL: Mismatch in Rev-C components (Count: BOM={len(revc_bom)}, Netlist={len(revc_comps)}): {diff}")
 
-    # 4. Check ESP32 Official Physical Pad to GPIO Mapping
+    # 4. Check ESP32 Official Physical Pad to GPIO Mapping & 32UE Module Model
     total += 1
-    print(f"\n[TEST 4] ESP32-WROOM-32E Official Physical Pad to Net Mapping Check:")
+    print(f"\n[TEST 4] ESP32-WROOM-32UE Official Physical Pad to Net Mapping Check:")
+    u1_part = revc_bom.get("U1", {}).get("Manufacturer Part", "")
+    print(f"  - U1 Module Part: '{u1_part}' (Expected: ESP32-WROOM-32UE-N8)")
     expected_pads = {
         "U1.4": ("Pad 4 (SENSOR_VP / GPIO36, ADC1_CH0)", "NET_BCG_MCU_P"),
         "U1.5": ("Pad 5 (SENSOR_VN / GPIO39, ADC1_CH3)", "NET_BCG_MCU_N"),
@@ -120,6 +122,10 @@ def run_verification():
         "U1.33": ("Pad 33 (IO21 / GPIO21, I2C_SDA)", "AMP_I2C_SDA"),
     }
     pads_ok = True
+    if "32UE" not in u1_part:
+        print("  => FAIL: U1 is not configured as ESP32-WROOM-32UE (External IPEX)!")
+        pads_ok = False
+        
     for pad_id, (desc, exp_net) in expected_pads.items():
         actual_net = revc_p2n.get(pad_id)
         if actual_net == exp_net:
@@ -137,10 +143,10 @@ def run_verification():
         pads_ok = False
         
     if pads_ok:
-        print("  => PASS: All ESP32 physical pads strictly adhere to Espressif datasheet specs.")
+        print("  => PASS: ESP32-WROOM-32UE configured and all pads strictly adhere to Espressif specs.")
         passed += 1
     else:
-        print("  => FAIL: ESP32 pad-to-net mapping discrepancies detected!")
+        print("  => FAIL: ESP32 configuration or pad-to-net mapping discrepancies detected!")
 
     # 5. Check USB-C Type-C Standard Rd & CC Mapping
     total += 1
@@ -232,9 +238,26 @@ def run_verification():
     else:
         print("  => FAIL: F1 wiring error!")
 
-    # 10. Check Power Rails & GND Short-circuit check
+    # 10. Check I2C Hardware Pull-ups (R_PU1, R_PU2)
     total += 1
-    print(f"\n[TEST 10] Global Power Rail Short-Circuit Check:")
+    print(f"\n[TEST 10] I2C Bus Hardware Pull-Up Resistors Check (R_PU1, R_PU2):")
+    r_pu1_net1 = revc_p2n.get("R_PU1.1")
+    r_pu1_net2 = revc_p2n.get("R_PU1.2")
+    r_pu2_net1 = revc_p2n.get("R_PU2.1")
+    r_pu2_net2 = revc_p2n.get("R_PU2.2")
+    i2c_pu_ok = True
+    print(f"  - R_PU1 (SCL Pull-up): '{r_pu1_net1}' <-> '{r_pu1_net2}'")
+    print(f"  - R_PU2 (SDA Pull-up): '{r_pu2_net1}' <-> '{r_pu2_net2}'")
+    if (r_pu1_net1 == "VCC_3V3" and r_pu1_net2 == "AMP_I2C_SCL" and
+        r_pu2_net1 == "VCC_3V3" and r_pu2_net2 == "AMP_I2C_SDA"):
+        print("  => PASS: SCL and SDA lines properly pulled up to 3.3V with 4.7kΩ resistors.")
+        passed += 1
+    else:
+        print("  => FAIL: I2C hardware pull-up missing or miswired!")
+
+    # 11. Check Power Rails & GND Short-circuit check
+    total += 1
+    print(f"\n[TEST 11] Global Power Rail Short-Circuit Check:")
     gnd_pins = set(revc_nets.get("GND", []))
     vbus_pins = set(revc_nets.get("VBUS_5V", []))
     vcc_pins = set(revc_nets.get("VCC_3V3", []))

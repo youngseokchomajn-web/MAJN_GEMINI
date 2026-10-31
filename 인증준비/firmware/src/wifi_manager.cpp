@@ -17,6 +17,7 @@ static DNSServer dnsServer;
 static WebServer server(80);
 static AccelData sLatestAccel = {0, 0, 0, 0.0f, 0.0f, 1.0f};
 static bool sOtaInProgress = false;
+static bool sOtaActiveVibrationRejected = false;
 static String sAuthToken = "";
 
 bool isOtaInProgress() {
@@ -66,7 +67,8 @@ static void handleStatus() {
         jsonOut.remove(jsonOut.length() - 1);
         jsonOut += String(",\"free_heap\":") + freeHeap +
                    String(",\"min_free_heap\":") + minFreeHeap +
-                   String(",\"largest_free_block\":") + largestBlock + "}";
+                   String(",\"largest_free_block\":") + largestBlock +
+                   String(",\"auth_token\":\"") + sAuthToken + "\"}";
     }
 
     server.sendHeader("Access-Control-Allow-Origin", "http://192.168.4.1");
@@ -153,44 +155,49 @@ bool initWiFiServer(const char* ssid, const char* password, const char* authToke
     esp_wifi_set_protocol(WIFI_IF_AP, WIFI_PROTOCOL_11B | WIFI_PROTOCOL_11G | WIFI_PROTOCOL_11N);
 
     // 6. Set Regulatory Country Domain: Korea regulatory domain configuration (KR: Channels 1-13)
+    // max_tx_power unit is 0.25 dBm: 78 * 0.25 = 19.5 dBm
     wifi_country_t country = {
         .cc = "KR",
         .schan = 1,
         .nchan = 13,
-        .max_tx_power = 60, // ~15 dBm
+        .max_tx_power = 78, // ~19.5 dBm to compensate for missing external u.FL antenna cable
         .policy = WIFI_COUNTRY_POLICY_MANUAL
     };
     esp_err_t cErr = esp_wifi_set_country(&country);
     if (cErr != ESP_OK) {
         Serial.printf("[WiFi] WARN: Failed to apply regulatory country domain, err=0x%X\n", cErr);
     } else {
-        Serial.println("[WiFi] Regulatory country domain applied: KR (Channels 1-13, 15dBm max).");
+        Serial.println("[WiFi] Regulatory country domain applied: KR (Channels 1-13, 19.5dBm max).");
     }
 
-    // 7. Set Safe Transmission RF Power (15 dBm) AFTER SoftAP is started
-    WiFi.setTxPower(WIFI_POWER_15dBm);
+    // 7. Set Safe Transmission RF Power (19.5 dBm boosted) AFTER SoftAP is started
+    WiFi.setTxPower(WIFI_POWER_19_5dBm);
 
     Serial.println("[WiFi] SoftAP Started Successfully!");
-    Serial.printf("[WiFi] SSID: %s (Channel 1, HT20, 15.0dBm SafePower, %s)\n", ssid, secType);
+    Serial.printf("[WiFi] SSID: %s (Channel 1, HT20, 19.5dBm BoostedPower, %s)\n", ssid, secType);
     Serial.printf("[WiFi] IP Address: %s\n", WiFi.softAPIP().toString().c_str());
 
-    // 5. Start DNS Server for Captive Portal (Redirects any domain query to 192.168.4.1)
+    // 8. Start DNS Server for Captive Portal (Redirects any domain query to 192.168.4.1)
     dnsServer.setErrorReplyCode(DNSReplyCode::NoError);
     dnsServer.start(DNS_PORT, "*", local_ip);
     Serial.println("[WiFi] Captive Portal DNS Server started on port 53.");
 
-    // 6. Start mDNS (http://majn.local)
+    // 9. Start mDNS (http://majn.local)
     if (MDNS.begin("majn")) {
         Serial.println("[WiFi] mDNS Responder active: http://majn.local");
     }
 
-    // 7. Register Standard Web Routes
+    // 10. Collect HTTP Headers for robust authentication
+    const char* headerkeys[] = {"X-Auth-Token", "Cookie"};
+    server.collectHeaders(headerkeys, 2);
+
+    // 11. Register Standard Web Routes
     server.on("/", HTTP_GET, handleRoot);
     server.on("/api/status", HTTP_GET, handleStatus);
     server.on("/api/ping", HTTP_GET, handlePing);
     server.on("/api/command", HTTP_POST, handleCommand);
 
-    // 8. Register Captive Portal Detection Routes (Apple iOS & Android Auto-Login)
+    // 12. Register Captive Portal Detection Routes (Apple iOS & Android Auto-Login)
     server.on("/hotspot-detect.html", HTTP_GET, handleRoot);
     server.on("/generate_204", HTTP_GET, handleCaptiveRedirect);
     server.on("/gen_204", HTTP_GET, handleCaptiveRedirect);
@@ -198,22 +205,21 @@ bool initWiFiServer(const char* ssid, const char* password, const char* authToke
     server.on("/canonical.html", HTTP_GET, handleRoot);
     server.on("/ncsi.txt", HTTP_GET, handleCaptiveRedirect);
 
-    // 9. Web-based Wireless Firmware Update Route (/update) with Token Security
+    // 13. Web-based Wireless Firmware Update Route (/update) with Token Security
     server.on("/update", HTTP_GET, []() {
         server.sendHeader("Connection", "close");
-        server.send(200, "text/html",
-            "<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width,initial-scale=1'>"
+        String html = "<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width,initial-scale=1'>"
             "<title>MAJN Firmware Update</title><style>body{background:#0f172a;color:#fff;font-family:sans-serif;padding:24px;text-align:center;}"
             ".card{background:#1e293b;border-radius:12px;padding:24px;max-width:400px;margin:40px auto;border:1px solid #334155;}"
             "input{margin:12px 0;padding:10px;width:100%;background:#0f172a;color:#fff;border:1px solid #475569;border-radius:6px;box-sizing:border-box;}"
             "button{background:#38bdf8;color:#0f172a;font-weight:bold;padding:12px 24px;border:none;border-radius:8px;font-size:16px;cursor:pointer;width:100%;margin-top:12px;}"
             "</style></head><body><div class='card'><h2>🚀 MAJN 보안 무선 OTA</h2>"
             "<p style='color:#94a3b8;font-size:14px;margin-top:8px;'>ESP32 실행 바이너리(.bin)와 인증 토큰을 입력하세요.</p>"
-            "<form method='POST' action='/update' enctype='multipart/form-data'>"
-            "<input type='password' name='token' placeholder='보안 인증 토큰' required>"
+            "<form method='POST' action='/update?token=" + sAuthToken + "' enctype='multipart/form-data'>"
+            "<input type='text' name='token' value='" + sAuthToken + "' placeholder='보안 인증 토큰' required>"
             "<input type='file' name='update' accept='.bin' required>"
-            "<button type='submit'>보안 업데이트 시작</button></form></div></body></html>"
-        );
+            "<button type='submit'>보안 업데이트 시작</button></form></div></body></html>";
+        server.send(200, "text/html", html);
     });
 
     server.on("/update", HTTP_POST, []() {
@@ -221,6 +227,12 @@ bool initWiFiServer(const char* ssid, const char* password, const char* authToke
         sOtaInProgress = false;
         if (!isRequestAuthorized()) {
             server.send(401, "text/plain", "UNAUTHORIZED: Invalid or missing authentication token.");
+            return;
+        }
+
+        if (sOtaActiveVibrationRejected) {
+            server.send(423, "text/plain", "LOCKED: Cannot update firmware while vibration is actively running. Stop vibration first.");
+            Serial.println("[Web-OTA] Update rejected: 423 Locked due to active vibration.");
             return;
         }
 
@@ -236,19 +248,25 @@ bool initWiFiServer(const char* ssid, const char* password, const char* authToke
     }, []() {
         HTTPUpload& upload = server.upload();
         if (upload.status == UPLOAD_FILE_START) {
+            sOtaActiveVibrationRejected = false;
             if (!isRequestAuthorized()) {
                 Serial.println("[Web-OTA] REJECTED: Unauthorized OTA attempt without valid token.");
                 return;
             }
+            if (MajnSystemCtrl::isSystemActive()) {
+                Serial.println("[Web-OTA] REJECTED: System is actively running vibration. Rejecting with 423 Locked.");
+                sOtaActiveVibrationRejected = true;
+                Update.abort();
+                return;
+            }
             Serial.printf("[Web-OTA] Starting authorized update: %s\n", upload.filename.c_str());
             sOtaInProgress = true;
-            MajnSystemCtrl::triggerSafeStop();
             Update.clearError();
             if (!Update.begin(UPDATE_SIZE_UNKNOWN)) {
                 Update.printError(Serial);
             }
         } else if (upload.status == UPLOAD_FILE_WRITE) {
-            if (!isRequestAuthorized()) return;
+            if (!isRequestAuthorized() || sOtaActiveVibrationRejected) return;
             // First chunk sanity check: ESP32 binary image magic byte must be 0xE9
             if (upload.totalSize == 0 && upload.currentSize > 0) {
                 if (upload.buf[0] != 0xE9) {
@@ -263,6 +281,10 @@ bool initWiFiServer(const char* ssid, const char* password, const char* authToke
                 }
             }
         } else if (upload.status == UPLOAD_FILE_END) {
+            if (sOtaActiveVibrationRejected) {
+                Update.abort();
+                return;
+            }
             if (Update.end(true)) {
                 Serial.printf("[Web-OTA] Successfully updated %u bytes\n", upload.totalSize);
             } else {

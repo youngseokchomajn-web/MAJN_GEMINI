@@ -72,7 +72,7 @@ void VibrationControlTask(void *pvParameters) {
         if (activeDuration > MAX_RUNNING_TIME_MS) activeDuration = MAX_RUNNING_TIME_MS;
         if (systemActive && (activeStateStartTime > 0) && (millis() - activeStateStartTime >= activeDuration)) {
             Serial.printf("[Safety] Target duration (%u ms) reached. Soft Stop engaged.\n", activeDuration);
-            MajnSafety::requestSafeStop();
+            MajnSystemCtrl::triggerSafeStop();
         }
 
         // Advance PID & Soft Start/Stop Ramping
@@ -227,14 +227,15 @@ void setup() {
             bool tasksHealthy = (commTaskHandle != NULL && controlTaskHandle != NULL && audioTaskHandle != NULL);
             bool heapHealthy = (ESP.getFreeHeap() >= 30000);
             bool safetyHealthy = (!systemActive && !MajnSafety::isSafetyLockTriggered());
+            bool ampHealthy = MajnAmplifier::isAmplifierReady();
             
-            if (tasksHealthy && heapHealthy && safetyHealthy) {
+            if (tasksHealthy && heapHealthy && safetyHealthy && ampHealthy) {
                 esp_err_t err = esp_ota_mark_app_valid_cancel_rollback();
-                Serial.printf("[OTA-Boot] Diagnostics PASSED (Heap: %u, Tasks: OK, Safety: OK). Marked app VALID (result: %s).\n",
+                Serial.printf("[OTA-Boot] Diagnostics PASSED (Heap: %u, Tasks: OK, Safety: OK, Amp: OK). Marked app VALID (result: %s).\n",
                               ESP.getFreeHeap(), esp_err_to_name(err));
             } else {
-                Serial.printf("[OTA-Boot] Diagnostics FAILED! (Heap: %u, Tasks: %s, Safety: %s). Initiating automatic rollback...\n",
-                              ESP.getFreeHeap(), tasksHealthy ? "OK" : "FAIL", safetyHealthy ? "OK" : "LOCK");
+                Serial.printf("[OTA-Boot] Diagnostics FAILED! (Heap: %u, Tasks: %s, Safety: %s, Amp: %s). Initiating automatic rollback...\n",
+                              ESP.getFreeHeap(), tasksHealthy ? "OK" : "FAIL", safetyHealthy ? "OK" : "LOCK", ampHealthy ? "OK" : "FAIL");
                 esp_err_t err = esp_ota_mark_app_invalid_rollback_and_reboot();
                 Serial.printf("[OTA-Boot] Rollback trigger returned: %s\n", esp_err_to_name(err));
             }

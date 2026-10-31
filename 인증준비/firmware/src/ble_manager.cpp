@@ -72,12 +72,13 @@ class ServerCallbacks : public BLEServerCallbacks {
     void onConnect(BLEServer*) override {
         gConnected = true;
         gLastClientActivity = millis();
+        MajnSystemCtrl::noteClientActivity();
         Serial.println("[BLE] Client connected.");
     }
     void onDisconnect(BLEServer* server) override {
         gConnected = false;
         Serial.println("[BLE] Client disconnected. Requesting safe stop.");
-        MajnSafety::requestSafeStop();
+        MajnSystemCtrl::triggerSafeStop();
         server->startAdvertising();
     }
 };
@@ -85,217 +86,30 @@ class ServerCallbacks : public BLEServerCallbacks {
 class CommandCallbacks : public BLECharacteristicCallbacks {
     void onWrite(BLECharacteristic* characteristic) override {
         gLastClientActivity = millis();
+        MajnSystemCtrl::noteClientActivity();
         String raw = characteristic->getValue();
         if (raw.length() == 0) return;
 
-        JsonDocument doc;
-        DeserializationError err = deserializeJson(doc, raw.c_str());
-        if (err) {
-            sendAck(-1, "UNKNOWN", "rejected", stateName(MajnSafety::getSystemState(systemActive)));
-            return;
-        }
-
-        int id = doc["id"] | -1;
-        const char* cmd = doc["cmd"] | "";
-
         // Reject active vibration/hardware commands during wireless OTA update
         if (MajnBleOta::isOtaInProgress()) {
+            JsonDocument doc;
+            DeserializationError err = deserializeJson(doc, raw.c_str());
+            const char* cmd = (!err && doc.containsKey("cmd")) ? doc["cmd"] : "";
             if (strcmp(cmd, "PING") != 0 && strcmp(cmd, "STATUS") != 0) {
+                int id = (!err && doc.containsKey("id")) ? (int)doc["id"] : -1;
                 sendAck(id, cmd, "rejected", "OTA_ACTIVE");
                 return;
             }
         }
 
-        if (strcmp(cmd, "PING") == 0) {
-            sendAck(id, cmd, "applied", stateName(MajnSafety::getSystemState(systemActive)));
-            return;
-        }
-        if (strcmp(cmd, "STATUS") == 0) {
-            sendAck(id, cmd, "applied", stateName(MajnSafety::getSystemState(systemActive)));
-            return;
-        }
-        if (strcmp(cmd, "START") == 0) {
-            if (MajnSafety::isSafetyLockTriggered()) {
-                sendAck(id, cmd, "fault", "FAULT");
-                return;
-            }
-            // Strict parameter range validation before activating output
-            float f = doc["frequency_hz"] | MajnVibration::getTargetFrequency();
-            float a = doc["amplitude"] | (MajnVibration::getTargetAmplitude() > 0.05f ? MajnVibration::getTargetAmplitude() : 0.4f);
-            if (f < 30.0f || f > 65.0f || a < 0.0f || a > 0.5f) {
-                Serial.printf("[BLE] START rejected: Invalid parameters f=%.1f, a=%.2f (Must be 30~65Hz, 0~0.5)\n", f, a);
-                sendAck(id, cmd, "rejected", stateName(MajnSafety::getSystemState(systemActive)));
-                return;
-            }
+        // Delegate entire command execution, range validation, amplifier sequencing, and ACK to Unified Command Manager
+        String responseJson;
+        MajnSystemCtrl::handleJsonCommand(raw.c_str(), responseJson);
 
-            // Auto-retry amplifier init if it was not ready at boot, with strict return check
-            if (!MajnAmplifier::isAmplifierReady()) {
-                if (!MajnAmplifier::initAmplifier()) {
-                    Serial.println("[BLE] START rejected: Amplifier init failed.");
-                    systemActive = false;
-                    sendAck(id, cmd, "failed", stateName(MajnSafety::getSystemState(systemActive)));
-                    return;
-                }
-            }
-
-            // Verify Play state transition success
-            if (!MajnAmplifier::enterPlayState()) {
-                Serial.println("[BLE] START rejected: enterPlayState() failed.");
-                systemActive = false;
-                sendAck(id, cmd, "failed", stateName(MajnSafety::getSystemState(systemActive)));
-                return;
-            }
-
-            // Verify hardware diagnostics are completely clean before activating output
-            uint8_t aState = 0, cFault = 0, gFault = 0;
-            if (!MajnAmplifier::getDiagnostics(aState, cFault, gFault) || cFault != 0 || gFault != 0) {
-                Serial.printf("[BLE] START rejected: Diagnostics fault detected (CF=0x%02X, GF=0x%02X).\n", cFault, gFault);
-                systemActive = false;
-                MajnAmplifier::enterStandbyState();
-                sendAck(id, cmd, "failed", "FAULT");
-                return;
-            }
-
-            systemActive = true;
-            activeStateStartTime = millis();
-            if (doc["duration_min"].is<uint16_t>()) {
-                MajnSystemCtrl::setRunningDurationMinutes(doc["duration_min"]);
-            }
-            MajnVibration::setTarget(f, a);
-            sendAck(id, cmd, "applied", "RUNNING");
-            return;
+        if (gConnected && gEvent && responseJson.length() > 0) {
+            gEvent->setValue(responseJson.c_str());
+            gEvent->notify();
         }
-        if (strcmp(cmd, "SET_DURATION") == 0) {
-            if (doc["duration_min"].is<uint16_t>()) {
-                MajnSystemCtrl::setRunningDurationMinutes(doc["duration_min"]);
-                sendAck(id, cmd, "applied", stateName(MajnSafety::getSystemState(systemActive)));
-                return;
-            }
-            sendAck(id, cmd, "rejected", stateName(MajnSafety::getSystemState(systemActive)));
-            return;
-        }
-        if (strcmp(cmd, "STOP") == 0) {
-            MajnSafety::requestSafeStop();
-            MajnAmplifier::enterStandbyState();
-            sendAck(id, cmd, "applied", "READY");
-            return;
-        }
-        if (strcmp(cmd, "ESTOP") == 0) {
-            MajnSafety::requestEmergencyStop();
-            sendAck(id, cmd, "applied", "FAULT");
-            return;
-        }
-        if (strcmp(cmd, "RESET_FAULT") == 0) {
-            if (!MajnSafety::isSafetyLockTriggered()) {
-                sendAck(id, cmd, "applied", stateName(MajnSafety::getSystemState(systemActive)));
-                return;
-            }
-            // Strict recovery check: verify communication and clean fault registers
-            uint8_t aState = 0, cFault = 0, gFault = 0;
-            if (!MajnAmplifier::getDiagnostics(aState, cFault, gFault)) {
-                // I2C bus still offline or failing
-                sendAck(id, cmd, "rejected", "FAULT");
-                return;
-            }
-            if (cFault != 0 || gFault != 0) {
-                // Hardware fault still asserted (OCP/UVLO/OTS)
-                sendAck(id, cmd, "rejected", "FAULT");
-                return;
-            }
-            // Transition amplifier to Standby and strictly verify transition success
-            if (!MajnAmplifier::enterStandbyState()) {
-                Serial.println("[BLE] RESET_FAULT rejected: enterStandbyState() failed.");
-                sendAck(id, cmd, "rejected", "FAULT");
-                return;
-            }
-            // Re-verify diagnostics post-standby
-            if (!MajnAmplifier::getDiagnostics(aState, cFault, gFault) || cFault != 0 || gFault != 0) {
-                Serial.println("[BLE] RESET_FAULT rejected: Fault re-asserted in standby.");
-                sendAck(id, cmd, "rejected", "FAULT");
-                return;
-            }
-            // Safe to unlock
-            MajnSafety::resetSafetyLock();
-            sendAck(id, cmd, "applied", "READY");
-            return;
-        }
-        if (strcmp(cmd, "SET_VIBRATION") == 0) {
-            if (MajnSafety::isSafetyLockTriggered()) {
-                sendAck(id, cmd, "rejected", "FAULT");
-                return;
-            }
-            float f = doc["frequency_hz"] | MajnVibration::getTargetFrequency();
-            float a = doc["amplitude"] | MajnVibration::getTargetAmplitude();
-            if (f < 30.0f || f > 65.0f || a < 0.0f || a > 0.5f) {
-                sendAck(id, cmd, "rejected", stateName(MajnSafety::getSystemState(systemActive)));
-                return;
-            }
-            MajnVibration::setTarget(f, a);
-            sendAck(id, cmd, "applied", stateName(MajnSafety::getSystemState(systemActive)));
-            return;
-        }
-        if (strcmp(cmd, "SET_FREQUENCY") == 0) {
-            if (MajnSafety::isSafetyLockTriggered()) {
-                sendAck(id, cmd, "rejected", "FAULT");
-                return;
-            }
-            float f = doc["frequency_hz"] | MajnVibration::getTargetFrequency();
-            if (f < 30.0f || f > 65.0f) {
-                sendAck(id, cmd, "rejected", stateName(MajnSafety::getSystemState(systemActive)));
-                return;
-            }
-            MajnVibration::setTarget(f, MajnVibration::getTargetAmplitude());
-            sendAck(id, cmd, "applied", stateName(MajnSafety::getSystemState(systemActive)));
-            return;
-        }
-        if (strcmp(cmd, "SET_AMPLITUDE") == 0) {
-            if (MajnSafety::isSafetyLockTriggered()) {
-                sendAck(id, cmd, "rejected", "FAULT");
-                return;
-            }
-            float a = doc["amplitude"] | MajnVibration::getTargetAmplitude();
-            if (a < 0.0f || a > 0.5f) {
-                sendAck(id, cmd, "rejected", stateName(MajnSafety::getSystemState(systemActive)));
-                return;
-            }
-            MajnVibration::setTarget(MajnVibration::getTargetFrequency(), a);
-            sendAck(id, cmd, "applied", stateName(MajnSafety::getSystemState(systemActive)));
-            return;
-        }
-        if (strcmp(cmd, "SET_VOLUME") == 0) {
-            if (MajnSafety::isSafetyLockTriggered()) {
-                sendAck(id, cmd, "rejected", "FAULT");
-                return;
-            }
-            int v = doc["volume"] | -1;
-            if (v < 0 || v > 100) {
-                sendAck(id, cmd, "rejected", stateName(MajnSafety::getSystemState(systemActive)));
-                return;
-            }
-            bool ok = MajnAmplifier::setVolume((uint8_t)v);
-            sendAck(id, cmd, ok ? "applied" : "failed", stateName(MajnSafety::getSystemState(systemActive)));
-            return;
-        }
-        if (strcmp(cmd, "SET_PRESET") == 0) {
-            if (MajnSafety::isSafetyLockTriggered()) {
-                sendAck(id, cmd, "rejected", "FAULT");
-                return;
-            }
-            const char* p = doc["preset"] | "pink";
-            strncpy(gCurrentPreset, p, sizeof(gCurrentPreset) - 1);
-            gCurrentPreset[sizeof(gCurrentPreset) - 1] = '\0';
-            sendAck(id, cmd, "applied", stateName(MajnSafety::getSystemState(systemActive)));
-            return;
-        }
-        if (strcmp(cmd, "REBOOT") == 0) {
-            sendAck(id, cmd, "applied", "REBOOTING");
-            Serial.println("[SYSTEM] Remote reboot requested via BLE. Restarting in 200ms...");
-            delay(200);
-            esp_restart();
-            return;
-        }
-
-        sendAck(id, cmd, "rejected", stateName(MajnSafety::getSystemState(systemActive)));
     }
 };
 }
@@ -345,13 +159,16 @@ bool bleClientConnected() {
 }
 
 void bleRegisterHeartbeat() {
-    if (gConnected) gLastClientActivity = millis();
+    if (gConnected) {
+        gLastClientActivity = millis();
+        MajnSystemCtrl::noteClientActivity();
+    }
 }
 
 void bleLoop() {
     if (gConnected && millis() - gLastClientActivity > MajnBle::HEARTBEAT_TIMEOUT_MS) {
         Serial.println("[BLE] Heartbeat timeout (5s). Requesting safe stop.");
-        MajnSafety::requestSafeStop();
+        MajnSystemCtrl::triggerSafeStop();
         gLastClientActivity = millis();
     }
 }

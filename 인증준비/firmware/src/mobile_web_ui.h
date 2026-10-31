@@ -377,7 +377,7 @@ const char MOBILE_INDEX_HTML[] PROGMEM = R"rawliteral(<!DOCTYPE html>
         <tr><td>펌웨어 버전</td><td id="fw-ver">v1.2-wireless</td></tr>
         <tr><td>여유 힙 메모리</td><td id="free-heap">-</td></tr>
       </table>
-      <a href="/update" class="btn-ota">
+      <a id="ota-link" href="/update" class="btn-ota">
         🚀 보안 무선 펌웨어 업데이트 (/update)
       </a>
       <div class="notice">
@@ -390,6 +390,7 @@ const char MOBILE_INDEX_HTML[] PROGMEM = R"rawliteral(<!DOCTYPE html>
   <script>
     let reqId = 100;
     let selectedDurationMin = 15;
+    let authToken = '';
     const sliderFreq = document.getElementById('slider-freq');
     const sliderAmp = document.getElementById('slider-amp');
     const labelFreq = document.getElementById('slider-freq-val');
@@ -403,6 +404,7 @@ const char MOBILE_INDEX_HTML[] PROGMEM = R"rawliteral(<!DOCTYPE html>
     const btnReset = document.getElementById('btn-reset');
     const fwVer = document.getElementById('fw-ver');
     const freeHeap = document.getElementById('free-heap');
+    const otaLink = document.getElementById('ota-link');
 
     sliderFreq.addEventListener('input', () => {
       labelFreq.textContent = sliderFreq.value + ' Hz';
@@ -442,10 +444,16 @@ const char MOBILE_INDEX_HTML[] PROGMEM = R"rawliteral(<!DOCTYPE html>
         ...extra
       };
 
+      const headers = { 'Content-Type': 'application/json' };
+      if (authToken) {
+        headers['X-Auth-Token'] = authToken;
+      }
+
       try {
-        const res = await fetch('/api/command', {
+        const cmdUrl = '/api/command' + (authToken ? ('?token=' + encodeURIComponent(authToken)) : '');
+        const res = await fetch(cmdUrl, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: headers,
           body: JSON.stringify(payload)
         });
         const data = await res.json();
@@ -464,6 +472,11 @@ const char MOBILE_INDEX_HTML[] PROGMEM = R"rawliteral(<!DOCTYPE html>
         
         badge.textContent = 'Wi-Fi 연결됨';
         badge.className = 'badge connected';
+
+        if (data.auth_token) {
+          authToken = data.auth_token;
+          if (otaLink) otaLink.href = '/update?token=' + encodeURIComponent(authToken);
+        }
 
         sysState.textContent = data.state;
         sysState.className = 'state-pill ' + data.state;

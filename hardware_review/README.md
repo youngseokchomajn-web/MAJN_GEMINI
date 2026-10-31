@@ -19,9 +19,9 @@ hardware_review/
 │   └── Gerber_Output.zip              # PCB #0005 제조용 거버 파일
 │
 ├── PCB_Rev_C/                          # [개선 사본] 전파인증(EMC) 및 3대 센서 확장 리비전
-│   ├── Rev_C.epro2                    # Rev-C 프로젝트 바이너리 (실체화 완료, 고유 SHA)
-│   ├── BOM.csv                        # 55개 부품 명세서 (정상화 D3/L1 + 센서 포트 + 0Ω 8종 + 스너버 + PPTC)
-│   ├── Netlist.net                    # 60개 넷 결선도 (Espressif 공식 패드 및 USB-C B5 정합성 반영)
+│   ├── Rev_C.epro2                    # Rev-C 프로젝트 바이너리 (Rel 3 실체화 완료, 고유 SHA)
+│   ├── BOM.csv                        # 57개 부품 명세서 (ESP32-32UE + I2C 풀업 2종 + 0Ω 8종 + 스너버 + PPTC)
+│   ├── Netlist.net                    # 60개 넷 결선도 (Espressif 공식 패드, I2C 풀업, USB-C B5 정합성 반영)
 │   └── Gerber_RevC_Base.zip           # 4층 기판 베이스 거버 아카이브
 │
 ├── Measurements/                       # [실측 전수 데이터] PCB #0005 실기 계측 Ground Truth
@@ -49,23 +49,24 @@ hardware_review/
 
 ---
 
-## 3. 정합성 및 논리 DRC 검증 결과 (10 / 10 PASS)
+## 3. 정합성 및 논리 DRC 검증 결과 (11 / 11 PASS)
 
-`tools/verify_hardware_review.py` 자동 검증 스크립트를 통해 아래 10개 핵심 논리 규칙을 전수 검증하였습니다:
+`tools/verify_hardware_review.py` 자동 검증 스크립트를 통해 아래 11개 핵심 논리 규칙을 전수 검증하였습니다:
 
 ```
 [TEST 1] epro2 Binary SHA-256 Differentiation: PASS (Original과 Rev-C 바이너리 분리)
 [TEST 2] PCB #0005 Original Component Parity: PASS (37개 부품 1:1 일치)
-[TEST 3] PCB Rev-C Component Parity: PASS (55개 부품 1:1 일치)
-[TEST 4] ESP32-WROOM-32E Official Pad Map: PASS (Pad 4=GPIO36, Pad 5=GPIO39, Pad 7=GPIO35, Pad 10=GPIO25, Pad 11=GPIO26, Pad 12=GPIO27, Pad 14=NC(Safe))
+[TEST 3] PCB Rev-C Component Parity: PASS (57개 부품 1:1 일치)
+[TEST 4] ESP32-WROOM-32UE Official Pad Map: PASS (ESP32-WROOM-32UE-N8 확인, Pad 4=GPIO36, Pad 5=GPIO39, Pad 7=GPIO35, Pad 10=GPIO25, Pad 11=GPIO26, Pad 12=GPIO27, Pad 14=NC(Safe))
 [TEST 5] USB Type-C Standard Compliance: PASS (CC1/CC2 5.1kΩ Rd 정상화, B5 패드 정정 완료)
 [TEST 6] INMP441 Microphone Completeness: PASS (BCLK, WS, DIN 3대 I2S 신호 완비)
 [TEST 7] 0-Ohm Links Electrical Isolation: PASS (R_L1~R_L8 8개 저항 양단 넷 완전 분리)
 [TEST 8] MP3426 SW RC Snubber Serialization: PASS (BOOST_SW -> C_SNUB -> R_SNUB -> GND 직렬 확인)
 [TEST 9] PPTC Fuse F1 USB Protection: PASS (NET_VBUS_RAW -> F1 -> VBUS_5V 보호 경로 확인)
-[TEST 10] Global Power Rail Short-Circuit Check: PASS (전원 레일 간 및 GND 단락 0건)
+[TEST 10] I2C Bus Hardware Pull-ups: PASS (R_PU1, R_PU2 4.7kΩ로 SCL/SDA를 VCC_3V3 풀업)
+[TEST 11] Global Power Rail Short-Circuit Check: PASS (전원 레일 간 및 GND 단락 0건)
 ==============================================================================
-VERIFICATION SUMMARY: 10 / 10 LOGICAL RULES PASSED (100.0%)
+VERIFICATION SUMMARY: 11 / 11 LOGICAL RULES PASSED (100.0%)
 ==============================================================================
 ```
 *(주의: 본 검증은 논리 넷리스트 및 BOM 정합성 검사이며, 기하학적 PCB 레이아웃 DRC는 EasyEDA Pro 내장 DRC로 교차 수행됩니다.)*

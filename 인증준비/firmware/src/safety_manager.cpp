@@ -2,6 +2,7 @@
 #include "vibration_controller.h"
 
 extern volatile bool systemActive;
+extern volatile unsigned long activeStateStartTime;
 extern void hardwareEmergencyShutdown();
 
 namespace {
@@ -21,16 +22,19 @@ bool isSafetyLockTriggered() {
 void IRAM_ATTR safetyLockISR() {
     gSafetyLock = true;
     systemActive = false;
+    activeStateStartTime = 0;
     hardwareEmergencyShutdown();
 }
 
 void requestEmergencyStop() {
+    activeStateStartTime = 0;
     safetyLockISR();
     MajnVibration::setTarget(MajnVibration::getTargetFrequency(), 0.0f);
     Serial.println("[Safety] Emergency Stop (ESTOP) engaged!");
 }
 
 void requestSafeStop() {
+    activeStateStartTime = 0;
     systemActive = false;
     MajnVibration::setTarget(MajnVibration::getTargetFrequency(), 0.0f);
     Serial.println("[Safety] Safe Stop requested.");

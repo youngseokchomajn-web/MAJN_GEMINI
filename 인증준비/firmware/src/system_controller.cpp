@@ -14,6 +14,8 @@ namespace MajnSystemCtrl {
 static volatile uint32_t gLastClientActivity = 0;
 static volatile uint32_t gTargetDurationMs = 15 * 60 * 1000; // Default 15 minutes
 const uint32_t MAX_ALLOWED_DURATION_MS = 30 * 60 * 1000;    // Maximum device runtime watchdog (30 min)
+static SemaphoreHandle_t sCmdMutex = nullptr;
+static char sCurrentPreset[16] = "pink";
 
 void setRunningDurationMinutes(uint16_t minutes) {
     if (minutes < 1) minutes = 1;
@@ -52,6 +54,9 @@ static const char* stateName(MajnBle::SystemState state) {
 
 void init() {
     gLastClientActivity = millis();
+    if (!sCmdMutex) {
+        sCmdMutex = xSemaphoreCreateMutex();
+    }
 }
 
 bool isSystemActive() {
@@ -63,12 +68,14 @@ const char* getCurrentStateName() {
 }
 
 void triggerSafeStop() {
+    activeStateStartTime = 0;
     MajnSafety::requestSafeStop();
     MajnAmplifier::enterStandbyState();
     systemActive = false;
 }
 
 void triggerEmergencyStop() {
+    activeStateStartTime = 0;
     MajnSafety::requestEmergencyStop();
     systemActive = false;
 }
@@ -124,6 +131,27 @@ void resetFault() {
 
 bool handleJsonCommand(const char* jsonStr, String& responseJson) {
     noteClientActivity();
+
+    struct MutexGuard {
+        SemaphoreHandle_t m;
+        bool locked;
+        MutexGuard(SemaphoreHandle_t mutex) : m(mutex), locked(false) {
+            if (m && xSemaphoreTake(m, pdMS_TO_TICKS(1000)) == pdTRUE) {
+                locked = true;
+            }
+        }
+        ~MutexGuard() {
+            if (m && locked) {
+                xSemaphoreGive(m);
+            }
+        }
+    } guard(sCmdMutex);
+
+    if (sCmdMutex && !guard.locked) {
+        Serial.println("[SystemCtrl] handleJsonCommand: Mutex acquire timed out (busy).");
+        buildAckJson(-1, "BUSY", "rejected", getCurrentStateName(), responseJson);
+        return false;
+    }
 
     if (!jsonStr || strlen(jsonStr) == 0) {
         buildAckJson(-1, "UNKNOWN", "rejected", getCurrentStateName(), responseJson);
@@ -289,6 +317,41 @@ bool handleJsonCommand(const char* jsonStr, String& responseJson) {
         }
         MajnVibration::setTarget(MajnVibration::getTargetFrequency(), a);
         buildAckJson(id, cmd, "applied", getCurrentStateName(), responseJson);
+        return true;
+    }
+
+    if (strcmp(cmd, "SET_VOLUME") == 0) {
+        if (MajnSafety::isSafetyLockTriggered()) {
+            buildAckJson(id, cmd, "rejected", "FAULT", responseJson);
+            return false;
+        }
+        int v = doc["volume"] | -1;
+        if (v < 0 || v > 100) {
+            buildAckJson(id, cmd, "rejected", getCurrentStateName(), responseJson);
+            return false;
+        }
+        bool ok = MajnAmplifier::setVolume((uint8_t)v);
+        buildAckJson(id, cmd, ok ? "applied" : "failed", getCurrentStateName(), responseJson);
+        return ok;
+    }
+
+    if (strcmp(cmd, "SET_PRESET") == 0) {
+        if (MajnSafety::isSafetyLockTriggered()) {
+            buildAckJson(id, cmd, "rejected", "FAULT", responseJson);
+            return false;
+        }
+        const char* p = doc["preset"] | "pink";
+        strncpy(sCurrentPreset, p, sizeof(sCurrentPreset) - 1);
+        sCurrentPreset[sizeof(sCurrentPreset) - 1] = '\0';
+        buildAckJson(id, cmd, "applied", getCurrentStateName(), responseJson);
+        return true;
+    }
+
+    if (strcmp(cmd, "REBOOT") == 0) {
+        buildAckJson(id, cmd, "applied", "REBOOTING", responseJson);
+        Serial.println("[SystemCtrl] Remote reboot requested. Restarting in 200ms...");
+        delay(200);
+        esp_restart();
         return true;
     }
 
