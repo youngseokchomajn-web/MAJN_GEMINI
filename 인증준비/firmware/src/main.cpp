@@ -102,20 +102,16 @@ void VibrationControlTask(void *pvParameters) {
 }
 
 // -------------------------------------------------------------------------
-// Core 0 Task: Wi-Fi / BLE Communication, Heartbeat Supervision & Telemetry
+// Core 0 Task: Wi-Fi SoftAP + BLE Dual Communication & Telemetry
 // -------------------------------------------------------------------------
 void WiFiBTCommunicationTask(void *pvParameters) {
     (void)pvParameters;
-#if defined(MAJN_WIFI_CONTROL)
-    Serial.println("[Core 0] Wi-Fi SoftAP Web Server Task Running.");
+    Serial.println("[Core 0] Dual Wi-Fi SoftAP + BLE Task Running.");
     for (;;) {
+#if defined(MAJN_WIFI_CONTROL)
         MajnWiFi::handleClient();
         MajnWiFi::updateTelemetry(latestAccel);
-        vTaskDelay(pdMS_TO_TICKS(10));
-    }
-#else
-    Serial.println("[Core 0] BLE Communication Task Running.");
-    for (;;) {
+#endif
         bleLoop();
         bleNotifyTelemetry(
             MajnSafety::getSystemState(systemActive),
@@ -126,9 +122,8 @@ void WiFiBTCommunicationTask(void *pvParameters) {
             latestAccel.y_g,
             latestAccel.z_g
         );
-        vTaskDelay(pdMS_TO_TICKS(20));
+        vTaskDelay(pdMS_TO_TICKS(10));
     }
-#endif
 }
 
 // -------------------------------------------------------------------------
@@ -186,15 +181,13 @@ void setup() {
         Serial.println("[OK] Amplifier initialized successfully and placed in STANDBY.");
     }
 
-#if !defined(MAJN_WIFI_CONTROL)
-    // 7. BLE GATT Server (Starts advertising MAJN-Bassinet)
+    // 7. BLE GATT Server (Starts advertising MAJN-Bassinet for Web Bluetooth & Automated BLE OTA)
     if (!initBleServer()) {
         Serial.println("[FATAL] BLE server initialization failed.");
         MajnSafety::requestEmergencyStop();
         while (1);
     }
     Serial.println("[OK] BLE GATT Server Initialized.");
-#endif
 
     // -------------------------------------------------------------------------
     // Dual Core FreeRTOS Task Spawning

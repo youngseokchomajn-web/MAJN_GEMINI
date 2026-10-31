@@ -1,8 +1,6 @@
 #pragma once
 
 #include <Arduino.h>
-
-#if !defined(MAJN_WIFI_CONTROL)
 #include <BLEDevice.h>
 #include <BLEServer.h>
 #include <BLEUtils.h>
@@ -19,8 +17,3 @@ void initBleOta(BLEServer* server);
 bool isOtaInProgress();
 
 }
-#else
-namespace MajnBleOta {
-inline bool isOtaInProgress() { return false; }
-}
-#endif

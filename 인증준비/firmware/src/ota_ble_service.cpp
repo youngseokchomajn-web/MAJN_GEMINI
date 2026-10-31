@@ -1,7 +1,5 @@
 #include "ota_ble_service.h"
 
-#if !defined(MAJN_WIFI_CONTROL)
-
 #include <Update.h>
 #include <ArduinoJson.h>
 #include "safety_manager.h"
@@ -182,5 +180,3 @@ bool isOtaInProgress() {
 }
 
 }
-
-#endif // !defined(MAJN_WIFI_CONTROL)

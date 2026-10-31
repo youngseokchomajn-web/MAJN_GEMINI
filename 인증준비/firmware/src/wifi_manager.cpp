@@ -5,6 +5,7 @@
 #include <DNSServer.h>
 #include <ESPmDNS.h>
 #include <Update.h>
+#include <esp_wifi.h>
 #include "system_controller.h"
 #include "mobile_web_ui.h"
 
@@ -62,21 +63,18 @@ bool initWiFiServer(const char* ssid, const char* password) {
     delay(50);
     WiFi.mode(WIFI_AP);
 
-    // 2. Set Max Transmission RF Power (19.5 dBm) for maximum mobile antenna range
-    WiFi.setTxPower(WIFI_POWER_19_5dBm);
-
-    // 3. Configure IP (192.168.4.1)
+    // 2. Configure IP (192.168.4.1)
     IPAddress local_ip(192, 168, 4, 1);
     IPAddress gateway(192, 168, 4, 1);
     IPAddress subnet(255, 255, 255, 0);
     WiFi.softAPConfig(local_ip, gateway, subnet);
 
-    // 4. Start SoftAP on Channel 6 (Global standard compatibility, min interference)
+    // 3. Start SoftAP on Channel 1 (Standard 2.4GHz non-overlapping channel)
     bool apStarted = false;
     if (password && strlen(password) >= 8) {
-        apStarted = WiFi.softAP(ssid, password, 6, 0, 4);
+        apStarted = WiFi.softAP(ssid, password, 1, 0, 4);
     } else {
-        apStarted = WiFi.softAP(ssid, nullptr, 6, 0, 4);
+        apStarted = WiFi.softAP(ssid, nullptr, 1, 0, 4);
     }
 
     if (!apStarted) {
@@ -84,8 +82,32 @@ bool initWiFiServer(const char* ssid, const char* password) {
         return false;
     }
 
+    // 4. Disable Wi-Fi Modem Sleep (CRITICAL for mobile beacon detection)
+    // Prevents ESP32 from dropping beacon packets while smartphones scan
+    WiFi.setSleep(false);
+    esp_wifi_set_ps(WIFI_PS_NONE);
+
+    // 5. Force 20MHz bandwidth (HT20) & standard b/g/n protocols
+    // Modern smartphones (especially iOS / iPhones) reject or hide 40MHz (HT40) APs on 2.4GHz
+    esp_wifi_set_bandwidth(WIFI_IF_AP, WIFI_BW_HT20);
+    esp_wifi_set_protocol(WIFI_IF_AP, WIFI_PROTOCOL_11B | WIFI_PROTOCOL_11G | WIFI_PROTOCOL_11N);
+
+    // 6. Set Regulatory Country Domain to World-Safe (Channels 1-11)
+    wifi_country_t country = {
+        .cc = "01",
+        .schan = 1,
+        .nchan = 11,
+        .max_tx_power = 80,
+        .policy = WIFI_COUNTRY_POLICY_AUTO
+    };
+    esp_wifi_set_country(&country);
+
+    // 7. Set Max Transmission RF Power (19.5 dBm) AFTER SoftAP is started
+    // Calling setTxPower before softAP fails silently because AP interface is not yet active
+    WiFi.setTxPower(WIFI_POWER_19_5dBm);
+
     Serial.println("[WiFi] SoftAP Started Successfully!");
-    Serial.printf("[WiFi] SSID: %s (Channel 6, 19.5dBm)\n", ssid);
+    Serial.printf("[WiFi] SSID: %s (Channel 1, HT20, 19.5dBm, NoSleep)\n", ssid);
     Serial.printf("[WiFi] IP Address: %s\n", WiFi.softAPIP().toString().c_str());
 
     // 5. Start DNS Server for Captive Portal (Redirects any domain query to 192.168.4.1)
@@ -113,6 +135,22 @@ bool initWiFiServer(const char* ssid, const char* password) {
     server.on("/ncsi.txt", HTTP_GET, handleCaptiveRedirect);
 
     // 9. Web-based Wireless Firmware Update Route (/update)
+    server.on("/update", HTTP_GET, []() {
+        server.sendHeader("Connection", "close");
+        server.send(200, "text/html",
+            "<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width,initial-scale=1'>"
+            "<title>MAJN Firmware Update</title><style>body{background:#0f172a;color:#fff;font-family:sans-serif;padding:24px;text-align:center;}"
+            ".card{background:#1e293b;border-radius:12px;padding:24px;max-width:400px;margin:40px auto;border:1px solid #334155;}"
+            "input{margin:20px 0;padding:10px;width:100%;background:#0f172a;color:#fff;border:1px solid #475569;border-radius:6px;box-sizing:border-box;}"
+            "button{background:#38bdf8;color:#0f172a;font-weight:bold;padding:12px 24px;border:none;border-radius:8px;font-size:16px;cursor:pointer;width:100%;}"
+            "</style></head><body><div class='card'><h2>🚀 MAJN 무선 펌웨어 업데이트</h2>"
+            "<p style='color:#94a3b8;font-size:14px;margin-top:8px;'>.bin 파일을 선택 후 업데이트를 누르세요.</p>"
+            "<form method='POST' action='/update' enctype='multipart/form-data'>"
+            "<input type='file' name='update' accept='.bin' required><br>"
+            "<button type='submit'>업데이트 시작 (자동 재부팅)</button></form></div></body></html>"
+        );
+    });
+
     server.on("/update", HTTP_POST, []() {
         server.sendHeader("Connection", "close");
         server.send(200, "text/plain", (Update.hasError()) ? "UPDATE FAILED" : "UPDATE SUCCESS! Rebooting...");

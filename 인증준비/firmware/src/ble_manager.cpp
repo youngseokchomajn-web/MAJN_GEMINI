@@ -1,7 +1,5 @@
 #include "ble_manager.h"
 
-#if !defined(MAJN_WIFI_CONTROL)
-
 #include <BLEDevice.h>
 #include <BLEServer.h>
 #include <BLEUtils.h>
@@ -380,5 +378,3 @@ void bleNotifyTelemetry(
     gTelemetry->setValue(out.c_str());
     gTelemetry->notify();
 }
-
-#endif // !defined(MAJN_WIFI_CONTROL)

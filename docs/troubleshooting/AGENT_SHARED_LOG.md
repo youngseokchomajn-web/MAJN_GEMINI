@@ -503,3 +503,32 @@
 - **판정 문구 정정:** 볼륨 Mute 레지스터, 앰프 초기화/I²S 클럭 시퀀스, J1/J2 접촉은 후보 가설이지 규명된 원인이 아니다. 성공 시험은 해당 조건에서의 출력 능력을 뒷받침하지만 모든 하드웨어 상태를 증명하지 않는다. 원시 계측기 파일·클럭 캡처·펌웨어 SHA와 측정값의 연결도 별도 확인 대상으로 둔다.
 - **다음 작업:** 성공 당시 펌웨어/설정과 현재 펌웨어를 비교하고, 기존 로그/코드에서 앰프 진단·볼륨 레지스터·I²S·BOOST_EN/AMP_PDN·커넥터 경로를 먼저 확인한다. 기존 전압은 무조건 반복하지 않는다. 원인 분리 후 패드 상면 3축 가속도 계측을 계획한다.
 - **검증 경계:** 이 업데이트는 개발 계획 및 증거 해석 문구 정리이며 새 빌드·플래시·실물 측정을 수행하지 않았다.
+
+---
+
+### SHARED-2026-10-31-001 — 행동강령 제정, 하드웨어 안테나/버튼 팩트 확정 및 듀얼 Wi-Fi+BLE OTA 펌웨어 개발
+- **작성자:** Gemini (Antigravity)
+- **작업 일시:** 2026-10-31 09:10 KST
+- **작업 ID:** FW-005 / HW-FACT-001 / RULE-001
+- **기준 브랜치:** `feature/phone-wifi-control`
+- **핵심 행동강령 및 작업 환경 헌법 확립 (`.agents/AGENTS.md`)**:
+  1. **[물리 버튼 전무]**: PCB #0005번 실물 시제품에는 BOOT, EN 버튼이 일체 없음 (버튼 조작 안내 엄격 금지).
+  2. **[시리얼 플래시 불가]**: CP2102 헤더는 TX, RX, GND 3가닥만 결선되어 DTR/RTS 자동 리셋 불가. 유선 플래시 불가하며 오직 무선 OTA(BLE OTA 또는 Wi-Fi HTTP /update)만 유효.
+  3. **[경로 절대성]**: 사용자 터미널 위치(CWD)가 `~` 등 어디서든 작동하도록 상대 경로(`인증준비/...`) 절대 금지, 반드시 절대 경로(`/Users/youngseok/Desktop/majn/...` 또는 `/tmp/...`)만 제시/실행.
+  4. **[네트워크 존중]**: 맥북 Wi-Fi(`en1`)를 사전 명시적 동의 없이 임의 변경하여 인터넷을 끊지 않음.
+  5. **[사실 기반 판단]**: 폰 화면이나 접속 상태를 임의 왜곡·추측하지 않고, 사용자 보고 내용과 실제 계측/로그만 100% 팩트로 수용.
+- **하드웨어 RF 실측 및 원인 규명**:
+  - MCU 실체: **ESP32-WROOM-32UE-N8** (외장 u.FL/IPEX 안테나 필수 모델, PCB 패턴 안테나 없음).
+  - 실측 RSSI: 보드 인접 거리에서 **-84 dBm** 측정 (외장 안테나 미체결/접촉 불량 시 스마트폰 OS 백그라운드 스캔에서 AP 탐색 필터링되는 근본 원인 규명).
+- **펌웨어 기능 구현 및 소스 수정 내역**:
+  - `인증준비/firmware/src/wifi_manager.cpp`:
+    - SoftAP 시작 후 `WiFi.setTxPower(WIFI_POWER_19_5dBm)` 최대 송신 출력 적용.
+    - `WiFi.setSleep(false)` 및 `esp_wifi_set_ps(WIFI_PS_NONE)`로 비콘 누락 방지.
+    - 2.4GHz 표준 채널 1, HT20(20MHz) 대역폭 강제 및 World-Safe 국가 코드 적용.
+    - Web OTA UI 신설: `GET /update` 요청 시 파일 선택 업로드 폼 HTML 제공, `POST /update` 핸들러 연결.
+  - `인증준비/firmware/src/ble_manager.cpp`, `ota_ble_service.cpp`, `main.cpp`:
+    - Wi-Fi 컨트롤 활성화 시에도 BLE GATT 서버 및 Web BLE OTA가 동시 상주하도록 듀얼 모드(Wi-Fi + BLE Concurrent) 복구.
+  - 빌드 아티팩트: `인증준비/firmware/majn_wifi_phone_firmware.bin` (1,895,056 bytes).
+  - 배포 도구: `tools/run_wifi_ota.py` 신규 작성.
+- **다음 작업:** 외장 u.FL 안테나 결선 점검 후 최신 듀얼 펌웨어 OTA 주입 및 스마트폰 Wi-Fi/BLE 동시 제어 최종 실증.
+
