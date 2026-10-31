@@ -94,9 +94,9 @@ class CommandCallbacks : public BLECharacteristicCallbacks {
         if (MajnBleOta::isOtaInProgress()) {
             JsonDocument doc;
             DeserializationError err = deserializeJson(doc, raw.c_str());
-            const char* cmd = (!err && doc.containsKey("cmd")) ? doc["cmd"] : "";
+            const char* cmd = doc["cmd"] | "";
             if (strcmp(cmd, "PING") != 0 && strcmp(cmd, "STATUS") != 0) {
-                int id = (!err && doc.containsKey("id")) ? (int)doc["id"] : -1;
+                int id = doc["id"] | -1;
                 sendAck(id, cmd, "rejected", "OTA_ACTIVE");
                 return;
             }

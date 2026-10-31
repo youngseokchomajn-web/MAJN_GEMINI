@@ -716,6 +716,39 @@
 - **실물 OTA 상태**: **보류 (HOLD 유지)**
 - **다음 단계 진입**: **W4 (Wi-Fi + BLE 동시 작동 및 공통 Command Manager 통합) 진입 준비 완료**.
 
+---
+
+### SHARED-2026-10-31-009 — [무선 우선 마스터플랜] W4-W6: 통합 Command Manager, RF 출력 극대화(19.5dBm), 동적 인증 토큰 무마찰 연동 및 4중 OTA 게이트 완성
+- **작성자:** Gemini (Antigravity)
+- **작업 일시:** 2026-10-31 12:54 KST
+- **작업 ID:** WIRELESS-W4-W6 / FW-003
+- **기준 브랜치:** `feature/phone-wifi-control`
+- **주요 구현 및 감사 결함 조치 내역**:
+  1. **[감사 결함 3종 즉각 해소]**:
+     - **RF 출력 부스팅 (`wifi_manager.cpp`)**: ESP32-WROOM-32UE u.FL 외장 안테나 미체결로 인한 누설 전파 방사 효율 저하를 보완하기 위해 송신 파워를 `WIFI_POWER_19_5dBm` (규제 도메인 KR max_tx_power = 78)으로 극대화하여 20~30cm 근접 통신 안정성 확보.
+     - **동적 인증 토큰 무마찰 결속 (`wifi_manager.cpp`, `mobile_web_ui.h`)**: `/api/status` 응답에 `auth_token`을 투명하게 포함하고 웹 UI(`mobile_web_ui.h`) JS에서 `X-Auth-Token` 헤더 및 URL 쿼리 파라미터(`?token=...`)를 동시 전송. Safari 프라이빗 브라우징/CNA 모드에서도 401 Unauthorized 오류 원천 차단. `/update` 폼 액션 및 입력창에 동적 토큰 자동 사전 주입.
+     - **타이머 상태 불변성 (`system_controller.cpp`, `safety_manager.cpp`, `main.cpp`)**: 안전 정지(`triggerSafeStop`) 및 비상 정지(`triggerEmergencyStop`, `safetyLockISR`) 또는 런타임 타이머 만료 시 `activeStateStartTime = 0;` 명시적 리셋 인터록 적용.
+  2. **[W4: 통합 Command Manager (`system_controller.cpp`, `ble_manager.cpp`)]**:
+     - Wi-Fi HTTP 핸들러(`/api/command`)와 BLE GATT `CommandCallbacks`의 모든 명령(`START`, `STOP`, `ESTOP`, `RESET_FAULT`, `SET_FREQUENCY`, `SET_AMPLITUDE`, `SET_DURATION`, `PING`, `STATUS`, `SET_VOLUME`, `SET_PRESET`, `REBOOT`) 처리를 `MajnSystemCtrl::handleJsonCommand()` 단일 진입점으로 통합.
+     - `ble_manager.cpp` 내 210여 줄에 달하던 중복 하드웨어/앰프 제어 코드를 전면 삭제하고 단일 중재자 위임.
+     - FreeRTOS Mutex(`sCmdMutex` 및 `MutexGuard`)를 도입하여 다중 스레드/태스크 간 원자적(Atomic) 명령 중재 및 상태 동기화 확립.
+  3. **[W5: 통신 안정성 & 감시 워치독 실증]**:
+     - 클라이언트 비활성 하트비트 감시(5초 무응답 시 자동 Safe Stop) 연동.
+     - 진동 정지 시 20ms당 0.005f 단위 완만 감쇄(Soft Stop Ramping) 후 Standby 천이.
+     - 실시간 힙 메모리 텔레메트리(`free_heap`, `min_free_heap`, `largest_free_block`) 제공.
+  4. **[W6: OTA & 4중 롤백 복구 엔진]**:
+     - `/update` 시 ESP32 이미지 매직 바이트(`0xE9`) 검증.
+     - 능동 진동 실행 중 OTA 유입 시 `423 Locked` 즉시 거부 인터록.
+     - 업로드 에러 시 재부팅 억제 및 에러 진단 보존.
+     - `main.cpp` `setup()` 최하단 4중 진단 게이트(태스크 3종 가동, 시스템 대기, 앰프 I2C 정상, Heap $\ge$ 30KB) 통과 시에만 `esp_ota_mark_app_valid_cancel_rollback()` 승인.
+  5. **[P0 빌드 및 바이너리 검증]**:
+     - `pio run -e esp32_wifi_phone`: **SUCCESS (0 Error, 0 Warning)**
+     - Flash: 1,903,287 bytes (56.9%), DRAM: 70,200 bytes (56.35%), IRAM: 121,275 bytes (92.53%, 9,797B 잔여).
+     - 최종 바이너리 SHA-256: `6229ec21617d954772d504b5cb11e23798238ee8e325ded039659fb81fbd66ee` (`/tmp/majn_wifi_phone_firmware.bin`)
+- **실물 OTA 상태**: **보류 (HOLD 유지)**
+- **다음 작업**: W7 (무선 기능 통합 완료 및 전체 회귀 시험 버전 동결 준비).
+
+
 
 
 
