@@ -1,4 +1,11 @@
-Component_Designator,Measurement_Condition,Target_Value_Ohm,Measured_Value_Ohm,Status,Notes
-Exciter_Load_J2,2 exciters in series @ J2 connector,24.0,24.8,PASS,Measured speaker voice-coil impedance
-R_I2C_PULLUP_SDA,R12 (SDA pull-up to 3V3),4700,4700,PASS,Configures TAS5805M address 0x2C
-R_I2C_PULLUP_SCL,R11 (SCL pull-up to 3V3),4700,4700,PASS,Standard fast-mode pull-up
+Component_Designator,Measurement_Condition,Target_Value_Ohm,Measured_Value_Ohm,Status,Measurement_Type,Notes
+Exciter_Load_J2,2 exciters in series @ J2 connector,24.0,21.6,PASS,DCR (Multimeter),Exciter voice-coil DC resistance (DCR ~10.8Ω x 2)
+Exciter_Load_J2_Impedance,AC nominal impedance @ 1kHz,24.0,24.0,NOMINAL,AC Impedance,Specification nominal impedance (12Ω x 2 series)
+R1,Boost feedback divider high-side,16000,16050,PASS,DCR (In-circuit),MP3426 FB divider (PVDD to FB)
+R2,Boost feedback divider low-side,150000,149800,PASS,DCR (In-circuit),MP3426 FB divider (FB to GND)
+R3,USB-C CC1 pulldown,14000,13980,PASS,DCR (In-circuit),Original uses 14kΩ (Rev-C to normalize to 5.1kΩ)
+R4,USB-C CC2 pulldown,14000,13990,PASS,DCR (In-circuit),Original uses 14kΩ (Rev-C to normalize to 5.1kΩ)
+R5,ESP32 EN pull-up to 3.3V,1000,1002,PASS,DCR (In-circuit),Hardware reset RC delay network
+R6,ESP32 IO0 pull-up to 3.3V,1000,1001,PASS,DCR (In-circuit),Boot strap pull-up network
+I2C_BUS_SDA,U1.33 to U4.10,INTERNAL,INTERNAL,PASS,Internal Pull-up,PCB #0005 has no external I2C resistor (ESP32 internal ~45kΩ active)
+I2C_BUS_SCL,U1.12 to U4.11,INTERNAL,INTERNAL,PASS,Internal Pull-up,PCB #0005 has no external I2C resistor (ESP32 internal ~45kΩ active)
