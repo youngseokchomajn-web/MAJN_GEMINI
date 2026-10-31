@@ -638,6 +638,30 @@
 - **실물 OTA 상태:** **보류 (HOLD 유지)**
 - **다음 단계 진입:** **W1 (Wi-Fi AP 안정화 및 iPhone/Android 검색·연결 실증) 진입 준비 완료**.
 
+---
+
+### SHARED-2026-10-31-006 — [무선 우선 마스터플랜] W1: Wi-Fi AP 안정화 및 iPhone 연결 실물 검증 성공, u.FL 안테나 팩트 동결
+- **작성자:** Gemini (Antigravity)
+- **작업 일시:** 2026-10-31 12:28 KST
+- **작업 ID:** WIRELESS-W1 / FACT-001
+- **기준 브랜치:** `feature/phone-wifi-control`
+- **하드웨어 핵심 사실 (Ground Truth 확정)**:
+  1. **[외장 안테나 부재 팩트 확인]**:
+     - 사용자 확인: "외장안테나는 처음부터 없었어"
+     - U1은 `ESP32-WROOM-32UE-N8` (LCSC `C701345`)로 온보드 PCB 패턴 안테나가 없으며 u.FL 커넥터만 장착된 모델임.
+     - 안테나 미체결로 인해 방사 효율이 극도로 저하되어 미약 누설 전파(RSSI -84 dBm 이하)만 방출됨.
+     - 이로 인해 Mac mini에서는 잡히던 신호가 아이폰의 OS 레벨 노이즈 필터링(-75 ~ -80 dBm 이하 무시)에 걸려 검색되지 않았음이 기술적으로 완전 규명됨.
+  2. **[아이폰 실물 결속 성공]**:
+     - 아이폰을 보드 10cm 이내 근접 및 접촉 시 Wi-Fi 목록에 `MAJN-Bassinet` 정상 노출.
+     - 오픈 AP 무암호 결속 성공 $\rightarrow$ DHCP 정상 서브넷 IP(`192.168.4.x`) 수령.
+     - Safari 브라우저에서 `http://192.168.4.1` 웹 컨트롤러 정상 로딩 성공.
+  3. **[W1 실물 검증 PASS]**:
+     - AP 채널(1), 대역폭(HT20), 프로토콜(802.11b/g/n), 국가코드(KR), 비콘 인터벌 정상 작동 실증 완료.
+- **마스터플랜 v2.0 개정 완료**:
+  - [`docs/MAJN_FIRMWARE_STABILIZATION_AND_VERIFICATION_MASTER_PLAN.md`](../MAJN_FIRMWARE_STABILIZATION_AND_VERIFICATION_MASTER_PLAN.md): W0~W7 무선 우선 체계로 전면 개정 완료.
+- **다음 작업**: W2 (스마트폰 웹 제어 완성 - 미실측 IMU 삭제, 타이머/버전/OTA링크 신설 및 빌드).
+
+
 
 
 
