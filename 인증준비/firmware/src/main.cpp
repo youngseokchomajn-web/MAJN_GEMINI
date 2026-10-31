@@ -1,4 +1,5 @@
 #include <Arduino.h>
+#include <esp_ota_ops.h>
 
 #include "ble_protocol.h"
 #include "ble_manager.h"
@@ -153,6 +154,22 @@ void setup() {
 
     // 0. Initialize Common System Controller
     MajnSystemCtrl::init();
+
+    // 0.1 Explicit OTA Rollback Verification Check
+    const esp_partition_t *runningPartition = esp_ota_get_running_partition();
+    esp_ota_img_states_t otaState;
+    if (esp_ota_get_state_partition(runningPartition, &otaState) == ESP_OK) {
+        if (otaState == ESP_OTA_IMG_PENDING_VERIFY) {
+            Serial.println("[OTA-Boot] Firmware booted in PENDING_VERIFY state. Running health diagnostics...");
+            if (ESP.getFreeHeap() > 30000) {
+                Serial.println("[OTA-Boot] Health diagnostics PASSED. Marking app VALID (cancelling rollback).");
+                esp_ota_mark_app_valid_cancel_rollback();
+            } else {
+                Serial.println("[OTA-Boot] Health diagnostics FAILED (Low Heap). Triggering automatic rollback!");
+                esp_ota_mark_app_invalid_rollback_and_reboot();
+            }
+        }
+    }
 
     // 1. Initialize Safety Layer (Lowest level gatekeeper)
     MajnSafety::initSafety();

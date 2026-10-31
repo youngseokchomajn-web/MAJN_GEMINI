@@ -6,15 +6,28 @@
 #include <ESPmDNS.h>
 #include <Update.h>
 #include <esp_wifi.h>
+#include <esp_heap_caps.h>
 #include "system_controller.h"
 #include "mobile_web_ui.h"
 
 namespace MajnWiFi {
 
 static const byte DNS_PORT = 53;
+static const char OTA_AUTH_TOKEN[] = "majn2026-ota-token";
 static DNSServer dnsServer;
 static WebServer server(80);
 static AccelData sLatestAccel = {0, 0, 0, 0.0f, 0.0f, 1.0f};
+static bool sOtaInProgress = false;
+
+static bool isOtaAuthorized() {
+    if (server.hasArg("token") && server.arg("token") == OTA_AUTH_TOKEN) {
+        return true;
+    }
+    if (server.hasHeader("X-OTA-Token") && server.header("X-OTA-Token") == OTA_AUTH_TOKEN) {
+        return true;
+    }
+    return false;
+}
 
 static void handleRoot() {
     MajnSystemCtrl::noteClientActivity();
@@ -32,6 +45,18 @@ static void handleStatus() {
     MajnSystemCtrl::noteClientActivity();
     String jsonOut;
     MajnSystemCtrl::getTelemetryJson(jsonOut, sLatestAccel);
+
+    uint32_t freeHeap = ESP.getFreeHeap();
+    uint32_t minFreeHeap = esp_get_minimum_free_heap_size();
+    uint32_t largestBlock = heap_caps_get_largest_free_block(MALLOC_CAP_8BIT);
+
+    if (jsonOut.endsWith("}")) {
+        jsonOut.remove(jsonOut.length() - 1);
+        jsonOut += String(",\"free_heap\":") + freeHeap +
+                   String(",\"min_free_heap\":") + minFreeHeap +
+                   String(",\"largest_free_block\":") + largestBlock + "}";
+    }
+
     server.sendHeader("Access-Control-Allow-Origin", "*");
     server.send(200, "application/json", jsonOut);
 }
@@ -44,6 +69,12 @@ static void handlePing() {
 
 static void handleCommand() {
     MajnSystemCtrl::noteClientActivity();
+    if (sOtaInProgress) {
+        server.sendHeader("Access-Control-Allow-Origin", "*");
+        server.send(423, "application/json", "{\"error\":\"Locked: Firmware update in progress. Vibration inhibited.\"}");
+        return;
+    }
+
     if (!server.hasArg("plain")) {
         server.send(400, "application/json", "{\"error\":\"Missing body\"}");
         return;
@@ -92,13 +123,13 @@ bool initWiFiServer(const char* ssid, const char* password) {
     esp_wifi_set_bandwidth(WIFI_IF_AP, WIFI_BW_HT20);
     esp_wifi_set_protocol(WIFI_IF_AP, WIFI_PROTOCOL_11B | WIFI_PROTOCOL_11G | WIFI_PROTOCOL_11N);
 
-    // 6. Set Regulatory Country Domain to World-Safe (Channels 1-11)
+    // 6. Set Regulatory Country Domain to Korea KC Standard (KR: Channels 1-13)
     wifi_country_t country = {
-        .cc = "01",
+        .cc = "KR",
         .schan = 1,
-        .nchan = 11,
-        .max_tx_power = 80,
-        .policy = WIFI_COUNTRY_POLICY_AUTO
+        .nchan = 13,
+        .max_tx_power = 60, // ~15 dBm
+        .policy = WIFI_COUNTRY_POLICY_MANUAL
     };
     esp_wifi_set_country(&country);
 
@@ -134,25 +165,32 @@ bool initWiFiServer(const char* ssid, const char* password) {
     server.on("/canonical.html", HTTP_GET, handleRoot);
     server.on("/ncsi.txt", HTTP_GET, handleCaptiveRedirect);
 
-    // 9. Web-based Wireless Firmware Update Route (/update)
+    // 9. Web-based Wireless Firmware Update Route (/update) with Token Security
     server.on("/update", HTTP_GET, []() {
         server.sendHeader("Connection", "close");
         server.send(200, "text/html",
             "<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width,initial-scale=1'>"
             "<title>MAJN Firmware Update</title><style>body{background:#0f172a;color:#fff;font-family:sans-serif;padding:24px;text-align:center;}"
             ".card{background:#1e293b;border-radius:12px;padding:24px;max-width:400px;margin:40px auto;border:1px solid #334155;}"
-            "input{margin:20px 0;padding:10px;width:100%;background:#0f172a;color:#fff;border:1px solid #475569;border-radius:6px;box-sizing:border-box;}"
-            "button{background:#38bdf8;color:#0f172a;font-weight:bold;padding:12px 24px;border:none;border-radius:8px;font-size:16px;cursor:pointer;width:100%;}"
-            "</style></head><body><div class='card'><h2>🚀 MAJN 무선 펌웨어 업데이트</h2>"
-            "<p style='color:#94a3b8;font-size:14px;margin-top:8px;'>.bin 파일을 선택 후 업데이트를 누르세요.</p>"
+            "input{margin:12px 0;padding:10px;width:100%;background:#0f172a;color:#fff;border:1px solid #475569;border-radius:6px;box-sizing:border-box;}"
+            "button{background:#38bdf8;color:#0f172a;font-weight:bold;padding:12px 24px;border:none;border-radius:8px;font-size:16px;cursor:pointer;width:100%;margin-top:12px;}"
+            "</style></head><body><div class='card'><h2>🚀 MAJN 보안 무선 OTA</h2>"
+            "<p style='color:#94a3b8;font-size:14px;margin-top:8px;'>ESP32 실행 바이너리(.bin)와 인증 토큰을 입력하세요.</p>"
             "<form method='POST' action='/update' enctype='multipart/form-data'>"
-            "<input type='file' name='update' accept='.bin' required><br>"
-            "<button type='submit'>업데이트 시작 (자동 재부팅)</button></form></div></body></html>"
+            "<input type='password' name='token' value='majn2026-ota-token' placeholder='인증 토큰' required>"
+            "<input type='file' name='update' accept='.bin' required>"
+            "<button type='submit'>보안 업데이트 시작</button></form></div></body></html>"
         );
     });
 
     server.on("/update", HTTP_POST, []() {
         server.sendHeader("Connection", "close");
+        sOtaInProgress = false;
+        if (!isOtaAuthorized()) {
+            server.send(401, "text/plain", "UNAUTHORIZED: Invalid or missing OTA authentication token.");
+            return;
+        }
+
         if (Update.hasError()) {
             server.send(500, "text/plain", "UPDATE FAILED: Write error or invalid ESP32 image format.");
             Serial.println("[Web-OTA] Update failed. Reboot suppressed to preserve error diagnostics.");
@@ -165,13 +203,19 @@ bool initWiFiServer(const char* ssid, const char* password) {
     }, []() {
         HTTPUpload& upload = server.upload();
         if (upload.status == UPLOAD_FILE_START) {
-            Serial.printf("[Web-OTA] Starting update: %s\n", upload.filename.c_str());
+            if (!isOtaAuthorized()) {
+                Serial.println("[Web-OTA] REJECTED: Unauthorized OTA attempt without valid token.");
+                return;
+            }
+            Serial.printf("[Web-OTA] Starting authorized update: %s\n", upload.filename.c_str());
+            sOtaInProgress = true;
             MajnSystemCtrl::triggerSafeStop();
             Update.clearError();
             if (!Update.begin(UPDATE_SIZE_UNKNOWN)) {
                 Update.printError(Serial);
             }
         } else if (upload.status == UPLOAD_FILE_WRITE) {
+            if (!isOtaAuthorized()) return;
             // First chunk sanity check: ESP32 binary image magic byte must be 0xE9
             if (upload.totalSize == 0 && upload.currentSize > 0) {
                 if (upload.buf[0] != 0xE9) {
@@ -192,6 +236,7 @@ bool initWiFiServer(const char* ssid, const char* password) {
                 Update.printError(Serial);
             }
         } else if (upload.status == UPLOAD_FILE_ABORTED) {
+            sOtaInProgress = false;
             Update.abort();
             Serial.println("[Web-OTA] Update transfer aborted by client.");
         }

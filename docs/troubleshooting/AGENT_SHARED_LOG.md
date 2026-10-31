@@ -551,4 +551,36 @@
   - [`docs/MAJN_FIRMWARE_STABILIZATION_AND_VERIFICATION_MASTER_PLAN.md`](../MAJN_FIRMWARE_STABILIZATION_AND_VERIFICATION_MASTER_PLAN.md): P0(빌드) $\rightarrow$ P1(외장 안테나 RSSI) $\rightarrow$ P2(아이폰 결속) $\rightarrow$ P3(듀얼 경합) $\rightarrow$ P4(OTA 복구력) $\rightarrow$ P5(24시간 및 영아 안전) 6단계 검증 로드맵 및 비상 롤백 매트릭스 제정.
 - **다음 작업:** 사용자 물리 안테나 체결 상태 확인 후 P1/P2 단계 실증 착수.
 
+---
+
+### SHARED-2026-10-31-003 — 사용자 피어리뷰 전수 수용: 명시적 OTA 롤백 인터록, 전원/보안 결함 보강 및 플랜 v1.1 동결
+- **작성자:** Gemini (Antigravity)
+- **작업 일시:** 2026-10-31 09:36 KST
+- **작업 ID:** FW-007 / AUDIT-002 / PLAN-002
+- **기준 브랜치:** `feature/phone-wifi-control`
+- **피어리뷰 결함 전수 시정 내역**:
+  1. **[OTA 자동 롤백 실체화]**:
+     - 듀얼 파티션 존재만으로 자동 롤백이 되지 않는다는 지적 100% 수용.
+     - `main.cpp`의 `setup()`에서 `<esp_ota_ops.h>`를 연동하여 `ESP_OTA_IMG_PENDING_VERIFY` 상태 감지.
+     - 부팅 자가 진단(Free Heap > 30KB) 통과 시 `esp_ota_mark_app_valid_cancel_rollback()` 호출, 실패 시 `esp_ota_mark_app_invalid_rollback_and_reboot()`로 직전 슬롯 강제 복구 구현.
+  2. **[전원 안정성 서술 및 계측 프로토콜 개정]**:
+     - 15dBm 출력이 전원 안정성을 보장한다는 무근거 단정 전면 삭제.
+     - 사용자 권고 5대 전원 계측(Wi-Fi 단독 대기, 송신 피크, Wi-Fi+BLE, 12V Boost+앰프 복합 부하, 3.3V 오실로스코프 최저전압 계측)을 [P1] 정식 통과 기준으로 재정립.
+  3. **[IRAM vs Heap 개념 명문화]**:
+     - IRAM 92.5%(잔여 9.8KB)는 정적 명령어 영역이며 BLE 페이싱으로 줄어드는 것이 아님을 명시.
+     - `/api/status`에 `free_heap`, `min_free_heap`, `largest_free_block` 실시간 감시 필드 신설.
+  4. **[보안 강화 및 인증 인터록]**:
+     - 국내 규제 도메인(한국 `KR`, 채널 1~13) 반영.
+     - `/update`에 `majn2026-ota-token` 인증 토큰 검증 필수화 (비인가 주입 차단).
+     - OTA 전송 중 진동 제어 인터록(`sOtaInProgress`) 발동 (HTTP 423 Locked 차단).
+  5. **[OTA 스크립트 준법화]**:
+     - `tools/run_wifi_ota.py`에서 맥북 Wi-Fi 강제 조작(`networksetup`) 완전 제거, 순수 HTTP 클라이언트로 개편 (`AGENTS.md` 준수).
+- **P0 클린 빌드 결과**:
+  - `esp32_wifi_phone`: **SUCCESS (0 Error, 0 Warning)**
+  - Flash: **1,897,511 bytes** (56.8%), DRAM: **70,168 bytes** (56.3%), IRAM: **121,263 bytes** (92.5%).
+  - 바이너리: `majn_wifi_phone_firmware.bin` 및 `/tmp/fw.bin` 갱신 완료.
+- **마스터 플랜 v1.1 개정 완료**: [`docs/MAJN_FIRMWARE_STABILIZATION_AND_VERIFICATION_MASTER_PLAN.md`](../MAJN_FIRMWARE_STABILIZATION_AND_VERIFICATION_MASTER_PLAN.md).
+- **다음 작업:** 실물 OTA는 보류 상태를 엄격 유지하며, 사용자 벤치 환경에서 외장 안테나 체결 및 P1 계측 프로토콜 준비.
+
+
 
