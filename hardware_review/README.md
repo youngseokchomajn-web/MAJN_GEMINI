@@ -9,6 +9,7 @@
 ```
 hardware_review/
 ├── README.md                           # 본 가이드 문서 (SSOT 정합성 검증 결과 수록)
+│                                       # ➔ 상세 마스터 플랜: docs/MAJN_REV_C_COMPREHENSIVE_DEVELOPMENT_PLAN.md
 ├── PCB_0005_original/                  # [기준 원본] 실측 검증 완료 골든 베이스라인
 │   ├── Original.epro2                 # EasyEDA Pro 원본 프로젝트 아카이브
 │   ├── BOM.csv                        # 37개 정본 부품 명세서 (LCSC ID, 패키지, 제조사, 설계결함 주석)
