@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>마중 스마트배시넷 하우징 구조 해부도 (Anatomy Visualizer)</title>
+  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+  <style>
+    .layer-transition {
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: var(--border, #cbd5e1);
+      border-radius: 3px;
+    }
+  </style>
+</head>
+<body class="bg-transparent text-[var(--foreground,#0f172a)] antialiased p-3 sm:p-5 font-sans select-none">
+  <div class="max-w-5xl mx-auto bg-[var(--card,#ffffff)] border border-[var(--border,#e2e8f0)] rounded-2xl shadow-xl overflow-hidden flex flex-col">
+    
+    <!-- Header -->
+    <header class="p-4 sm:p-6 border-b border-[var(--border,#e2e8f0)] bg-gradient-to-r from-amber-500/10 via-emerald-500/10 to-blue-500/10 flex flex-wrap items-center justify-between gap-4">
+      <div>
+        <div class="flex items-center gap-2">
+          <span class="px-2.5 py-0.5 text-xs font-semibold rounded-full bg-amber-500 text-white shadow-sm">4.5T Birch Plywood</span>
+          <span class="text-xs text-[var(--muted-foreground,#64748b)]">홍대 해광레이저 가공 기준</span>
+        </div>
+        <h1 class="text-xl sm:text-2xl font-bold mt-1 text-[var(--foreground,#0f172a)] flex items-center gap-2">
+          🪵 마중 스마트배시넷 기구 해부도 <span class="text-xs font-normal px-2 py-0.5 rounded bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200">Anatomy</span>
+        </h1>
+        <p class="text-xs sm:text-sm text-[var(--muted-foreground,#64748b)]">현재 4.5T 설계 vs 렌탈·리퍼비시·방수 최적화 개선안 분해 스택업 시각화</p>
+      </div>
+
+      <!-- Mode Switch Buttons -->
+      <div class="flex items-center bg-[var(--background,#f1f5f9)] p-1 rounded-xl border border-[var(--border,#e2e8f0)] shadow-inner">
+        <button id="btn-baseline" onclick="setMode('baseline')" class="px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all bg-[var(--card,#ffffff)] text-amber-700 shadow-sm flex items-center gap-1.5">
+          <span class="w-2 h-2 rounded-full bg-amber-500"></span>
+          현재 4.5T 설계
+        </button>
+        <button id="btn-upgrade" onclick="setMode('upgrade')" class="px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all text-[var(--muted-foreground,#64748b)] hover:text-[var(--foreground,#0f172a)] flex items-center gap-1.5">
+          <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+          렌탈 방수 개선안 (Rev 2)
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Workspace -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 min-h-[560px]">
+      
+      <!-- Visual Canvas Area (7 cols) -->
+      <div class="lg:col-span-7 p-4 sm:p-6 flex flex-col justify-between border-b lg:border-b-0 lg:border-r border-[var(--border,#e2e8f0)] relative bg-[var(--background,#f8fafc)]/50">
+        
+        <!-- Controls Bar -->
+        <div class="flex items-center justify-between gap-4 mb-3 z-10">
+          <div class="flex items-center gap-3 flex-1 max-w-xs">
+            <span class="text-xs font-medium text-[var(--muted-foreground,#64748b)] whitespace-nowrap">분해도 거리:</span>
+            <input type="range" id="explodeSlider" min="0" max="100" value="70" oninput="updateExplode(this.value)" class="w-full h-1.5 bg-slate-300 rounded-lg appearance-none cursor-pointer accent-blue-600">
+            <span id="explodeVal" class="text-xs font-mono font-bold w-9 text-right text-blue-600">70%</span>
+          </div>
+          <button onclick="toggleExplode()" class="px-2.5 py-1 text-xs font-medium rounded-md border border-[var(--border,#e2e8f0)] bg-[var(--card,#ffffff)] hover:bg-slate-100 dark:hover:bg-slate-800 transition shadow-sm">
+            원클릭 분해/조립
+          </button>
+        </div>
+
+        <!-- Exploded Anatomy SVG Canvas -->
+        <div class="flex-1 flex items-center justify-center relative py-6">
+          <div id="diagram-container" class="w-full max-w-md aspect-[4/5] relative flex flex-col items-center justify-center">
+            
+            <!-- Baseline Mode Graphic -->
+            <div id="graphic-baseline" class="w-full h-full flex flex-col items-center justify-center relative">
+              
+              <!-- Layer 1: Top Plate -->
+              <div id="b-layer-1" onclick="showInfo('b-top')" class="layer-transition cursor-pointer group absolute w-64 h-24 rounded-[18px] bg-gradient-to-br from-amber-200 to-amber-300 border-2 border-amber-500 shadow-md flex items-center justify-between px-4 z-50 hover:ring-2 hover:ring-amber-500">
+                <div class="flex items-center gap-2">
+                  <span class="w-2.5 h-2.5 rounded-full bg-amber-600"></span>
+                  <span class="text-xs font-bold text-amber-950">상판 패널 (4.5T)</span>
+                </div>
+                <span class="text-[11px] font-mono font-semibold px-2 py-0.5 rounded bg-amber-400/50 text-amber-900">450×250mm · R20</span>
+              </div>
+
+              <!-- Layer 2: Exciters -->
+              <div id="b-layer-2" onclick="showInfo('b-exciters')" class="layer-transition cursor-pointer group absolute w-56 h-16 flex items-center justify-around z-40">
+                <div class="w-10 h-10 rounded-full bg-slate-800 border-2 border-slate-600 shadow-sm flex items-center justify-center hover:scale-110 transition">
+                  <span class="text-[10px] text-white font-mono">EX1</span>
+                </div>
+                <div class="w-10 h-10 rounded-full bg-slate-800 border-2 border-slate-600 shadow-sm flex items-center justify-center hover:scale-110 transition">
+                  <span class="text-[10px] text-white font-mono">EX2</span>
+                </div>
+                <div class="w-10 h-10 rounded-full bg-slate-800 border-2 border-slate-600 shadow-sm flex items-center justify-center hover:scale-110 transition">
+                  <span class="text-[10px] text-white font-mono">EX3</span>
+                </div>
+                <div class="w-10 h-10 rounded-full bg-slate-800 border-2 border-slate-600 shadow-sm flex items-center justify-center hover:scale-110 transition">
+                  <span class="text-[10px] text-white font-mono">EX4</span>
+                </div>
+              </div>
+
+              <!-- Layer 3: Cavity & Side Frame (13.5mm) -->
+              <div id="b-layer-3" onclick="showInfo('b-frame')" class="layer-transition cursor-pointer group absolute w-64 h-24 rounded-[18px] border-4 border-amber-600 bg-amber-100/30 flex items-center justify-center z-30 hover:ring-2 hover:ring-amber-500">
+                <div class="w-full h-full p-2 flex flex-col justify-between">
+                  <div class="flex justify-between items-center text-[11px] text-amber-900 font-bold px-1">
+                    <span>측판 프레임 (4.5T × 3장 적층 = 13.5mm)</span>
+                    <span class="text-[10px] bg-red-100 text-red-700 px-1.5 py-0.5 rounded border border-red-300">⌀5.5mm 단순홀</span>
+                  </div>
+                  <div class="flex justify-between items-center px-1 text-[10px] text-amber-700">
+                    <span>R20 부채꼴 코너 12장</span>
+                    <span>중앙 보스 6장</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Layer 4: Foam Tape -->
+              <div id="b-layer-4" onclick="showInfo('b-tape')" class="layer-transition cursor-pointer group absolute w-60 h-20 rounded-[14px] border-2 border-dashed border-red-400 bg-red-500/10 flex items-center justify-center z-20 hover:ring-2 hover:ring-red-500">
+                <span class="text-xs font-semibold text-red-600 flex items-center gap-1">
+                  ⚠️ 일회용 폼테이프 실링 (뜯을 때 찌꺼기 잔류)
+                </span>
+              </div>
+
+              <!-- Layer 5: Bottom Plate -->
+              <div id="b-layer-5" onclick="showInfo('b-bottom')" class="layer-transition cursor-pointer group absolute w-64 h-24 rounded-[18px] bg-gradient-to-br from-amber-200 to-amber-300 border-2 border-amber-500 shadow-md flex items-center justify-between px-4 z-10 hover:ring-2 hover:ring-amber-500">
+                <div class="flex items-center gap-2">
+                  <span class="w-2.5 h-2.5 rounded-full bg-amber-600"></span>
+                  <span class="text-xs font-bold text-amber-950">하판 패널 (4.5T)</span>
+                </div>
+                <div class="flex items-center gap-1 text-[11px] text-slate-700 font-mono">
+                  <span>M3 목공직결 나사 6개소</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Upgrade Mode Graphic (Rev 2) -->
+            <div id="graphic-upgrade" class="w-full h-full flex flex-col items-center justify-center relative hidden">
+              
+              <!-- Layer U0: Washable Outer Sleeve -->
+              <div id="u-layer-0" onclick="showInfo('u-sleeve')" class="layer-transition cursor-pointer group absolute w-68 h-28 rounded-[22px] border-2 border-blue-400 bg-blue-500/10 flex items-center justify-between px-4 z-60 hover:ring-2 hover:ring-blue-500">
+                <span class="text-xs font-bold text-blue-700 flex items-center gap-1.5">
+                  👕 1차 방어: 통기성 패브릭 겉커버 (지퍼 탈착·세탁)
+                </span>
+                <span class="text-[10px] bg-blue-100 text-blue-800 px-2 py-0.5 rounded font-mono">Washable</span>
+              </div>
+
+              <!-- Layer U0.5: TPU Waterproof Inner Bag -->
+              <div id="u-layer-05" onclick="showInfo('u-tpu')" class="layer-transition cursor-pointer group absolute w-66 h-26 rounded-[20px] border-2 border-emerald-400 bg-emerald-500/10 flex items-center justify-between px-4 z-50 hover:ring-2 hover:ring-emerald-500">
+                <span class="text-xs font-bold text-emerald-800 flex items-center gap-1.5">
+                  🛡️ 2차 방어: 초음파 융착 TPU 방수 이너 커버
+                </span>
+                <span class="text-[10px] bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded font-mono font-bold">오염 99% 차단</span>
+              </div>
+
+              <!-- Layer U1: Coated Top Plate -->
+              <div id="u-layer-1" onclick="showInfo('u-top')" class="layer-transition cursor-pointer group absolute w-64 h-24 rounded-[18px] bg-gradient-to-br from-emerald-100 to-amber-200 border-2 border-emerald-600 shadow-md flex items-center justify-between px-4 z-40 hover:ring-2 hover:ring-emerald-500">
+                <div class="flex items-center gap-2">
+                  <span class="w-2.5 h-2.5 rounded-full bg-emerald-600"></span>
+                  <div>
+                    <div class="text-xs font-bold text-slate-900">4.5T 상판 + 친환경 수성 PU 코팅</div>
+                    <div class="text-[10px] text-emerald-700">익사이터 레이저 마킹 INFO 가이드</div>
+                  </div>
+                </div>
+                <span class="text-[10px] font-mono font-bold px-1.5 py-0.5 rounded bg-emerald-200 text-emerald-900">Food-Safe</span>
+              </div>
+
+              <!-- Layer U2: Exciters + Wire Grommet -->
+              <div id="u-layer-2" onclick="showInfo('u-exciters')" class="layer-transition cursor-pointer group absolute w-56 h-16 flex items-center justify-around z-30">
+                <div class="w-10 h-10 rounded-full bg-slate-900 border-2 border-emerald-500 shadow-sm flex items-center justify-center hover:scale-110 transition">
+                  <span class="text-[10px] text-emerald-300 font-mono">8Ω</span>
+                </div>
+                <div class="w-10 h-10 rounded-full bg-slate-900 border-2 border-emerald-500 shadow-sm flex items-center justify-center hover:scale-110 transition">
+                  <span class="text-[10px] text-emerald-300 font-mono">8Ω</span>
+                </div>
+                <div class="w-10 h-10 rounded-full bg-slate-900 border-2 border-emerald-500 shadow-sm flex items-center justify-center hover:scale-110 transition">
+                  <span class="text-[10px] text-emerald-300 font-mono">8Ω</span>
+                </div>
+                <div class="w-10 h-10 rounded-full bg-slate-900 border-2 border-emerald-500 shadow-sm flex items-center justify-center hover:scale-110 transition">
+                  <span class="text-[10px] text-emerald-300 font-mono">8Ω</span>
+                </div>
+              </div>
+
+              <!-- Layer U3: Cavity with Brass Threaded Inserts -->
+              <div id="u-layer-3" onclick="showInfo('u-frame')" class="layer-transition cursor-pointer group absolute w-64 h-24 rounded-[18px] border-4 border-emerald-600 bg-emerald-50/40 flex items-center justify-center z-20 hover:ring-2 hover:ring-emerald-500">
+                <div class="w-full h-full p-2 flex flex-col justify-between">
+                  <div class="flex justify-between items-center text-[11px] text-emerald-950 font-bold px-1">
+                    <span>측판 프레임 (13.5mm)</span>
+                    <span class="text-[10px] bg-emerald-100 text-emerald-800 px-1.5 py-0.5 rounded border border-emerald-300 font-bold">⌀7.0mm 방수 그로밋</span>
+                  </div>
+                  <div class="flex justify-between items-center px-1 text-[10px] text-emerald-800 font-semibold">
+                    <span class="flex items-center gap-1">🔩 M3 황동 인서트 8개소 (100회+ 무마모)</span>
+                    <span>Air Gap 3.4mm</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Layer U4: Reusable Silicone Gasket -->
+              <div id="u-layer-4" onclick="showInfo('u-gasket')" class="layer-transition cursor-pointer group absolute w-62 h-22 rounded-[16px] border-2 border-cyan-400 bg-cyan-400/20 flex items-center justify-center z-15 hover:ring-2 hover:ring-cyan-500">
+                <span class="text-xs font-bold text-cyan-900 flex items-center gap-1">
+                  ✨ 1.2mm 레이저 커팅 맞춤형 실리콘 가스켓 (무접착·1초 교체·IPX5)
+                </span>
+              </div>
+
+              <!-- Layer U5: Bottom Plate with 8 Stainless Bolts -->
+              <div id="u-layer-5" onclick="showInfo('u-bottom')" class="layer-transition cursor-pointer group absolute w-64 h-24 rounded-[18px] bg-gradient-to-br from-emerald-100 to-amber-200 border-2 border-emerald-600 shadow-md flex items-center justify-between px-4 z-10 hover:ring-2 hover:ring-emerald-500">
+                <div class="flex items-center gap-2">
+                  <span class="w-2.5 h-2.5 rounded-full bg-emerald-600"></span>
+                  <span class="text-xs font-bold text-slate-900">하판 (8볼트 균일 압착)</span>
+                </div>
+                <div class="flex items-center gap-1 text-[11px] text-emerald-900 font-mono font-bold">
+                  <span>M3 스테인리스 접시머리 볼트</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Legend / Hint -->
+        <div class="text-[11px] text-[var(--muted-foreground,#64748b)] flex items-center justify-between pt-2 border-t border-[var(--border,#e2e8f0)]">
+          <span>💡 각 부품 레이어를 클릭하면 우측에 세부 엔지니어링 스펙이 표시됩니다.</span>
+          <span class="font-mono text-xs">Total H: <strong id="height-label">22.5 mm</strong></span>
+        </div>
+      </div>
+
+      <!-- Detail Info & Comparative Intelligence (5 cols) -->
+      <div class="lg:col-span-5 p-4 sm:p-6 flex flex-col justify-between bg-[var(--card,#ffffff)] custom-scrollbar overflow-y-auto max-h-[640px]">
+        
+        <!-- Dynamic Detail Card -->
+        <div>
+          <div class="flex items-center justify-between mb-3">
+            <span class="text-xs font-bold uppercase tracking-wider text-[var(--muted-foreground,#64748b)]">부품 세부 해부 정보</span>
+            <span id="info-badge" class="px-2 py-0.5 text-xs font-bold rounded-full bg-amber-100 text-amber-800">선택 부품 분석</span>
+          </div>
+
+          <div id="info-box" class="p-4 rounded-xl border border-[var(--border,#e2e8f0)] bg-[var(--background,#f8fafc)]/60 min-h-[190px]">
+            <h3 id="info-title" class="font-bold text-base text-[var(--foreground,#0f172a)] mb-1">상판 패널 (Top Plate)</h3>
+            <p id="info-desc" class="text-xs text-[var(--muted-foreground,#64748b)] leading-relaxed mb-3">
+              자작나무 합판 4.5T 단일판. 4개 외곽 모서리에 R20 라운딩이 적용되어 있으며 나사홀이 일절 없는 매끈한 순수 원목면을 유지합니다. 내측면에는 익사이터 정밀 장착을 위한 레이저 마킹선이 각인되어 있습니다.
+            </p>
+            <div id="info-tags" class="flex flex-wrap gap-1.5">
+              <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200">450 × 250 × 4.5 mm</span>
+              <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-amber-100 text-amber-800">자작합판 4.5T</span>
+              <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-100 text-blue-800">홍대 해광레이저</span>
+            </div>
+          </div>
+
+          <!-- Refurbishment KPI Comparison Table -->
+          <div class="mt-5">
+            <h4 class="text-xs font-bold uppercase tracking-wider text-[var(--muted-foreground,#64748b)] mb-2 flex items-center gap-1.5">
+              <span>📊 렌탈 리퍼비시 핵심 지표 비교</span>
+            </h4>
+            
+            <div class="overflow-hidden rounded-xl border border-[var(--border,#e2e8f0)] text-xs">
+              <table class="w-full text-left">
+                <thead class="bg-slate-100 dark:bg-slate-800 font-semibold text-[var(--foreground,#0f172a)]">
+                  <tr>
+                    <th class="p-2.5">검토 항목</th>
+                    <th class="p-2.5 text-amber-700">현재 4.5T</th>
+                    <th class="p-2.5 text-emerald-700">개선안 Rev 2</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-[var(--border,#e2e8f0)] font-mono text-[11px]">
+                  <tr>
+                    <td class="p-2 text-slate-600 font-sans">리퍼비시 시간</td>
+                    <td class="p-2 text-red-600 font-bold">25분 (테이프제거)</td>
+                    <td class="p-2 text-emerald-600 font-bold">2분 30초 (원터치)</td>
+                  </tr>
+                  <tr>
+                    <td class="p-2 text-slate-600 font-sans">체결 수명</td>
+                    <td class="p-2 text-red-600">2~3회 (목재야마)</td>
+                    <td class="p-2 text-emerald-600 font-bold">100회+ (황동인서트)</td>
+                  </tr>
+                  <tr>
+                    <td class="p-2 text-slate-600 font-sans">방수 신뢰성</td>
+                    <td class="p-2 text-slate-600">IPX0 (생활방적 취약)</td>
+                    <td class="p-2 text-emerald-600 font-bold">IPX5 + TPU 속커버</td>
+                  </tr>
+                  <tr>
+                    <td class="p-2 text-slate-600 font-sans">배선 틈새 누수</td>
+                    <td class="p-2 text-red-600">⌀5.5mm 직누수 위험</td>
+                    <td class="p-2 text-emerald-600 font-bold">⌀7.0mm 실리콘 그로밋</td>
+                  </tr>
+                  <tr>
+                    <td class="p-2 text-slate-600 font-sans">재상품화 비용</td>
+                    <td class="p-2 text-slate-600">대당 18,000원</td>
+                    <td class="p-2 text-emerald-600 font-bold">대당 2,500원 (-86%)</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Action / SOP Summary Footnote -->
+        <div class="mt-4 pt-3 border-t border-[var(--border,#e2e8f0)]">
+          <div class="flex items-center justify-between text-xs">
+            <span class="text-[var(--muted-foreground,#64748b)]">회수 ➔ 점검 ➔ 소독 ➔ 재출고</span>
+            <span class="font-bold text-emerald-600 flex items-center gap-1">
+              ⚡ 공수 90% 감축 표준 SOP
+            </span>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <script>
+    let currentMode = 'baseline';
+    let explodeDistance = 70;
+    let isExploded = true;
+
+    const layerConfigs = {
+      baseline: [
+        { id: 'b-layer-1', baseOffset: -120 },
+        { id: 'b-layer-2', baseOffset: -60 },
+        { id: 'b-layer-3', baseOffset: 0 },
+        { id: 'b-layer-4', baseOffset: 60 },
+        { id: 'b-layer-5', baseOffset: 120 }
+      ],
+      upgrade: [
+        { id: 'u-layer-0', baseOffset: -160 },
+        { id: 'u-layer-05', baseOffset: -115 },
+        { id: 'u-layer-1', baseOffset: -70 },
+        { id: 'u-layer-2', baseOffset: -25 },
+        { id: 'u-layer-3', baseOffset: 20 },
+        { id: 'u-layer-4', baseOffset: 70 },
+        { id: 'u-layer-5', baseOffset: 125 }
+      ]
+    };
+
+    const details = {
+      'b-top': {
+        title: '상판 패널 (Top Plate) — 현행 4.5T',
+        desc: '친환경 SE0 자작나무 합판 4.5T 단일판. R20 코너 라운딩 가공 및 외부에 나사 머리가 노출되지 않는 순수 목재면을 유지합니다. 내측면에는 4개의 TEAX14C02 익사이터 위치가 레이저 INFO 레이어로 각인되어 있습니다.',
+        tags: ['450×250×4.5mm', '자작합판 4.5T', '홍대 해광레이저', 'R20 라운딩']
+      },
+      'b-exciters': {
+        title: 'TEAX14C02 익사이터 4채널',
+        desc: '모달 절선(데드존)을 회피하도록 상판 외곽에 최적 배치된 4개 초슬림 진동 트랜스듀서. 15kg 영유아 중앙 하중 시에도 상판 처짐으로 인한 보이스코일 눌림 파손이 원천 차단됩니다.',
+        tags: ['⌀40mm 점유', '높이 10.11mm', '8Ω 4개', '임상 11.2μm 미세진동']
+      },
+      'b-frame': {
+        title: '중간 캐비티 프레임 (4.5T × 3장 적층 = 13.5mm)',
+        desc: '410mm 전/후면 측판 2장, 210mm 좌/우측 측판 2장, 부채꼴 R20 조각 12장(4개 기둥), 중앙 스크류보스 6장을 3장씩 적층 접착하여 완성하는 13.5mm 내부 캐비티입니다. 좌측에 ⌀5.5mm 단순 관통 배선홀이 있습니다.',
+        tags: ['높이 13.5mm', '공기유격 3.4mm', 'R20 일체형 기둥', '⌀5.5mm 관통홀']
+      },
+      'b-tape': {
+        title: '하판 폼테이프 실링 (⚠️ 렌탈 병목 지점)',
+        desc: '하판 테두리를 접착식 폼테이프로 밀봉하는 방식입니다. 회수 후 내부 검사를 위해 뜯어낼 때 스폰지 잔여물과 끈끈이가 목재에 남아 이를 긁어내고 청소하는 데 제품 1대당 15분 이상의 인건비가 낭비됩니다.',
+        tags: ['일회용 폼테이프', '제거 공수 15분', '접착제 잔여물', '재사용 불가']
+      },
+      'b-bottom': {
+        title: '하판 패널 (Bottom Plate) — 현행 6나사 체결',
+        desc: '4.5T 자작합판에 M3 접시머리 나사홀 6개소(코너 4 + 중앙 2)가 가공되어 있습니다. 목재에 나사를 직접 조이기 때문에 2~3회만 풀고 다시 조여도 나사산이 뭉개져 렌탈 반복 회수가 불가능합니다.',
+        tags: ['450×250×4.5mm', '나사홀 6개소', 'M3 직결 체결', '나사산 마모 취약']
+      },
+      'u-sleeve': {
+        title: '1차 방어: 통기성 패브릭 겉커버 (Outer Sleeve)',
+        desc: '아기 피부에 닿는 최외각 면/모달 천연 섬유 지퍼 슬리브입니다. 영유아 가정에서 손쉽게 지퍼로 분리하여 물세탁할 수 있으며, 회수 시 세탁·소독 공정으로 즉시 리퍼비시됩니다.',
+        tags: ['1차 방어선', '지퍼 탈착식', '영유아 저자극 순면', '가정용 세탁 호환']
+      },
+      'u-tpu': {
+        title: '2차 방어: 초음파 융착 TPU 방수 이너 커버',
+        desc: '의료용 매트리스 수준의 TPU 방수 원단으로 목공 본체를 1차 밀봉하는 방수 속커버입니다. 아기 소변, 분유, 구토 등 액체 오염의 99%를 원천 차단하여 목재 본체에 액체가 닿는 것을 사전에 막아줍니다.',
+        tags: ['2차 방어선', '초음파 융착', '액체 침투 99% 차단', '의료 등급 TPU']
+      },
+      'u-top': {
+        title: '3차 방어: 4.5T 상판 + 친환경 수성 PU 코팅',
+        desc: '자작합판 표면 및 단면에 영유아 안전인증(KC) 기준의 식품등급 친환경 수성 폴리우레탄을 3회 도포하여, 액체가 묻어도 스며들지 않고 에탄올 소독 티슈로 1초 만에 닦아낼 수 있도록 내오염성을 극대화했습니다.',
+        tags: ['Food-Safe PU 3회', '나노 발수 코팅', '알코올 소독 가능', '흡습 팽창 방지']
+      },
+      'u-exciters': {
+        title: 'TEAX14C02 익사이터 + ⌀7.0mm 방수 그로밋',
+        desc: '4채널 독립 햅틱/사운드 매트릭스를 그대로 유지하면서, 배선 인출부에 이중 립 실리콘 방수 그로밋을 압착 체결하여 케이블 틈새를 통한 모세관 침수를 원천 차단했습니다.',
+        tags: ['8Ω 4개', '임피던스 8Ω 측정', '⌀7.0mm 실리콘 그로밋', '단선 방지 릴리프']
+      },
+      'u-frame': {
+        title: '측판 프레임 + M3 황동 인서트 너트 8개소',
+        desc: '코너 기둥 4개소와 스크류보스 4개소에 M3 황동 널링 인서트 너트를 매립하여, 전동 드라이버로 수백 회 분해·체결해도 나사산 마모가 전혀 발생하지 않는 영구 체결부를 구축했습니다.',
+        tags: ['M3 황동 인서트', '100회+ 무손상', '8개소 균일 볼팅', '고속 전동 분해']
+      },
+      'u-gasket': {
+        title: '맞춤형 레이저 커팅 실리콘 가스켓 (1.2mm)',
+        desc: '식품 등급 무독성 실리콘 시트(두께 1.2mm)를 하우징 형상대로 레이저 커팅하여 삽입하는 원터치 실링재입니다. 접착제가 일체 없어 1초 만에 떼어내 알코올 세척하거나 300원 단가로 즉시 신품 교체합니다.',
+        tags: ['무접착 1초 탈착', 'IPX5 방수 달성', '식품등급 실리콘', '대당 300원 교체']
+      },
+      'u-bottom': {
+        title: '하판 (8볼트 균일 압착 & 초고속 분해)',
+        desc: '장변(450mm) 중앙 구간에 볼트 2개소를 추가한 총 8개소 볼팅 구조입니다. 전동 드라이버 사용 시 20초 만에 분해/조립이 가능하며 실리콘 가스켓 전 둘레에 완벽한 압착력을 제공합니다.',
+        tags: ['8볼트 균일 압착', 'M3 스테인리스 볼트', '분해 20초 소요', '들뜸 누수 제로']
+      }
+    };
+
+    function setMode(mode) {
+      currentMode = mode;
+      const btnBase = document.getElementById('btn-baseline');
+      const btnUpg = document.getElementById('btn-upgrade');
+      const gBase = document.getElementById('graphic-baseline');
+      const gUpg = document.getElementById('graphic-upgrade');
+      const hLabel = document.getElementById('height-label');
+
+      if (mode === 'baseline') {
+        btnBase.className = 'px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all bg-[var(--card,#ffffff)] text-amber-700 shadow-sm flex items-center gap-1.5';
+        btnUpg.className = 'px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all text-[var(--muted-foreground,#64748b)] hover:text-[var(--foreground,#0f172a)] flex items-center gap-1.5';
+        gBase.classList.remove('hidden');
+        gUpg.classList.add('hidden');
+        hLabel.innerText = '22.5 mm';
+        showInfo('b-top');
+      } else {
+        btnUpg.className = 'px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all bg-[var(--card,#ffffff)] text-emerald-700 shadow-sm flex items-center gap-1.5';
+        btnBase.className = 'px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all text-[var(--muted-foreground,#64748b)] hover:text-[var(--foreground,#0f172a)] flex items-center gap-1.5';
+        gUpg.classList.remove('hidden');
+        gBase.classList.add('hidden');
+        hLabel.innerText = '23.5 mm (+1.0mm 실리콘)';
+        showInfo('u-top');
+      }
+      applyExplode();
+    }
+
+    function updateExplode(val) {
+      explodeDistance = parseInt(val, 10);
+      document.getElementById('explodeVal').innerText = val + '%';
+      applyExplode();
+    }
+
+    function toggleExplode() {
+      const slider = document.getElementById('explodeSlider');
+      if (explodeDistance > 10) {
+        slider.value = 0;
+      } else {
+        slider.value = 85;
+      }
+      updateExplode(slider.value);
+    }
+
+    function applyExplode() {
+      const factor = explodeDistance / 100;
+      const config = layerConfigs[currentMode];
+
+      config.forEach(item => {
+        const el = document.getElementById(item.id);
+        if (el) {
+          const offset = item.baseOffset * factor;
+          el.style.transform = `translateY(${offset}px)`;
+          if (explodeDistance < 10) {
+            el.style.boxShadow = 'none';
+          } else {
+            el.style.boxShadow = '';
+          }
+        }
+      });
+    }
+
+    function showInfo(key) {
+      const data = details[key];
+      if (!data) return;
+
+      document.getElementById('info-title').innerText = data.title;
+      document.getElementById('info-desc').innerText = data.desc;
+      
+      const badge = document.getElementById('info-badge');
+      if (key.startsWith('u-')) {
+        badge.className = 'px-2 py-0.5 text-xs font-bold rounded-full bg-emerald-100 text-emerald-800';
+        badge.innerText = 'Rev 2 개선 사양';
+      } else {
+        badge.className = 'px-2 py-0.5 text-xs font-bold rounded-full bg-amber-100 text-amber-800';
+        badge.innerText = '현행 4.5T 사양';
+      }
+
+      const tagsContainer = document.getElementById('info-tags');
+      tagsContainer.innerHTML = '';
+      data.tags.forEach(t => {
+        const span = document.createElement('span');
+        span.className = 'text-[11px] font-mono px-2 py-0.5 rounded bg-slate-200 dark:bg-slate-700 text-slate-800 dark:text-slate-200';
+        span.innerText = t;
+        tagsContainer.appendChild(span);
+      });
+    }
+
+    // Initialize
+    window.addEventListener('DOMContentLoaded', () => {
+      setMode('baseline');
+      applyExplode();
+    });
+  </script>
+</body>
+</html>
