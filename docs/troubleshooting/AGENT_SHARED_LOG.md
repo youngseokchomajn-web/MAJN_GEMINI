@@ -686,6 +686,37 @@
 - **실물 OTA 상태**: **보류 (HOLD 유지)**
 - **다음 단계 진입**: **W3 (BLE GATT 통신 및 상태 수신 완성) 진입 준비 완료**.
 
+---
+
+### SHARED-2026-10-31-008 — [무선 우선 마스터플랜] W3: 스마트폰 BLE GATT 통신 및 Advertising 인터벌 최적화 완성
+- **작성자:** Gemini (Antigravity)
+- **작업 일시:** 2026-10-31 12:39 KST
+- **작업 ID:** WIRELESS-W3 / BLE-001
+- **기준 브랜치:** `feature/phone-wifi-control`
+- **W3 완료 내역**:
+  1. **[공식 GATT 구조 확정]**:
+     - Service UUID: `7b4d0001-7a6a-4d41-9a4d-4d414a4a4e01` (MAJN Control Service)
+     - Command Char: `7b4d0002-...` (Write Without Response, JSON 명령)
+     - Telemetry Char: `7b4d0003-...` (Read + Notify, 20Hz 페이싱)
+     - Event/Ack Char: `7b4d0004-...` (Notify, 명령 승인/고장 통지)
+     - Secondary Service: `c8659210-...` (Web Bluetooth OTA Service)
+  2. **[스마트폰(iOS/Android) Advertising 탐색 최적화]**:
+     - `MAJN-Bassinet` 디바이스명 및 Primary Service UUID를 브로드캐스트 패킷에 결속.
+     - iOS 권장 연결 인터벌 힌트(`setMinPreferred(0x06)`, `setMaxPreferred(0x12)`) 적용으로 스캔 및 연결 지연 최소화.
+  3. **[명령 및 텔레메트리 연동 강화 (`ble_manager.cpp`)]**:
+     - `START` 시 `duration_min` 타이머 연동 및 `SET_DURATION` 명령 핸들러 신설.
+     - `bleNotifyTelemetry`에서 미실측 null 필드 제거 및 `duration_min`, `remaining_sec` 실시간 통지 추가.
+  4. **[연결 끊김 감지 및 즉각 안전 복구 인터록]**:
+     - `onDisconnect()` 시 즉각 모터 안전 정지(`requestSafeStop()`) 및 Advertising 재개.
+     - 5초 이상 클라이언트 무응답 시 자동 정지(`HEARTBEAT_TIMEOUT_MS`) 유지.
+  5. **[P0 클린 빌드 통과]**:
+     - `pio run -e esp32_wifi_phone`: **SUCCESS (0 Error, 0 Warning)**
+     - Flash: 1,903,651 bytes (57.0%), DRAM: 70,200 bytes (56.35%), IRAM: 121,263 bytes (92.52%, 잔여 9,809B).
+     - 아티팩트 SHA-256: `907a9dba0825d0762df0220b6397f4109798706a6de3e2808ffeafbf7c8ca31d` (`/tmp/majn_wifi_phone_firmware.bin`)
+- **실물 OTA 상태**: **보류 (HOLD 유지)**
+- **다음 단계 진입**: **W4 (Wi-Fi + BLE 동시 작동 및 공통 Command Manager 통합) 진입 준비 완료**.
+
+
 
 
 

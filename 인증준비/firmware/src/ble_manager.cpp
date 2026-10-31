@@ -11,6 +11,7 @@
 #include "power_manager.h"
 #include "amplifier_manager.h"
 #include "vibration_controller.h"
+#include "system_controller.h"
 #include "ota_ble_service.h"
 
 extern volatile bool systemActive;
@@ -157,8 +158,20 @@ class CommandCallbacks : public BLECharacteristicCallbacks {
 
             systemActive = true;
             activeStateStartTime = millis();
+            if (doc["duration_min"].is<uint16_t>()) {
+                MajnSystemCtrl::setRunningDurationMinutes(doc["duration_min"]);
+            }
             MajnVibration::setTarget(f, a);
             sendAck(id, cmd, "applied", "RUNNING");
+            return;
+        }
+        if (strcmp(cmd, "SET_DURATION") == 0) {
+            if (doc["duration_min"].is<uint16_t>()) {
+                MajnSystemCtrl::setRunningDurationMinutes(doc["duration_min"]);
+                sendAck(id, cmd, "applied", stateName(MajnSafety::getSystemState(systemActive)));
+                return;
+            }
+            sendAck(id, cmd, "rejected", stateName(MajnSafety::getSystemState(systemActive)));
             return;
         }
         if (strcmp(cmd, "STOP") == 0) {
@@ -319,6 +332,8 @@ bool initBleServer() {
     advertising->addServiceUUID(MajnBle::SERVICE_UUID);
     advertising->addServiceUUID(OTA_SERVICE_UUID);
     advertising->setScanResponse(true);
+    advertising->setMinPreferred(0x06); // Helper for fast iOS connection (7.5ms)
+    advertising->setMinPreferred(0x12); // Helper for iOS max interval (22.5ms)
     advertising->start();
 
     Serial.println("[BLE] Advertising as MAJN-Bassinet with Wireless OTA Service.");
@@ -357,19 +372,14 @@ void bleNotifyTelemetry(
     JsonDocument doc;
     doc["type"] = "telemetry";
     doc["protocol"] = MajnBle::PROTOCOL_VERSION;
-    doc["firmware"] = "0.2.0-ble";
+    doc["firmware"] = "v1.2-wireless";
     doc["uptime_ms"] = millis();
     doc["state"] = stateName(state);
     doc["safety_lock"] = safetyLock;
     doc["frequency_hz"] = frequencyHz;
     doc["amplitude_scale"] = amplitudeScale;
-    JsonObject acc = doc["accel_g"].to<JsonObject>();
-    acc["x"] = ax;
-    acc["y"] = ay;
-    acc["z"] = az;
-    doc["pvdd_v"] = nullptr;
-    doc["vdd_3v3_v"] = nullptr;
-    doc["amp_temp_c"] = nullptr;
+    doc["duration_min"] = MajnSystemCtrl::getRunningDurationMinutes();
+    doc["remaining_sec"] = MajnSystemCtrl::getRemainingSeconds();
     doc["amp_ready"] = MajnAmplifier::isAmplifierReady();
     doc["amp_status"] = MajnAmplifier::getStatusString();
 
