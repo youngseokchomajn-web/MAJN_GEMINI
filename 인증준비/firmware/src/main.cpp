@@ -19,7 +19,7 @@
 // -------------------------------------------------------------------------
 volatile bool systemActive = false;
 volatile unsigned long activeStateStartTime = 0;
-const unsigned long MAX_RUNNING_TIME_MS = 30 * 60 * 1000; // 30 minutes KC auto-stop
+const unsigned long MAX_RUNNING_TIME_MS = 30 * 60 * 1000; // Device-level runtime safety timeout (30 minutes). Not a claim of KC regulatory requirement.
 
 static AccelData latestAccel = {0, 0, 0, 0.0f, 0.0f, 1.0f};
 
@@ -67,7 +67,7 @@ void VibrationControlTask(void *pvParameters) {
             continue;
         }
 
-        // Automatic run-time cutoff (KC infant safety standard: 30 minutes)
+        // Device-level automatic run-time cutoff (30 minutes software safety watchdog)
         if (systemActive && (activeStateStartTime > 0) && (millis() - activeStateStartTime > MAX_RUNNING_TIME_MS)) {
             Serial.println("[Safety] 30 minutes limit exceeded. Soft Stop engaged.");
             MajnSafety::requestSafeStop();
@@ -155,28 +155,12 @@ void setup() {
     // 0. Initialize Common System Controller
     MajnSystemCtrl::init();
 
-    // 0.1 Explicit OTA Rollback Verification Check
-    const esp_partition_t *runningPartition = esp_ota_get_running_partition();
-    esp_ota_img_states_t otaState;
-    if (esp_ota_get_state_partition(runningPartition, &otaState) == ESP_OK) {
-        if (otaState == ESP_OTA_IMG_PENDING_VERIFY) {
-            Serial.println("[OTA-Boot] Firmware booted in PENDING_VERIFY state. Running health diagnostics...");
-            if (ESP.getFreeHeap() > 30000) {
-                Serial.println("[OTA-Boot] Health diagnostics PASSED. Marking app VALID (cancelling rollback).");
-                esp_ota_mark_app_valid_cancel_rollback();
-            } else {
-                Serial.println("[OTA-Boot] Health diagnostics FAILED (Low Heap). Triggering automatic rollback!");
-                esp_ota_mark_app_invalid_rollback_and_reboot();
-            }
-        }
-    }
-
     // 1. Initialize Safety Layer (Lowest level gatekeeper)
     MajnSafety::initSafety();
 
 #if defined(MAJN_WIFI_CONTROL)
     // Wi-Fi SoftAP & HTTP Server (Brought up FIRST so network is discoverable immediately)
-    if (!MajnWiFi::initWiFiServer("MAJN-Bassinet")) {
+    if (!MajnWiFi::initWiFiServer("MAJN-Bassinet", "majn-secure-2026")) {
         Serial.println("[FATAL] Wi-Fi SoftAP initialization failed.");
         MajnSafety::requestEmergencyStop();
         while (1);
@@ -227,6 +211,36 @@ void setup() {
     // MajnOta::initOta();
 
     Serial.println("[OK] System Tasks Running. Ready for BLE Connection.");
+
+    // -------------------------------------------------------------------------
+    // 8. Explicit OTA Rollback Verification Gate
+    // Executed ONLY after full hardware, safety layers, and tasks are alive.
+    // -------------------------------------------------------------------------
+    const esp_partition_t *runningPartition = esp_ota_get_running_partition();
+    esp_ota_img_states_t otaState;
+    if (runningPartition && esp_ota_get_state_partition(runningPartition, &otaState) == ESP_OK) {
+        if (otaState == ESP_OTA_IMG_PENDING_VERIFY) {
+            Serial.println("[OTA-Boot] Firmware booted in PENDING_VERIFY state. Running comprehensive health diagnostics...");
+            
+            bool tasksHealthy = (commTaskHandle != NULL && controlTaskHandle != NULL && audioTaskHandle != NULL);
+            bool heapHealthy = (ESP.getFreeHeap() >= 30000);
+            bool safetyHealthy = (!systemActive && !MajnSafety::isSafetyLockTriggered());
+            
+            if (tasksHealthy && heapHealthy && safetyHealthy) {
+                esp_err_t err = esp_ota_mark_app_valid_cancel_rollback();
+                Serial.printf("[OTA-Boot] Diagnostics PASSED (Heap: %u, Tasks: OK, Safety: OK). Marked app VALID (result: %s).\n",
+                              ESP.getFreeHeap(), esp_err_to_name(err));
+            } else {
+                Serial.printf("[OTA-Boot] Diagnostics FAILED! (Heap: %u, Tasks: %s, Safety: %s). Initiating automatic rollback...\n",
+                              ESP.getFreeHeap(), tasksHealthy ? "OK" : "FAIL", safetyHealthy ? "OK" : "LOCK");
+                esp_err_t err = esp_ota_mark_app_invalid_rollback_and_reboot();
+                Serial.printf("[OTA-Boot] Rollback trigger returned: %s\n", esp_err_to_name(err));
+            }
+        } else {
+            Serial.printf("[OTA-Boot] Running partition '%s' is in state %d (not PENDING_VERIFY).\n",
+                          runningPartition->label, otaState);
+        }
+    }
 }
 
 void loop() {

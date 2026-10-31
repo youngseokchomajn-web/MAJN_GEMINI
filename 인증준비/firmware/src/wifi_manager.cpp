@@ -13,18 +13,29 @@
 namespace MajnWiFi {
 
 static const byte DNS_PORT = 53;
-static const char OTA_AUTH_TOKEN[] = "majn2026-ota-token";
 static DNSServer dnsServer;
 static WebServer server(80);
 static AccelData sLatestAccel = {0, 0, 0, 0.0f, 0.0f, 1.0f};
 static bool sOtaInProgress = false;
+static String sAuthToken = "majn-device-token-2026";
 
-static bool isOtaAuthorized() {
-    if (server.hasArg("token") && server.arg("token") == OTA_AUTH_TOKEN) {
+bool isOtaInProgress() {
+    return sOtaInProgress;
+}
+
+static bool isRequestAuthorized() {
+    if (sAuthToken.isEmpty()) return true;
+    if (server.hasHeader("X-Auth-Token") && server.header("X-Auth-Token") == sAuthToken) {
         return true;
     }
-    if (server.hasHeader("X-OTA-Token") && server.header("X-OTA-Token") == OTA_AUTH_TOKEN) {
+    if (server.hasArg("token") && server.arg("token") == sAuthToken) {
         return true;
+    }
+    if (server.hasHeader("Cookie")) {
+        String cookie = server.header("Cookie");
+        if (cookie.indexOf(String("majn_token=") + sAuthToken) != -1) {
+            return true;
+        }
     }
     return false;
 }
@@ -32,6 +43,7 @@ static bool isOtaAuthorized() {
 static void handleRoot() {
     MajnSystemCtrl::noteClientActivity();
     server.sendHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+    server.sendHeader("Set-Cookie", String("majn_token=") + sAuthToken + "; Path=/; HttpOnly; SameSite=Strict");
     server.send(200, "text/html", MOBILE_INDEX_HTML);
 }
 
@@ -57,20 +69,26 @@ static void handleStatus() {
                    String(",\"largest_free_block\":") + largestBlock + "}";
     }
 
-    server.sendHeader("Access-Control-Allow-Origin", "*");
+    server.sendHeader("Access-Control-Allow-Origin", "http://192.168.4.1");
     server.send(200, "application/json", jsonOut);
 }
 
 static void handlePing() {
     MajnSystemCtrl::noteClientActivity();
-    server.sendHeader("Access-Control-Allow-Origin", "*");
+    server.sendHeader("Access-Control-Allow-Origin", "http://192.168.4.1");
     server.send(200, "application/json", "{\"status\":\"ok\"}");
 }
 
 static void handleCommand() {
     MajnSystemCtrl::noteClientActivity();
+    server.sendHeader("Access-Control-Allow-Origin", "http://192.168.4.1");
+
+    if (!isRequestAuthorized()) {
+        server.send(401, "application/json", "{\"error\":\"Unauthorized: Missing or invalid authentication token\"}");
+        return;
+    }
+
     if (sOtaInProgress) {
-        server.sendHeader("Access-Control-Allow-Origin", "*");
         server.send(423, "application/json", "{\"error\":\"Locked: Firmware update in progress. Vibration inhibited.\"}");
         return;
     }
@@ -84,11 +102,14 @@ static void handleCommand() {
     String responseJson;
     bool success = MajnSystemCtrl::handleJsonCommand(body.c_str(), responseJson);
 
-    server.sendHeader("Access-Control-Allow-Origin", "*");
     server.send(success ? 200 : 400, "application/json", responseJson);
 }
 
-bool initWiFiServer(const char* ssid, const char* password) {
+bool initWiFiServer(const char* ssid, const char* password, const char* authToken) {
+    if (authToken && strlen(authToken) > 0) {
+        sAuthToken = authToken;
+    }
+
     // 1. Reset Wi-Fi peripheral to clean state
     WiFi.disconnect(true);
     delay(50);
@@ -100,12 +121,12 @@ bool initWiFiServer(const char* ssid, const char* password) {
     IPAddress subnet(255, 255, 255, 0);
     WiFi.softAPConfig(local_ip, gateway, subnet);
 
-    // 3. Start SoftAP on Channel 1 (Standard 2.4GHz non-overlapping channel)
+    // 3. Start SoftAP on Channel 1 with WPA2-PSK security (never default to Open AP)
     bool apStarted = false;
     if (password && strlen(password) >= 8) {
         apStarted = WiFi.softAP(ssid, password, 1, 0, 4);
     } else {
-        apStarted = WiFi.softAP(ssid, nullptr, 1, 0, 4);
+        apStarted = WiFi.softAP(ssid, "majn-secure-2026", 1, 0, 4);
     }
 
     if (!apStarted) {
@@ -114,16 +135,14 @@ bool initWiFiServer(const char* ssid, const char* password) {
     }
 
     // 4. Disable Wi-Fi Modem Sleep (CRITICAL for mobile beacon detection)
-    // Prevents ESP32 from dropping beacon packets while smartphones scan
     WiFi.setSleep(false);
     esp_wifi_set_ps(WIFI_PS_NONE);
 
     // 5. Force 20MHz bandwidth (HT20) & standard b/g/n protocols
-    // Modern smartphones (especially iOS / iPhones) reject or hide 40MHz (HT40) APs on 2.4GHz
     esp_wifi_set_bandwidth(WIFI_IF_AP, WIFI_BW_HT20);
     esp_wifi_set_protocol(WIFI_IF_AP, WIFI_PROTOCOL_11B | WIFI_PROTOCOL_11G | WIFI_PROTOCOL_11N);
 
-    // 6. Set Regulatory Country Domain to Korea KC Standard (KR: Channels 1-13)
+    // 6. Set Regulatory Country Domain: Korea regulatory domain configuration (KR: Channels 1-13)
     wifi_country_t country = {
         .cc = "KR",
         .schan = 1,
@@ -131,14 +150,18 @@ bool initWiFiServer(const char* ssid, const char* password) {
         .max_tx_power = 60, // ~15 dBm
         .policy = WIFI_COUNTRY_POLICY_MANUAL
     };
-    esp_wifi_set_country(&country);
+    esp_err_t cErr = esp_wifi_set_country(&country);
+    if (cErr != ESP_OK) {
+        Serial.printf("[WiFi] WARN: Failed to apply regulatory country domain, err=0x%X\n", cErr);
+    } else {
+        Serial.println("[WiFi] Regulatory country domain applied: KR (Channels 1-13, 15dBm max).");
+    }
 
     // 7. Set Safe Transmission RF Power (15 dBm) AFTER SoftAP is started
-    // 15dBm balances mobile detection range while keeping peak TX current (~280mA) well within U2 AP2112K LDO limit (600mA)
     WiFi.setTxPower(WIFI_POWER_15dBm);
 
     Serial.println("[WiFi] SoftAP Started Successfully!");
-    Serial.printf("[WiFi] SSID: %s (Channel 1, HT20, 15.0dBm SafePower, NoSleep)\n", ssid);
+    Serial.printf("[WiFi] SSID: %s (Channel 1, HT20, 15.0dBm SafePower, WPA2-PSK)\n", ssid);
     Serial.printf("[WiFi] IP Address: %s\n", WiFi.softAPIP().toString().c_str());
 
     // 5. Start DNS Server for Captive Portal (Redirects any domain query to 192.168.4.1)
@@ -177,7 +200,7 @@ bool initWiFiServer(const char* ssid, const char* password) {
             "</style></head><body><div class='card'><h2>🚀 MAJN 보안 무선 OTA</h2>"
             "<p style='color:#94a3b8;font-size:14px;margin-top:8px;'>ESP32 실행 바이너리(.bin)와 인증 토큰을 입력하세요.</p>"
             "<form method='POST' action='/update' enctype='multipart/form-data'>"
-            "<input type='password' name='token' value='majn2026-ota-token' placeholder='인증 토큰' required>"
+            "<input type='password' name='token' placeholder='보안 인증 토큰' required>"
             "<input type='file' name='update' accept='.bin' required>"
             "<button type='submit'>보안 업데이트 시작</button></form></div></body></html>"
         );
@@ -186,8 +209,8 @@ bool initWiFiServer(const char* ssid, const char* password) {
     server.on("/update", HTTP_POST, []() {
         server.sendHeader("Connection", "close");
         sOtaInProgress = false;
-        if (!isOtaAuthorized()) {
-            server.send(401, "text/plain", "UNAUTHORIZED: Invalid or missing OTA authentication token.");
+        if (!isRequestAuthorized()) {
+            server.send(401, "text/plain", "UNAUTHORIZED: Invalid or missing authentication token.");
             return;
         }
 
@@ -203,7 +226,7 @@ bool initWiFiServer(const char* ssid, const char* password) {
     }, []() {
         HTTPUpload& upload = server.upload();
         if (upload.status == UPLOAD_FILE_START) {
-            if (!isOtaAuthorized()) {
+            if (!isRequestAuthorized()) {
                 Serial.println("[Web-OTA] REJECTED: Unauthorized OTA attempt without valid token.");
                 return;
             }
@@ -215,7 +238,7 @@ bool initWiFiServer(const char* ssid, const char* password) {
                 Update.printError(Serial);
             }
         } else if (upload.status == UPLOAD_FILE_WRITE) {
-            if (!isOtaAuthorized()) return;
+            if (!isRequestAuthorized()) return;
             // First chunk sanity check: ESP32 binary image magic byte must be 0xE9
             if (upload.totalSize == 0 && upload.currentSize > 0) {
                 if (upload.buf[0] != 0xE9) {

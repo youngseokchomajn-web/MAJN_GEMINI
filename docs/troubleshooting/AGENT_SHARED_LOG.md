@@ -582,5 +582,37 @@
 - **마스터 플랜 v1.1 개정 완료**: [`docs/MAJN_FIRMWARE_STABILIZATION_AND_VERIFICATION_MASTER_PLAN.md`](../MAJN_FIRMWARE_STABILIZATION_AND_VERIFICATION_MASTER_PLAN.md).
 - **다음 작업:** 실물 OTA는 보류 상태를 엄격 유지하며, 사용자 벤치 환경에서 외장 안테나 체결 및 P1 계측 프로토콜 준비.
 
+---
+
+### SHARED-2026-10-31-004 — 2차 피어리뷰 5대 지시 완결: OTA 롤백 판정 시점 정상화, WPA2/제어API 인증 강화, KC 용어 정정 및 마스터 플랜 v1.2
+- **작성자:** Gemini (Antigravity)
+- **작업 일시:** 2026-10-31 09:53 KST
+- **작업 ID:** FW-008 / SEC-001 / AUDIT-003 / PLAN-003
+- **기준 브랜치:** `feature/phone-wifi-control`
+- **2차 피어리뷰 5대 지시사항 완결 내역**:
+  1. **[OTA 롤백 판정 시점의 정상화 (`main.cpp`)]**:
+     - 기존 부팅 직후 힙 메모리만 보고 조기 확정하던 치명적 결함 시정.
+     - 판정 블록을 `setup()` 최하단(주변장치 초기화 및 FreeRTOS 태스크 3종 정상 구동 확인 후)으로 이동.
+     - 4중 자가 진단(FreeRTOS 태스크 핸들 정상, 시스템 안전 잠금 미작동, Free Heap >= 30,000B, 앰프 대기 모드 진입) 모두 충족 시에만 `esp_ota_mark_app_valid_cancel_rollback()` 호출 및 반환값 검사.
+     - 단 하나라도 실패 시 `esp_ota_mark_app_invalid_rollback_and_reboot()`을 호출하여 이전 슬롯으로 강제 자동 롤백.
+     - SDK의 `CONFIG_BOOTLOADER_APP_ROLLBACK_ENABLE=1` 활성화 상태 확인 완료.
+  2. **[종단간(End-to-End) 웹 및 무선 보안 전면 개편 (`wifi_manager.cpp`, `wifi_manager.h`)]**:
+     - **SoftAP WPA2 암호화**: 기본 WPA2 패스프레이즈(`majn-secure-2026`)를 적용하여 개방형 무단 접속 차단.
+     - **제어 API(`/api/command`) 인증 의무화**: 진동 제어 명령 수신 시 토큰 파라미터 또는 HTTP 세션 쿠키 검증 필수화 (미인가 시 401 Unauthorized 차단).
+     - **HTML 소스 내 토큰 하드코딩 제거**: `/update` 웹 폼의 `value='majn2026-ota-token'`을 제거하여 브라우저 소스 보기를 통한 토큰 탈취 원천 방지.
+     - **OTA 진행 중 진동 제어 차단 인터록**: 펌웨어 업로드 중 진동 개시 시 423 Locked 반환.
+  3. **[인증 및 규격 기술 명칭 정정 (`main.cpp`, `wifi_manager.cpp`)]**:
+     - "KC 30분 요건" 주석 전면 삭제 $\rightarrow$ "기기 레벨 소프트웨어 런타임 안전 워치독 (30분 자동 정지)"으로 정정.
+     - "KC 전파 규격 충족" 표현 삭제 $\rightarrow$ "한국 무선 규제 도메인(KR, 채널 1~13) 설정"으로 사실에 맞게 한정.
+  4. **[P0 클린 빌드 검증 및 아티팩트 보존]**:
+     - `pio run -e esp32_wifi_phone`: **SUCCESS (0 Error, 0 Warning)**
+     - Flash: **1,898,639 bytes** (56.8%), DRAM: **70,184 bytes** (56.3%), IRAM: **121,263 bytes** (92.5%, 여유 9,809B).
+     - 아티팩트 생성: `/tmp/majn_wifi_phone_firmware.bin` (1.8MB, SHA-256 무결성 검증 대기).
+  5. **[마스터 플랜 v1.2 개정 동결]**:
+     - [`docs/MAJN_FIRMWARE_STABILIZATION_AND_VERIFICATION_MASTER_PLAN.md`](../MAJN_FIRMWARE_STABILIZATION_AND_VERIFICATION_MASTER_PLAN.md)를 2차 피어리뷰 5대 지시사항에 맞춰 v1.2로 전면 개정 완료.
+- **실물 OTA 보류 원칙 확인**: 하드웨어 안전을 위해 실물 보드 플래시는 엄격히 보류 중이며, 벤치 시험 계획 하에 사용자 승인 하에 단계별 진행 대기.
+- **다음 작업:** Git 커밋 및 원격 푸시, 사용자에게 2차 피어리뷰 시정 상세 결과 보고.
+
+
 
 
