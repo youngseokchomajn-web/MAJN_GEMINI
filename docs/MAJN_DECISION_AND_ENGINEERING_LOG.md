@@ -226,13 +226,19 @@
      - 칩 품번: `U3`=MP3426DL(`C133224`), `U2`=AP2112K-3.3(`C51118`, 600mA), `D1`=SMAJ5.0A(`C83329`)
      - I2C 주소 및 시퀀싱: `R12`=4.7kΩ(7-bit `0x2C`), `R11`=100kΩ PD, `R13`/`R14`=10kΩ PU
      - 오디오 EMI: `FB1~4` (220Ω 3A `C154119`) + `C24~27` (2.2nF 50V `C16033`)
-  4. **기구 간섭(13.5mm) 해소**:
+  4. **기구 간섭(13.5mm) 해소 및 LCSC 실물 발주 품번 정합**:
      - `J1`, `J2`, `UART_HDR`을 **직각(Right-Angle 90°) 저배형 커넥터**(`B-2100S02P-A120`, `B-2100S06P-A120`)로 변경하여 케이블 측면 인출 구조 확립.
+     - **JLCPCB Part # 실품번 동기화**: `BOM_MAJN_Rev_C.csv` 내에서 수직 핀헤더 품번(`C124375`, `C124380`)을 완벽히 퇴출하고, 실제 90° 직각 핀헤더인 **`C124376` (`J1,J2`)** 및 **`C124381` (`UART_HDR`)**로 1:1 매칭 완료.
      - 수직 스택업 계산: 스페이서(3.0mm) + PCB(1.76mm) + 최고부품(5.0mm) = 9.76mm $\le$ 캐비티 최소 유효고 13.0mm (**+3.24mm 안전 여유고 확보**).
-  5. **RF 간섭 근본 해결**:
+  5. **100% 단면(Top) SMT 달성 및 실증 베이스라인 확정**:
+     - `2026-07-09` 개선판을 제조 베이스라인으로 동결. 구버전(`2026-07-08`)의 바닥면 `R12` (0603 `C23162`)를 상면 `0402` (`C25900`)로 전환하여 **56개 전 부품 100% Top 단면 실장**을 달성, 양면 실장 비용 절감 및 바닥면 돌출 완전 배제.
+  6. **RF 간섭 근본 해결**:
      - `U1`을 외장 u.FL 안테나 모듈인 **`ESP32-WROOM-32UE-N8` (`C701345`)**로 확정.
-  6. **자동 검증기 통과**:
-     - 신규 [`tools/verify_mfg_package.py`](file:///Users/youngseok/Desktop/majn/tools/verify_mfg_package.py) 검증 스크립트 실행 결과 **5/5 GATES 100% PASS** 확인.
+  7. **진성 자동 검증기 통과 (Gerber FPT ↔ CPL 좌표 교차 검증)**:
+     - 신규 [`tools/verify_mfg_package.py`](file:///Users/youngseok/Desktop/majn/tools/verify_mfg_package.py) 검증 스크립트를 통해 `FlyingProbeTesting.json`과 `CPL_MAJN_Rev_C.csv` 간 56개 전 부품의 실제 물리 좌표를 $\mu\text{m}$ 단위로 전수 비교:
+       - $\max(\Delta X) = 0.0004\text{mm}$, $\max(\Delta Y) = 0.0004\text{mm}$ ($\le 0.01\text{mm}$ 허용치 대비 25배 정밀)
+       - CPL 및 FPT 상 100% Top 레이어 단면 실장 확인
+       - **5/5 GATES 100% PASS** 확인.
 
 ---
 
