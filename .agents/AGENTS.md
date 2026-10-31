@@ -53,7 +53,9 @@
   - 코너 블록: 20×20mm 부채꼴 R20 조각 3장 적층 (13.5mm 높이 코너 기둥 4개 형성으로 외곽 R20 일체형 마감)
   - 하판: 450 × 250 × 4.5mm (4코너 R20 라운딩, M3 접시머리 카운터싱크 나사홀 6개소)
 * **최신 도면 파일 SSOT**:
-  - `/Users/youngseok/Desktop/majn/majn_housing/majung_bassinet_order_4.5T_haptic.dxf`
-  - `/Users/youngseok/Desktop/majn/majn_housing/견적요청_4.5T_메이커스라운지_haptic.dxf` (해광레이저 발주 규격 호환)
+  - `/Users/youngseok/Desktop/majn/majn_housing/majung_bassinet_4.5T_rev2_master.dxf` (10볼트 체결·인서트홀·⌀7그로밋·직사각익사이터 마킹 반영)
+  - `/Users/youngseok/Desktop/majn/majn_housing/majung_silicone_gasket_rev2.dxf` (1.2T 식품등급 실리콘 가스켓 전용 도면)
+  - `/Users/youngseok/Desktop/majn/majn_housing/REV2_CAD_DECISION_RECORD.md` (설계 의사결정 기록 ADR)
+  - `/Users/youngseok/Desktop/majn/majn_housing/rev2_params.py` (CAD 치수 단일 진실 공급원 SSOT)
 
 
