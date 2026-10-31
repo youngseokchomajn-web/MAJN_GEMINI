@@ -162,7 +162,7 @@ bool initBleServer() {
     advertising->addServiceUUID(OTA_SERVICE_UUID);
     advertising->setScanResponse(true);
     advertising->setMinPreferred(0x06); // Helper for fast iOS connection (7.5ms)
-    advertising->setMinPreferred(0x12); // Helper for iOS max interval (22.5ms)
+    advertising->setMaxPreferred(0x12); // Helper for iOS max interval (22.5ms)
     advertising->start();
 
     Serial.println("[BLE] Advertising as MAJN-Bassinet with MITM Encryption & Passkey Security.");

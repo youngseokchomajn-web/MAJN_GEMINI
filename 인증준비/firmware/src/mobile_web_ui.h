@@ -478,7 +478,8 @@ const char MOBILE_INDEX_HTML[] PROGMEM = R"rawliteral(<!DOCTYPE html>
         if (authToken) {
           fetchHeaders['X-Auth-Token'] = authToken;
         }
-        const res = await fetch('/api/status', { headers: fetchHeaders });
+        const statusUrl = '/api/status' + (authToken ? ('?token=' + encodeURIComponent(authToken)) : '');
+        const res = await fetch(statusUrl, { headers: fetchHeaders, credentials: 'same-origin' });
         if (!res.ok) throw new Error('Status poll HTTP ' + res.status);
         const data = await res.json();
         

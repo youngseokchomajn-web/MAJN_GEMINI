@@ -815,6 +815,37 @@
   - 하드웨어 검증 스위트: `tools/verify_hardware_review.py` **11 / 11 LOGICAL RULES PASSED (100.0%)**
 - **실물 OTA 상태**: **보류 (HOLD 유지 — R6 사용자 승인 대기)**
 
+---
+
+### SHARED-2026-10-31-012 — [무선 보안·안정화 2차 엄격 피어리뷰 및 결함 시정] BLE 광고 파라미터 오기 수정, BLE OTA 3.19MB 파티션 정합 & Magic Byte 0xE9 검증, 전 부팅 경로 앰프 고장 잠금 확립, 50종 정적 검증 스위트 완비
+- **작성자:** Gemini (Antigravity - Adversarial Reviewer)
+- **작업 일시:** 2026-10-31 13:52 KST
+- **작업 ID:** WIRELESS-REMEDIATION-REVIEW-FIX / FW-006
+- **기준 브랜치:** `feature/phone-wifi-control`
+- **1차 구현 결함 분석 및 시정 내역**:
+  1. **[BLE Advertising 설정 오기 교정 (`ble_manager.cpp`)]**:
+     - **결함**: `setMinPreferred(0x06)` 호출 후 `setMinPreferred(0x12)`가 연속 호출되어 최소 간격이 22.5ms로 덮어씌워지고 최대 간격(`maxPreferred`)은 미설정(0) 상태로 방치되는 오타 결함 발견.
+     - **시정**: `setMaxPreferred(0x12)`로 수정하여 iOS 규격 권장(최소 7.5ms, 최대 22.5ms) 정상 반영.
+  2. **[BLE OTA 파티션 경계 및 바이너리 매직 바이트 검증 (`ota_ble_service.cpp`)]**:
+     - **결함**: `partitions_8mb_ota.csv`의 실제 OTA 슬롯(0x330000 = 3,342,336B / 3.19MB)과 달리 레거시 2MB(`2097152`) 상한선이 하드코딩되어 바이너리 추가 확장 시 BLE OTA가 조기 거부되는 결함. 또한 비-ESP32 바이너리 업로드 시 헤더 검증 없이 플래시 쓰기가 진행되는 결함.
+     - **시정**: `MAX_OTA_PARTITION_SIZE`를 `0x330000`(3,342,336 bytes)로 동기화. 첫 번째 청크 수신 시 ESP32 이미지 매직 바이트 `0xE9` 검증 로직을 추가하여 손상/오류 이미지 즉시 거부 및 flash 손상 방지.
+  3. **[앰프 하드웨어 결함 universal 잠금 확립 (`main.cpp`)]**:
+     - **결함**: 1차 구현에서는 `PENDING_VERIFY` 부팅 시에만 앰프 미응답 시 VALID 확정 + `requestEmergencyStop()`을 호출하고, 일반 부팅(롤백 확인 후 또는 팩토리)에서는 앰프 초기화 실패 시 경고만 출력하고 시스템을 `READY`로 방치하여 앰프 없이 진동이 시도될 수 있었던 결함.
+     - **시정**: 롤백 검증 블록 직후 universal 앰프 상태 평가를 추가하여, 부팅 모드(PENDING_VERIFY / 일반)에 무관하게 TAS5805M 오프라인 시 `AMP_FAULT` 및 `requestEmergencyStop()`을 강제 잠금. 단, 롤백 게이트는 통과시켜 무선 OTA 복구 경로는 상시 100% 개방 유지.
+  4. **[모바일 웹 UI `/api/status` URL 토큰 폴백 (`mobile_web_ui.h`)]**:
+     - **시정**: 캡티브 포털 샌드박스에서 커스텀 헤더(`X-Auth-Token`)가 차단될 가능성에 대비하여 `/api/status` 폴링 시 `?token=...` 쿼리 파라미터 및 `credentials: 'same-origin'`을 추가.
+  5. **[테스트 스위트 정밀화 (`tools/test_command_parser.py` v2.0)]**:
+     - **결함**: 기존 테스트 7이 로컬 딕셔너리를 자체 검증하던 동어반복형(tautological) 테스트였음.
+     - **시정**: 펌웨어 C++ 소스(`wifi_manager.cpp`, `ble_manager.cpp`, `ota_ble_service.cpp`, `main.cpp`)를 실제 파싱 및 정적 분석하는 15종 심층 소스 감사 규칙과 OTA 파티션 경계/매직바이트/universal FAULT 테스트를 통합하여 총 **50 / 50 PASSED** 완비.
+- **빌드 및 산출물 재검증**:
+  - `esp32_wifi_phone`: **SUCCESS (0 Error, 0 Warning)** (Flash 57.1%, RAM 21.4%, IRAM 잔여 9,757 B)
+  - `esp32_wifi_phone_txtest`: **SUCCESS (0 Error, 0 Warning)**
+  - 신규 바이너리 SHA-256: `570601eb1f3f6fb1c3bcb229554d06e9f9e331ae58d2cdbc41358a24cf214b7b`
+  - 복사 완료: `/tmp/majn_wifi_phone_firmware.bin`, `인증준비/firmware/majn_latest_firmware.bin`, `인증준비/firmware/majn_wifi_phone_firmware.bin`
+  - 하드웨어 검증 스위트: `tools/verify_hardware_review.py` **11 / 11 RULES PASSED (100.0%)**
+- **실물 OTA 상태**: **보류 (HOLD 유지 — R6 사용자 승인 대기)**
+
+
 
 
 

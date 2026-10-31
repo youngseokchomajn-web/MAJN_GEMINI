@@ -49,7 +49,7 @@ class OtaControlCallbacks : public BLECharacteristicCallbacks {
             }
 
             size_t fwSize = doc["size"] | 0;
-            const size_t MAX_OTA_PARTITION_SIZE = 2097152; // 2MB app partition boundary
+            const size_t MAX_OTA_PARTITION_SIZE = 0x330000; // 3,342,336 bytes (3.19 MB OTA slot in partitions_8mb_ota.csv)
             if (fwSize == 0 || fwSize > MAX_OTA_PARTITION_SIZE) {
                 Serial.printf("[BLE-OTA] Invalid firmware size: %u bytes (Max %u)\n", fwSize, MAX_OTA_PARTITION_SIZE);
                 notifyOtaStatus("error", 0, "Invalid firmware size or partition overflow");
@@ -121,6 +121,15 @@ class OtaDataCallbacks : public BLECharacteristicCallbacks {
         size_t len = characteristic->getLength();
 
         if (len > 0 && data) {
+            // First chunk sanity check: ESP32 image magic byte must be 0xE9
+            if (gBytesReceived == 0 && data[0] != 0xE9) {
+                Serial.printf("[BLE-OTA] REJECTED: Header magic byte 0x%02X != 0xE9. Not an ESP32 binary!\n", data[0]);
+                notifyOtaStatus("error", 0, "Invalid image: magic byte not 0xE9");
+                Update.abort();
+                gOtaRunning = false;
+                return;
+            }
+
             // Guard against buffer overrun beyond expected payload size
             if (gBytesReceived + len > gTotalBytesExpected) {
                 Serial.printf("[BLE-OTA] Overrun rejected: received %u + %u > total %u\n", gBytesReceived, len, gTotalBytesExpected);

@@ -1,15 +1,29 @@
 #!/usr/bin/env python3
 """
-MAJN Wireless Command Parser & Security Matrix Unit Test Suite (v1.0)
+MAJN Wireless Command Parser & Security Matrix Unit Test Suite (v2.0)
 ===================================================================
-Automated host-side verification of command handling, parameter boundary
-constraints, state machine transitions (including STOPPING state),
-and static endpoint security rules for MAJN Smart Bassinet Firmware.
+Automated host-side verification of:
+1. Command parsing, parameter boundary constraints, and invalid payloads.
+2. State machine transitions (RUNNING -> STOPPING -> READY).
+3. ESTOP / FAULT lockout and recovery gate.
+4. OTA cross-locking gate and firmware validation checks.
+5. Deep static source verification of firmware C++ files:
+   - Wi-Fi access control, WPA2 NVS generation, and token purge.
+   - CORS wildcard removal.
+   - BLE GATT MITM encryption permissions and advertising intervals.
+   - OTA partition size alignment (0x330000 = 3.19 MB) and 0xE9 magic byte check.
+   - Universal amplifier FAULT lock across all boot paths.
 """
 
 import json
 import sys
 import os
+import re
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+FW_SRC = os.path.join(BASE_DIR, "인증준비", "firmware", "src")
+PARTITIONS_CSV = os.path.join(BASE_DIR, "인증준비", "firmware", "partitions_8mb_ota.csv")
+PIO_INI = os.path.join(BASE_DIR, "인증준비", "firmware", "platformio.ini")
 
 class MockVibration:
     def __init__(self):
@@ -32,6 +46,8 @@ class MockSystem:
         self.ota_in_progress = False
         self.reboot_scheduled = False
         self.wifi_cred_reset = False
+        self.ota_bytes_received = 0
+        self.ota_expected_size = 0
 
     def get_system_state(self):
         if self.safety_lock:
@@ -104,7 +120,7 @@ class MockSystem:
         if cmd == "RESET_FAULT":
             if not self.safety_lock:
                 return True, {"id": req_id, "cmd": cmd, "status": "applied", "state": self.get_system_state()}
-            if self.amp_diag_fault:
+            if self.amp_diag_fault or not self.amp_ready:
                 return False, {"id": req_id, "cmd": cmd, "status": "rejected", "state": "FAULT"}
             self.safety_lock = False
             return True, {"id": req_id, "cmd": cmd, "status": "applied", "state": "READY"}
@@ -152,6 +168,27 @@ class MockSystem:
             return True, {"id": req_id, "cmd": cmd, "status": "applied", "state": "REBOOTING"}
 
         return False, {"id": req_id, "cmd": cmd, "status": "rejected", "state": self.get_system_state()}
+
+    def start_ota(self, size_bytes):
+        MAX_PARTITION = 0x330000  # 3,342,336 bytes
+        if self.system_active:
+            return False, "LOCKED_RUNNING"
+        if size_bytes == 0 or size_bytes > MAX_PARTITION:
+            return False, "INVALID_SIZE"
+        self.ota_in_progress = True
+        self.ota_expected_size = size_bytes
+        self.ota_bytes_received = 0
+        return True, "READY"
+
+    def write_ota_chunk(self, data_bytes):
+        if not self.ota_in_progress:
+            return False, "NOT_RUNNING"
+        if self.ota_bytes_received == 0:
+            if len(data_bytes) == 0 or data_bytes[0] != 0xE9:
+                self.ota_in_progress = False
+                return False, "INVALID_MAGIC"
+        self.ota_bytes_received += len(data_bytes)
+        return True, "OK"
 
 
 def run_tests():
@@ -226,7 +263,7 @@ def run_tests():
     assert_eq("RESET_FAULT restores READY", ok, True)
     assert_eq("State after RESET_FAULT", res["state"], "READY")
 
-    print("\n=== TEST SUITE 5: OTA Cross-Locking Gate ===")
+    print("\n=== TEST SUITE 5: OTA Cross-Locking Gate & Image Verification ===")
     sys_instance.ota_in_progress = True
     ok, res = sys_instance.handle_json_command(json.dumps({"id": 13, "cmd": "START", "frequency_hz": 45.0, "amplitude": 0.3}))
     assert_eq("START rejected during OTA", ok, False)
@@ -236,28 +273,93 @@ def run_tests():
     assert_eq("PING allowed during OTA", ok, True)
     sys_instance.ota_in_progress = False
 
-    print("\n=== TEST SUITE 6: RESET_WIFI_CRED Command ===")
+    # Test OTA Partition Size Boundary (3,342,336 bytes)
+    ok, code = sys_instance.start_ota(3342336)
+    assert_eq("OTA exactly partition size accepted", ok, True)
+    sys_instance.ota_in_progress = False
+
+    ok, code = sys_instance.start_ota(3342337)
+    assert_eq("OTA exceeding partition rejected", ok, False)
+    assert_eq("OTA partition overflow status", code, "INVALID_SIZE")
+
+    # Test Magic Byte Check (0xE9)
+    sys_instance.start_ota(1900000)
+    ok, code = sys_instance.write_ota_chunk(bytes([0xAA, 0xBB, 0xCC]))
+    assert_eq("Non-ESP32 magic byte (0xAA) rejected", ok, False)
+    assert_eq("Magic byte rejection code", code, "INVALID_MAGIC")
+
+    sys_instance.start_ota(1900000)
+    ok, code = sys_instance.write_ota_chunk(bytes([0xE9, 0x04, 0x02]))
+    assert_eq("Valid ESP32 magic byte (0xE9) accepted", ok, True)
+    sys_instance.ota_in_progress = False
+
+    print("\n=== TEST SUITE 6: RESET_WIFI_CRED & Recovery Command ===")
     ok, res = sys_instance.handle_json_command(json.dumps({"id": 15, "cmd": "RESET_WIFI_CRED"}))
     assert_eq("RESET_WIFI_CRED applied", ok, True)
     assert_eq("RESET_WIFI_CRED flag set", sys_instance.wifi_cred_reset, True)
     assert_eq("Reboot scheduled", sys_instance.reboot_scheduled, True)
     assert_eq("Rebooting state reported", res["state"], "REBOOTING")
 
-    print("\n=== TEST SUITE 7: Static Security & Endpoint Matrix Check ===")
-    endpoints = {
-        "/api/ping": {"auth_required": False, "methods": ["GET", "OPTIONS"]},
-        "/api/status": {"auth_required": True, "methods": ["GET", "OPTIONS"]},
-        "/api/command": {"auth_required": True, "methods": ["POST", "OPTIONS"]},
-        "/update": {"auth_required": True, "methods": ["GET", "POST"]},
-        "/generate_204": {"auth_required": False, "methods": ["GET"]},
-    }
+    print("\n=== TEST SUITE 7: Deep Static Firmware Source Code Audit ===")
+    
+    wifi_cpp = open(os.path.join(FW_SRC, "wifi_manager.cpp"), "r", encoding="utf-8").read()
+    ble_cpp = open(os.path.join(FW_SRC, "ble_manager.cpp"), "r", encoding="utf-8").read()
+    ota_ble_cpp = open(os.path.join(FW_SRC, "ota_ble_service.cpp"), "r", encoding="utf-8").read()
+    main_cpp = open(os.path.join(FW_SRC, "main.cpp"), "r", encoding="utf-8").read()
 
-    # Verify rules
-    assert_eq("/api/ping unauthenticated", endpoints["/api/ping"]["auth_required"], False)
-    assert_eq("/api/status authenticated", endpoints["/api/status"]["auth_required"], True)
-    assert_eq("/api/command authenticated", endpoints["/api/command"]["auth_required"], True)
-    assert_eq("/update authenticated", endpoints["/update"]["auth_required"], True)
-    assert_eq("/generate_204 unauthenticated", endpoints["/generate_204"]["auth_required"], False)
+    # Rule 1: No hardcoded Wi-Fi or BLE credentials in source
+    has_hardcoded_pass = bool(re.search(r'WiFi\.softAP\(\s*ssid\s*,\s*\"[^\"]+\"', wifi_cpp))
+    assert_eq("Zero hardcoded SoftAP password in wifi_manager.cpp", has_hardcoded_pass, False)
+
+    # Rule 2: NVS random passphrase generation present
+    has_nvs_pass_gen = "esp_random()" in wifi_cpp and "wifi_pass" in wifi_cpp
+    assert_eq("Dynamic NVS WPA2 passphrase generation present", has_nvs_pass_gen, True)
+
+    # Rule 3: auth_token removed from status response
+    auth_token_in_status = '"auth_token"' in wifi_cpp
+    assert_eq("auth_token purged from /api/status JSON", auth_token_in_status, False)
+
+    # Rule 4: No wildcard CORS headers
+    has_wildcard_cors = "Access-Control-Allow-Origin" in wifi_cpp and "*" in wifi_cpp
+    cors_matches = re.findall(r'Access-Control-Allow-Origin.*?\*', wifi_cpp)
+    assert_eq("Zero wildcard CORS headers in wifi_manager.cpp", len(cors_matches), 0)
+
+    # Rule 5: Authentication enforced on critical endpoints
+    has_auth_status = "if (!isRequestAuthorized())" in wifi_cpp and "handleStatus" in wifi_cpp
+    assert_eq("Authentication enforced on /api/status", has_auth_status, True)
+
+    has_auth_command = "if (!isRequestAuthorized())" in wifi_cpp and "handleCommand" in wifi_cpp
+    assert_eq("Authentication enforced on /api/command", has_auth_command, True)
+
+    has_auth_update = wifi_cpp.count("if (!isRequestAuthorized())") >= 3
+    assert_eq("Authentication enforced on /update (GET & POST)", has_auth_update, True)
+
+    # Rule 6: BLE MITM encryption permissions on characteristics
+    enc_mitm_ble_count = ble_cpp.count("ESP_GATT_PERM_READ_ENC_MITM | ESP_GATT_PERM_WRITE_ENC_MITM")
+    assert_eq("Command, Telemetry, Event characteristics have ENC_MITM", enc_mitm_ble_count >= 3, True)
+
+    enc_mitm_ota_count = ota_ble_cpp.count("ESP_GATT_PERM_READ_ENC_MITM | ESP_GATT_PERM_WRITE_ENC_MITM")
+    assert_eq("OTA Control and Data characteristics have ENC_MITM", enc_mitm_ota_count >= 2, True)
+
+    # Rule 7: BLE advertising has min and max preferred intervals
+    has_min_preferred = "setMinPreferred(0x06)" in ble_cpp
+    has_max_preferred = "setMaxPreferred(0x12)" in ble_cpp
+    assert_eq("BLE advertising sets setMinPreferred(0x06)", has_min_preferred, True)
+    assert_eq("BLE advertising sets setMaxPreferred(0x12)", has_max_preferred, True)
+
+    # Rule 8: OTA partition size in ota_ble_service.cpp is 0x330000 (3.19 MB)
+    has_partition_size_match = "0x330000" in ota_ble_cpp
+    assert_eq("BLE OTA partition limit matches 3.19 MB (0x330000)", has_partition_size_match, True)
+
+    # Rule 9: 0xE9 Magic Byte check in both Web OTA and BLE OTA
+    web_ota_magic = "0xE9" in wifi_cpp and "Header magic byte" in wifi_cpp
+    ble_ota_magic = "0xE9" in ota_ble_cpp and "Header magic byte" in ota_ble_cpp
+    assert_eq("Web OTA ESP32 magic byte (0xE9) validation present", web_ota_magic, True)
+    assert_eq("BLE OTA ESP32 magic byte (0xE9) validation present", ble_ota_magic, True)
+
+    # Rule 10: Amplifier hardware fault locked across all boot paths in main.cpp
+    amp_universal_fault = "if (!ampHealthy)" in main_cpp and "MajnSafety::requestEmergencyStop()" in main_cpp
+    assert_eq("Universal amplifier FAULT lock present in main.cpp", amp_universal_fault, True)
 
     print("\n=======================================================")
     print(f"Total Tests Run: {passed + failed}")

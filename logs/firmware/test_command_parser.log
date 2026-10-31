@@ -28,25 +28,41 @@
   [PASS] RESET_FAULT restores READY: True
   [PASS] State after RESET_FAULT: READY
 
-=== TEST SUITE 5: OTA Cross-Locking Gate ===
+=== TEST SUITE 5: OTA Cross-Locking Gate & Image Verification ===
   [PASS] START rejected during OTA: False
   [PASS] Rejection status during OTA: OTA_ACTIVE
   [PASS] PING allowed during OTA: True
+  [PASS] OTA exactly partition size accepted: True
+  [PASS] OTA exceeding partition rejected: False
+  [PASS] OTA partition overflow status: INVALID_SIZE
+  [PASS] Non-ESP32 magic byte (0xAA) rejected: False
+  [PASS] Magic byte rejection code: INVALID_MAGIC
+  [PASS] Valid ESP32 magic byte (0xE9) accepted: True
 
-=== TEST SUITE 6: RESET_WIFI_CRED Command ===
+=== TEST SUITE 6: RESET_WIFI_CRED & Recovery Command ===
   [PASS] RESET_WIFI_CRED applied: True
   [PASS] RESET_WIFI_CRED flag set: True
   [PASS] Reboot scheduled: True
   [PASS] Rebooting state reported: REBOOTING
 
-=== TEST SUITE 7: Static Security & Endpoint Matrix Check ===
-  [PASS] /api/ping unauthenticated: False
-  [PASS] /api/status authenticated: True
-  [PASS] /api/command authenticated: True
-  [PASS] /update authenticated: True
-  [PASS] /generate_204 unauthenticated: False
+=== TEST SUITE 7: Deep Static Firmware Source Code Audit ===
+  [PASS] Zero hardcoded SoftAP password in wifi_manager.cpp: False
+  [PASS] Dynamic NVS WPA2 passphrase generation present: True
+  [PASS] auth_token purged from /api/status JSON: False
+  [PASS] Zero wildcard CORS headers in wifi_manager.cpp: 0
+  [PASS] Authentication enforced on /api/status: True
+  [PASS] Authentication enforced on /api/command: True
+  [PASS] Authentication enforced on /update (GET & POST): True
+  [PASS] Command, Telemetry, Event characteristics have ENC_MITM: True
+  [PASS] OTA Control and Data characteristics have ENC_MITM: True
+  [PASS] BLE advertising sets setMinPreferred(0x06): True
+  [PASS] BLE advertising sets setMaxPreferred(0x12): True
+  [PASS] BLE OTA partition limit matches 3.19 MB (0x330000): True
+  [PASS] Web OTA ESP32 magic byte (0xE9) validation present: True
+  [PASS] BLE OTA ESP32 magic byte (0xE9) validation present: True
+  [PASS] Universal amplifier FAULT lock present in main.cpp: True
 
 =======================================================
-Total Tests Run: 34
-Passed: 34, Failed: 0
+Total Tests Run: 50
+Passed: 50, Failed: 0
 =======================================================

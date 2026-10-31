@@ -220,6 +220,8 @@ void setup() {
     // -------------------------------------------------------------------------
     const esp_partition_t *runningPartition = esp_ota_get_running_partition();
     esp_ota_img_states_t otaState;
+    bool ampHealthy = MajnAmplifier::isAmplifierReady();
+
     if (runningPartition && esp_ota_get_state_partition(runningPartition, &otaState) == ESP_OK) {
         if (otaState == ESP_OTA_IMG_PENDING_VERIFY) {
             Serial.println("[OTA-Boot] Firmware booted in PENDING_VERIFY state. Running comprehensive health diagnostics...");
@@ -227,7 +229,6 @@ void setup() {
             bool tasksHealthy = (commTaskHandle != NULL && controlTaskHandle != NULL && audioTaskHandle != NULL);
             bool heapHealthy = (ESP.getFreeHeap() >= 30000);
             bool safetyHealthy = (!systemActive && !MajnSafety::isSafetyLockTriggered());
-            bool ampHealthy = MajnAmplifier::isAmplifierReady();
             
             // Rollback gate policy (F6/R4):
             // Rollback ONLY on firmware bugs (task failure, heap < 30KB, or early safety lock).
@@ -235,17 +236,11 @@ void setup() {
             // instead mark app VALID and lock system in FAULT state so OTA remains functional.
             if (tasksHealthy && heapHealthy && safetyHealthy) {
                 esp_err_t err = esp_ota_mark_app_valid_cancel_rollback();
-                if (!ampHealthy) {
-                    Serial.printf("[OTA-Boot] Amplifier hardware init failed (AMP_FAULT)! App marked VALID (result: %s) to preserve OTA recovery path. Locking system in FAULT state.\n",
-                                  esp_err_to_name(err));
-                    MajnSafety::requestEmergencyStop(); // Locks system in FAULT state while preserving wireless communication & OTA
-                } else {
-                    Serial.printf("[OTA-Boot] Diagnostics PASSED (Heap: %u, Tasks: OK, Safety: OK, Amp: OK). Marked app VALID (result: %s).\n",
-                                  ESP.getFreeHeap(), esp_err_to_name(err));
-                }
+                Serial.printf("[OTA-Boot] Diagnostics PASSED (Heap: %u, Tasks: OK, Safety: OK). Marked app VALID (result: %s).\n",
+                              ESP.getFreeHeap(), esp_err_to_name(err));
             } else {
-                Serial.printf("[OTA-Boot] Diagnostics FAILED! (Heap: %u, Tasks: %s, Safety: %s, Amp: %s). Initiating automatic rollback...\n",
-                              ESP.getFreeHeap(), tasksHealthy ? "OK" : "FAIL", safetyHealthy ? "OK" : "LOCK", ampHealthy ? "OK" : "FAIL");
+                Serial.printf("[OTA-Boot] Diagnostics FAILED! (Heap: %u, Tasks: %s, Safety: %s). Initiating automatic rollback...\n",
+                              ESP.getFreeHeap(), tasksHealthy ? "OK" : "FAIL", safetyHealthy ? "OK" : "LOCK");
                 esp_err_t err = esp_ota_mark_app_invalid_rollback_and_reboot();
                 Serial.printf("[OTA-Boot] Rollback trigger returned: %s\n", esp_err_to_name(err));
             }
@@ -253,6 +248,14 @@ void setup() {
             Serial.printf("[OTA-Boot] Running partition '%s' is in state %d (not PENDING_VERIFY).\n",
                           runningPartition->label, otaState);
         }
+    }
+
+    // Hardware amplifier failure lock across all boot modes (F6/R4):
+    // If amplifier hardware init failed, lock system in FAULT state
+    // to inhibit all motor/vibration commands while keeping wireless communication (Wi-Fi/BLE) and OTA recovery fully accessible.
+    if (!ampHealthy) {
+        Serial.println("[Safety] Amplifier hardware offline (AMP_FAULT). Locking system in FAULT state to prevent operation while maintaining wireless OTA.");
+        MajnSafety::requestEmergencyStop();
     }
 }
 
