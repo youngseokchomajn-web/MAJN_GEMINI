@@ -845,6 +845,33 @@
   - 하드웨어 검증 스위트: `tools/verify_hardware_review.py` **11 / 11 RULES PASSED (100.0%)**
 - **실물 OTA 상태**: **보류 (HOLD 유지 — R6 사용자 승인 대기)**
 
+---
+
+### SHARED-2026-10-31-013 — [마스터플랜 v3.0 수립 및 개발 전 과정 종합 정리 푸시] 개발 배경·현재 코드·시정 내역 및 향후 6단계 개발 로드맵 SSOT 동기화 완료
+- **작성자:** Gemini (Antigravity)
+- **작업 일시:** 2026-10-31 13:57 KST
+- **작업 ID:** MASTER-SYNTHESIS-V3-HANDOFF
+- **기준 브랜치:** `feature/phone-wifi-control`
+- **주요 작업 내역**:
+  1. **[마스터플랜 v3.0 전면 개정 (`docs/MAJN_FIRMWARE_STABILIZATION_AND_VERIFICATION_MASTER_PLAN.md`)]**:
+     - **하드웨어 팩트 및 배경 SSOT 명시**: PCB #0005 물리 버튼 부재(BOOT/EN 없음), 유선 시리얼 플래시 불가(TX/RX/GND만 연결, DTR/RTS 없음, 오직 무선 OTA만 가능), ESP32-WROOM-32UE u.FL 외장 안테나 미체결로 인한 누설 전파(-84dBm) 현상 및 10cm 근접 실측 성공 경과 종합 정리.
+     - **W0 ~ W3 무선 완성 내역 통합**: Wi-Fi Open AP 검증에서 WPA2 강화로의 전환, 스마트폰 맞춤형 웹 UI(가상 센서 제거, 타이머 칩, 카운트다운, 반응형 UI), BLE GATT 서비스 사양 확정.
+     - **R1 ~ R5 심층 시정 완료 내역 기록**: NVS 기반 동적 10자 WPA2 암호, BLE MITM 6자리 패스키 암호화/본딩, RF 송신 출력 정책 분리(15.0dBm 기본 vs 19.5dBm 시험 분리), 롤백 게이트 앰프 결함 분리(하드웨어 결함 시 FAULT 잠금 및 OTA 채널 개방), STOPPING 상태 모델, 3.19MB 파티션 정합 및 Magic Byte 0xE9 검사, 50/50 단위 테스트 스위트 완비.
+     - **향후 6단계 개발 로드맵 (Phase 1 ~ Phase 6) 체계화**:
+       * Phase 1: 무선 실물 검증 및 기능 동결 (R6 게이트 $\rightarrow$ W7 Freeze)
+       * Phase 2: 하드웨어 액추에이션 완성 (12V Boost, TAS5805M BTL 구동, 램프다운 실측)
+       * Phase 3: 진동 계측 시스템 확립 (LSM6DSOX 6축 센서, 패드 상면 3축 가속도 계측)
+       * Phase 4: 통합 안전 차단 시스템 (하드웨어 인터록, 30분 타이머, 영아 안전)
+       * Phase 5: MVP 기구 및 하우징 통합 (4.5T 자작합판 하우징, 실리콘 가스켓, 배선 정리)
+       * Phase 6: 외부 연구 및 임상 실증 (UNIST 협력 연구, 영아 수면 유도 검증)
+  2. **[코드 및 빌드 상태 불변 확인]**:
+     - PlatformIO `esp32_wifi_phone` 환경 클린 컴파일 통과 (0 Error, 0 Warning).
+     - 바이너리: `/tmp/majn_wifi_phone_firmware.bin` (SHA-256: `570601eb1f3f6fb1c3bcb229554d06e9f9e331ae58d2cdbc41358a24cf214b7b`).
+  3. **[원격 브랜치 동기화]**:
+     - 본 마스터 정리 문서를 `origin/feature/phone-wifi-control` 브랜치에 최종 커밋 및 푸시.
+- **실물 OTA 상태**: **보류 (HOLD 유지 — R6 사용자 명시적 승인 대기)**
+
+
 
 
 
