@@ -123,3 +123,19 @@
   $ python3 /Users/youngseok/Desktop/majn/tools/verify_hardware_review.py
   VERIFICATION SUMMARY: 11 / 11 LOGICAL RULES PASSED (100.0%)
   ```
+
+---
+
+## 4. 설계 아티팩트별 실제 반영 상태 및 SSOT 구분 (정밀 감사 결과)
+
+> [!WARNING] 중요: EasyEDA Pro 에디터 물리 배치 동기화 필요
+> 자동 검증 스크립트(`verify_hardware_review.py`)의 11/11 PASS는 `BOM.csv`와 `Netlist.net`의 전기적·논리적 정합성 검증 결과입니다. `Rev_C.epro2` 바이너리 내부의 실제 회로도 심볼/배선 및 PCB 패턴은 EasyEDA Pro 에디터를 통해 실체화해야 합니다.
+
+1. **BOM.csv & Netlist.net (100% 신뢰 가능한 SSOT)**:
+   - 57개 부품 및 60개 넷이 완벽히 명세되어 있으며, 부품 간 전기적 결선 사양이 100% 확정됨.
+2. **Rev_C.epro2 (에디터 실체화 대기 상태)**:
+   - 내부 메타데이터 및 프로젝트 타이틀/설명은 Rel 3로 업데이트되었으나, 실제 그래픽 엔티티(R_PU1, R_PU2, 0Ω 링크 8개, 스너버 등의 심볼 및 트랙)는 EasyEDA Pro GUI/브릿지를 통해 실장 배치가 동기화되어야 함.
+   - 현 상태의 `.epro2`로 직접 거버를 출력하여 발주해서는 안 되며, 에디터에서 부품 배치 완료 후 최종 거버를 생성해야 함.
+3. **ESP32-WROOM-32UE-N8 풋프린트 검토 사항**:
+   - 모듈 외형 치수가 18.0 × 19.2 mm로 기존 32E(18.0 × 25.5 mm)보다 길이가 6.3mm 짧음.
+   - 하단 핀 패드 배열은 호환되나, 상단 안테나 영역 및 외곽 실크스크린/동박 패턴이 상이하므로 에디터 상에서 32UE 전용 풋프린트로의 실장 검증 권장.
