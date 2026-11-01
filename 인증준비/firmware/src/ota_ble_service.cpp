@@ -2,15 +2,20 @@
 
 #include <Update.h>
 #include <ArduinoJson.h>
+#include <atomic>
 #include "safety_manager.h"
 #include "vibration_controller.h"
 #include "system_controller.h"
 #include "amplifier_manager.h"
+#if defined(MAJN_WIFI_CONTROL)
+#include "wifi_manager.h"
+#endif
 
 namespace {
 BLECharacteristic* gOtaControl = nullptr;
 BLECharacteristic* gOtaData = nullptr;
 
+std::atomic<bool> gGlobalOtaActive{false};
 bool gOtaRunning = false;
 size_t gTotalBytesExpected = 0;
 size_t gBytesReceived = 0;
@@ -46,7 +51,12 @@ class OtaControlCallbacks : public BLECharacteristicCallbacks {
         const char* cmd = doc["cmd"] | "";
 
         if (strcmp(cmd, "OTA_BEGIN") == 0) {
-            if (gOtaRunning) {
+            if (gOtaRunning
+#if defined(MAJN_WIFI_CONTROL)
+                || MajnWiFi::isOtaInProgress()
+#endif
+                || !MajnBleOta::acquireOtaLock()) {
+                Serial.println("[BLE-OTA] REJECTED: Another OTA update is already in progress.");
                 notifyOtaStatus("error", 0, "OTA already in progress");
                 return;
             }
@@ -56,6 +66,7 @@ class OtaControlCallbacks : public BLECharacteristicCallbacks {
             if (fwSize == 0 || fwSize > MAX_OTA_PARTITION_SIZE) {
                 Serial.printf("[BLE-OTA] Invalid firmware size: %u bytes (Max %u)\n", fwSize, MAX_OTA_PARTITION_SIZE);
                 notifyOtaStatus("error", 0, "Invalid firmware size or partition overflow");
+                MajnBleOta::releaseOtaLock();
                 return;
             }
 
@@ -70,6 +81,7 @@ class OtaControlCallbacks : public BLECharacteristicCallbacks {
                 if (MajnVibration::getCurrentAmplitude() > 0.001f) {
                     Serial.println("[BLE-OTA] REJECTED: Vibration did not decay within timeout.");
                     notifyOtaStatus("error", 0, "System busy: vibration decay timeout");
+                    MajnBleOta::releaseOtaLock();
                     return;
                 }
             }
@@ -79,6 +91,7 @@ class OtaControlCallbacks : public BLECharacteristicCallbacks {
             if (!Update.begin(fwSize, U_FLASH)) {
                 Serial.printf("[BLE-OTA] Update.begin failed. Error: %d\n", Update.getError());
                 notifyOtaStatus("error", 0, "Update.begin failed");
+                MajnBleOta::releaseOtaLock();
                 return;
             }
 
@@ -97,6 +110,7 @@ class OtaControlCallbacks : public BLECharacteristicCallbacks {
                 Serial.printf("[BLE-OTA] Incomplete payload: %u != %u\n", gBytesReceived, gTotalBytesExpected);
                 Update.abort();
                 gOtaRunning = false;
+                MajnBleOta::releaseOtaLock();
                 notifyOtaStatus("error", 0, "Payload size mismatch");
                 return;
             }
@@ -117,6 +131,7 @@ class OtaControlCallbacks : public BLECharacteristicCallbacks {
                 notifyOtaStatus("error", 0, "Update.end failed");
             }
             gOtaRunning = false;
+            MajnBleOta::releaseOtaLock();
             return;
         }
 
@@ -124,6 +139,7 @@ class OtaControlCallbacks : public BLECharacteristicCallbacks {
             Serial.println("[BLE-OTA] Update aborted by client.");
             Update.abort();
             gOtaRunning = false;
+            MajnBleOta::releaseOtaLock();
             notifyOtaStatus("aborted", 0);
             return;
         }
@@ -144,6 +160,7 @@ class OtaDataCallbacks : public BLECharacteristicCallbacks {
                 notifyOtaStatus("error", 0, "Invalid image: magic byte not 0xE9");
                 Update.abort();
                 gOtaRunning = false;
+                MajnBleOta::releaseOtaLock();
                 return;
             }
 
@@ -153,6 +170,7 @@ class OtaDataCallbacks : public BLECharacteristicCallbacks {
                 notifyOtaStatus("error", (int)((gBytesReceived * 100) / gTotalBytesExpected), "Overrun error");
                 Update.abort();
                 gOtaRunning = false;
+                MajnBleOta::releaseOtaLock();
                 return;
             }
 
@@ -162,6 +180,7 @@ class OtaDataCallbacks : public BLECharacteristicCallbacks {
                 notifyOtaStatus("error", (int)((gBytesReceived * 100) / gTotalBytesExpected), "Write error");
                 Update.abort();
                 gOtaRunning = false;
+                MajnBleOta::releaseOtaLock();
                 return;
             }
 
@@ -205,6 +224,28 @@ void initBleOta(BLEServer* server) {
 
 bool isOtaInProgress() {
     return gOtaRunning;
+}
+
+bool isGlobalOtaLockHeld() {
+    return gGlobalOtaActive.load();
+}
+
+void abortOta() {
+    if (gOtaRunning) {
+        Serial.println("[BLE-OTA] Aborting active BLE OTA session.");
+        Update.abort();
+        gOtaRunning = false;
+        releaseOtaLock();
+    }
+}
+
+bool acquireOtaLock() {
+    bool expected = false;
+    return gGlobalOtaActive.compare_exchange_strong(expected, true);
+}
+
+void releaseOtaLock() {
+    gGlobalOtaActive.store(false);
 }
 
 }

@@ -333,6 +333,9 @@ bool handleJsonCommand(const char* jsonStr, String& responseJson) {
             MajnAmplifier::initAmplifier();
         }
 
+        // Explicitly clear any residual latched faults in hardware before verifying health
+        MajnAmplifier::clearFault();
+
         if (!MajnAmplifier::enterStandbyState()) {
             buildAckJson(id, cmd, "rejected", "FAULT", responseJson);
             return false;

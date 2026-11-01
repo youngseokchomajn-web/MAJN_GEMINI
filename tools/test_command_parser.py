@@ -48,6 +48,25 @@ class MockSystem:
         self.wifi_cred_reset = False
         self.ota_bytes_received = 0
         self.ota_expected_size = 0
+        self.thermal_derated = False
+        self.last_derated_target = 0.0
+
+    def simulate_thermal_supervisor(self, warn_byte):
+        if not self.system_active:
+            self.thermal_derated = False
+            self.last_derated_target = 0.0
+            return
+        if warn_byte & 0x04:
+            cur = self.vibration.target_amp
+            if not self.thermal_derated or (cur > self.last_derated_target + 0.01):
+                if cur > 0.01:
+                    derated = cur * 0.5
+                    self.vibration.set_target(self.vibration.target_freq, derated)
+                    self.last_derated_target = derated
+                    self.thermal_derated = True
+        else:
+            self.thermal_derated = False
+            self.last_derated_target = 0.0
 
     def get_system_state(self):
         if self.safety_lock:
@@ -424,6 +443,89 @@ def run_tests():
     safety_cpp = open(os.path.join(FW_SRC, "safety_manager.cpp"), "r", encoding="utf-8").read()
     has_stop_immediately = "void stopImmediately()" in vibr_cpp and "MajnVibration::stopImmediately()" in safety_cpp
     assert_eq("Immediate amplitude zeroing (stopImmediately) present on emergency stop", has_stop_immediately, True)
+
+    tas5805m_cpp = open(os.path.join(FW_SRC, "tas5805m.cpp"), "r", encoding="utf-8").read()
+    amp_cpp = open(os.path.join(FW_SRC, "amplifier_manager.cpp"), "r", encoding="utf-8").read()
+
+    # Rule 16: BLE Disconnect does not auto-stop soothing session in ble_manager.cpp
+    has_disconnect_stop = "MajnSystemCtrl::triggerSafeStop()" in ble_cpp
+    assert_eq("Zero session auto-stop on BLE disconnect/idle in ble_manager.cpp", has_disconnect_stop, False)
+
+    # Rule 17: BLE disconnect aborts active BLE-OTA
+    has_ble_disconnect_abort = "MajnBleOta::abortOta()" in ble_cpp and "isOtaInProgress()" in ble_cpp
+    assert_eq("BLE disconnect aborts active BLE-OTA in ble_manager.cpp", has_ble_disconnect_abort, True)
+
+    # Rule 18: Cross-transport OTA mutual exclusion and atomic locking present
+    has_cross_ota_wifi = "MajnBleOta::isOtaInProgress()" in wifi_cpp and "acquireOtaLock()" in wifi_cpp and "releaseOtaLock()" in wifi_cpp
+    has_cross_ota_ble = "MajnWiFi::isOtaInProgress()" in ota_ble_cpp and "acquireOtaLock()" in ota_ble_cpp and "releaseOtaLock()" in ota_ble_cpp
+    assert_eq("Cross-transport OTA mutual exclusion and atomic locking in wifi_manager.cpp", has_cross_ota_wifi, True)
+    assert_eq("Cross-transport OTA mutual exclusion and atomic locking in ota_ble_service.cpp", has_cross_ota_ble, True)
+
+    # Rule 19: SoftAP configured on Channel 6
+    has_channel_6 = "WiFi.softAP(ssid, wifiPass.c_str(), 6" in wifi_cpp
+    assert_eq("SoftAP channel set to 6 in wifi_manager.cpp", has_channel_6, True)
+
+    # Rule 20: TAS5805M begin ends in STANDBY (Hi-Z, 0x02) to prevent speaker pop
+    has_standby_boot = "enterStandbyState()" in tas5805m_cpp and "Amplifier in STANDBY" in tas5805m_cpp
+    assert_eq("TAS5805M begin() ends in STANDBY (Hi-Z) to eliminate boot pop noise", has_standby_boot, True)
+
+    # Rule 21: TAS5805M latching fault debounce via clearFault (0x80 to 0x78)
+    has_fault_debounce = "MajnAmplifier::clearFault()" in main_cpp and "REG_FAULT_CLEAR, 0x80" in tas5805m_cpp
+    assert_eq("Supervisor debounces TAS5805M latched faults with clearFault", has_fault_debounce, True)
+
+    # Rule 22: Thermal derating (warn & 0x04) reduces target amplitude by 50%
+    has_thermal_derating = "warn & 0x04" in main_cpp and "* 0.5f" in main_cpp and "MajnVibration::setTarget" in main_cpp
+    assert_eq("100ms supervisor performs 50% thermal derating on OTW (135°C)", has_thermal_derating, True)
+
+    # Rule 23: Standby fast-path optimization checks gAmpStandby before mutex
+    has_fastpath_standby = "if (gAmpStandby) return true;" in amp_cpp
+    has_volatile_flags = "volatile bool gAmpReady" in amp_cpp and "volatile bool gAmpStandby" in amp_cpp
+    assert_eq("Standby fast-path optimization checks gAmpStandby before mutex", has_fastpath_standby, True)
+    assert_eq("Amplifier status flags declared volatile bool", has_volatile_flags, True)
+
+    # Rule 24: RESET_FAULT explicitly calls MajnAmplifier::clearFault() before checking diagnostics
+    has_reset_fault_clear = "MajnAmplifier::clearFault()" in sys_ctrl_cpp and "RESET_FAULT" in sys_ctrl_cpp
+    assert_eq("RESET_FAULT explicitly clears latched faults before checking diagnostics", has_reset_fault_clear, True)
+
+    # Rule 25: isOtaInProgress strictly reports gOtaRunning in ota_ble_service.cpp
+    has_clean_is_ota = "bool isOtaInProgress() {\n    return gOtaRunning;\n}" in ota_ble_cpp or "bool isOtaInProgress() {\r\n    return gOtaRunning;\r\n}" in ota_ble_cpp
+    assert_eq("isOtaInProgress strictly reports BLE OTA status (gOtaRunning)", has_clean_is_ota, True)
+
+    # Rule 26: Thermal derating maintains ceiling on newly commanded targets via sLastDeratedTarget
+    has_last_derated_target = "sLastDeratedTarget" in main_cpp
+    assert_eq("Thermal derating tracks sLastDeratedTarget to cap new commands during OTW", has_last_derated_target, True)
+
+    print("\n=== TEST SUITE 8: Thermal Derating Dynamics & Command Re-derating ===")
+    thermal_sys = MockSystem()
+    ok, res = thermal_sys.handle_json_command(json.dumps({"id": 20, "cmd": "START", "frequency_hz": 40.0, "amplitude": 0.40}))
+    assert_eq("Thermal test START command accepted", ok, True)
+    assert_eq("Initial target amplitude before OTW", thermal_sys.vibration.target_amp, 0.40)
+
+    # Tick 1: OTW (135°C) detected -> 50% derating (0.40 -> 0.20)
+    thermal_sys.simulate_thermal_supervisor(0x04)
+    assert_eq("OTW trips 50% derating", thermal_sys.vibration.target_amp, 0.20)
+    assert_eq("Thermal derating flag active", thermal_sys.thermal_derated, True)
+
+    # Tick 2: OTW still active -> amplitude must remain 0.20 (no exponential decay!)
+    thermal_sys.simulate_thermal_supervisor(0x04)
+    assert_eq("OTW sustained tick does not exponentially decay amplitude", thermal_sys.vibration.target_amp, 0.20)
+
+    # User issues new higher command while still hot (SET_AMPLITUDE 0.50)
+    ok, res = thermal_sys.handle_json_command(json.dumps({"id": 21, "cmd": "SET_AMPLITUDE", "amplitude": 0.50}))
+    assert_eq("SET_AMPLITUDE while hot accepted by command gate", ok, True)
+    assert_eq("Commanded amplitude updated to 0.50", thermal_sys.vibration.target_amp, 0.50)
+
+    # Tick 3: Supervisor detects target exceeds derated ceiling while OTW active -> derates new target by 50% (0.50 -> 0.25)
+    thermal_sys.simulate_thermal_supervisor(0x04)
+    assert_eq("New target amplitude re-derated by 50% (0.50 -> 0.25) during OTW", thermal_sys.vibration.target_amp, 0.25)
+
+    # Tick 4: Chip cools down below 135°C (OTW clears)
+    thermal_sys.simulate_thermal_supervisor(0x00)
+    assert_eq("Thermal derating flag reset upon cooling", thermal_sys.thermal_derated, False)
+
+    thermal_sys.handle_json_command(json.dumps({"id": 22, "cmd": "STOP"}))
+    thermal_sys.vibration.current_amp = 0.0
+    assert_eq("System safely returned to READY state after thermal test", thermal_sys.get_system_state(), "READY")
 
     print("\n=======================================================")
     print(f"Total Tests Run: {passed + failed}")

@@ -12,6 +12,7 @@
 #include "mobile_web_ui.h"
 #include "vibration_controller.h"
 #include "amplifier_manager.h"
+#include "ota_ble_service.h"
 
 extern TaskHandle_t commTaskHandle;
 extern TaskHandle_t controlTaskHandle;
@@ -109,7 +110,7 @@ static void handleCommand() {
         return;
     }
 
-    if (sOtaInProgress) {
+    if (sOtaInProgress || MajnBleOta::isOtaInProgress()) {
         server.send(423, "application/json", "{\"error\":\"Locked: Firmware update in progress. Vibration inhibited.\"}");
         return;
     }
@@ -165,7 +166,7 @@ bool initWiFiServer(const char* ssid) {
     WiFi.softAPConfig(local_ip, gateway, subnet);
 
     // 5. Start SoftAP with WPA2-PSK (no hardcoded password, strictly protected)
-    bool apStarted = WiFi.softAP(ssid, wifiPass.c_str(), 1, 0, 4);
+    bool apStarted = WiFi.softAP(ssid, wifiPass.c_str(), 6, 0, 4);
     if (!apStarted) {
         Serial.println("[WiFi] Failed to start SoftAP.");
         return false;
@@ -209,7 +210,7 @@ bool initWiFiServer(const char* ssid) {
 #endif
 
     Serial.println("[WiFi] SoftAP Started Successfully!");
-    Serial.printf("[WiFi] SSID: %s (Channel 1, HT20, WPA2-PSK)\n", ssid);
+    Serial.printf("[WiFi] SSID: %s (Channel 6, HT20, WPA2-PSK)\n", ssid);
     Serial.printf("[WiFi] IP Address: %s\n", WiFi.softAPIP().toString().c_str());
 
     // 9. Start DNS Server for Captive Portal (Redirects any domain query to 192.168.4.1)
@@ -279,6 +280,7 @@ bool initWiFiServer(const char* ssid) {
     server.on("/update", HTTP_POST, []() {
         server.sendHeader("Connection", "close");
         sOtaInProgress = false;
+        MajnBleOta::releaseOtaLock();
         if (!isRequestAuthorized()) {
             server.send(401, "text/plain", "UNAUTHORIZED: Invalid or missing authentication token.");
             return;
@@ -311,6 +313,12 @@ bool initWiFiServer(const char* ssid) {
                 Update.abort();
                 return;
             }
+            // Cross-transport mutual exclusion: Check if BLE OTA is active or acquire atomic lock
+            if (sOtaInProgress || MajnBleOta::isOtaInProgress() || !MajnBleOta::acquireOtaLock()) {
+                Serial.println("[Web-OTA] REJECTED: Another OTA update is already in progress.");
+                Update.abort();
+                return;
+            }
             if (MajnSystemCtrl::isSystemActive() || MajnVibration::getCurrentAmplitude() > 0.001f) {
                 Serial.println("[Web-OTA] System is vibrating. Engaging Safe Stop and waiting for full amplitude decay...");
                 MajnSystemCtrl::triggerSafeStop();
@@ -323,6 +331,7 @@ bool initWiFiServer(const char* ssid) {
                     Serial.println("[Web-OTA] REJECTED: Vibration did not decay within timeout. Rejecting with 423 Locked.");
                     sOtaActiveVibrationRejected = true;
                     Update.abort();
+                    MajnBleOta::releaseOtaLock();
                     return;
                 }
             }
@@ -331,6 +340,8 @@ bool initWiFiServer(const char* ssid) {
             Update.clearError();
             if (!Update.begin(UPDATE_SIZE_UNKNOWN)) {
                 Update.printError(Serial);
+                sOtaInProgress = false;
+                MajnBleOta::releaseOtaLock();
             }
         } else if (upload.status == UPLOAD_FILE_WRITE) {
             if (!isRequestAuthorized() || sOtaActiveVibrationRejected) return;
@@ -341,6 +352,7 @@ bool initWiFiServer(const char* ssid) {
                     Serial.printf("[Web-OTA] REJECTED: Header magic byte 0x%02X != 0xE9. Not an ESP32 binary!\n", upload.buf[0]);
                     Update.abort();
                     sOtaInProgress = false;
+                    MajnBleOta::releaseOtaLock();
                     return;
                 }
             }
@@ -354,6 +366,7 @@ bool initWiFiServer(const char* ssid) {
                 Update.abort();
                 sOtaSuccess = false;
                 sOtaInProgress = false;
+                MajnBleOta::releaseOtaLock();
                 return;
             }
             if (Update.end(true)) {
@@ -364,9 +377,11 @@ bool initWiFiServer(const char* ssid) {
                 sOtaSuccess = false;
             }
             sOtaInProgress = false;
+            MajnBleOta::releaseOtaLock();
         } else if (upload.status == UPLOAD_FILE_ABORTED) {
             sOtaInProgress = false;
             sOtaSuccess = false;
+            MajnBleOta::releaseOtaLock();
             Update.abort();
             Serial.println("[Web-OTA] Update transfer aborted by client.");
         }

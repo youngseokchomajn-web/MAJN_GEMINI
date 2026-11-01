@@ -86,6 +86,8 @@ void VibrationControlTask(void *pvParameters) {
         static uint8_t sAmpSuperviseCounter = 0;
         static uint8_t sI2cCommFailCount = 0;
         static uint8_t sHwFaultCount = 0;
+        static bool sThermalDerated = false;
+        static float sLastDeratedTarget = 0.0f;
         if (++sAmpSuperviseCounter >= 5) {
             sAmpSuperviseCounter = 0;
             if (systemActive) {
@@ -108,6 +110,9 @@ void VibrationControlTask(void *pvParameters) {
                         // gFault2: OTSD overtemperature shutdown (0x01)
                         bool hasFault = (cFault != 0) || (gFault1 != 0) || (gFault2 != 0);
                         if (hasFault) {
+                            // Debounce latched faults: clear via FAULT_CLEAR (0x80 to 0x78)
+                            // so transient 1µs glitches are cleared and only sustained consecutive faults trip ESTOP
+                            MajnAmplifier::clearFault();
                             if (++sHwFaultCount >= 3) {
                                 Serial.printf("[Safety] CRITICAL: TAS5805M Hardware Fault! CFault=0x%02X, GFault1=0x%02X, GFault2=0x%02X. Engaging Emergency Stop.\n",
                                               cFault, gFault1, gFault2);
@@ -117,11 +122,31 @@ void VibrationControlTask(void *pvParameters) {
                         } else {
                             sHwFaultCount = 0;
                         }
+
+                        // Thermal Derating: Check OTW (warn & 0x04, 135°C) and reduce target amplitude by 50% for thermal safety before 165°C OTSD occurs
+                        if (warn & 0x04) {
+                            float curTarget = MajnVibration::getTargetAmplitude();
+                            if (!sThermalDerated || (curTarget > sLastDeratedTarget + 0.01f)) {
+                                if (curTarget > 0.01f) {
+                                    float derated = curTarget * 0.5f;
+                                    Serial.printf("[Safety] WARNING: TAS5805M OTW (135°C) detected! Derating target amplitude by 50%% (%.2f -> %.2f) for thermal safety.\n",
+                                                  curTarget, derated);
+                                    MajnVibration::setTarget(MajnVibration::getTargetFrequency(), derated);
+                                    sLastDeratedTarget = derated;
+                                    sThermalDerated = true;
+                                }
+                            }
+                        } else {
+                            sThermalDerated = false;
+                            sLastDeratedTarget = 0.0f;
+                        }
                     }
                 }
             } else {
                 sI2cCommFailCount = 0;
                 sHwFaultCount = 0;
+                sThermalDerated = false;
+                sLastDeratedTarget = 0.0f;
             }
         }
 

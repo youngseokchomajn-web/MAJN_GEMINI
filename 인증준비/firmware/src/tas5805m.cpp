@@ -69,20 +69,20 @@ bool TAS5805M::begin(int sdaPin, int sclPin) {
     // Enable Spread Spectrum for EMI suppression (3~6dB peak reduction)
     enableSpreadSpectrum(true);
 
-    // Clear any previous fault flags (Write 0x80 to 0x78 FAULT_CLEAR)
-    if (!writeRegister(0x78, 0x80)) {
+    // Clear any previous fault flags (Write 0x80 to REG_FAULT_CLEAR 0x78)
+    if (!writeRegister(REG_FAULT_CLEAR, 0x80)) {
         Serial.println("[TAS5805M] Init Step Failed: FAULT_CLEAR (0x78)");
         return false;
     }
     delay(5);
     
-    // Enter Play State (0x03)
-    if (!enterPlayState()) {
-        Serial.println("[TAS5805M] Init Step Failed: enterPlayState()");
+    // Enter Standby State (Hi-Z, 0x02) to prevent speaker pop noise on boot or RESET_FAULT
+    if (!enterStandbyState()) {
+        Serial.println("[TAS5805M] Init Step Failed: enterStandbyState()");
         return false;
     }
     
-    Serial.println("[TAS5805M] Initialization completed successfully. Amplifier in PLAY state.");
+    Serial.println("[TAS5805M] Initialization completed successfully. Amplifier in STANDBY (Hi-Z) state.");
     return true;
 }
 
@@ -151,6 +151,11 @@ bool TAS5805M::enterStandbyState() {
     bool ok = writeRegister(REG_DEVICE_CTRL_2, 0x02);
     writeRegister(REG_FAULT_CLEAR, 0x80);
     return ok;
+}
+
+bool TAS5805M::clearFault() {
+    if (!writeBookPage(0x00, 0x00)) return false;
+    return writeRegister(REG_FAULT_CLEAR, 0x80);
 }
 
 bool TAS5805M::setVolume(uint8_t volumeReg) {

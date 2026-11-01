@@ -15,5 +15,11 @@ namespace MajnBleOta {
 
 void initBleOta(BLEServer* server);
 bool isOtaInProgress();
+bool isGlobalOtaLockHeld();
+void abortOta();
+
+// Cross-transport atomic lock for OTA mutual exclusion
+bool acquireOtaLock();
+void releaseOtaLock();
 
 }

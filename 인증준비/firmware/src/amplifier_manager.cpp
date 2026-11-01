@@ -5,8 +5,8 @@
 
 namespace {
 TAS5805M gAmp;
-bool gAmpReady = false;
-bool gAmpStandby = true;
+volatile bool gAmpReady = false;
+volatile bool gAmpStandby = true;
 uint8_t gCurrentVolume = 72;
 char gStatusBuf[64] = "Uninitialized";
 SemaphoreHandle_t gI2cMutex = nullptr;
@@ -61,7 +61,7 @@ bool initAmplifier() {
         Serial.printf("[Amplifier] Attempting TAS5805M init (try %d/3)...\n", attempt);
         if (gAmp.begin(PIN_I2C_SDA, PIN_I2C_SCL)) {
             gAmpReady = true;
-            gAmpStandby = false;
+            gAmpStandby = true;
             uint8_t aState = 0, cFault = 0, gFault = 0;
             gAmp.getDiagnostics(aState, cFault, gFault);
             snprintf(gStatusBuf, sizeof(gStatusBuf), "READY(0x%02X S:0x%02X CF:0x%02X GF:0x%02X)", gAmp.getI2CAddress(), aState, cFault, gFault);
@@ -100,6 +100,9 @@ bool enterPlayState() {
 }
 
 bool enterStandbyState() {
+#if !defined(MAJN_BLE_ONLY_TEST)
+    if (gAmpStandby) return true; // Fast path: already in standby, avoid taking I2C mutex
+#endif
     I2cLock lock;
     if (!lock.isLocked()) {
         Serial.println("[Amplifier] ERROR: Failed to acquire I2C mutex for enterStandbyState!");
@@ -107,12 +110,23 @@ bool enterStandbyState() {
     }
 #if !defined(MAJN_BLE_ONLY_TEST)
     if (gAmpReady) {
-        if (gAmpStandby) return true; // Already in Standby mode, prevents 50Hz redundant I2C bus traffic
+        if (gAmpStandby) return true; // Re-check after lock
         if (gAmp.enterStandbyState()) {
             gAmpStandby = true;
             return true;
         }
         return false;
+    }
+#endif
+    return false;
+}
+
+bool clearFault() {
+    I2cLock lock;
+    if (!lock.isLocked()) return false;
+#if !defined(MAJN_BLE_ONLY_TEST)
+    if (gAmpReady) {
+        return gAmp.clearFault();
     }
 #endif
     return false;

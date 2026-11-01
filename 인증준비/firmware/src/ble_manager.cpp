@@ -51,8 +51,11 @@ class ServerCallbacks : public BLEServerCallbacks {
     }
     void onDisconnect(BLEServer* server) override {
         gConnected = false;
-        Serial.println("[BLE] Client disconnected. Requesting safe stop.");
-        MajnSystemCtrl::triggerSafeStop();
+        Serial.println("[BLE] Client disconnected.");
+        if (MajnBleOta::isOtaInProgress()) {
+            Serial.println("[BLE] Client disconnected while BLE-OTA active! Aborting OTA update.");
+            MajnBleOta::abortOta();
+        }
         server->startAdvertising();
     }
 };
@@ -185,12 +188,8 @@ void bleRegisterHeartbeat() {
 }
 
 void bleLoop() {
-    if (gConnected && MajnSystemCtrl::isSystemActive() && 
-        (millis() - MajnSystemCtrl::getLastClientActivity() > MajnBle::HEARTBEAT_TIMEOUT_MS)) {
-        Serial.println("[BLE] Client activity timeout (5s) while RUNNING. Safe Stop triggered.");
-        MajnSystemCtrl::triggerSafeStop();
-        gLastClientActivity = millis();
-    }
+    // Soothing session duration is strictly governed by VibrationControlTask timer.
+    // Client activity timeout (5s) removed so phone screen off / BLE drop does not sabotage active soothing sessions.
 }
 
 void bleNotifyTelemetry(

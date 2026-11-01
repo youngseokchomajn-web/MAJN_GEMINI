@@ -40,6 +40,9 @@ public:
     // Enter Standby (HIZ) state
     bool enterStandbyState();
     
+    // Clear latched faults (0x78 FAULT_CLEAR)
+    bool clearFault();
+    
     // Set digital volume
     bool setVolume(uint8_t volume);
     

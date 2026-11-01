@@ -10,6 +10,7 @@ namespace MajnAmplifier {
 bool initAmplifier();
 bool enterPlayState();
 bool enterStandbyState();
+bool clearFault();
 void shutdownAmplifier();
 bool setVolume(uint8_t volumePercent);
 bool isAmplifierReady();
