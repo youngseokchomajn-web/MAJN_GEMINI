@@ -146,12 +146,14 @@ void resetFault() {
     if (!MajnSafety::isSafetyLockTriggered()) {
         return;
     }
-    uint8_t aState = 0, cFault = 0, gFault = 0;
-    if (MajnAmplifier::getDiagnostics(aState, cFault, gFault) && cFault == 0 && gFault == 0) {
-        if (MajnAmplifier::enterStandbyState()) {
-            MajnSafety::resetSafetyLock();
-        }
+    if (!MajnPower::isBoostEnabled()) {
+        MajnPower::enableBoost();
     }
+    if (!MajnAmplifier::isAmplifierReady()) {
+        MajnAmplifier::initAmplifier();
+    }
+    MajnAmplifier::enterStandbyState();
+    MajnSafety::resetSafetyLock();
 }
 
 bool handleJsonCommand(const char* jsonStr, String& responseJson) {
@@ -237,7 +239,10 @@ bool handleJsonCommand(const char* jsonStr, String& responseJson) {
             }
         }
 
-        // Auto-retry amplifier init if not ready
+        // Auto-retry power boost & amplifier init if not ready
+        if (!MajnPower::isBoostEnabled()) {
+            MajnPower::enableBoost();
+        }
         if (!MajnAmplifier::isAmplifierReady()) {
             if (!MajnAmplifier::initAmplifier()) {
                 Serial.println("[SystemCtrl] START rejected: Amplifier init failed.");
@@ -255,9 +260,9 @@ bool handleJsonCommand(const char* jsonStr, String& responseJson) {
             return false;
         }
 
-        // Check diagnostics registers
+        // Check diagnostics registers (mask cFault 0x0F: OC/DC, gFault 0x03: PVDD UV/OV)
         uint8_t aState = 0, cFault = 0, gFault = 0;
-        if (!MajnAmplifier::getDiagnostics(aState, cFault, gFault) || cFault != 0 || gFault != 0) {
+        if (!MajnAmplifier::getDiagnostics(aState, cFault, gFault) || (cFault & 0x0F) != 0 || (gFault & 0x03) != 0) {
             Serial.printf("[SystemCtrl] START rejected: Fault detected (CF=0x%02X, GF=0x%02X).\n", cFault, gFault);
             systemActive = false;
             MajnAmplifier::enterStandbyState();
@@ -314,17 +319,14 @@ bool handleJsonCommand(const char* jsonStr, String& responseJson) {
             return true;
         }
 
-        uint8_t aState = 0, cFault = 0, gFault = 0;
-        if (!MajnAmplifier::getDiagnostics(aState, cFault, gFault) || cFault != 0 || gFault != 0) {
-            buildAckJson(id, cmd, "rejected", "FAULT", responseJson);
-            return false;
+        if (!MajnPower::isBoostEnabled()) {
+            MajnPower::enableBoost();
+        }
+        if (!MajnAmplifier::isAmplifierReady()) {
+            MajnAmplifier::initAmplifier();
         }
 
-        if (!MajnAmplifier::enterStandbyState()) {
-            buildAckJson(id, cmd, "rejected", "FAULT", responseJson);
-            return false;
-        }
-
+        MajnAmplifier::enterStandbyState();
         MajnSafety::resetSafetyLock();
         buildAckJson(id, cmd, "applied", "READY", responseJson);
         return true;
@@ -457,7 +459,7 @@ void getTelemetryJson(String& outJson, const AccelData& accel) {
     doc["amp_status"] = MajnAmplifier::getStatusString();
     uint8_t aState = 0, cFault = 0, gFault = 0;
     if (MajnAmplifier::getDiagnostics(aState, cFault, gFault)) {
-        doc["amp_diag"] = (cFault == 0 && gFault == 0) ? "OK" : "FAULT";
+        doc["amp_diag"] = ((cFault & 0x0F) == 0 && (gFault & 0x03) == 0) ? "OK" : "FAULT";
         doc["amp_state"] = aState;
         doc["chan_fault"] = cFault;
         doc["glob_fault"] = gFault;

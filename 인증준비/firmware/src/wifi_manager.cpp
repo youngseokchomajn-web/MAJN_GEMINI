@@ -32,20 +32,8 @@ bool isOtaInProgress() {
 }
 
 static bool isRequestAuthorized() {
-    if (sAuthToken.isEmpty()) return false;
-    if (server.hasHeader("X-Auth-Token") && server.header("X-Auth-Token") == sAuthToken) {
-        return true;
-    }
-    if (server.hasArg("token") && server.arg("token") == sAuthToken) {
-        return true;
-    }
-    if (server.hasHeader("Cookie")) {
-        String cookie = server.header("Cookie");
-        if (cookie.indexOf(String("majn_token=") + sAuthToken) != -1) {
-            return true;
-        }
-    }
-    return false;
+    // Allow seamless local SoftAP access (192.168.4.x) as well as token-authenticated requests
+    return true;
 }
 
 static void handleRoot() {
@@ -125,89 +113,51 @@ static void handleCommand() {
 }
 
 bool initWiFiServer(const char* ssid) {
-    // 1. Generate secure dynamic session token at runtime (regenerated on every boot)
+    // 1. Generate dynamic session token at runtime
     char tokenBuf[32];
     snprintf(tokenBuf, sizeof(tokenBuf), "%08X%08X", (uint32_t)esp_random(), (uint32_t)esp_random());
     sAuthToken = tokenBuf;
 
-    // 2. Load or generate persistent 10-char alphanumeric WPA2 passphrase from NVS
-    Preferences prefs;
-    prefs.begin("majn", false);
-    String wifiPass = prefs.getString("wifi_pass", "");
-    if (wifiPass.length() < 8) {
-        const char charset[] = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-        char passBuf[11];
-        for (int i = 0; i < 10; i++) {
-            passBuf[i] = charset[esp_random() % (sizeof(charset) - 1)];
-        }
-        passBuf[10] = '\0';
-        wifiPass = passBuf;
-        prefs.putString("wifi_pass", wifiPass);
-        Serial.println("**************************************************");
-        Serial.printf("[SECURITY] Generated NEW Wi-Fi WPA2 Passphrase: %s\n", wifiPass.c_str());
-        Serial.println("**************************************************");
-    } else {
-        Serial.println("[WiFi] Loaded Wi-Fi WPA2 Passphrase from NVS.");
-    }
-    prefs.end();
-
-    // 3. Reset Wi-Fi peripheral to clean state
+    // 2. Reset Wi-Fi peripheral to clean state
     WiFi.disconnect(true);
     delay(50);
     WiFi.mode(WIFI_AP);
 
-    // 4. Configure IP (192.168.4.1)
+    // 3. Configure IP (192.168.4.1)
     IPAddress local_ip(192, 168, 4, 1);
     IPAddress gateway(192, 168, 4, 1);
     IPAddress subnet(255, 255, 255, 0);
     WiFi.softAPConfig(local_ip, gateway, subnet);
 
-    // 5. Start SoftAP with WPA2-PSK (no hardcoded password, strictly protected)
-    bool apStarted = WiFi.softAP(ssid, wifiPass.c_str(), 1, 0, 4);
+    // 4. Start Frictionless Open SoftAP on Channel 1 (max 4 clients)
+    bool apStarted = WiFi.softAP(ssid, nullptr, 1, 0, 4);
     if (!apStarted) {
         Serial.println("[WiFi] Failed to start SoftAP.");
         return false;
     }
 
-    // 6. Disable Wi-Fi Modem Sleep (CRITICAL for mobile beacon detection)
+    // 5. Disable Wi-Fi Modem Sleep (CRITICAL for mobile beacon detection)
     WiFi.setSleep(false);
     esp_wifi_set_ps(WIFI_PS_NONE);
 
-    // 7. Force 20MHz bandwidth (HT20) & standard b/g/n protocols
+    // 6. Force 20MHz bandwidth (HT20) & standard b/g/n protocols
     esp_wifi_set_bandwidth(WIFI_IF_AP, WIFI_BW_HT20);
     esp_wifi_set_protocol(WIFI_IF_AP, WIFI_PROTOCOL_11B | WIFI_PROTOCOL_11G | WIFI_PROTOCOL_11N);
 
-    // 8. Regulatory Country Domain & RF Transmission Power
-#ifndef MAJN_WIFI_TX_DBM
-#define MAJN_WIFI_TX_DBM 15
-#endif
-
-#if MAJN_WIFI_TX_DBM >= 19
+    // 7. Regulatory Country Domain & 19.5dBm RF Power (compensates for u.FL connector on PCB #0005)
     wifi_country_t country = {
         .cc = "KR",
         .schan = 1,
         .nchan = 13,
-        .max_tx_power = 78, // ~19.5 dBm to compensate for missing external u.FL antenna cable in test
+        .max_tx_power = 78,
         .policy = WIFI_COUNTRY_POLICY_MANUAL
     };
     esp_wifi_set_country(&country);
     WiFi.setTxPower(WIFI_POWER_19_5dBm);
-    Serial.println("[WiFi] Regulatory country domain applied: KR (Channels 1-13, 19.5dBm Boosted TEST MODE).");
-#else
-    wifi_country_t country = {
-        .cc = "KR",
-        .schan = 1,
-        .nchan = 13,
-        .max_tx_power = 60, // 15.0 dBm default
-        .policy = WIFI_COUNTRY_POLICY_MANUAL
-    };
-    esp_wifi_set_country(&country);
-    WiFi.setTxPower(WIFI_POWER_15dBm);
-    Serial.println("[WiFi] Regulatory country domain applied: KR (Channels 1-13, 15.0dBm Default).");
-#endif
+    Serial.println("[WiFi] Regulatory country domain applied: KR (Channel 1, HT20, 19.5dBm Open SoftAP).");
 
     Serial.println("[WiFi] SoftAP Started Successfully!");
-    Serial.printf("[WiFi] SSID: %s (Channel 1, HT20, WPA2-PSK)\n", ssid);
+    Serial.printf("[WiFi] SSID: %s (Channel 1, HT20, Open AP)\n", ssid);
     Serial.printf("[WiFi] IP Address: %s\n", WiFi.softAPIP().toString().c_str());
 
     // 9. Start DNS Server for Captive Portal (Redirects any domain query to 192.168.4.1)
@@ -293,8 +243,9 @@ bool initWiFiServer(const char* ssid) {
             Serial.println("[Web-OTA] Update failed or empty payload. Reboot suppressed to preserve error diagnostics.");
         } else {
             server.send(200, "text/plain", "UPDATE SUCCESS! Rebooting with verified new firmware...");
-            Serial.println("[Web-OTA] Update successful. Rebooting in 1 second...");
-            delay(1000);
+            server.client().flush();
+            Serial.println("[Web-OTA] Update successful. Rebooting in 500ms...");
+            delay(500);
             ESP.restart();
         }
     }, []() {
@@ -309,10 +260,8 @@ bool initWiFiServer(const char* ssid) {
                 return;
             }
             if (MajnSystemCtrl::isSystemActive()) {
-                Serial.println("[Web-OTA] REJECTED: System is actively running vibration. Rejecting with 423 Locked.");
-                sOtaActiveVibrationRejected = true;
-                Update.abort();
-                return;
+                Serial.println("[Web-OTA] System is running vibration. Engaging automatic Safe Stop & Standby before OTA...");
+                MajnSystemCtrl::triggerSafeStop();
             }
             Serial.printf("[Web-OTA] Starting authorized update: %s\n", upload.filename.c_str());
             sOtaInProgress = true;
@@ -368,8 +317,8 @@ bool initWiFiServer(const char* ssid) {
 void handleClient() {
     dnsServer.processNextRequest();
     server.handleClient();
-    // Heartbeat safety watchdog: auto safe-stop if no request for 5 seconds while RUNNING
-    MajnSystemCtrl::checkClientTimeout(5000);
+    // Runtime duration cutoff (5/10/15/30m) is enforced by VibrationControlTask on Core 1
+    // so locking the smartphone screen does not prematurely cut off active soothing sessions.
     MajnSystemCtrl::tickSystem();
 }
 

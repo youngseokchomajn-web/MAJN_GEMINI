@@ -1,5 +1,7 @@
 #include "amplifier_manager.h"
 #include "tas5805m.h"
+#include <freertos/FreeRTOS.h>
+#include <freertos/semphr.h>
 
 namespace {
 TAS5805M gAmp;
@@ -7,11 +9,30 @@ bool gAmpReady = false;
 bool gAmpStandby = true;
 uint8_t gCurrentVolume = 72;
 char gStatusBuf[64] = "Uninitialized";
+SemaphoreHandle_t gI2cMutex = nullptr;
+
+struct I2cLock {
+    bool locked;
+    I2cLock() : locked(false) {
+        if (!gI2cMutex) {
+            gI2cMutex = xSemaphoreCreateMutex();
+        }
+        if (gI2cMutex && xSemaphoreTake(gI2cMutex, pdMS_TO_TICKS(200)) == pdTRUE) {
+            locked = true;
+        }
+    }
+    ~I2cLock() {
+        if (gI2cMutex && locked) {
+            xSemaphoreGive(gI2cMutex);
+        }
+    }
+};
 }
 
 namespace MajnAmplifier {
 
 bool initAmplifier() {
+    I2cLock lock;
 #if defined(MAJN_BLE_ONLY_TEST)
     Serial.println("[Amplifier] BLE-only test mode: TAS5805M held in shutdown (PDN LOW).");
     digitalWrite(PIN_AMP_PDN, LOW);
@@ -52,6 +73,7 @@ bool initAmplifier() {
 }
 
 bool enterPlayState() {
+    I2cLock lock;
 #if !defined(MAJN_BLE_ONLY_TEST)
     if (gAmpReady) {
         if (!gAmpStandby) return true; // Already in Play mode, avoid redundant I2C traffic
@@ -66,6 +88,7 @@ bool enterPlayState() {
 }
 
 bool enterStandbyState() {
+    I2cLock lock;
 #if !defined(MAJN_BLE_ONLY_TEST)
     if (gAmpReady) {
         if (gAmpStandby) return true; // Already in Standby mode, prevents 50Hz redundant I2C bus traffic
@@ -87,6 +110,7 @@ void shutdownAmplifier() {
 }
 
 bool setVolume(uint8_t volumePercent) {
+    I2cLock lock;
     gCurrentVolume = constrain(volumePercent, (uint8_t)0, (uint8_t)100);
 #if !defined(MAJN_BLE_ONLY_TEST)
     if (gAmpReady) {
@@ -116,6 +140,7 @@ bool isAmplifierReady() {
 }
 
 bool getDiagnostics(uint8_t &state, uint8_t &chanFault, uint8_t &globalFault1) {
+    I2cLock lock;
 #if !defined(MAJN_BLE_ONLY_TEST)
     if (gAmpReady) {
         return gAmp.getDiagnostics(state, chanFault, globalFault1);

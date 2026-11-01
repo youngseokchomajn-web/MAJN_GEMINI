@@ -111,7 +111,11 @@ bool TAS5805M::enterPlayState() {
     delay(5);
     
     // REG_DEVICE_CTRL_2 (0x03): 0x03 = PLAY Mode (0x02 = Hi-Z Mode)
-    return writeRegister(REG_DEVICE_CTRL_2, 0x03);
+    bool ok = writeRegister(REG_DEVICE_CTRL_2, 0x03);
+    delay(5);
+    // Clear any transient CLK_FAULT_I (0x04) latched during Hi-Z -> PLAY PLL lock transition
+    writeRegister(REG_FAULT_CLEAR, 0x80);
+    return ok;
 }
 
 bool TAS5805M::readRegister(uint8_t reg, uint8_t &val) {
@@ -144,7 +148,9 @@ bool TAS5805M::getFullDiagnostics(uint8_t &state, uint8_t &chanFault, uint8_t &g
 bool TAS5805M::enterStandbyState() {
     if (!writeBookPage(0x00, 0x00)) return false;
     // REG_DEVICE_CTRL_2 (0x03): 0x02 = Hi-Z (High Impedance Output / Standby)
-    return writeRegister(REG_DEVICE_CTRL_2, 0x02);
+    bool ok = writeRegister(REG_DEVICE_CTRL_2, 0x02);
+    writeRegister(REG_FAULT_CLEAR, 0x80);
+    return ok;
 }
 
 bool TAS5805M::setVolume(uint8_t volumeReg) {

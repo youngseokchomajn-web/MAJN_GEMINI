@@ -78,13 +78,10 @@ bool LSM6DSOX::configureSafetyInterrupt(float threshold_g, uint8_t duration_ms) 
     writeRegister(REG_WAKE_UP_DUR, dur_val);
     
     // 2. Enable routing wake-up event to INT1 pin
-    // REG_INT1_CTRL (0x0D): Map INT1_WU (Wake-up event on INT1)
-    // Wake-up routing is in REG_MD1_CFG (0x5E) on LSM6DSOX: Bit 5 = INT1_WU
+    // Enable SLOPE_FDS (Bit 4 = 0x10 in REG_TAP_CFG0) so 1g static gravity is high-pass filtered out,
+    // and use pulsed mode (LIR = 0) so INT1 never latches permanently HIGH.
+    writeRegister(REG_TAP_CFG0, 0x10);
     writeRegister(REG_MD1_CFG, 0x20); // Route Wake-Up to INT1
-    
-    // Enable interrupt latched mode (REG_TAP_CFG0: Bit 0 = LIR, latched interrupt)
-    uint8_t tapCfg0 = readRegister(REG_TAP_CFG0);
-    writeRegister(REG_TAP_CFG0, tapCfg0 | 0x01); // Latch interrupt signal until cleared
     
     return true;
 }

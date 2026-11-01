@@ -7,28 +7,41 @@ extern void hardwareEmergencyShutdown();
 
 namespace {
 volatile bool gSafetyLock = false;
+volatile bool gIsrShockPending = false;
 }
 
 namespace MajnSafety {
 
 void initSafety() {
     gSafetyLock = false;
+    gIsrShockPending = false;
 }
 
 bool isSafetyLockTriggered() {
+    if (gIsrShockPending) {
+        gIsrShockPending = false;
+        hardwareEmergencyShutdown();
+        MajnVibration::setTarget(MajnVibration::getTargetFrequency(), 0.0f);
+        Serial.println("[Safety] Hardware Shock Interrupt (>1.5g) triggered Emergency Stop!");
+    }
     return gSafetyLock;
 }
 
 void IRAM_ATTR safetyLockISR() {
-    gSafetyLock = true;
-    systemActive = false;
-    activeStateStartTime = 0;
-    hardwareEmergencyShutdown();
+    // Only engage shock lock when vibration is actively running, and NEVER call Serial/non-IRAM functions inside ISR!
+    if (systemActive) {
+        gSafetyLock = true;
+        systemActive = false;
+        activeStateStartTime = 0;
+        gIsrShockPending = true;
+    }
 }
 
 void requestEmergencyStop() {
     activeStateStartTime = 0;
-    safetyLockISR();
+    gSafetyLock = true;
+    systemActive = false;
+    hardwareEmergencyShutdown();
     MajnVibration::setTarget(MajnVibration::getTargetFrequency(), 0.0f);
     Serial.println("[Safety] Emergency Stop (ESTOP) engaged!");
 }
