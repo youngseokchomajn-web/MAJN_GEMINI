@@ -51,7 +51,8 @@
 | **VCC_3V3 (U2 VOUT)** | 3.30V | 3.23V ~ 3.37V | ________ V | [ ] |
 | **PVDD_12V (C8/C9)** | 12.17V | 11.80V ~ 12.50V | ________ V | [ ] |
 | **ESP_EN (U1.3)** | 3.30V | 3.10V ~ 3.30V | ________ V | [ ] |
-| **AMP_PDN (U4.2)** | 3.30V | 3.10V ~ 3.30V | ________ V | [ ] |
+| **AMP_PDN (U4.12)** | 3.30V | 3.10V ~ 3.30V | ________ V | [ ] |
+*(※ 주의: U4 Pin 2는 DVDD 3.3V 전원 핀이며, AMP_PDN은 Pin 12입니다. 프로빙 시 쇼트에 각별히 유의하십시오.)*
 
 ### Step 4. 디버그 UART 시리얼 로그 확인
 CP2102 시리얼 헤더의 TX, RX, GND를 PC에 연결하고 115,200 bps로 부팅 로그를 모니터링합니다.
@@ -64,7 +65,7 @@ screen /dev/cu.usbserial-* 115200
 ```
 
 **정상 부팅 시 확인해야 할 핵심 로그**:
-1. `ESP-ROM:esp32s2/esp32... rst:0x1 (POWERON_RESET)`
+1. `rst:0x1 (POWERON_RESET),boot:0x13 (SPI_FAST_FLASH_BOOT)`
 2. `[TAS5805M] Init success. Device ID: 0x2C, State: STANDBY (Hi-Z)`
 3. `[WIFI] SoftAP started. SSID: MAJN-BASSINET-XXXX, Ch: 6`
 4. `[BLE] Advertising started. Adv interval: 7.5ms ~ 22.5ms`

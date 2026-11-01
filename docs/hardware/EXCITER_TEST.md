@@ -14,9 +14,16 @@
 - **공칭 임피던스**: 8 $\Omega$ (직류 저항 DCR: $7.2\Omega \sim 8.5\Omega$)
 - **정격 입력**: 1.0W RMS (최대 2.0W Peak)
 - **장착 위치**: 4.5T 자작합판 상판 하단 음향 캐비티 내부 (4모서리/중심 대칭 4개소)
-- **배선 토폴로지**:
-  - 채널 A (Left BTL, 커넥터 J1): 익사이터 #1, #2 병렬 또는 직렬 결선
-  - 채널 B (Right BTL, 커넥터 J2): 익사이터 #3, #4 병렬 또는 직렬 결선
+- **배선 토폴로지 및 임피던스 계산**:
+  - **직렬 결선 (권장, $16\Omega$ 부하)**:
+    - 채널 A (J1): #1 + #2 직렬 ($8\Omega + 8\Omega = 16\Omega$)
+    - 채널 B (J2): #3 + #4 직렬 ($8\Omega + 8\Omega = 16\Omega$)
+    - 12V BTL 스윙 ($V_{rms} \approx 8.48V$ at Full Scale): $P_{max} = \frac{8.48^2}{16} \approx 4.5W$ (진동자당 약 2.2W Peak / 1.1W RMS).
+    - 펌웨어 상한 0.50 적용 시 진동자당 정격 1.0W RMS 이내로 자연 안전 보호됨.
+  - **병렬 결선 ($4\Omega$ 부하 시 주의사항)**:
+    - 채널 A (J1): #1 $\parallel$ #2 ($8\Omega \parallel 8\Omega = 4\Omega$)
+    - 채널 B (J2): #3 $\parallel$ #4 ($8\Omega \parallel 8\Omega = 4\Omega$)
+    - 12V BTL $4\Omega$ 전력은 최대 18W에 달하므로, 병렬 구성 시에는 펌웨어 진폭을 반드시 $\le 0.30$ 이하로 엄격 제한해야 코일 소손을 방지할 수 있음.
 
 ---
 

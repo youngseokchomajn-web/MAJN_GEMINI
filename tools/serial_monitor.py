@@ -6,15 +6,23 @@ import serial
 import time
 import sys
 
-PORT = "/dev/cu.usbserial-0001"
+import glob
+import os
+
 LOG_FILE = "/tmp/esp32_live_boot.log"
 
-print(f"Monitoring {PORT} at 115200 baud... Waiting for EN toggle.")
+# Allow CLI argument or auto-detect usbserial port
+port = sys.argv[1] if len(sys.argv) > 1 else None
+if not port:
+    detected = glob.glob("/dev/cu.usbserial*")
+    port = detected[0] if detected else "/dev/cu.usbserial-0001"
+
+print(f"Monitoring {port} at 115200 baud... Waiting for ESP32 boot (power cycle 5V USB-C; note: PCB #0005 has NO physical EN/BOOT buttons).")
 with open(LOG_FILE, "w", encoding="utf-8") as f:
-    f.write("=== Serial Monitor Started ===\n")
+    f.write(f"=== Serial Monitor Started on {port} ===\n")
 
 try:
-    with serial.Serial(PORT, 115200, timeout=0.1) as ser:
+    with serial.Serial(port, 115200, timeout=0.1) as ser:
         ser.reset_input_buffer()
         while True:
             data = ser.read(ser.in_waiting or 1)
@@ -26,4 +34,5 @@ try:
             else:
                 time.sleep(0.01)
 except Exception as e:
-    print(f"Error: {e}")
+    print(f"Error connecting to {port}: {e}")
+

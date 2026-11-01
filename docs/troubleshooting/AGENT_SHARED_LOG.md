@@ -904,6 +904,34 @@
      - P0-3: TAS5805M I2C 통신 확인 및 부팅 팝노이즈 오실로스코프 계측.
 - **실물 OTA 상태**: **보류 (HOLD 유지 — R6 사용자 승인 대기)**
 
+---
+
+### SHARED-2026-11-01-015 — [코드 리뷰 및 정밀 수정] MASTER_DEVELOPMENT_PLAN 누락 섹션(저장소 브랜치 전략·우선순위 6대 과제) 복원, 하드웨어 핀맵 오류(AMP_PDN U4.12, 3.3V C11) 정정, 브랜치 2종 생성 및 .gitkeep 추가
+- **작성자:** Gemini (Antigravity Code Reviewer)
+- **작업 일시:** 2026-11-01 19:55 KST
+- **작업 ID:** REVIEW-PLAN-BOOST-001
+- **기준 브랜치:** `feature/phone-wifi-control` (Commit: `c63e60a`)
+- **수정 및 추가 내역**:
+  1. **[MASTER_DEVELOPMENT_PLAN.md 정밀 복원]**:
+     - 기존 누락되었던 Section 5 "GitHub 저장소 관리 계획 (디렉토리 구조 트리, 4개 브랜치 운영 계획, PR 및 릴리스 워크플로우)" 및 Section 8 "지금 당장 실행할 첫 번째 작업 (우선순위 6대 과제, 가속도계 외장 계측 우선 판단)" 완전 복원.
+     - Section 4(개발 우선순위와 진행 조건 Entry Gates) 및 Section 9(자동 검증 스크립트) 번호 체계 재정립.
+  2. **[하드웨어 계측 프로토콜 핀맵 및 테스트 포인트 오류 정정]**:
+     - `docs/hardware/PCB_BRINGUP.md`: `AMP_PDN` 핀 번호 오류 정정 (기존 `U4.2` $\rightarrow$ 정정 `U4.12`. U4.2는 DVDD 3.3V 전원 핀임). 부팅 로그 배너 문자열 정정 (`esp32s2` 오기 제거).
+     - `docs/hardware/POWER_TEST.md`: 3.3V 리플 측정 포인트 정정 (기존 `C17` $\rightarrow$ 정정 `C11`/`C4`. C17은 U1.3 ESP_EN 10ms POR 지연 커패시터임).
+     - `docs/hardware/EXCITER_TEST.md`: TEAX14C02 진동자 직렬($16\Omega$, 권장) vs 병렬($4\Omega$, 진폭 0.30 이하 제한 필요) 임피던스 및 전력 계산식 상세 명시.
+     - `tools/serial_monitor.py`: 버튼 없는 PCB #0005 하드웨어 제약 준수를 위해 "Waiting for EN toggle" 문구 제거 및 USB 시리얼 포트 자동 감지 로직 적용.
+  3. **[저장소 브랜치 및 디렉토리 구조 실체화]**:
+     - Git 로컬 브랜치 생성: `feature/vibration-measurement`, `feature/mvp-integration`.
+     - `인증준비/firmware/include/.gitkeep`, `인증준비/firmware/test/.gitkeep` 생성으로 Git 트래킹 보장.
+  4. **[검증 실행 결과]**:
+     - `test_command_parser.py`: 92 / 92 PASSED (100%)
+     - `verify_hardware_review.py`: 21 / 21 PASSED (100%)
+     - `verify_mfg_package.py`: 5 / 5 PASSED (100%)
+     - `PlatformIO` 빌드: esp32_wifi_phone SUCCESS (1,911,536 bytes)
+     - `shasum -a 256`: `da97b96e89b2f267c9c4b9d054c0456e1b4bd40eba220bd630815ed60452ce7c` 일치
+- **차기 권장 작업**: PCB #0005 실물 비전원 DMM 저항 점검(Step 1) 및 5V 500mA 전류 제한 전원 투입(Step 2) 착수.
+
+
 
 
 
