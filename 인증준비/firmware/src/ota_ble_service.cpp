@@ -3,6 +3,9 @@
 #include <Update.h>
 #include <ArduinoJson.h>
 #include "safety_manager.h"
+#include "vibration_controller.h"
+#include "system_controller.h"
+#include "amplifier_manager.h"
 
 namespace {
 BLECharacteristic* gOtaControl = nullptr;
@@ -56,8 +59,22 @@ class OtaControlCallbacks : public BLECharacteristicCallbacks {
                 return;
             }
 
+            if (MajnSystemCtrl::isSystemActive() || MajnVibration::getCurrentAmplitude() > 0.001f) {
+                Serial.println("[BLE-OTA] System is vibrating. Engaging Safe Stop and waiting for full amplitude decay...");
+                MajnSystemCtrl::triggerSafeStop();
+                uint32_t waitStart = millis();
+                while ((MajnVibration::getCurrentAmplitude() > 0.001f || MajnSystemCtrl::isSystemActive()) && (millis() - waitStart < 2000)) {
+                    vTaskDelay(pdMS_TO_TICKS(50));
+                }
+                MajnAmplifier::enterStandbyState();
+                if (MajnVibration::getCurrentAmplitude() > 0.001f) {
+                    Serial.println("[BLE-OTA] REJECTED: Vibration did not decay within timeout.");
+                    notifyOtaStatus("error", 0, "System busy: vibration decay timeout");
+                    return;
+                }
+            }
+
             Serial.printf("[BLE-OTA] Starting OTA transfer. Size: %u bytes\n", fwSize);
-            MajnSafety::requestSafeStop(); // Ensure motor/amp is stopped
 
             if (!Update.begin(fwSize, U_FLASH)) {
                 Serial.printf("[BLE-OTA] Update.begin failed. Error: %d\n", Update.getError());

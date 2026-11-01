@@ -6,6 +6,9 @@
 namespace MajnSafety {
 void initSafety();
 bool isSafetyLockTriggered();
+void processPendingShock();
+void setVibrationActive(bool active);
+bool isVibrationActive();
 void requestEmergencyStop();
 void requestSafeStop();
 bool resetSafetyLock();

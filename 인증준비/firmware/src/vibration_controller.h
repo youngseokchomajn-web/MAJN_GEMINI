@@ -12,6 +12,7 @@ void setTarget(float frequencyHz, float amplitudeScale);
 float getTargetFrequency();
 float getCurrentAmplitude();
 float getTargetAmplitude();
+void stopImmediately();
 void tickControlLoop(float dt);
 void renderAudioBlock();
 }

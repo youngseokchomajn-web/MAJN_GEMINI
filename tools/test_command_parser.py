@@ -259,9 +259,30 @@ def run_tests():
     assert_eq("START locked out during FAULT", ok, False)
     assert_eq("START rejection state during FAULT", res["status"], "fault")
 
+    # Hardware fault persists -> RESET_FAULT rejected
+    sys_instance.amp_diag_fault = True
     ok, res = sys_instance.handle_json_command(json.dumps({"id": 12, "cmd": "RESET_FAULT"}))
-    assert_eq("RESET_FAULT restores READY", ok, True)
+    assert_eq("RESET_FAULT rejected when hardware fault persists", ok, False)
+    assert_eq("RESET_FAULT rejection status", res["status"], "rejected")
+    assert_eq("State remains FAULT", res["state"], "FAULT")
+
+    # Clear hardware fault -> RESET_FAULT accepted
+    sys_instance.amp_diag_fault = False
+    ok, res = sys_instance.handle_json_command(json.dumps({"id": 13, "cmd": "RESET_FAULT"}))
+    assert_eq("RESET_FAULT restores READY when fault cleared", ok, True)
     assert_eq("State after RESET_FAULT", res["state"], "READY")
+
+    # START rejected if hardware fault occurs during startup
+    sys_instance.amp_diag_fault = True
+    ok, res = sys_instance.handle_json_command(json.dumps({"id": 14, "cmd": "START", "frequency_hz": 45.0, "amplitude": 0.3}))
+    assert_eq("START rejected on hardware fault", ok, False)
+    assert_eq("START status on hardware fault", res["status"], "failed")
+    assert_eq("State after failed START", res["state"], "FAULT")
+
+    # Recover to READY
+    sys_instance.amp_diag_fault = False
+    ok, res = sys_instance.handle_json_command(json.dumps({"id": 15, "cmd": "RESET_FAULT"}))
+    assert_eq("RESET_FAULT restores READY for next suite", ok, True)
 
     print("\n=== TEST SUITE 5: OTA Cross-Locking Gate & Image Verification ===")
     sys_instance.ota_in_progress = True
@@ -360,6 +381,29 @@ def run_tests():
     # Rule 10: Amplifier hardware fault locked across all boot paths in main.cpp
     amp_universal_fault = "if (!ampHealthy)" in main_cpp and "MajnSafety::requestEmergencyStop()" in main_cpp
     assert_eq("Universal amplifier FAULT lock present in main.cpp", amp_universal_fault, True)
+
+    # Rule 11: Zero masking of CLK_FAULT or other faults in system_controller.cpp
+    sys_ctrl_cpp = open(os.path.join(FW_SRC, "system_controller.cpp"), "r", encoding="utf-8").read()
+    has_fault_masking = ("cFault & 0x0F" in sys_ctrl_cpp) or ("gFault & 0x03" in sys_ctrl_cpp)
+    assert_eq("Zero CLK_FAULT or fault masking in system_controller.cpp", has_fault_masking, False)
+
+    # Rule 12: START verifies full hardware diagnostics without masking
+    has_full_diag_on_start = "getFullDiagnostics" in sys_ctrl_cpp and "cFault != 0 || gFault1 != 0 || gFault2 != 0" in sys_ctrl_cpp
+    assert_eq("START verifies full hardware diagnostics without masking", has_full_diag_on_start, True)
+
+    # Rule 13: Classic BT memory release present in ble_manager.cpp
+    has_bt_mem_release = "esp_bt_controller_mem_release(ESP_BT_MODE_CLASSIC_BT)" in ble_cpp
+    assert_eq("Classic BT memory release present in ble_manager.cpp", has_bt_mem_release, True)
+
+    # Rule 14: BLE OTA waits for vibration decay before flash write
+    has_ble_ota_decay = "MajnVibration::getCurrentAmplitude()" in ota_ble_cpp and "vTaskDelay" in ota_ble_cpp
+    assert_eq("BLE OTA waits for vibration decay before flash write", has_ble_ota_decay, True)
+
+    # Rule 15: Immediate amplitude zeroing (stopImmediately) present on emergency stop
+    vibr_cpp = open(os.path.join(FW_SRC, "vibration_controller.cpp"), "r", encoding="utf-8").read()
+    safety_cpp = open(os.path.join(FW_SRC, "safety_manager.cpp"), "r", encoding="utf-8").read()
+    has_stop_immediately = "void stopImmediately()" in vibr_cpp and "MajnVibration::stopImmediately()" in safety_cpp
+    assert_eq("Immediate amplitude zeroing (stopImmediately) present on emergency stop", has_stop_immediately, True)
 
     print("\n=======================================================")
     print(f"Total Tests Run: {passed + failed}")

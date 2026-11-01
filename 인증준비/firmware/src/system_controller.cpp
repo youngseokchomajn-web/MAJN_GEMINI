@@ -125,13 +125,14 @@ static void buildAckJson(int id, const char* cmd, const char* status, const char
     doc["state"] = state;
 
     doc["amp_status"] = MajnAmplifier::getStatusString();
-    uint8_t aState = 0, cFault = 0, gFault = 0;
-    if (MajnAmplifier::getDiagnostics(aState, cFault, gFault)) {
+    uint8_t aState = 0, cFault = 0, gFault1 = 0, gFault2 = 0, warn = 0;
+    if (MajnAmplifier::getFullDiagnostics(aState, cFault, gFault1, gFault2, warn)) {
         doc["amp_state"] = aState;
         doc["chan_fault"] = cFault;
-        doc["glob_fault"] = gFault;
+        doc["glob_fault"] = gFault1;
+        doc["glob_fault2"] = gFault2;
         char diagBuf[64];
-        snprintf(diagBuf, sizeof(diagBuf), "Amp:S=0x%02X,CF=0x%02X,GF=0x%02X [%s]", aState, cFault, gFault, MajnAmplifier::getStatusString());
+        snprintf(diagBuf, sizeof(diagBuf), "Amp:S=0x%02X,CF=0x%02X,GF1=0x%02X,GF2=0x%02X [%s]", aState, cFault, gFault1, gFault2, MajnAmplifier::getStatusString());
         doc["diag"] = diagBuf;
     } else {
         char diagBuf[64];
@@ -152,8 +153,14 @@ void resetFault() {
     if (!MajnAmplifier::isAmplifierReady()) {
         MajnAmplifier::initAmplifier();
     }
-    MajnAmplifier::enterStandbyState();
-    MajnSafety::resetSafetyLock();
+    if (MajnAmplifier::enterStandbyState()) {
+        uint8_t aState = 0, cFault = 0, gFault1 = 0, gFault2 = 0, warn = 0;
+        if (MajnAmplifier::getFullDiagnostics(aState, cFault, gFault1, gFault2, warn)) {
+            if (cFault == 0 && gFault1 == 0 && gFault2 == 0) {
+                MajnSafety::resetSafetyLock();
+            }
+        }
+    }
 }
 
 bool handleJsonCommand(const char* jsonStr, String& responseJson) {
@@ -260,10 +267,10 @@ bool handleJsonCommand(const char* jsonStr, String& responseJson) {
             return false;
         }
 
-        // Check diagnostics registers (mask cFault 0x0F: OC/DC, gFault 0x03: PVDD UV/OV)
-        uint8_t aState = 0, cFault = 0, gFault = 0;
-        if (!MajnAmplifier::getDiagnostics(aState, cFault, gFault) || (cFault & 0x0F) != 0 || (gFault & 0x03) != 0) {
-            Serial.printf("[SystemCtrl] START rejected: Fault detected (CF=0x%02X, GF=0x%02X).\n", cFault, gFault);
+        // Check diagnostics registers: Channel faults, Global faults (UV/OV, CLK_FAULT, OTP_CRC), and Overtemperature (OTSD)
+        uint8_t aState = 0, cFault = 0, gFault1 = 0, gFault2 = 0, warn = 0;
+        if (!MajnAmplifier::getFullDiagnostics(aState, cFault, gFault1, gFault2, warn) || cFault != 0 || gFault1 != 0 || gFault2 != 0) {
+            Serial.printf("[SystemCtrl] START rejected: Fault detected (CF=0x%02X, GF1=0x%02X, GF2=0x%02X).\n", cFault, gFault1, gFault2);
             systemActive = false;
             MajnAmplifier::enterStandbyState();
             buildAckJson(id, cmd, "failed", "FAULT", responseJson);
@@ -326,7 +333,19 @@ bool handleJsonCommand(const char* jsonStr, String& responseJson) {
             MajnAmplifier::initAmplifier();
         }
 
-        MajnAmplifier::enterStandbyState();
+        if (!MajnAmplifier::enterStandbyState()) {
+            buildAckJson(id, cmd, "rejected", "FAULT", responseJson);
+            return false;
+        }
+
+        uint8_t aState = 0, cFault = 0, gFault1 = 0, gFault2 = 0, warn = 0;
+        if (!MajnAmplifier::getFullDiagnostics(aState, cFault, gFault1, gFault2, warn) || cFault != 0 || gFault1 != 0 || gFault2 != 0) {
+            Serial.printf("[SystemCtrl] RESET_FAULT rejected: Hardware fault remains (CF:0x%02X, GF1:0x%02X, GF2:0x%02X)\n",
+                          cFault, gFault1, gFault2);
+            buildAckJson(id, cmd, "rejected", "FAULT", responseJson);
+            return false;
+        }
+
         MajnSafety::resetSafetyLock();
         buildAckJson(id, cmd, "applied", "READY", responseJson);
         return true;
@@ -457,12 +476,13 @@ void getTelemetryJson(String& outJson, const AccelData& accel) {
     imu["note"] = "PCB on-board sensor only (NOT mattress pad)";
 
     doc["amp_status"] = MajnAmplifier::getStatusString();
-    uint8_t aState = 0, cFault = 0, gFault = 0;
-    if (MajnAmplifier::getDiagnostics(aState, cFault, gFault)) {
-        doc["amp_diag"] = ((cFault & 0x0F) == 0 && (gFault & 0x03) == 0) ? "OK" : "FAULT";
+    uint8_t aState = 0, cFault = 0, gFault1 = 0, gFault2 = 0, warn = 0;
+    if (MajnAmplifier::getFullDiagnostics(aState, cFault, gFault1, gFault2, warn)) {
+        doc["amp_diag"] = (cFault == 0 && gFault1 == 0 && gFault2 == 0) ? "OK" : "FAULT";
         doc["amp_state"] = aState;
         doc["chan_fault"] = cFault;
-        doc["glob_fault"] = gFault;
+        doc["glob_fault"] = gFault1;
+        doc["glob_fault2"] = gFault2;
     } else {
         doc["amp_diag"] = "OFFLINE";
     }

@@ -63,7 +63,11 @@ void VibrationControlTask(void *pvParameters) {
     for (;;) {
         vTaskDelayUntil(&xLastWakeTime, xFrequency);
 
+        // Process any deferred hardware shock interrupt from LSM6DSOX on Core 1
+        MajnSafety::processPendingShock();
+
         if (MajnSafety::isSafetyLockTriggered()) {
+            MajnVibration::stopImmediately();
             continue;
         }
 
@@ -89,8 +93,8 @@ void VibrationControlTask(void *pvParameters) {
                     Serial.println("[Safety] CRITICAL: systemActive is TRUE but Amplifier is NOT ready! Engaging Emergency Stop.");
                     MajnSafety::requestEmergencyStop();
                 } else {
-                    uint8_t aState = 0, cFault = 0, gFault = 0;
-                    if (!MajnAmplifier::getDiagnostics(aState, cFault, gFault)) {
+                    uint8_t aState = 0, cFault = 0, gFault1 = 0, gFault2 = 0, warn = 0;
+                    if (!MajnAmplifier::getFullDiagnostics(aState, cFault, gFault1, gFault2, warn)) {
                         if (++sI2cCommFailCount >= 3) {
                             Serial.println("[Safety] CRITICAL: TAS5805M I2C communication lost (3 consecutive failures)! Engaging Emergency Stop.");
                             sI2cCommFailCount = 0;
@@ -98,12 +102,15 @@ void VibrationControlTask(void *pvParameters) {
                         }
                     } else {
                         sI2cCommFailCount = 0;
-                        // Mask cFault (0x0F: CH1/CH2 OC/DC) and gFault (0x03: PVDD UV/OV); ignore harmless CLK_FAULT_I (0x04) / BQ_WR_ERROR (0x40)
-                        uint8_t critCFault = (cFault & 0x0F);
-                        uint8_t critGFault = (gFault & 0x03);
-                        if (critCFault != 0 || critGFault != 0) {
+                        // Real fault monitoring:
+                        // cFault: Channel faults (OC/DC on CH1/CH2)
+                        // gFault1: PVDD UV/OV, CLK_FAULT_I (0x04), OTP_CRC_ERROR (0x80)
+                        // gFault2: OTSD overtemperature shutdown (0x01)
+                        bool hasFault = (cFault != 0) || (gFault1 != 0) || (gFault2 != 0);
+                        if (hasFault) {
                             if (++sHwFaultCount >= 3) {
-                                Serial.printf("[Safety] CRITICAL: TAS5805M Hardware Fault! CFault=0x%02X, GFault=0x%02X. Engaging Emergency Stop.\n", cFault, gFault);
+                                Serial.printf("[Safety] CRITICAL: TAS5805M Hardware Fault! CFault=0x%02X, GFault1=0x%02X, GFault2=0x%02X. Engaging Emergency Stop.\n",
+                                              cFault, gFault1, gFault2);
                                 sHwFaultCount = 0;
                                 MajnSafety::requestEmergencyStop();
                             }
@@ -128,18 +135,14 @@ void VibrationControlTask(void *pvParameters) {
 // -------------------------------------------------------------------------
 void WiFiBTCommunicationTask(void *pvParameters) {
     (void)pvParameters;
-#if defined(MAJN_WIFI_CONTROL)
-    Serial.println("[Core 0] Wi-Fi SoftAP Web Server Task Running.");
-    for (;;) {
-        MajnWiFi::handleClient();
-        MajnWiFi::updateTelemetry(latestAccel);
-        vTaskDelay(pdMS_TO_TICKS(10));
-    }
-#else
-    Serial.println("[Core 0] BLE Communication Task Running.");
+    Serial.println("[Core 0] Dual Wi-Fi SoftAP + BLE Task Running.");
     uint8_t bleNotifyCounter = 0;
 
     for (;;) {
+#if defined(MAJN_WIFI_CONTROL)
+        MajnWiFi::handleClient();
+        MajnWiFi::updateTelemetry(latestAccel);
+#endif
         bleLoop();
         
         // Paced BLE telemetry notifications (Every 50ms: 5 ticks of 10ms)
@@ -159,7 +162,6 @@ void WiFiBTCommunicationTask(void *pvParameters) {
 
         vTaskDelay(pdMS_TO_TICKS(10));
     }
-#endif
 }
 
 // -------------------------------------------------------------------------
@@ -203,7 +205,7 @@ void setup() {
 
     // 4. Vibration Control & I2S Peripheral (Start clocks first)
     MajnVibration::initVibrationController();
-    xTaskCreatePinnedToCore(AudioOutputTask, "AudioTask", 8192, NULL, 5, &audioTaskHandle, 1);
+    xTaskCreatePinnedToCore(AudioOutputTask, "AudioTask", 4096, NULL, 5, &audioTaskHandle, 1);
     delay(20); // Allow I2S DMA stream to output stable 48kHz BCLK/LRCLK before TAS5805M powers up
 
     // 5. Power up 12V Boost Regulator and Settle only after clocks are stable
@@ -219,7 +221,6 @@ void setup() {
         Serial.println("[OK] Amplifier initialized successfully and placed in STANDBY.");
     }
 
-#if !defined(MAJN_WIFI_CONTROL)
     // 7. BLE GATT Server (Starts advertising MAJN-Bassinet for Web Bluetooth & Automated BLE OTA)
     if (!initBleServer()) {
         Serial.println("[FATAL] BLE server initialization failed.");
@@ -227,15 +228,12 @@ void setup() {
         while (1);
     }
     Serial.println("[OK] BLE GATT Server Initialized.");
-#else
-    Serial.println("[OK] Wi-Fi SoftAP Mode Active: BLE Server bypassed to preserve 100% internal heap for Web Server & Web-OTA.");
-#endif
 
     // -------------------------------------------------------------------------
-    // Dual Core FreeRTOS Task Spawning (Generous stacks enabled by 272KB free heap)
+    // Dual Core FreeRTOS Task Spawning
     // -------------------------------------------------------------------------
-    xTaskCreatePinnedToCore(WiFiBTCommunicationTask, "CommTask", 12288, NULL, 1, &commTaskHandle, 0);
-    xTaskCreatePinnedToCore(VibrationControlTask, "ControlTask", 8192, NULL, 4, &controlTaskHandle, 1);
+    xTaskCreatePinnedToCore(WiFiBTCommunicationTask, "CommTask", 8192, NULL, 1, &commTaskHandle, 0);
+    xTaskCreatePinnedToCore(VibrationControlTask, "ControlTask", 4096, NULL, 4, &controlTaskHandle, 1);
 
     // 8. Wireless OTA Engine (Disabled to prevent Wi-Fi/BLE coexist memory crash)
     // MajnOta::initOta();

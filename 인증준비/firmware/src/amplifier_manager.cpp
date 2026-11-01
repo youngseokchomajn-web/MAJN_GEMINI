@@ -13,11 +13,11 @@ SemaphoreHandle_t gI2cMutex = nullptr;
 
 struct I2cLock {
     bool locked;
-    I2cLock() : locked(false) {
+    I2cLock(uint32_t timeoutMs = 200) : locked(false) {
         if (!gI2cMutex) {
             gI2cMutex = xSemaphoreCreateMutex();
         }
-        if (gI2cMutex && xSemaphoreTake(gI2cMutex, pdMS_TO_TICKS(200)) == pdTRUE) {
+        if (gI2cMutex && xSemaphoreTake(gI2cMutex, pdMS_TO_TICKS(timeoutMs)) == pdTRUE) {
             locked = true;
         }
     }
@@ -26,13 +26,21 @@ struct I2cLock {
             xSemaphoreGive(gI2cMutex);
         }
     }
+    bool isLocked() const { return locked; }
 };
 }
 
 namespace MajnAmplifier {
 
 bool initAmplifier() {
+    if (!gI2cMutex) {
+        gI2cMutex = xSemaphoreCreateMutex();
+    }
     I2cLock lock;
+    if (!lock.isLocked()) {
+        Serial.println("[Amplifier] ERROR: Failed to acquire I2C mutex for initAmplifier!");
+        return false;
+    }
 #if defined(MAJN_BLE_ONLY_TEST)
     Serial.println("[Amplifier] BLE-only test mode: TAS5805M held in shutdown (PDN LOW).");
     digitalWrite(PIN_AMP_PDN, LOW);
@@ -74,6 +82,10 @@ bool initAmplifier() {
 
 bool enterPlayState() {
     I2cLock lock;
+    if (!lock.isLocked()) {
+        Serial.println("[Amplifier] ERROR: Failed to acquire I2C mutex for enterPlayState!");
+        return false;
+    }
 #if !defined(MAJN_BLE_ONLY_TEST)
     if (gAmpReady) {
         if (!gAmpStandby) return true; // Already in Play mode, avoid redundant I2C traffic
@@ -89,6 +101,10 @@ bool enterPlayState() {
 
 bool enterStandbyState() {
     I2cLock lock;
+    if (!lock.isLocked()) {
+        Serial.println("[Amplifier] ERROR: Failed to acquire I2C mutex for enterStandbyState!");
+        return false;
+    }
 #if !defined(MAJN_BLE_ONLY_TEST)
     if (gAmpReady) {
         if (gAmpStandby) return true; // Already in Standby mode, prevents 50Hz redundant I2C bus traffic
@@ -103,6 +119,7 @@ bool enterStandbyState() {
 }
 
 void shutdownAmplifier() {
+    I2cLock lock(100);
     digitalWrite(PIN_AMP_PDN, LOW);
     gAmpStandby = true;
     gAmpReady = false; // Mark unready so subsequent calls require full re-init
@@ -111,6 +128,10 @@ void shutdownAmplifier() {
 
 bool setVolume(uint8_t volumePercent) {
     I2cLock lock;
+    if (!lock.isLocked()) {
+        Serial.println("[Amplifier] ERROR: Failed to acquire I2C mutex for setVolume!");
+        return false;
+    }
     gCurrentVolume = constrain(volumePercent, (uint8_t)0, (uint8_t)100);
 #if !defined(MAJN_BLE_ONLY_TEST)
     if (gAmpReady) {
@@ -141,9 +162,21 @@ bool isAmplifierReady() {
 
 bool getDiagnostics(uint8_t &state, uint8_t &chanFault, uint8_t &globalFault1) {
     I2cLock lock;
+    if (!lock.isLocked()) return false;
 #if !defined(MAJN_BLE_ONLY_TEST)
     if (gAmpReady) {
         return gAmp.getDiagnostics(state, chanFault, globalFault1);
+    }
+#endif
+    return false;
+}
+
+bool getFullDiagnostics(uint8_t &state, uint8_t &chanFault, uint8_t &globalFault1, uint8_t &globalFault2, uint8_t &warning) {
+    I2cLock lock;
+    if (!lock.isLocked()) return false;
+#if !defined(MAJN_BLE_ONLY_TEST)
+    if (gAmpReady) {
+        return gAmp.getFullDiagnostics(state, chanFault, globalFault1, globalFault2, warning);
     }
 #endif
     return false;

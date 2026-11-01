@@ -7,6 +7,7 @@
 #include <BLESecurity.h>
 #include <Preferences.h>
 #include <ArduinoJson.h>
+#include <esp_bt.h>
 #include "soc/rtc_cntl_reg.h"
 
 #include "safety_manager.h"
@@ -98,6 +99,9 @@ class SecurityCallbacks : public BLESecurityCallbacks {
 }
 
 bool initBleServer() {
+    // 0. Release Classic BT memory to reclaim heap for dual Wi-Fi + BLE operation
+    esp_bt_controller_mem_release(ESP_BT_MODE_CLASSIC_BT);
+
     // 1. Retrieve or generate persistent 6-digit BLE PIN in NVS
     Preferences prefs;
     prefs.begin("majn", false);

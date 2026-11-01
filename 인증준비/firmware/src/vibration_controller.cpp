@@ -69,7 +69,9 @@ void setTarget(float frequencyHz, float amplitudeScale) {
     gTargetFrequency = constrain(frequencyHz, 30.0f, 250.0f);
     // Hard safety cap: clamp maximum amplitude to 0.5f (50%) across ALL caller paths
     gTargetAmplitude = constrain(amplitudeScale, 0.0f, 0.5f);
-    // Note: gCurrentAmplitude is gradually ramped to gTargetAmplitude via tickControlLoop
+    if (gTargetAmplitude > 0.001f) {
+        MajnSafety::setVibrationActive(true);
+    }
 }
 
 float getTargetFrequency() {
@@ -84,10 +86,15 @@ float getTargetAmplitude() {
     return gTargetAmplitude;
 }
 
+void stopImmediately() {
+    gCurrentAmplitude = 0.0f;
+    gTargetAmplitude = 0.0f;
+    MajnSafety::setVibrationActive(false);
+}
+
 void tickControlLoop(float dt) {
     if (MajnSafety::isSafetyLockTriggered()) {
-        gCurrentAmplitude = 0.0f;
-        gTargetAmplitude = 0.0f;
+        stopImmediately();
         return;
     }
 
@@ -108,6 +115,8 @@ void tickControlLoop(float dt) {
             MajnAmplifier::enterStandbyState();
         }
     }
+
+    MajnSafety::setVibrationActive(systemActive || (gCurrentAmplitude > 0.001f));
 }
 
 void renderAudioBlock() {
