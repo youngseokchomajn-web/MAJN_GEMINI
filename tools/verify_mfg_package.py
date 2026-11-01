@@ -194,15 +194,15 @@ def main():
     all_comments = [v["comment"] for v in bom_comps.values()]
     
     has_c2909511 = "C2909511" in all_parts
-    has_vert_2p = "C124375" in all_parts
-    has_vert_6p = "C124380" in all_parts
+    has_vert_2p = any(p in all_parts for p in ["C124375", "C124376"])
+    has_vert_6p = any(p in all_parts for p in ["C124380", "C124381"])
     has_ghosts = any(g in bom_comps for g in ["D2", "SOP16", "TYPE_C"])
     
-    # Check Right-Angle Connectors
+    # Check Right-Angle Connectors (Verified via EasyEDA LCSC API: B-2100R02P-A110 = C49423315, B-2100R06P-A110 = C124367)
     j1_part = bom_comps.get("J1", {}).get("part")
     j2_part = bom_comps.get("J2", {}).get("part")
     uart_part = bom_comps.get("UART_HDR", {}).get("part")
-    ra_connectors_ok = (j1_part == "C124376" and j2_part == "C124376" and uart_part == "C124381")
+    ra_connectors_ok = (j1_part == "C49423315" and j2_part == "C49423315" and uart_part == "C124367")
 
     # Check 12V capacitors (C8, C9)
     c8_part = bom_comps.get("C8", {}).get("part")
@@ -215,10 +215,10 @@ def main():
     r12_ok = (r12_part == "C25900" and "0402" in r12_fp)
 
     print(f"  - C2909511 (404 Error Part)       : {'DETECTED (DEFECT)' if has_c2909511 else 'ABSENT [SAFE]'}")
-    print(f"  - C124375 (Vertical 2P Header)    : {'DETECTED (COLLISION)' if has_vert_2p else 'ABSENT [SAFE]'}")
-    print(f"  - C124380 (Vertical 6P Header)    : {'DETECTED (COLLISION)' if has_vert_6p else 'ABSENT [SAFE]'}")
-    print(f"  - Right-Angle 2P (C124376) J1/J2  : J1='{j1_part}', J2='{j2_part}' ({'OK' if j1_part == 'C124376' and j2_part == 'C124376' else 'MISMATCH'})")
-    print(f"  - Right-Angle 6P (C124381) UART   : UART='{uart_part}' ({'OK' if uart_part == 'C124381' else 'MISMATCH'})")
+    print(f"  - C124375/C124376 (Vert 2P/3P)    : {'DETECTED (COLLISION)' if has_vert_2p else 'ABSENT [SAFE]'}")
+    print(f"  - C124380/C124381 (Vert 6P/8P)    : {'DETECTED (COLLISION)' if has_vert_6p else 'ABSENT [SAFE]'}")
+    print(f"  - Right-Angle 2P (C49423315) J1/J2: J1='{j1_part}', J2='{j2_part}' ({'OK' if j1_part == 'C49423315' and j2_part == 'C49423315' else 'MISMATCH'})")
+    print(f"  - Right-Angle 6P (C124367) UART   : UART='{uart_part}' ({'OK' if uart_part == 'C124367' else 'MISMATCH'})")
     print(f"  - Legacy Ghost Components         : {'DETECTED' if has_ghosts else 'PURGED [SAFE]'}")
     print(f"  - C8, C9 MLCC Part on 12V Rail    : C8='{c8_part}', C9='{c9_part}' (25V C96446: {c8_c9_25v})")
     print(f"  - R12 0402 Top-Mount Strap        : Part='{r12_part}', FP='{r12_fp}' ({'OK' if r12_ok else 'MISMATCH'})")
@@ -227,7 +227,7 @@ def main():
                 not has_ghosts and ra_connectors_ok and c8_c9_25v and r12_ok)
 
     if gate4_ok:
-        print("  => PASS: All vertical headers replaced with right-angle C124376/C124381. Zero forbidden parts.")
+        print("  => PASS: All vertical headers replaced with API-verified right-angle C49423315/C124367. Zero forbidden parts.")
         passed_gates += 1
     else:
         print("  => FAIL: Dangerous or invalid part number detected in BOM!")

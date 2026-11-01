@@ -635,13 +635,13 @@ def run_verification():
     f1_part = f1_info.get("Manufacturer Part", "")
     f1_lcsc = f1_info.get("Supplier Part (LCSC)", "")
 
-    print(f"  - J1 Speaker Port: Part='{j1_part}', LCSC='{j1_lcsc}', Pkg='{j1_pkg}' (Expected: 2-pin B-2100S02P-A110 / C124375)")
-    print(f"  - J2 Speaker Port: Part='{j2_part}', LCSC='{j2_lcsc}', Pkg='{j2_pkg}' (Expected: 2-pin B-2100S02P-A110 / C124375)")
+    print(f"  - J1 Speaker Port: Part='{j1_part}', LCSC='{j1_lcsc}', Pkg='{j1_pkg}' (Expected: 2-pin B-2100R02P-A110 / C49423315)")
+    print(f"  - J2 Speaker Port: Part='{j2_part}', LCSC='{j2_lcsc}', Pkg='{j2_pkg}' (Expected: 2-pin B-2100R02P-A110 / C49423315)")
     print(f"  - F1 PPTC Fuse   : Val='{f1_val}', Part='{f1_part}', LCSC='{f1_lcsc}' (Expected: 3.0A / C269155)")
 
     conn_fuse_ok = True
-    if not ("S02P" in j1_part and "C124375" in j1_lcsc and "S02P" in j2_part and "C124375" in j2_lcsc):
-        print("  => FAIL: J1 or J2 is still 10-pin header (B-2100S10P-A110)! Must be 2-pin (B-2100S02P-A110 / C124375).")
+    if not ("R02P" in j1_part and "C49423315" in j1_lcsc and "R02P" in j2_part and "C49423315" in j2_lcsc):
+        print("  => FAIL: J1 or J2 is not 2-pin right-angle header (B-2100R02P-A110 / C49423315)!")
         conn_fuse_ok = False
 
     if not ("2P" in j1_pkg and "2P" in j2_pkg):
