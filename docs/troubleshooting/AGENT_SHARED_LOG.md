@@ -871,6 +871,39 @@
      - 본 마스터 정리 문서를 `origin/feature/phone-wifi-control` 브랜치에 최종 커밋 및 푸시.
 - **실물 OTA 상태**: **보류 (HOLD 유지 — R6 사용자 명시적 승인 대기)**
 
+---
+
+### SHARED-2026-11-01-014 — [펌웨어 v0.1.0-mvp 기준선 고정 및 6주 MVP 개발 실행 계획 공식 수립] c63e60a 바이너리 SHA-256 저장, 4대 핵심 아키텍처 반영, 92개 테스트 통과 및 개발/하드웨어/검증 문서 패키지 완비
+- **작성자:** Gemini (Antigravity)
+- **작업 일시:** 2026-11-01 19:45 KST
+- **작업 ID:** MVP-BASELINE-FREEZE-C63E60A / PLAN-BOOST
+- **기준 브랜치:** `feature/phone-wifi-control` (Commit: `c63e60a`)
+- **주요 작업 내역**:
+  1. **[펌웨어 기준선 동결 및 공식 릴리스 패키징 (`release/v0.1.0-mvp/`)]**:
+     - 공식 릴리스 디렉토리 생성 및 `c63e60a` 빌드 바이너리 복사: `release/v0.1.0-mvp/firmware.bin` (1,911,536 bytes).
+     - **공식 SHA-256 Checksum 검증 및 저장**:
+       `da97b96e89b2f267c9c4b9d054c0456e1b4bd40eba220bd630815ed60452ce7c  firmware.bin`
+     - `release/v0.1.0-mvp/RELEASE_NOTES.md` 작성: 하드웨어 제약사항(버튼 없음, 유선 시리얼 불가, 무선 OTA 필수), 4대 핵심 개선사항, 자동 검증 결과 및 배포 가이드 문서화.
+  2. **[4대 핵심 안정성 개선 아키텍처 공식 반영]**:
+     - **OTA 상호 배제 (Cross-Transport Mutual Exclusion)**: `ota_ble_service.cpp`와 `wifi_manager.cpp` 간 원자적 락(`gOtaRunning`)으로 BLE OTA 및 Web HTTP OTA 동시 요청 차단.
+     - **백그라운드 세션 유지 (Background Session Stability)**: 화면 잠금 및 BLE 일시 단절 시에도 ESP32 내부 타이머 기반 달래기 세션 지속. STOP/ESTOP 최우선 즉시 감쇄 보장.
+     - **하드웨어 고장 대응 (Universal Fault Latch)**: START 진입 시 TAS5805M I2C, 레일, 결함 라인 전수 진단 및 이상 시 E-STOP 즉각 발동 및 FAULT 래칭.
+     - **앰프 보호 (Pop-noise Suppression & OTW Derating)**: TAS5805M `begin()`을 STANDBY(Hi-Z)로 부팅 확정하여 팝노이즈 원천 제거. 100ms Supervisor가 다이 온도 135°C 도달 시 50% 출력 강제 디레이팅.
+  3. **[자동 검증 스위트 100% 통과 (Total 118 Checks)]**:
+     - 단위 및 상태머신 테스트 (`tools/test_command_parser.py`): **92 / 92 PASSED**
+     - 전기적 넷리스트 및 BOM 규칙 (`tools/verify_hardware_review.py`): **21 / 21 PASSED**
+     - 제조 거버 및 3-Way 패리티 (`tools/verify_mfg_package.py`): **5 / 5 PASSED**
+  4. **[저장소 아키텍처 및 6주 개발 마스터플랜 체계화]**:
+     - `firmware/` $\rightarrow$ `인증준비/firmware/` 절대 경로 심볼릭 링크 확립.
+     - `docs/development/`: `MASTER_DEVELOPMENT_PLAN.md`, `WEEKLY_DEVELOPMENT_LOG.md`, `MVP_RELEASE_CHECKLIST.md` 구축.
+     - `docs/hardware/`: `PCB_BRINGUP.md`, `POWER_TEST.md`, `EXCITER_TEST.md` 실측 프로토콜 완성.
+     - `docs/validation/`: `VIBRATION_TEST_PROTOCOL.md`, `VIBRATION_TEST_RESULTS.md`, `SAFETY_TEST_PROTOCOL.md`, `SAFETY_RISK_REGISTER.md` 완성.
+  5. **[차기 긴급 작업 우선순위 (Week 1 Bring-up)]**:
+     - P0-1: PCB #0005 비전원 DMM 단락 검사 및 5V 전류 제한 전원 투입.
+     - P0-2: 3.3V LDO 및 MP3426 12V Boost 레일 실측.
+     - P0-3: TAS5805M I2C 통신 확인 및 부팅 팝노이즈 오실로스코프 계측.
+- **실물 OTA 상태**: **보류 (HOLD 유지 — R6 사용자 승인 대기)**
+
 
 
 
