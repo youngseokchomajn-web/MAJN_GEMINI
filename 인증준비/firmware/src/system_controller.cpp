@@ -253,8 +253,8 @@ bool handleJsonCommand(const char* jsonStr, String& responseJson) {
         if (!MajnAmplifier::isAmplifierReady()) {
             if (!MajnAmplifier::initAmplifier()) {
                 Serial.println("[SystemCtrl] START rejected: Amplifier init failed.");
-                systemActive = false;
-                buildAckJson(id, cmd, "failed", getCurrentStateName(), responseJson);
+                triggerEmergencyStop();
+                buildAckJson(id, cmd, "failed", "FAULT", responseJson);
                 return false;
             }
         }
@@ -262,8 +262,8 @@ bool handleJsonCommand(const char* jsonStr, String& responseJson) {
         // Enter Play state
         if (!MajnAmplifier::enterPlayState()) {
             Serial.println("[SystemCtrl] START rejected: enterPlayState() failed.");
-            systemActive = false;
-            buildAckJson(id, cmd, "failed", getCurrentStateName(), responseJson);
+            triggerEmergencyStop();
+            buildAckJson(id, cmd, "failed", "FAULT", responseJson);
             return false;
         }
 
@@ -271,8 +271,8 @@ bool handleJsonCommand(const char* jsonStr, String& responseJson) {
         uint8_t aState = 0, cFault = 0, gFault1 = 0, gFault2 = 0, warn = 0;
         if (!MajnAmplifier::getFullDiagnostics(aState, cFault, gFault1, gFault2, warn) || cFault != 0 || gFault1 != 0 || gFault2 != 0) {
             Serial.printf("[SystemCtrl] START rejected: Fault detected (CF=0x%02X, GF1=0x%02X, GF2=0x%02X).\n", cFault, gFault1, gFault2);
-            systemActive = false;
             MajnAmplifier::enterStandbyState();
+            triggerEmergencyStop();
             buildAckJson(id, cmd, "failed", "FAULT", responseJson);
             return false;
         }

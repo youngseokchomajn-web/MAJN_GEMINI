@@ -165,7 +165,7 @@ def main():
     spacer_h = 3.0  # mm
     pcb_t = 1.6 * 1.1  # mm (+10% tolerance = 1.76mm)
     l1_h = 4.5  # SWPA6045S inductor
-    conn_h = 5.0  # Right-Angle connector (B-2100S02P-A120 / C124376)
+    conn_h = 5.0  # Right-Angle connector (B-2100R02P-A110 / C49423315)
     max_part_h = max(l1_h, conn_h)
     total_z = spacer_h + pcb_t + max_part_h  # 9.76mm
     cavity_h = 13.5 - 0.5  # 13.0mm min

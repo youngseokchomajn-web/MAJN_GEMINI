@@ -97,6 +97,9 @@ class MockSystem:
 
             if not self.amp_ready or self.amp_diag_fault:
                 self.system_active = False
+                self.safety_lock = True
+                self.vibration.current_amp = 0.0
+                self.vibration.target_amp = 0.0
                 return False, {"id": req_id, "cmd": cmd, "status": "failed", "state": "FAULT"}
 
             self.system_active = True
@@ -278,11 +281,24 @@ def run_tests():
     assert_eq("START rejected on hardware fault", ok, False)
     assert_eq("START status on hardware fault", res["status"], "failed")
     assert_eq("State after failed START", res["state"], "FAULT")
+    assert_eq("System state is FAULT after failed START", sys_instance.get_system_state(), "FAULT")
 
-    # Recover to READY
+    # Subsequent START must be locked out while in FAULT state
+    ok, res = sys_instance.handle_json_command(json.dumps({"id": 15, "cmd": "START", "frequency_hz": 45.0, "amplitude": 0.3}))
+    assert_eq("Subsequent START locked out in FAULT", ok, False)
+    assert_eq("Subsequent START status is fault", res["status"], "fault")
+
+    # RESET_FAULT rejected when hardware fault persists after failed START
+    ok, res = sys_instance.handle_json_command(json.dumps({"id": 16, "cmd": "RESET_FAULT"}))
+    assert_eq("RESET_FAULT rejected when hardware fault persists after START", ok, False)
+    assert_eq("RESET_FAULT rejection status after START", res["status"], "rejected")
+    assert_eq("State remains FAULT after rejected RESET_FAULT", res["state"], "FAULT")
+
+    # Clear hardware fault -> RESET_FAULT restores READY
     sys_instance.amp_diag_fault = False
-    ok, res = sys_instance.handle_json_command(json.dumps({"id": 15, "cmd": "RESET_FAULT"}))
+    ok, res = sys_instance.handle_json_command(json.dumps({"id": 17, "cmd": "RESET_FAULT"}))
     assert_eq("RESET_FAULT restores READY for next suite", ok, True)
+    assert_eq("State after RESET_FAULT restored", res["state"], "READY")
 
     print("\n=== TEST SUITE 5: OTA Cross-Locking Gate & Image Verification ===")
     sys_instance.ota_in_progress = True
@@ -387,9 +403,13 @@ def run_tests():
     has_fault_masking = ("cFault & 0x0F" in sys_ctrl_cpp) or ("gFault & 0x03" in sys_ctrl_cpp)
     assert_eq("Zero CLK_FAULT or fault masking in system_controller.cpp", has_fault_masking, False)
 
-    # Rule 12: START verifies full hardware diagnostics without masking
-    has_full_diag_on_start = "getFullDiagnostics" in sys_ctrl_cpp and "cFault != 0 || gFault1 != 0 || gFault2 != 0" in sys_ctrl_cpp
-    assert_eq("START verifies full hardware diagnostics without masking", has_full_diag_on_start, True)
+    # Rule 12: START verifies full hardware diagnostics without masking and triggers emergency stop
+    has_full_diag_on_start = (
+        "getFullDiagnostics" in sys_ctrl_cpp
+        and "cFault != 0 || gFault1 != 0 || gFault2 != 0" in sys_ctrl_cpp
+        and "triggerEmergencyStop()" in sys_ctrl_cpp
+    )
+    assert_eq("START verifies full hardware diagnostics and triggers emergency stop", has_full_diag_on_start, True)
 
     # Rule 13: Classic BT memory release present in ble_manager.cpp
     has_bt_mem_release = "esp_bt_controller_mem_release(ESP_BT_MODE_CLASSIC_BT)" in ble_cpp
