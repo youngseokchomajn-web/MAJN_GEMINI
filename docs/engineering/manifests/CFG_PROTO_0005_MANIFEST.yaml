@@ -10,7 +10,7 @@ hardware:
   board_id: "PCB-0005-4L"
   board_revision: "PCB1_revB_4Layer_1oz"
   layer_count: 4
-  layer_verification_status: VERIFICATION_PENDING # 4-layer confirmed in CAD/Gerber datasets (Inner1 GND 78,146B, Inner2 VCC 5,661B); physical board layer count and JLC manufacturing traceability pending invoice/cross-section confirmation
+  layer_verification_status: VERIFICATION_PENDING # 4-layer confirmed in CAD/Gerber datasets (Inner1 GND 78,094B, Inner2 VCC 5,609B in 2026-07-09 release); physical board layer count and JLC manufacturing traceability pending invoice/cross-section confirmation
   traceability:
     design_gerber_status: "4-Layer verified in CAD/Gerber datasets (Top, Inner1 GND, Inner2 VCC/Signals, Bottom)"
     physical_board_traceability: "VERIFICATION_PENDING (sample #0005 SMT verified via photos; physical inner-layer cross-section and fab invoice pending)"
@@ -23,8 +23,8 @@ hardware:
       mounting_limitation: "Tape used during testing solely because wooden bottom plate lacked mounting holes"
   dimensions_mm: [83.82, 62.23]
   inner_layer_sizes_bytes:
-    InnerLayer1_G1: 78146 # revB
-    InnerLayer2_G2: 5661  # revB
+    InnerLayer1_G1: 78094 # revB (2026-07-09 release; 78,146B in 2026-07-08 release)
+    InnerLayer2_G2: 5609  # revB (2026-07-09 release; 5,661B in 2026-07-08 release)
   known_pcb_flaws:
     - "No tactile BOOT/EN pushbuttons"
     - "No auto-reset (RTS/DTR) on UART header (requires manual IO0/EN grounding)"
@@ -86,9 +86,10 @@ housing:
   dimensions_mm: [450.0, 250.0, 22.5]
   cavity_depth_mm: 13.5
   master_dxf: "majn_housing/majung_bassinet_4.5T_rev2_master.dxf"
-  pcb_mount_method: "Double-sided adhesive foam tape (no bottom plate holes; ECO-001 proposed)"
+  pcb_mount_method: "Double-sided adhesive foam tape (no bottom plate holes; ECO-001 proposed with Würth 970050154 M2.5x5mm standoffs)"
   clearance_analysis:
     nominal_static_clearance_mm: 1.4 # static calculation (13.5mm cavity - 12.1mm stackup)
+    pcb_asymmetry_offset_mm: [1.27, 0.127] # X-axis offset +1.27mm relative to symmetrical hole pattern (PCB outer bounds X in [184.36, 268.18]mm, margin 184.36mm left vs 181.82mm right)
     rough_scaling_deflection_estimate_mm: 0.35 # rough isotropic scaling reference from 600x340 4.0T data; unverified for orthotropic birch plywood and actual boundary conditions
     dynamic_clearance_status: "VERIFICATION_PENDING (1.05mm cannot be declared safe dynamic clearance without CAE and physical testing)"
     clearance_verification_exit_criteria:
