@@ -4,7 +4,7 @@ status: VERIFICATION_PENDING
 product_variant: CFG-HOME-450
 creation_date: "2026-10-25"
 audit_date: "2026-11-02"
-audit_round: "Round 5 Fastener Feasibility Audit (ECO-001 Alternatives Feasibility & Coupon Test Plan)"
+audit_round: "Round 6 Test Plan Alignment & Fastener Baseline Audit (ECO-001 Rev 6 Unified Coordinates, Load Mechanics & Coupon Allocation Matrix)"
 
 hardware:
   board_id: "PCB-0005-4L"
@@ -91,27 +91,39 @@ housing:
   type: "4.5T Birch Plywood enclosure (Rev 2 DXF 10-bolt; Decision 10 6-bolt conflict pending resolution)"
   dimensions_mm: [450.0, 250.0, 22.5]
   cavity_depth_mm: 13.5
+  coordinate_system:
+    global_z_mm: [0.0, 22.5] # Bottom plate [0.0, 4.5], Cavity [4.5, 18.0], Top plate [18.0, 22.5]
+    cavity_z_mm: [0.0, 13.5] # Cavity floor at 0.0mm, Cavity ceiling at 13.5mm
   master_dxf: "majn_housing/majung_bassinet_4.5T_rev2_master.dxf"
-  pcb_mount_method: "Double-sided adhesive foam tape (no bottom plate holes; ECO-001 Rev 5 evaluates 3 alternatives: Alt A [M2.5x7/M2.5x4 on 5mm standoff - top 1.9mm=0.76d inadequate under 1.0d rule], Alt B [Würth 970070154 7mm standoff - causes 14.1mm stackup collision in 13.5mm cavity], Alt C [wood insert - CONCEPT_ONLY due to lack of standard M2.5 parts]; physical coupon testing required)"
+  pcb_mount_method: "Double-sided adhesive foam tape (no bottom plate holes; ECO-001 Rev 6 evaluates 3 alternatives: Alt A [M2.5x7/M2.5x4 on 5mm standoff - top 1.9mm=0.76d tentative screening criterion], Alt B [Würth 970070154 7mm standoff - causes 14.1mm stackup collision in 13.5mm cavity], Alt C [wood insert - CONCEPT_ONLY due to lack of standard M2.5 parts]; physical coupon testing required)"
   fastener_engagement_audit:
-    status: "EVALUATION_IN_PROGRESS (ECO-001 Rev 5 Feasibility Audit)"
+    status: "EVALUATION_IN_PROGRESS (ECO-001 Rev 6 Test Plan Aligned)"
     alternative_a:
       bottom_bolt: "M2.5x7mm countersunk (2.5mm engagement in brass = 1.0d)"
       top_bolt: "M2.5x4mm pan head with washer (1.9mm engagement in brass = 0.76d)"
-      defect: "Top engagement is only 0.76d (~2.7 active load-bearing threads after ISO 4753 chamfer), violating >= 1.0d rule; stripping/loosening risk under 30~65Hz vibration; UNACCEPTABLE_WITHOUT_TEST"
+      defect: "Top engagement is 0.76d (~2.7 active load-bearing threads after ISO 4753 chamfer), below tentative 1.0d screening criterion; cyclic vibration risk under 30~65Hz; UNACCEPTABLE_WITHOUT_TEST"
     alternative_b:
       standoff: "Würth Elektronik WA-SBRII 970070154 (M2.5 x 7.0mm, brass Ni-plated, through-threaded)"
       internal_clearance: "Bottom bolt 8mm (3.5mm entry) + top bolt 5mm (2.9mm entry) = 6.4mm inside 7.0mm standoff (0.6mm nominal clearance, marginal under tolerances)"
       defect: "Total stackup 7.0mm + 1.6mm PCB + 5.5mm inductor = 14.1mm > 13.5mm cavity depth; causes +0.6mm direct mechanical interference with vibrating plate; REQUIRES_HOUSING_CAVITY_REDESIGN"
     alternative_c:
       concept: "Threaded wood insert in bottom plate + M2.5 male-female standoff"
-      defect: "No commercial off-the-shelf M2.5 wood inserts for 4.5T plywood (RAMPA/E-Z LOK start at M3; Kerb-Konus Ensat 302 length is 6.0mm > 4.5mm plate); classified as CONCEPT_ONLY"
-    physical_verification_requirement: "Birch plywood 4.5T test coupon (5EA) torque/vibration/pull-out validation (T0-CP-01~04) required prior to design freeze"
+      defect: "No standard commercial off-the-shelf M2.5 wood inserts for 4.5T plywood identified in survey (RAMPA wood starts at M4; E-Z LOK wood starts at M3; Kerb-Konus Ensat 302 length is 6.0mm > 4.5mm plate); classified as CONCEPT_ONLY"
+    physical_verification_requirement: "Birch plywood 4.5T test coupons (8EA standard N=3 matrix) torque/vibration/pull-out validation (T0-CP-01~04) required prior to design freeze"
+    load_mechanics_basis:
+      pcb_assembly_mass_g: 30.0
+      transport_shock_30g_n: 8.83
+      cable_pull_force_n: 25.0
+      safety_factor: 3.0
+      minimum_pull_out_requirement_n: 75.0
+      pull_out_formal_pass_criterion: "TBD (to be established via coupon testing)"
+      vibration_duration_phase1: "2.0 hours (2.0G, 30~65Hz swept-sine)"
   grounding_architecture:
     type: "PCB Signal/Power GND pad contact (no metal chassis present in birch plywood housing; Chassis GND expression eliminated)"
+    forensic_evidence: "Gerber GBL D10 5.0mm copper pad and GBS 5.01mm opening at MH1~MH4; FlyingProbe PTH 106.3 mil on NET GND; USB-C shield pins directly connected to NET GND"
     qc_continuity_procedure:
       primary_qc: "Standard 2-wire DMM buzzer continuity test and loop resistance < 1.0 ohm across 4 standoff pads and USB-C shield pad"
-      secondary_engineering: "4-wire Kelvin micro-ohmmeter measurement for joint contact resistance characterization; formal threshold baseline to be established via coupon testing"
+      secondary_engineering: "4-wire Kelvin micro-ohmmeter measurement for joint contact resistance characterization; formal threshold baseline to be established via coupon testing (TBD)"
   clearance_analysis:
     nominal_static_clearance_mm: 1.4 # static calculation (13.5mm cavity - 12.1mm stackup)
     pcb_asymmetry_offset_mm: [1.27, 0.127] # X-axis offset +1.27mm relative to symmetrical hole pattern (PCB outer bounds X in [184.36, 268.18]mm, margin 184.36mm left vs 181.82mm right)
