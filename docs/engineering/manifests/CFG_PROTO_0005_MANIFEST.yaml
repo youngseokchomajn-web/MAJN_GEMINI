@@ -1,35 +1,46 @@
 configuration_id: CFG-PROTO-0005
-title: "MAJN Smart Bassinet Prototype #0005 Baseline"
-status: FACT_CONFIRMED
+title: "MAJN Smart Bassinet Prototype #0005 Baseline Manifest"
+status: VERIFICATION_PENDING
 product_variant: CFG-HOME-450
 creation_date: "2026-10-25"
-verified_date: "2026-11-02"
+audit_date: "2026-11-02"
+audit_round: "Round 2 Evidence Audit"
 
 hardware:
   board_id: "PCB-0005-4L"
   board_revision: "PCB1_4Layer_1oz"
   layer_count: 4
+  layer_verification_status: VERIFICATION_PENDING
+  traceability:
+    design_gerber_status: "4-Layer verified in CAD/Gerber datasets (Top, Inner1 GND, Inner2 VCC/Signals, Bottom)"
+    gerber_artifact: "인증준비/pcb/260708/Gerber_PCB1_revB_2026-07-08.zip"
+    prior_gerber_artifact: "인증준비/pcb/260630/Gerber_PCB1_2026-07-05_1oz.zip"
+    order_history: "Initial order W2026070611043433 cancelled due to USB-C orientation; rev-B files prepared 2026-07-08"
+    physical_traceability_gap: "Formal link between physical board #0005 silkscreen/order ID, delivery paperwork, and factory stackup awaits physical cross-check"
   dimensions_mm: [83.82, 62.23]
-  manufacturing_order: "JLCPCB W2026070611043433"
-  gerber_artifact: "인증준비/pcb/260630/Gerber_PCB1_2026-07-05_1oz.zip"
-  gerber_sha256: "b0fff25bff8612727e49ff3db24ac40ce4196dfb60c9afc4b401d8f678a251dc"
   inner_layer_sizes_bytes:
-    InnerLayer1_G1: 75534
-    InnerLayer2_G2: 5530
+    InnerLayer1_G1: 78146 # revB
+    InnerLayer2_G2: 5661  # revB
   known_pcb_flaws:
-    - "USB-C port flipped 180 deg (port faces inside; requires jumper wire)"
-    - "Mounting holes MH1~MH4 drilled at dia 0.25mm via-size (E-16; screws cannot pass)"
+    - "USB-C port orientation resolved in revB design; #0005 physical unit has rev-A jumper workaround"
+    - "Mounting holes MH1~MH4: dia 0.25mm on early fab vs dia 2.7mm on revB Gerber (E-16; screws cannot pass without rework)"
     - "No tactile BOOT/EN pushbuttons"
     - "No auto-reset (RTS/DTR) on UART header (requires manual IO0/EN grounding)"
     - "D3 mapped to SS34 Schottky diode (3A 40V, C8678)"
     - "L1 mapped to 4.7uH inductor (SWPA6045S4R7MT, C78804)"
 
 mcu_and_rf:
-  mcu_module: "ESP32-WROOM-32E-N8 (Silkscreen/Footprint: -32E, LCSC BOM: C701345)"
-  rf_antenna_type: "Onboard PCB Inverted-F Antenna (MIFA)"
-  ipex_connector_present: false
-  external_antenna_mounted: false
-  regulatory_transfer_status: "BLOCKED (IF-RF-001 downgraded)"
+  status: VERIFICATION_PENDING
+  mcu_module: "UNCONFIRMED: ESP32-WROOM-32E-N8 vs ESP32-WROOM-32UE-N8"
+  conflict_evidence:
+    cad_footprint_silkscreen: "WIFI-SMD_ESP32-WROOM-32E (PCB antenna footprint label)"
+    bom_part_number: "LCSC C701345 (cataloged as ESP32-WROOM-32UE-N8, IPEX/u.FL)"
+    engineering_bringup_logs: "Explicitly logged as ESP32-WROOM-32UE in MAJN_PROGRESS_SUMMARY and firmware docs"
+    physical_inspection_status: "PENDING (Physical shield silkscreen marking and u.FL connector presence not yet confirmed by teardown photo)"
+  rf_antenna_type: "UNCONFIRMED (PCB trace antenna vs external u.FL pigtail)"
+  ipex_connector_present: "UNCONFIRMED (requires physical sample inspection)"
+  external_antenna_mounted: "UNCONFIRMED"
+  regulatory_transfer_status: "BLOCKED / OPEN (Espressif pre-certified baseline <= 2.33 dBi is a provisional test lab condition, not universal statutory limit)"
 
 power_and_audio:
   ldo_regulator: "AP2112K-3.3TRG1 (LCSC C51118, SOT-23-5, 600mA)"
@@ -50,16 +61,18 @@ actuators:
   model: "12-ohm nominal lab sample exciters"
   quantity: 2
   wiring: "Series connected to J2 terminal"
-  voice_coil_dcr_bare: 21.6 # ohms (10.8 ohm x 2)
+  voice_coil_dcr_bare: 21.6 # ohms (10.8 ohm x 2 bare DCR)
   in_situ_harness_dcr: 24.8 # ohms (measured across J2 with harness/leads)
-  qualification_note: "12-ohm test pass cannot be generalized to 8-ohm production part without T2 qualification"
+  power_calculation_model: "Theoretical ideal resistive upper bound; 6W (24Ω) / 9W (16Ω) are peak instantaneous square-wave figures, not measured RMS thermal dissipation"
+  qualification_note: "12-ohm test pass cannot be generalized to 8-ohm production part without T2 qualification and empirical thermal imaging"
 
 housing:
   type: "4.5T Birch Plywood 10-bolt enclosure (Rev 2)"
   dimensions_mm: [450.0, 250.0, 22.5]
   cavity_depth_mm: 13.5
   master_dxf: "majn_housing/majung_bassinet_4.5T_rev2_master.dxf"
-  pcb_mount_method: "Double-sided adhesive foam tape (no bottom plate holes)"
+  pcb_mount_method: "Double-sided adhesive foam tape (no bottom plate holes; ECO-001 proposed)"
+  nominal_clearance_mm: 1.4 # static calculation (13.5mm cavity - 12.1mm stackup); dynamic load/vibration testing required
 
 firmware:
   build_target: "esp32_full_hw"
