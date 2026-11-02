@@ -1,0 +1,85 @@
+configuration_id: CFG-PROTO-0005
+title: "MAJN Smart Bassinet Prototype #0005 Baseline"
+status: FACT_CONFIRMED
+product_variant: CFG-HOME-450
+creation_date: "2026-10-25"
+verified_date: "2026-11-02"
+
+hardware:
+  board_id: "PCB-0005-4L"
+  board_revision: "PCB1_4Layer_1oz"
+  layer_count: 4
+  dimensions_mm: [83.82, 62.23]
+  manufacturing_order: "JLCPCB W2026070611043433"
+  gerber_artifact: "인증준비/pcb/260630/Gerber_PCB1_2026-07-05_1oz.zip"
+  gerber_sha256: "b0fff25bff8612727e49ff3db24ac40ce4196dfb60c9afc4b401d8f678a251dc"
+  inner_layer_sizes_bytes:
+    InnerLayer1_G1: 75534
+    InnerLayer2_G2: 5530
+  known_pcb_flaws:
+    - "USB-C port flipped 180 deg (port faces inside; requires jumper wire)"
+    - "Mounting holes MH1~MH4 drilled at dia 0.25mm via-size (E-16; screws cannot pass)"
+    - "No tactile BOOT/EN pushbuttons"
+    - "No auto-reset (RTS/DTR) on UART header (requires manual IO0/EN grounding)"
+    - "D3 mapped to SS34 Schottky diode (3A 40V, C8678)"
+    - "L1 mapped to 4.7uH inductor (SWPA6045S4R7MT, C78804)"
+
+mcu_and_rf:
+  mcu_module: "ESP32-WROOM-32E-N8 (Silkscreen/Footprint: -32E, LCSC BOM: C701345)"
+  rf_antenna_type: "Onboard PCB Inverted-F Antenna (MIFA)"
+  ipex_connector_present: false
+  external_antenna_mounted: false
+  regulatory_transfer_status: "BLOCKED (IF-RF-001 downgraded)"
+
+power_and_audio:
+  ldo_regulator: "AP2112K-3.3TRG1 (LCSC C51118, SOT-23-5, 600mA)"
+  boost_converter:
+    ic: "MP3426DL-LF-Z (LCSC C133224, QFN-14)"
+    feedback_divider:
+      R1_high_side: "143 kΩ (0603 1%, LCSC C22877)"
+      R2_low_side: "16 kΩ (0603 1%, LCSC C22818 / C4210)"
+      vref_nominal: 1.225
+      theoretical_vout: 12.17 # V
+      measured_vout: 12.00 # V
+  audio_amplifier:
+    ic: "TAS5805MPWPR (LCSC C478472, TSSOP-28)"
+    mode: "BTL Differential"
+    i2c_address: "0x2C (ADR pull-up R12=4.7kΩ to 3V3)"
+
+actuators:
+  model: "12-ohm nominal lab sample exciters"
+  quantity: 2
+  wiring: "Series connected to J2 terminal"
+  voice_coil_dcr_bare: 21.6 # ohms (10.8 ohm x 2)
+  in_situ_harness_dcr: 24.8 # ohms (measured across J2 with harness/leads)
+  qualification_note: "12-ohm test pass cannot be generalized to 8-ohm production part without T2 qualification"
+
+housing:
+  type: "4.5T Birch Plywood 10-bolt enclosure (Rev 2)"
+  dimensions_mm: [450.0, 250.0, 22.5]
+  cavity_depth_mm: 13.5
+  master_dxf: "majn_housing/majung_bassinet_4.5T_rev2_master.dxf"
+  pcb_mount_method: "Double-sided adhesive foam tape (no bottom plate holes)"
+
+firmware:
+  build_target: "esp32_full_hw"
+  framework: "arduino / esp-idf (PlatformIO)"
+  source_commit: "81bb9e5 / e1ba353"
+  binary_sha256: "da97b96e89b2f267c9c4b9d054c0456e1b4bd40eba220bd630815ed60452ce7c"
+  key_guards:
+    - "Standalone auto-boot (Serial blocking code removed)"
+    - "Wire I2C timeout: 25ms"
+    - "Amplitude hard cap: 0.5f (50%)"
+    - "Power limit: 10W cap"
+
+verification_evidence:
+  measurement_log: "docs/MAJN_PCB_0005_EXCITER_SUCCESS_MEASUREMENT_RECORD.md"
+  bringup_report: "인증준비/pcb/260708/MAJN_PCB_실물브링업_검증보고서_2026-10-03.md"
+  test_date: "2026-10-24"
+  verified_rails:
+    VBUS: 5.02V
+    VCC_3V3: 3.20V
+    PVDD_12V: 12.00V
+    I2C_STATE: "0x03 (PLAY)"
+    I2S_BCLK: "1.536 MHz"
+    PHYSICAL_VIBRATION: "50Hz confirmed tactile"
