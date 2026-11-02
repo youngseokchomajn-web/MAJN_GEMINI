@@ -4,7 +4,7 @@ status: VERIFICATION_PENDING
 product_variant: CFG-HOME-450
 creation_date: "2026-10-25"
 audit_date: "2026-11-02"
-audit_round: "Round 4 Technical Consistency Audit (P0 Calculation Error Fix & Fastener Re-audit)"
+audit_round: "Round 5 Fastener Feasibility Audit (ECO-001 Alternatives Feasibility & Coupon Test Plan)"
 
 hardware:
   board_id: "PCB-0005-4L"
@@ -92,16 +92,26 @@ housing:
   dimensions_mm: [450.0, 250.0, 22.5]
   cavity_depth_mm: 13.5
   master_dxf: "majn_housing/majung_bassinet_4.5T_rev2_master.dxf"
-  pcb_mount_method: "Double-sided adhesive foam tape (no bottom plate holes; ECO-001 proposed with Würth 970050154 M2.5x5mm standoffs; M2.5x6mm bolt rejected due to 1.5mm engagement defect, redesign pending)"
+  pcb_mount_method: "Double-sided adhesive foam tape (no bottom plate holes; ECO-001 Rev 5 evaluates 3 alternatives: Alt A [M2.5x7/M2.5x4 on 5mm standoff - top 1.9mm=0.76d inadequate under 1.0d rule], Alt B [Würth 970070154 7mm standoff - causes 14.1mm stackup collision in 13.5mm cavity], Alt C [wood insert - CONCEPT_ONLY due to lack of standard M2.5 parts]; physical coupon testing required)"
   fastener_engagement_audit:
-    bolt_nominal_length_mm: 6.0 # ISO 10642 countersunk (includes head)
-    wood_total_thickness_mm: 4.5
-    actual_bottom_thread_engagement_mm: 1.5 # 6.0 - 4.5 = 1.5mm (0.6d < 1.0d, FAILS standard >= 2.5mm)
-    status: "REJECTED_AS_IS (ECO-001 Rev 4 candidate alternatives under review)"
-    standoff_internal_collision_risk: "Using 8mm bottom bolt (3.5mm entry) collides with top 5mm bolt (2.9mm entry) inside 5.0mm standoff (3.5 + 2.9 = 6.4mm > 5.0mm)"
+    status: "EVALUATION_IN_PROGRESS (ECO-001 Rev 5 Feasibility Audit)"
+    alternative_a:
+      bottom_bolt: "M2.5x7mm countersunk (2.5mm engagement in brass = 1.0d)"
+      top_bolt: "M2.5x4mm pan head with washer (1.9mm engagement in brass = 0.76d)"
+      defect: "Top engagement is only 0.76d (~2.7 active load-bearing threads after ISO 4753 chamfer), violating >= 1.0d rule; stripping/loosening risk under 30~65Hz vibration; UNACCEPTABLE_WITHOUT_TEST"
+    alternative_b:
+      standoff: "Würth Elektronik WA-SBRII 970070154 (M2.5 x 7.0mm, brass Ni-plated, through-threaded)"
+      internal_clearance: "Bottom bolt 8mm (3.5mm entry) + top bolt 5mm (2.9mm entry) = 6.4mm inside 7.0mm standoff (0.6mm nominal clearance, marginal under tolerances)"
+      defect: "Total stackup 7.0mm + 1.6mm PCB + 5.5mm inductor = 14.1mm > 13.5mm cavity depth; causes +0.6mm direct mechanical interference with vibrating plate; REQUIRES_HOUSING_CAVITY_REDESIGN"
+    alternative_c:
+      concept: "Threaded wood insert in bottom plate + M2.5 male-female standoff"
+      defect: "No commercial off-the-shelf M2.5 wood inserts for 4.5T plywood (RAMPA/E-Z LOK start at M3; Kerb-Konus Ensat 302 length is 6.0mm > 4.5mm plate); classified as CONCEPT_ONLY"
+    physical_verification_requirement: "Birch plywood 4.5T test coupon (5EA) torque/vibration/pull-out validation (T0-CP-01~04) required prior to design freeze"
   grounding_architecture:
     type: "PCB Signal/Power GND pad contact (no metal chassis present in birch plywood housing; Chassis GND expression eliminated)"
-    qc_continuity_criterion: "DMM 4-wire resistance between 4 standoffs and USB-C shield <= 0.1 ohm"
+    qc_continuity_procedure:
+      primary_qc: "Standard 2-wire DMM buzzer continuity test and loop resistance < 1.0 ohm across 4 standoff pads and USB-C shield pad"
+      secondary_engineering: "4-wire Kelvin micro-ohmmeter measurement for joint contact resistance characterization; formal threshold baseline to be established via coupon testing"
   clearance_analysis:
     nominal_static_clearance_mm: 1.4 # static calculation (13.5mm cavity - 12.1mm stackup)
     pcb_asymmetry_offset_mm: [1.27, 0.127] # X-axis offset +1.27mm relative to symmetrical hole pattern (PCB outer bounds X in [184.36, 268.18]mm, margin 184.36mm left vs 181.82mm right)
