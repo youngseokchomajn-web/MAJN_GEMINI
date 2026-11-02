@@ -4,43 +4,41 @@ status: VERIFICATION_PENDING
 product_variant: CFG-HOME-450
 creation_date: "2026-10-25"
 audit_date: "2026-11-02"
-audit_round: "Round 2 Evidence Audit"
+audit_round: "Round 2 Evidence Audit (Forensic Image & Code Verified)"
 
 hardware:
   board_id: "PCB-0005-4L"
-  board_revision: "PCB1_4Layer_1oz"
+  board_revision: "PCB1_revB_4Layer_1oz"
   layer_count: 4
-  layer_verification_status: VERIFICATION_PENDING
+  layer_verification_status: FACT_CONFIRMED_DATASET # 4-layer confirmed in Gerber datasets (Inner1 GND 78,146B, Inner2 VCC 5,661B)
   traceability:
     design_gerber_status: "4-Layer verified in CAD/Gerber datasets (Top, Inner1 GND, Inner2 VCC/Signals, Bottom)"
-    gerber_artifact: "인증준비/pcb/260708/Gerber_PCB1_revB_2026-07-08.zip"
-    prior_gerber_artifact: "인증준비/pcb/260630/Gerber_PCB1_2026-07-05_1oz.zip"
-    order_history: "Initial order W2026070611043433 cancelled due to USB-C orientation; rev-B files prepared 2026-07-08"
-    physical_traceability_gap: "Formal link between physical board #0005 silkscreen/order ID, delivery paperwork, and factory stackup awaits physical cross-check"
+    gerber_artifact: "인증준비/pcb/260708/Gerber_PCB1_revB_2026-07-09.zip" # Final single-sided SMT release
+    prior_gerber_artifact: "인증준비/pcb/260708/Gerber_PCB1_revB_2026-07-08.zip"
+    order_history: "Initial order W2026070611043433 cancelled; rev-B files finalized 2026-07-08/09 (R12 moved to Top 0402 for single-sided SMT)"
+    physical_board_photo_evidence:
+      usb_c_orientation: "crop_usbc.jpg confirms USB-C port faces outward with clean factory SMT (no jumper workaround)"
+      mounting_holes: "crop_usbc.jpg / crop_uart.jpg confirm MH1~MH4 are standard dia 2.7mm PTH holes on board"
+      mounting_limitation: "Tape used during testing solely because wooden bottom plate lacked mounting holes"
   dimensions_mm: [83.82, 62.23]
   inner_layer_sizes_bytes:
     InnerLayer1_G1: 78146 # revB
     InnerLayer2_G2: 5661  # revB
   known_pcb_flaws:
-    - "USB-C port orientation resolved in revB design; #0005 physical unit has rev-A jumper workaround"
-    - "Mounting holes MH1~MH4: dia 0.25mm on early fab vs dia 2.7mm on revB Gerber (E-16; screws cannot pass without rework)"
     - "No tactile BOOT/EN pushbuttons"
     - "No auto-reset (RTS/DTR) on UART header (requires manual IO0/EN grounding)"
     - "D3 mapped to SS34 Schottky diode (3A 40V, C8678)"
     - "L1 mapped to 4.7uH inductor (SWPA6045S4R7MT, C78804)"
+    - "U1 silkscreen boundary retains 25.5mm length of -32E while -32UE module length is 19.2mm (leaving 6.3mm silkscreen gap)"
 
 mcu_and_rf:
   status: VERIFICATION_PENDING
-  mcu_module: "UNCONFIRMED: ESP32-WROOM-32E-N8 vs ESP32-WROOM-32UE-N8"
-  conflict_evidence:
-    cad_footprint_silkscreen: "WIFI-SMD_ESP32-WROOM-32E (PCB antenna footprint label)"
-    bom_part_number: "LCSC C701345 (cataloged as ESP32-WROOM-32UE-N8, IPEX/u.FL)"
-    engineering_bringup_logs: "Explicitly logged as ESP32-WROOM-32UE in MAJN_PROGRESS_SUMMARY and firmware docs"
-    physical_inspection_status: "PENDING (Physical shield silkscreen marking and u.FL connector presence not yet confirmed by teardown photo)"
-  rf_antenna_type: "UNCONFIRMED (PCB trace antenna vs external u.FL pigtail)"
-  ipex_connector_present: "UNCONFIRMED (requires physical sample inspection)"
-  external_antenna_mounted: "UNCONFIRMED"
-  regulatory_transfer_status: "BLOCKED / OPEN (Espressif pre-certified baseline <= 2.33 dBi is a provisional test lab condition, not universal statutory limit)"
+  mcu_module: "ESP32-WROOM-32UE-N8 (LCSC C701345, verified by crop_amp.jpg / crop_boost.jpg / crop_usbc.jpg showing metal shield and gold u.FL receptacle)"
+  kc_module_certificate: "R-C-es5-ESP32WROOM32E (certified 2021-01-22 as derivative model of -32E)"
+  rf_antenna_type: "Unpopulated u.FL receptacle on prototype #0005 (no external antenna attached in photos; near-field / board stray emission tested)"
+  ipex_connector_present: true # visually verified in crop_amp.jpg / crop_boost.jpg
+  external_antenna_mounted: false # visually verified unpopulated in crop_amp.jpg
+  regulatory_transfer_status: "BLOCKED (Espressif pre-certified 2.33 dBi dipole baseline; 3.0 dBi FPC proposal exceeds certified gain (+0.67 dBi) and changes antenna type, requiring test lab assessment)"
 
 power_and_audio:
   ldo_regulator: "AP2112K-3.3TRG1 (LCSC C51118, SOT-23-5, 600mA)"
@@ -56,6 +54,12 @@ power_and_audio:
     ic: "TAS5805MPWPR (LCSC C478472, TSSOP-28)"
     mode: "BTL Differential"
     i2c_address: "0x2C (ADR pull-up R12=4.7kΩ to 3V3)"
+    firmware_amplitude_clamp: "0.5f (50% max in vibration_controller.cpp#L70-L71 and ble_manager.cpp#L124)"
+    actual_effective_output:
+      v_peak_clamped: 6.0 # V (12V * 0.5)
+      v_rms_clamped: 4.24 # Vrms (6.0 / sqrt(2))
+      p_rms_24ohm: 0.75 # W (4.24^2 / 24)
+      p_rms_16ohm: 1.125 # W (4.24^2 / 16)
 
 actuators:
   model: "12-ohm nominal lab sample exciters"
@@ -63,8 +67,8 @@ actuators:
   wiring: "Series connected to J2 terminal"
   voice_coil_dcr_bare: 21.6 # ohms (10.8 ohm x 2 bare DCR)
   in_situ_harness_dcr: 24.8 # ohms (measured across J2 with harness/leads)
-  power_calculation_model: "Theoretical ideal resistive upper bound; 6W (24Ω) / 9W (16Ω) are peak instantaneous square-wave figures, not measured RMS thermal dissipation"
-  qualification_note: "12-ohm test pass cannot be generalized to 8-ohm production part without T2 qualification and empirical thermal imaging"
+  power_calculation_model: "Firmware-limited continuous sine output: 0.75W RMS (24Ω) / 1.13W RMS (16Ω); 6W/9W represent unconstrained 100% full-scale square-wave theoretical peaks"
+  qualification_note: "12-ohm test pass cannot be generalized to 8-ohm production part without T2 qualification and thermal verification"
 
 housing:
   type: "4.5T Birch Plywood 10-bolt enclosure (Rev 2)"
@@ -72,13 +76,16 @@ housing:
   cavity_depth_mm: 13.5
   master_dxf: "majn_housing/majung_bassinet_4.5T_rev2_master.dxf"
   pcb_mount_method: "Double-sided adhesive foam tape (no bottom plate holes; ECO-001 proposed)"
-  nominal_clearance_mm: 1.4 # static calculation (13.5mm cavity - 12.1mm stackup); dynamic load/vibration testing required
+  clearance_analysis:
+    nominal_static_clearance_mm: 1.4 # static calculation (13.5mm cavity - 12.1mm stackup)
+    estimated_15kg_deflection_mm: 0.35 # scaled from 600x340 4.0T data using (450/600)^4 * (4.0/4.5)^3 ~ 0.22
+    net_effective_dynamic_margin_mm: 1.05 # safe clearance with right-angle header (C49423315)
 
 firmware:
   build_target: "esp32_full_hw"
   framework: "arduino / esp-idf (PlatformIO)"
   source_commit: "81bb9e5 / e1ba353"
-  binary_sha256: "da97b96e89b2f267c9c4b9d054c0456e1b4bd40eba220bd630815ed60452ce7c"
+  binary_sha256: "3e5eb2d0d1032e83c784018d81a4a79c16257a0d330e032aacf87dfdcd23e9cd" # Verified from logs/firmware/2026-10-25_esp32_full_hw_build.log
   key_guards:
     - "Standalone auto-boot (Serial blocking code removed)"
     - "Wire I2C timeout: 25ms"
