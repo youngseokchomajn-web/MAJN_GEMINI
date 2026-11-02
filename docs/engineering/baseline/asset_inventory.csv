@@ -1,0 +1,60 @@
+domain_id,domain_name,file_path,file_format,size,revision_status,confidence,core_function
+E01,요구사항,docs/MAJUNG_PRODUCT_REQUIREMENTS_DRAFT_2026-10-12.md,Markdown,9.1 KB,2026-10-12 Draft,VERY HIGH,INT/FUN/OUT/SAF/REG/CHG 28개 구조화 ID
+E01,요구사항,docs/development/MASTER_DEVELOPMENT_PLAN.md,Markdown,21.5 KB,Commit c63e60a,HIGH,6주 마스터 일정 및 14개 마일스톤
+E01,요구사항,docs/development/MVP_RELEASE_CHECKLIST.md,Markdown,4.8 KB,v0.1.0-mvp,HIGH,9대 릴리즈 게이트 및 체크포인트
+E02,시스템 아키텍처,docs/MAJN_DECISION_AND_ENGINEERING_LOG.md,Markdown,42.8 KB,공식 승인 (2026-10-31),VERY HIGH,26개 하드웨어 의사결정 및 ISSUE-01~07
+E02,시스템 아키텍처,docs/MAJN_REV_C_COMPREHENSIVE_DEVELOPMENT_PLAN.md,Markdown,13.2 KB,승인본 (v2.0),HIGH,Rev-C 전기·기구 통합 설계서
+E03,형상·BOM 제어,docs/engineering/ENGINEERING_DATA_SCHEMA.md,Markdown,5.8 KB,Draft (docs 브랜치),VERY HIGH,명명규칙 및 메타데이터 스키마 SSOT
+E03,형상·BOM 제어,docs/engineering/ENGINEERING_DOMAIN_REGISTER.md,Markdown,6.6 KB,Draft (docs 브랜치),VERY HIGH,18개 도메인 소유권 및 책임 매트릭스
+E03,형상·BOM 제어,release/v0.1.0-mvp/SHA256SUMS,Text,79 B,v0.1.0-mvp,HIGH,공식 바이너리 무결성 해시
+E04,3D CAD & 모델링,majn_housing/majung_bassinet_4.5T_rev2_master.dxf,DXF R2010,31.8 KB,Rev 2 Master,VERY HIGH,450x250x22.5mm 10볼트 4구 직사각 각인 (해광레이저 발주본)
+E04,3D CAD & 모델링,majn_housing/majung_silicone_gasket_rev2.dxf,DXF R2010,17.6 KB,Rev 2 Gasket,VERY HIGH,1.2T 식품등급 실리콘 가스켓 (10개 ⌀2.8mm 타공)
+E04,3D CAD & 모델링,majn_housing/rev2_params.py,Python,3.2 KB,Rev 2 SSOT,VERY HIGH,기구 치수 및 공차 단일 진실 공급원 (SSOT)
+E04,3D CAD & 모델링,majn_housing/build_rev2_dxf.py,Python,7.2 KB,Generator,VERY HIGH,ezdxf 기반 마스터 및 가스켓 DXF 자동 생성기
+E04,3D CAD & 모델링,majn_housing/REV2_CAD_DECISION_RECORD.md,Markdown,4.7 KB,Accepted ADR,VERY HIGH,10볼트 균일 피치(110~150mm) 12mm 림+러그 가스켓 ADR
+E04,3D CAD & 모델링,bassinet_simulator/cad_assembler.js,JavaScript,17.0 KB,720x390 Variant,HIGH,조리원용 720x390x45mm 3D 기구 형상 생성기
+E05,3D 가시화,majn_housing/view_3d_rev2_assembly.html,HTML/Three.js,27.8 KB,Rev 2 Assembly,VERY HIGH,Three.js 오차 0.00mm 동기화 정밀 360° 어셈블리 뷰어
+E05,3D 가시화,bassinet_simulator/cad_viewer.html,HTML/Three.js,11.4 KB,720x390 Variant,HIGH,조리원용 3D 뷰어 (상하판 투과 및 와이어프레임)
+E06,전장·케이블링,docs/MAJN_DECISION_AND_ENGINEERING_LOG.md#L90,Markdown,42.8 KB,확정 (결정 09),VERY HIGH,24AWG 실리콘 연선 25cm JST 2P 압착 직렬 16Ω
+E07,전자·PCB 회로,인증준비/pcb/Rev_C_mfg/MAJN_Rev_C.epro2,EasyEDA Pro,730 KB,4-layer Rev_C,HIGH,차기 양산용 4층 기판 프로젝트 (우각 헤더 ⌀2.7mm 마운팅 홀)
+E07,전자·PCB 회로,인증준비/pcb/Rev_C_mfg/BOM_MAJN_Rev_C.csv,CSV,1.1 KB,56 components,HIGH,53 SMD + 3 직각 THT 부품 구성표
+E07,전자·PCB 회로,인증준비/pcb/Rev_C_mfg/CPL_MAJN_Rev_C.csv,CSV,1.6 KB,56 components,HIGH,SMT 픽앤플레이스 좌표 파일
+E07,전자·PCB 회로,인증준비/pcb/Rev_C_mfg/Gerber_MAJN_Rev_C.zip,ZIP,625 KB,20 Gerber files,MEDIUM,제조용 정규화 거버 (U1 배선 간섭 검토로 발주 HOLD)
+E07,전자·PCB 회로,hardware_review/PCB_0005_original/Original.epro2,EasyEDA Pro,321 KB,2-layer #0005,HIGH,실물 보드(#0005) 1:1 대응 2층 기판 원본
+E07,전자·PCB 회로,hardware_review/PCB_Rev_C/Rev_C.epro2,EasyEDA Pro,310 KB,70-part concept,MEDIUM,외장 센서 3종 확장 개념 논리 회로도
+E08,임베디드 펌웨어,인증준비/firmware/platformio.ini,INI,1.2 KB,4 envs,VERY HIGH,빌드 환경 SSOT (Release Debug OTA Native)
+E08,임베디드 펌웨어,인증준비/firmware/partitions_8mb_ota.csv,CSV,305 B,8MB OTA Table,VERY HIGH,3.19MB 대칭 OTA 파티션 테이블 SSOT
+E08,임베디드 펌웨어,인증준비/firmware/src/main.cpp,C++,14.8 KB,v0.1.0-mvp,VERY HIGH,FreeRTOS 멀티태스킹 메인 루프 (100ms 가드)
+E08,임베디드 펌웨어,인증준비/firmware/src/system_controller.cpp,C++,17.6 KB,State Machine,VERY HIGH,시스템 상태 전이 제어 및 ESTOP 처리기
+E08,임베디드 펌웨어,인증준비/firmware/src/tas5805m.cpp,C++,8.2 KB,12V BTL Driver,VERY HIGH,12V BTL I2C(0x2C) 및 I2S 48kHz DMA 드라이버
+E08,임베디드 펌웨어,인증준비/firmware/src/safety_manager.cpp,C++,2.3 KB,Safety Guard,VERY HIGH,30분 타이머 135°C 과열 디레이팅 감시 루프
+E08,임베디드 펌웨어,인증준비/firmware/src/wifi_manager.cpp,C++,17.4 KB,SoftAP / OTA,VERY HIGH,SoftAP 웹서버 및 HTTP /update 무선 배포
+E08,임베디드 펌웨어,인증준비/firmware/src/mobile_web_ui.h,C++ Header,15.8 KB,Web Controller,VERY HIGH,스마트폰 브라우저 탑재용 경량 SPA 웹 UI
+E08,임베디드 펌웨어,인증준비/firmware/src/ota_ble_service.cpp,C++,9.0 KB,BLE GATT OTA,VERY HIGH,BLE 무선 플래시 핸들러 (원자적 OTA 락)
+E08,임베디드 펌웨어,인증준비/firmware/src/ble_manager.cpp,C++,11.5 KB,BLE Server,VERY HIGH,커스텀 GATT 서비스 및 제어 프로토콜
+E08,임베디드 펌웨어,인증준비/firmware/src/vibration_controller.cpp,C++,6.4 KB,SVS Synthesis,VERY HIGH,확률적 공명 진동(SVS) 파형 합성 엔진
+E08,임베디드 펌웨어,release/v0.1.0-mvp/firmware.bin,Binary,1.91 MB,Release Binary,VERY HIGH,SHA-256 검증 완료 공식 릴리즈 바이너리
+E09,도면·설계 검증,majn_housing/verify_rev2.py,Python,6.3 KB,DRC Verifier,VERY HIGH,ezdxf 기하학적 살 두께(4.9mm) 10홀 좌표 검증 (7/7 PASS)
+E09,도면·설계 검증,tools/verify_hardware_review.py,Python,33.6 KB,v2.4 Electrical,VERY HIGH,넷리스트 논리 규칙 및 부스트/앰프 정합성 검증 (21/21 PASS)
+E09,도면·설계 검증,tools/verify_mfg_package.py,Python,12.5 KB,Rev_C.MFG DRC,VERY HIGH,BOM/CPL/Gerber FPT 3-Way 일치 및 Z-스택업 검증 (5/5 PASS)
+E10,조립·서비스성,majn_housing/REV2_CAD_DECISION_RECORD.md,Markdown,4.7 KB,Accepted ADR,HIGH,10볼트 체결 및 실리콘 가스켓 장탈착성 가이드
+E11,CAE·물리 시뮬레이션,bassinet_simulator/c3d10_solver.js,JavaScript,6.1 KB,C3D10 FEA,VERY HIGH,2.5D Mindlin 쉘 및 C3D10 10절점 사면체 FEM 솔버
+E11,CAE·물리 시뮬레이션,bassinet_simulator/fem_wasm_solver.js,JavaScript,2.6 KB,CalculiX Deck,VERY HIGH,자작나무 직교이방성 물성 기반 Abaqus .INP 생성기
+E11,CAE·물리 시뮬레이션,bassinet_simulator/fem_simulator.html,HTML/WebGL,34.7 KB,3D WebGL FEA,VERY HIGH,웹 브라우저 기반 3D 변위/응력 실시간 가시화 엔진
+E11,CAE·물리 시뮬레이션,bassinet_simulator/MAJN_3D_CAE_Simulator_Summary.md,Markdown,5.9 KB,총정리 보고서,VERY HIGH,CAE 시뮬레이터 아키텍처 및 검증 요약서
+E11,CAE·물리 시뮬레이션,majn_housing/익사이터_위치선정_역학검토_총정리.md,Markdown,9.4 KB,Mechanical Study,HIGH,25개 고유진동모드 해석 및 Huber 판방정식 유도
+E12,제품 안전 & FMEA,docs/validation/SAFETY_RISK_REGISTER.md,Markdown,4.2 KB,Risk Register,VERY HIGH,12대 위험 시나리오 FMEA 및 방어 대책
+E12,제품 안전 & FMEA,docs/FAULT_MATRIX.md,Markdown,3.1 KB,Shutdown Matrix,VERY HIGH,BOOST_EN AMP_PDN 1.5g ISR 하드웨어 차단 계통도
+E12,제품 안전 & FMEA,docs/validation/SAFETY_TEST_PROTOCOL.md,Markdown,4.9 KB,Test Protocol,HIGH,고장 주입(Fault Injection) 시험 절차서
+E13,검증 & 시험 계측,docs/validation/VIBRATION_TEST_PROTOCOL.md,Markdown,5.1 KB,P1~P5 Protocol,VERY HIGH,매트리스 상부 5개소(P1~P5) 진동 계측 절대좌표
+E13,검증 & 시험 계측,docs/MAJN_PCB_0005_EXCITER_SUCCESS_MEASUREMENT_RECORD.md,Markdown,4.8 KB,Physical Ground,VERY HIGH,12.00V 승압 I2C 0x2C 50Hz 진동 체감 실측 기록
+E13,검증 & 시험 계측,hardware_review/Measurements/Voltage.csv,CSV,495 B,DMM Data,VERY HIGH,전원 레일(5.02V 3.20V 12.00V) 실측 전압 로그
+E13,검증 & 시험 계측,hardware_review/Measurements/Resistance.csv,CSV,1.2 KB,DCR Data,VERY HIGH,익사이터 결선 저항(단품 10.8Ω 2직렬 21.6Ω) 실측 로그
+E13,검증 & 시험 계측,tools/test_command_parser.py,Python,28.8 KB,92 Unit Tests,VERY HIGH,펌웨어 커맨드 파서 및 상태머신 100% PASS 검증기
+E14,사용성 & 인간공학,인증준비/user_manual_draft.md,Markdown,4.7 KB,User Manual,HIGH,양육자 사용 시나리오 및 안전 주의사항
+E15,연구·임상 협력,docs/MAJUNG_E001A_SMITH_2015_PRIMARY_EXTRACTION_2026-10-08.md,Markdown,12.0 KB,Clinical RCT,VERY HIGH,Smith 2015 영아 진동수면(SVS) 임상 논문 분석
+E15,연구·임상 협력,docs/MAJUNG_E001D_PRAPELA_FDA_PRIMARY_EXTRACTION_2026-10-08.md,Markdown,14.0 KB,FDA De Novo,VERY HIGH,FDA Breakthrough 지정 Prapela SVS 규제 선례
+E16,규제 & 전자파 인증,docs/MAJN_PCB_0005_CIRCUIT_CERTIFICATION_REVIEW.md,Markdown,8.5 KB,KC Compliance,HIGH,어린이제품 공통안전기준 및 유해원소 기준
+E16,규제 & 전자파 인증,docs/MAJN_PCB_0005_EMC_FEASIBILITY_AND_STRATEGY.md,Markdown,8.2 KB,EMC Strategy,HIGH,Class-D 384kHz 스위칭 노이즈 방사 차폐 대책
+E17,생산 공학 & 품질,majn_housing/MASS_PRODUCTION_ROADMAP.md,Markdown,6.1 KB,Mfg Roadmap,HIGH,금형 사출 가공 공차 수입 검사 기준
+E18,수명주기 & 사후관리,majn_housing/REV2_CAD_DECISION_RECORD.md,Markdown,4.7 KB,Refurbish Spec,HIGH,렌탈 회수 시 가스켓 교체 및 목재 재생 프로세스
