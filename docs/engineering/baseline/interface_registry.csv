@@ -1,6 +1,6 @@
 interface_id,from_domain,to_domain,interface_type,physical_connector,electrical_spec,mechanical_constraint,status,evidence_link
 IF-PWR-001,E06,E07,주전원 인입,USB Type-C (5V IN),5.02V DC / F1(3.0A) PPTC / D1 TVS,단변 측판 ⌀7.0mm 그로밋 관통 (X=30mm Z=6.75mm),FACT_CONFIRMED,build_rev2_dxf.py#L90
-IF-AUD-001,E07,E06,좌채널 오디오 BTL,C49423315 (우각 2P),12.00V BTL (TAS5805M) / 직렬 16Ω (RMS 4.5W),24AWG 실리콘 연선 25cm ± 2cm,VERIFICATION_PENDING,8Ω 양산품 T2 부하·발열 시험 대기
-IF-AUD-002,E07,E06,우채널 오디오 BTL,C49423315 (우각 2P),12.00V BTL (TAS5805M) / 직렬 16Ω (RMS 4.5W),24AWG 실리콘 연선 25cm ± 2cm,VERIFICATION_PENDING,8Ω 양산품 T2 부하·발열 시험 대기
-IF-RF-001,E07,E06,BLE/Wi-Fi 2.4GHz RF,UNCONFIRMED (IPEX MHF1 vs Onboard PCB),2.4GHz (최대 19dBm) / 모듈 실물 사양 검증 대기,#0005 실물 U1 마킹 및 안테나 체결부 실측 확인 필요,BLOCKED,#0005 모듈 실물(-32E vs -32UE) 미확인; 외장 3dBi는 기인증 잠정기준(≤2.33dBi) 시험기관 질의 대기로 동결
-IF-MEC-001,E07,E04,PCB 기구 장착,4개 마운팅 홀 (68.58x54.86mm),N/A (기계적 고정),하판 스탠드오프홀 미가공 상태 (#0005 테이프 부착; 1.4mm 공칭 간극 하중/진동 검증 필요),HUMAN_APPROVAL_PENDING,ECO_001_BOTTOM_PLATE_PCB_MOUNTING.md
+IF-AUD-001,E07,E06,좌채널 오디오 BTL,C49423315 (우각 2P),"12.00V BTL (TAS5805M) / 직렬 16Ω [CALCULATED_ESTIMATE: 100% sine 4.5W, FW 50% clamp sine 1.125W; 실측 전력 미확정(UNVERIFIED)]",24AWG 실리콘 연선 25cm ± 2cm,VERIFICATION_PENDING,차동 프로브 BTL 전압/전력 실측 및 8Ω 양산품 T2 부하·발열 시험 대기
+IF-AUD-002,E07,E06,우채널 오디오 BTL,C49423315 (우각 2P),"12.00V BTL (TAS5805M) / 직렬 16Ω [CALCULATED_ESTIMATE: 100% sine 4.5W, FW 50% clamp sine 1.125W; 실측 전력 미확정(UNVERIFIED)]",24AWG 실리콘 연선 25cm ± 2cm,VERIFICATION_PENDING,차동 프로브 BTL 전압/전력 실측 및 8Ω 양산품 T2 부하·발열 시험 대기
+IF-RF-001,E07,E06,BLE/Wi-Fi 2.4GHz RF,IPEX MHF1 / u.FL (ESP32-WROOM-32UE 실물 확인; #0005는 미체결),2.4GHz (최대 19dBm) / 외장 3.0dBi FPC 제안 (기인증 2.33dBi 초과),#0005 실물 u.FL 미체결 상태로 통신 시험; 통제된 RF 시험 및 외장 안테나 배치 검증 필요,BLOCKED,모듈 실물 -32UE 확인 완료; 3dBi FPC는 기인증 기준(≤2.33dBi 다이폴) 초과로 시험기관 질의 대기(BLOCKED)
+IF-MEC-001,E07,E04,PCB 기구 장착,"4개 마운팅 홀 (68.58x54.86mm; 기판 ⌀2.7mm PTH, 패드 ⌀5.0mm GND)",N/A (기계적 고정),"하판 나사홀 미가공 상태 (#0005 테이프 부착; 1.4mm 정적 간극, 0.35mm 처짐 스케일링 추정치, 동적 간극 CAE/진동 실측 필요)",HUMAN_APPROVAL_PENDING,ECO_001_BOTTOM_PLATE_PCB_MOUNTING.md (Würth 971050244 스탠드오프 제안안)

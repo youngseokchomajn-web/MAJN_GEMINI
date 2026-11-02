@@ -4,21 +4,22 @@ status: VERIFICATION_PENDING
 product_variant: CFG-HOME-450
 creation_date: "2026-10-25"
 audit_date: "2026-11-02"
-audit_round: "Round 2 Evidence Audit (Forensic Image & Code Verified)"
+audit_round: "Round 3 Technical Consistency Audit (Rigorous Model & Discrepancy Elimination)"
 
 hardware:
   board_id: "PCB-0005-4L"
   board_revision: "PCB1_revB_4Layer_1oz"
   layer_count: 4
-  layer_verification_status: FACT_CONFIRMED_DATASET # 4-layer confirmed in Gerber datasets (Inner1 GND 78,146B, Inner2 VCC 5,661B)
+  layer_verification_status: VERIFICATION_PENDING # 4-layer confirmed in CAD/Gerber datasets (Inner1 GND 78,146B, Inner2 VCC 5,661B); physical board layer count and JLC manufacturing traceability pending invoice/cross-section confirmation
   traceability:
     design_gerber_status: "4-Layer verified in CAD/Gerber datasets (Top, Inner1 GND, Inner2 VCC/Signals, Bottom)"
+    physical_board_traceability: "VERIFICATION_PENDING (sample #0005 SMT verified via photos; physical inner-layer cross-section and fab invoice pending)"
     gerber_artifact: "인증준비/pcb/260708/Gerber_PCB1_revB_2026-07-09.zip" # Final single-sided SMT release
     prior_gerber_artifact: "인증준비/pcb/260708/Gerber_PCB1_revB_2026-07-08.zip"
     order_history: "Initial order W2026070611043433 cancelled; rev-B files finalized 2026-07-08/09 (R12 moved to Top 0402 for single-sided SMT)"
     physical_board_photo_evidence:
       usb_c_orientation: "crop_usbc.jpg confirms USB-C port faces outward with clean factory SMT (no jumper workaround)"
-      mounting_holes: "crop_usbc.jpg / crop_uart.jpg confirm MH1~MH4 are standard dia 2.7mm PTH holes on board"
+      mounting_holes: "crop_usbc.jpg / crop_uart.jpg confirm MH1~MH4 are standard dia 2.7mm PTH holes on board (pad dia 5.0mm GND)"
       mounting_limitation: "Tape used during testing solely because wooden bottom plate lacked mounting holes"
   dimensions_mm: [83.82, 62.23]
   inner_layer_sizes_bytes:
@@ -34,10 +35,11 @@ hardware:
 mcu_and_rf:
   status: VERIFICATION_PENDING
   mcu_module: "ESP32-WROOM-32UE-N8 (LCSC C701345, verified by crop_amp.jpg / crop_boost.jpg / crop_usbc.jpg showing metal shield and gold u.FL receptacle)"
-  kc_module_certificate: "R-C-es5-ESP32WROOM32E (certified 2021-01-22 as derivative model of -32E)"
-  rf_antenna_type: "Unpopulated u.FL receptacle on prototype #0005 (no external antenna attached in photos; near-field / board stray emission tested)"
+  kc_module_certificate: "R-C-es5-ESP32WROOM32E (certified 2021-01-22; ESP32-WROOM-32UE is registered as a certified derivative model under this certificate)"
+  rf_antenna_type: "Unpopulated u.FL receptacle on prototype #0005 (photos confirm no external antenna attached; Oct 24 bench test operated under uncontrolled near-field / stray leakage conditions)"
   ipex_connector_present: true # visually verified in crop_amp.jpg / crop_boost.jpg
   external_antenna_mounted: false # visually verified unpopulated in crop_amp.jpg
+  rf_test_status: "UNVERIFIED_CONTROLLED_CONDITIONS (bench test observed near-field BLE communication, but antenna attachment was unrecorded/uncontrolled; proper RF verification pending matched antenna testing)"
   regulatory_transfer_status: "BLOCKED (Espressif pre-certified 2.33 dBi dipole baseline; 3.0 dBi FPC proposal exceeds certified gain (+0.67 dBi) and changes antenna type, requiring test lab assessment)"
 
 power_and_audio:
@@ -55,11 +57,20 @@ power_and_audio:
     mode: "BTL Differential"
     i2c_address: "0x2C (ADR pull-up R12=4.7kΩ to 3V3)"
     firmware_amplitude_clamp: "0.5f (50% max in vibration_controller.cpp#L70-L71 and ble_manager.cpp#L124)"
-    actual_effective_output:
-      v_peak_clamped: 6.0 # V (12V * 0.5)
-      v_rms_clamped: 4.24 # Vrms (6.0 / sqrt(2))
-      p_rms_24ohm: 0.75 # W (4.24^2 / 24)
-      p_rms_16ohm: 1.125 # W (4.24^2 / 16)
+    power_output_model:
+      status: "CALCULATED_ESTIMATE (measured power UNVERIFIED)"
+      notes: "Calculated under assumption of ideal 6.0V peak sine wave. Real output depends on TAS5805M digital volume/DSP, modulation scheme, PVDD, and frequency-dependent impedance. Actual BTL differential voltage and RMS power require oscilloscope differential probe measurement."
+      theoretical_unconstrained_sine_100pct:
+        v_peak: 12.0 # V
+        v_rms: 8.485 # Vrms (12.0 / sqrt(2))
+        p_rms_24ohm: 3.0 # W (8.485^2 / 24)
+        p_rms_16ohm: 4.5 # W (8.485^2 / 16)
+      calculated_firmware_clamped_sine_50pct:
+        v_peak_assumed: 6.0 # V (12V * 0.5 sine assumption)
+        v_rms_assumed: 4.24 # Vrms (6.0 / sqrt(2))
+        p_rms_24ohm: 0.75 # W (4.24^2 / 24)
+        p_rms_16ohm: 1.125 # W (4.24^2 / 16)
+      measured_btl_power: "UNVERIFIED (oscilloscope differential probe measurement pending)"
 
 actuators:
   model: "12-ohm nominal lab sample exciters"
@@ -67,8 +78,8 @@ actuators:
   wiring: "Series connected to J2 terminal"
   voice_coil_dcr_bare: 21.6 # ohms (10.8 ohm x 2 bare DCR)
   in_situ_harness_dcr: 24.8 # ohms (measured across J2 with harness/leads)
-  power_calculation_model: "Firmware-limited continuous sine output: 0.75W RMS (24Ω) / 1.13W RMS (16Ω); 6W/9W represent unconstrained 100% full-scale square-wave theoretical peaks"
-  qualification_note: "12-ohm test pass cannot be generalized to 8-ohm production part without T2 qualification and thermal verification"
+  power_calculation_model: "CALCULATED_ESTIMATE: 100% sine = 3.0W (24Ω) / 4.5W (16Ω); 50% clamped sine assumption = 0.75W (24Ω) / 1.125W (16Ω); 100% square-wave ceiling = 6.0W / 9.0W. Measured power unverified."
+  qualification_note: "12-ohm test pass cannot be generalized to 8-ohm production part based solely on firmware clamp; thermal and electrical safety remains VERIFICATION_PENDING until T2 load/thermal chamber testing."
 
 housing:
   type: "4.5T Birch Plywood 10-bolt enclosure (Rev 2)"
@@ -78,8 +89,12 @@ housing:
   pcb_mount_method: "Double-sided adhesive foam tape (no bottom plate holes; ECO-001 proposed)"
   clearance_analysis:
     nominal_static_clearance_mm: 1.4 # static calculation (13.5mm cavity - 12.1mm stackup)
-    estimated_15kg_deflection_mm: 0.35 # scaled from 600x340 4.0T data using (450/600)^4 * (4.0/4.5)^3 ~ 0.22
-    net_effective_dynamic_margin_mm: 1.05 # safe clearance with right-angle header (C49423315)
+    rough_scaling_deflection_estimate_mm: 0.35 # rough isotropic scaling reference from 600x340 4.0T data; unverified for orthotropic birch plywood and actual boundary conditions
+    dynamic_clearance_status: "VERIFICATION_PENDING (1.05mm cannot be declared safe dynamic clearance without CAE and physical testing)"
+    clearance_verification_exit_criteria:
+      - "CAE structural/modal simulation reflecting actual housing boundary conditions and orthotropic plywood properties"
+      - "15kg distributed vs concentrated infant load deflection measurement"
+      - "Physical prototype dynamic clearance measurement during 30~65Hz excitation (minimum required gap >= 0.5mm)"
 
 firmware:
   build_target: "esp32_full_hw"
@@ -102,4 +117,4 @@ verification_evidence:
     PVDD_12V: 12.00V
     I2C_STATE: "0x03 (PLAY)"
     I2S_BCLK: "1.536 MHz"
-    PHYSICAL_VIBRATION: "50Hz confirmed tactile"
+    PHYSICAL_VIBRATION: "50Hz confirmed tactile (electrical BTL power and true RMS voltage unverified pending differential probe measurement)"

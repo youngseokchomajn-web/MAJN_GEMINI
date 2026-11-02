@@ -1,10 +1,14 @@
-# [MAJN Engineering System] ENG-001 ~ ENG-006 기준선 충돌 정밀 검증 및 증거 감사 종합 보고서 (Round 2 Verified)
+# [MAJN Engineering System] ENG-001 ~ ENG-006 기준선 충돌 정밀 검증 및 3차 기술 정합성 감사 종합 보고서 (Round 3 Consistency Audited)
 
 - **문서 ID**: `MAJN-ENG-RES-001-006`
-- **상태**: Draft for Human & Peer Review (Round 2 Evidence Audited)
+- **상태**: Draft for Human & Peer Review (Round 3 Technical Consistency Audited)
 - **기준 브랜치**: `docs/engineering-system-development-plan` (Commit `a5d7b65`)
-- **작업 브랜치**: `docs/eng-001-006-evidence-audit`
+- **작업 브랜치**: `docs/eng-001-006-consistency-audit`
 - **참조 문서**:
+  - `docs/engineering/manifests/CFG_PROTO_0005_MANIFEST.yaml`
+  - `docs/engineering/baseline/discrepancy_register.csv`
+  - `docs/engineering/baseline/interface_registry.csv`
+  - `docs/engineering/changes/ECO_001_BOTTOM_PLATE_PCB_MOUNTING.md`
   - `docs/engineering/ENGINEERING_DEVELOPMENT_PLAN_INDEX.md`
   - `docs/engineering/ENGINEERING_RISK_AND_CONFLICT_REGISTER.md`
   - `docs/engineering/ENGINEERING_WORK_PACKAGE_BACKLOG.md`
@@ -14,12 +18,12 @@
 
 ## 1. 개요 및 3대 층위 구분 원칙
 
-본 문서는 MAJN 스마트 배시넷 엔지니어링 개발계획 1주차(ENG-001 ~ ENG-006) 과제에 대해 2차 증거 감사를 수행하고 정정한 공식 기술 보고서입니다.
+본 문서는 MAJN 스마트 배시넷 엔지니어링 개발계획 1주차(ENG-001 ~ ENG-006) 과제에 대해 2차 증거 감사에 이어 문서 간 수치 모순과 비약된 안전성 가설을 엄격히 배제한 **3차 기술 정합성 감사(Technical Consistency Audit)** 종합 보고서입니다.
 
 감사 원칙에 따라 모든 엔지니어링 서술을 다음 **3대 층위**로 엄격히 분리하였습니다:
-1. **증거로 확인된 사실 (Fact Confirmed)**: 원본 파일 해시, 거버 내층, 고해상도 실물 사진, DMM 로그, 파싱된 DXF 형상.
-2. **증거를 바탕으로 한 해석/계산 (Analysis / Calculation)**: 4층 제조 스택업 해석, 계측 경로별 저항 차이, 펌웨어 50% 캡 실효 전력, 기구 판 휨 스케일링.
-3. **아직 승인되지 않은 설계 가설 (Unapproved Target / Hypothesis)**: 외장 안테나 형식 승계, 하판 스탠드오프 가공, 720 카트 제품군 및 IP67 방수 요구사항.
+1. **증거로 확인된 사실 (Fact Confirmed)**: 원본 파일 해시, 거버 내층 데이터, 고해상도 실물 사진, DMM 전원 레일 실측 로그, 파싱된 DXF 형상.
+2. **증거를 바탕으로 한 해석/계산 (Analysis / Calculated Estimate)**: 4층 제조 스택업 해석, 계측 경로별 저항 차이, 50% 진폭 정현파 가정 계산치, 판 휨 등방성 스케일링 추정치. (실측 전압/변위와 엄격히 구분).
+3. **아직 승인되지 않은 설계 가설 및 미검증 항목 (Unapproved Hypothesis / Verification Pending)**: 외장 안테나 형식 승계, 하판 스탠드오프 가공, 720 카트 제품군 및 IP67 방수 요구사항, 8Ω 익사이터 열안전성, 1.05mm 동적 간극 안전성.
 
 ---
 
@@ -34,19 +38,24 @@
 │ ENG-001 │ 불일치 상태 체계     │ 단순 2단계 (RESOLVED)  │ 8대 표준 상태 체계 도입 │ 대장 v2 지속 │
 │         │ 관리 미흡            │ 분류로 인한 오해       │ 소유자/증거/종료기준 연결│ 통제 확정    │
 ├─────────┼──────────────────────┼────────────────────────┼─────────────────────────┼──────────────┤
-│ ENG-002 │ PCB #0005 층수 및    │ "2-Layer #0005" vs     │ 거버 4층 + 사진 확인    │ 4층 설계 확인│
-│(BASE-01)│ 실물 제조 추적성     │ "점퍼 와이어 rev-A" 오해│ rev-B 정상 SMT, 07-09BOM│ 실물추적 유지│
+│ ENG-002 │ PCB #0005 층수 및    │ "2-Layer #0005" vs     │ 거버 4층 + 사진 확인    │ 거버4층 확인 │
+│(BASE-01)│ 실물 제조 추적성     │ "점퍼 와이어 rev-A" 오해│ rev-B 정상 SMT, 단 실물 │ 실물추적성   │
+│         │                      │                        │ 공장 성적서 미확보 상태 │ VERIF_PENDING│
 ├─────────┼──────────────────────┼────────────────────────┼─────────────────────────┼──────────────┤
-│ ENG-003 │ 익사이터 부하 저항   │ 21.6Ω vs 24.8Ω         │ 단품 DCR 10.8Ω×2=21.6Ω  │ 계측경로 차이│
-│(BASE-02)│ 및 BTL 전력 계산     │ 100% 포화 6W/9W 계산   │ 루프 24.8Ω, FW 50% 캡   │ 실효0.75W/1.1W│
+│ ENG-003 │ 익사이터 부하 저항   │ 21.6Ω vs 24.8Ω         │ 단품 DCR 21.6Ω/루프 24.8Ω│ 전력계산치구분│
+│(BASE-02)│ 및 BTL 전력 계산     │ 6W/9W vs 3W/4.5W vs    │ 3W/4.5W(100%)/0.75/1.1W │ 실측UNVERIFIED│
+│         │                      │ 0.75W/1.125W 혼선      │ 전력 실측 부재, BTL 차동│ 8Ω열안전성   │
+│         │                      │                        │ 프로브 계측 필수        │ VERIF_PENDING│
 ├─────────┼──────────────────────┼────────────────────────┼─────────────────────────┼──────────────┤
 │ ENG-004 │ RF 모듈 실물 사양 및 │ 32E(PCB안테나) vs 32UE │ 사진상 u.FL 실장 확인   │ 모듈은 32UE  │
-│(BASE-03)│ KC 전파인증 승계     │ 2.33dBi 법적상한 오인  │ R-C-es5-ESP32WROOM32E   │ 외장안테나   │
-│         │                      │                        │ u.FL 미체결(BLOCKED)    │ BLOCKED 유지 │
+│(BASE-03)│ KC 전파인증 승계     │ 2.33dBi 법적상한 오인  │ u.FL 미체결 비통제 시험 │ RF시험UNVERIF│
+│         │                      │                        │ R-C-es5-ESP32WROOM32E   │ 외장안테나   │
+│         │                      │                        │ 3dBi FPC 시험기관 질의  │ BLOCKED 유지 │
 ├─────────┼──────────────────────┼────────────────────────┼─────────────────────────┼──────────────┤
-│ ENG-005 │ 하판 마운팅 홀 누락  │ "0.25mm 홀 결함" 오인  │ 기판 홀은 정상 ⌀2.7mm   │ ECO-001 제안 │
-│(BASE-04)│ 및 체결 간극         │ 15kg 처짐 1.8mm 오인   │ 450mm 처짐 0.35mm       │ HUMAN_APPROV │
-│         │                      │ (간섭 충돌 오판)       │ 순수 간극 1.05mm 확보   │ PENDING 유지 │
+│ ENG-005 │ 하판 마운팅 홀 누락  │ "0.25mm 홀 결함" 오인  │ 기판 홀은 정상 ⌀2.7mm PTH│ ECO-001 제안 │
+│(BASE-04)│ 및 체결 간극         │ 15kg 처짐 1.8mm 및     │ 450mm 처짐 0.35mm는 단순│ (Würth MPN)  │
+│         │                      │ 0.35mm 안전 간극 속단  │ 스케일링 추정치(이방성) │ 간극안전보류 │
+│         │                      │                        │ CAE/진동 실측 전 안전보류│ VERIF_PENDING│
 ├─────────┼──────────────────────┼────────────────────────┼─────────────────────────┼──────────────┤
 │ ENG-006 │ 450×250 vs 720×390   │ 720 카트를 확정 제품화 │ 720은 탐색용 콘셉트     │ 2대 라인업   │
 │(BASE-05)│ 제품군 경계 및 IP67  │ IP67을 확정 규격화     │ IP67은 미검증 목표요구  │ 분리 매니페스트│
