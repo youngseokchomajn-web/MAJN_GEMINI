@@ -4,7 +4,7 @@ status: VERIFICATION_PENDING
 product_variant: CFG-HOME-450
 creation_date: "2026-10-25"
 audit_date: "2026-11-02"
-audit_round: "Round 3 Technical Consistency Audit (Rigorous Model & Discrepancy Elimination)"
+audit_round: "Round 4 Technical Consistency Audit (P0 Calculation Error Fix & Fastener Re-audit)"
 
 hardware:
   board_id: "PCB-0005-4L"
@@ -56,21 +56,27 @@ power_and_audio:
     ic: "TAS5805MPWPR (LCSC C478472, TSSOP-28)"
     mode: "BTL Differential"
     i2c_address: "0x2C (ADR pull-up R12=4.7kΩ to 3V3)"
-    firmware_amplitude_clamp: "0.5f (50% max in vibration_controller.cpp#L70-L71 and ble_manager.cpp#L124)"
+    firmware_amplitude_clamp: "0.5f (50% max in vibration_controller.cpp#L70-L71; digital PCM software scaling of -6.02 dBFS, not analog voltage clamp)"
+    boot_register_master_vol: "0x30 (0 dB unity gain written in tas5805m.cpp#L62; gCurrentVolume=72 in amplifier_manager.cpp is in RAM only and not written to register at boot)"
     power_output_model:
       status: "CALCULATED_ESTIMATE (measured power UNVERIFIED)"
-      notes: "Calculated under assumption of ideal 6.0V peak sine wave. Real output depends on TAS5805M digital volume/DSP, modulation scheme, PVDD, and frequency-dependent impedance. Actual BTL differential voltage and RMS power require oscilloscope differential probe measurement."
-      theoretical_unconstrained_sine_100pct:
+      notes: "0.75W and 1.125W are hypothetical calculation examples assuming an ideal 6.0V peak sine wave. Real output depends on TAS5805M DSP, PWM modulation limits, PVDD ripple, and frequency-dependent complex impedance. Actual BTL differential voltage and RMS power require oscilloscope differential probe measurement."
+      ideal_square_wave_average_power_ceiling:
+        notes: "Theoretical average load power if ideal +/-12V bipolar square wave were continuously applied (Vrms = 12.0V). Not peak instantaneous power."
+        p_avg_24ohm: 6.0 # W (12.0^2 / 24)
+        p_avg_16ohm: 9.0 # W (12.0^2 / 16)
+      ideal_full_scale_sine_average_power:
         v_peak: 12.0 # V
         v_rms: 8.485 # Vrms (12.0 / sqrt(2))
-        p_rms_24ohm: 3.0 # W (8.485^2 / 24)
-        p_rms_16ohm: 4.5 # W (8.485^2 / 16)
-      calculated_firmware_clamped_sine_50pct:
+        p_avg_24ohm: 3.0 # W (8.485^2 / 24)
+        p_avg_16ohm: 4.5 # W (8.485^2 / 16)
+      hypothetical_clamped_sine_calculation_example:
+        notes: "Calculation example assuming a clean 6.0V peak sine wave (Vrms = 4.24V) is applied across load. Not actual firmware output power."
         v_peak_assumed: 6.0 # V (12V * 0.5 sine assumption)
-        v_rms_assumed: 4.24 # Vrms (6.0 / sqrt(2))
-        p_rms_24ohm: 0.75 # W (4.24^2 / 24)
-        p_rms_16ohm: 1.125 # W (4.24^2 / 16)
-      measured_btl_power: "UNVERIFIED (oscilloscope differential probe measurement pending)"
+        v_rms_assumed: 4.243 # Vrms (6.0 / sqrt(2))
+        p_avg_24ohm: 0.75 # W (4.243^2 / 24)
+        p_avg_16ohm: 1.125 # W (4.243^2 / 16)
+      measured_btl_power: "UNVERIFIED (oscilloscope differential probe and current probe measurement pending)"
 
 actuators:
   model: "12-ohm nominal lab sample exciters"
@@ -78,24 +84,33 @@ actuators:
   wiring: "Series connected to J2 terminal"
   voice_coil_dcr_bare: 21.6 # ohms (10.8 ohm x 2 bare DCR)
   in_situ_harness_dcr: 24.8 # ohms (measured across J2 with harness/leads)
-  power_calculation_model: "CALCULATED_ESTIMATE: 100% sine = 3.0W (24Ω) / 4.5W (16Ω); 50% clamped sine assumption = 0.75W (24Ω) / 1.125W (16Ω); 100% square-wave ceiling = 6.0W / 9.0W. Measured power unverified."
+  power_calculation_model: "CALCULATED_ESTIMATE: square-wave ceiling = 6.0W (24Ω) / 9.0W (16Ω); 100% sine = 3.0W (24Ω) / 4.5W (16Ω); hypothetical 6V-peak sine example = 0.75W (24Ω) / 1.125W (16Ω). Measured power UNVERIFIED."
   qualification_note: "12-ohm test pass cannot be generalized to 8-ohm production part based solely on firmware clamp; thermal and electrical safety remains VERIFICATION_PENDING until T2 load/thermal chamber testing."
 
 housing:
-  type: "4.5T Birch Plywood 10-bolt enclosure (Rev 2)"
+  type: "4.5T Birch Plywood enclosure (Rev 2 DXF 10-bolt; Decision 10 6-bolt conflict pending resolution)"
   dimensions_mm: [450.0, 250.0, 22.5]
   cavity_depth_mm: 13.5
   master_dxf: "majn_housing/majung_bassinet_4.5T_rev2_master.dxf"
-  pcb_mount_method: "Double-sided adhesive foam tape (no bottom plate holes; ECO-001 proposed with Würth 970050154 M2.5x5mm standoffs)"
+  pcb_mount_method: "Double-sided adhesive foam tape (no bottom plate holes; ECO-001 proposed with Würth 970050154 M2.5x5mm standoffs; M2.5x6mm bolt rejected due to 1.5mm engagement defect, redesign pending)"
+  fastener_engagement_audit:
+    bolt_nominal_length_mm: 6.0 # ISO 10642 countersunk (includes head)
+    wood_total_thickness_mm: 4.5
+    actual_bottom_thread_engagement_mm: 1.5 # 6.0 - 4.5 = 1.5mm (0.6d < 1.0d, FAILS standard >= 2.5mm)
+    status: "REJECTED_AS_IS (ECO-001 Rev 4 candidate alternatives under review)"
+    standoff_internal_collision_risk: "Using 8mm bottom bolt (3.5mm entry) collides with top 5mm bolt (2.9mm entry) inside 5.0mm standoff (3.5 + 2.9 = 6.4mm > 5.0mm)"
+  grounding_architecture:
+    type: "PCB Signal/Power GND pad contact (no metal chassis present in birch plywood housing; Chassis GND expression eliminated)"
+    qc_continuity_criterion: "DMM 4-wire resistance between 4 standoffs and USB-C shield <= 0.1 ohm"
   clearance_analysis:
     nominal_static_clearance_mm: 1.4 # static calculation (13.5mm cavity - 12.1mm stackup)
     pcb_asymmetry_offset_mm: [1.27, 0.127] # X-axis offset +1.27mm relative to symmetrical hole pattern (PCB outer bounds X in [184.36, 268.18]mm, margin 184.36mm left vs 181.82mm right)
     rough_scaling_deflection_estimate_mm: 0.35 # rough isotropic scaling reference from 600x340 4.0T data; unverified for orthotropic birch plywood and actual boundary conditions
     dynamic_clearance_status: "VERIFICATION_PENDING (1.05mm cannot be declared safe dynamic clearance without CAE and physical testing)"
     clearance_verification_exit_criteria:
-      - "CAE structural/modal simulation reflecting actual housing boundary conditions and orthotropic plywood properties"
+      - "CAE structural/modal simulation reflecting actual housing boundary conditions (resolving 6-bolt vs 10-bolt SSOT conflict) and orthotropic plywood properties"
       - "15kg distributed vs concentrated infant load deflection measurement"
-      - "Physical prototype dynamic clearance measurement during 30~65Hz excitation (minimum required gap >= 0.5mm)"
+      - "Physical prototype dynamic clearance measurement during 30~65Hz excitation (tentative design verification target >= 0.5mm for bottoming prevention)"
 
 firmware:
   build_target: "esp32_full_hw"
