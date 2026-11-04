@@ -1,0 +1,1414 @@
+{
+  "project_name": "Majung_Smart_Bassinet_v1.1",
+  "version": "1.9.2",
+  "_revision_note": "v1.9.1 (2026-06-27): ★E-02 안테나 근본해결 — U1 ESP32-WROOM-32E→-32UE-N8(C701342→C701345, 핀투핀 호환·8MB 동일·외장 u.FL 안테나). 이유: 16도메인 전수검증서 PCB안테나가 보드 내부(U2 LDO·전원부·GND평면 정면)를 향함 확인(원 SSOT 의도 y≈47mm 상단엣지였으나 autoroute용 재배치가 y=18mm로 옮김=P-24). -32UE는 PCB안테나 없어 키프아웃 불필요+U2간섭 해소(6.3mm 짧음), 외장안테나를 케이스 자유공간 부착=RF 확실. PCB 재라우트 불필요(패드 동일). ★발주전: -32UE 풋프린트 교체(바디outline/실크/u.FL 클리어런스 확인)·KC 인증호환 안테나(게인한도). 전수검증=MAJN_에러케이스_정리_2026-06-27.md. | v1.8.0 (2026-06-24): ★fresh-eye Phase B 점검 반영 — ①U5(LSM6DSOX) 미사용 보조핀 SDX(2)/SCX(3)/OCS_AUX(10)/SDO_AUX(11)→GND (ST 데이터시트 종단요구, 부유=노이즈) ②USB-C 쉴드/마운팅 EH(1~4)→GND(ESD/EMC) ③C17 EN캡 100nF→1uF(C106858, Espressif POR). 검증: TAS5805M주소 FW0x2C=HW일치, 전 서브시스템 연결 정확(라이브 심볼 기준). | v1.7.0 (2026-06-24): ★★MP3426 핀 정정(라이브 EasyEDA 심볼 a1_symbol_verify.json 기준) — v1.5에서 alldatasheet OCR(핀순서 역전)을 믿고 FSET/FB/SS를 8/9/10으로 잘못 바꿨던 것을 심볼 실측(8/9/10=PGND, 11=AGND, 12=SS, 13=FB, 14=FSET, 15=EP)대로 원복+정정: FB→13, FSET→14, SS→12(C23캡), GND→8/9/10/11/15. ★교훈: 데이터시트 OCR보다 라이브 심볼이 권위. 전 넷 이름기반 재검증 통과. | v1.6.0 (2026-06-24): ★AMP_OUT 출력 EMI 필터 추가(TAS5805M filterless+2m케이블, KC EMC) — 레그4개에 페라이트비드 FB1~4(C154119 Sunlord UPZ2012E221-3R0TF 220R@100MHz 3A 0805) 직렬 + 캡 C24~27(C16033 2.2nF 50V, TI Table8-3 2200pF)→GND, SPK_A+/A-/B+/B- 넷 신설. 부트스트랩캡(C12~15)은 U4쪽 유지. + C20 VR_DIG 100nF→1µF(C106858). ★펌웨어: 비드필터 사용 시 Fsw=384kHz+Spread Spectrum 설정(TI 권고). | v1.5.0 (2026-06-24): ★★MP3426 핀배치 치명결함 수정(alldatasheet 데이터시트 2회 교차확인) — FSET 14→8, FB 13→9, GND를 11/12/13/14/EP(15)로(기존엔 8/9/10=FSET·FB·SS를 GND에 단락시켜 부스트 동작불능이었음), SS(핀10)에 소프트스타트 캡 C23 신설(BOOST_SS 넷). + C19 AVDD 100nF→1µF(C106858, 내부LDO 안정화). ⚠️미반영(다음): AMP_OUT 출력 페라이트비드/LC필터(EMC), C20 VR_DIG값·C23 SS값·풋프린트 EP/패드번호 라이브확정. | v1.4.0 (2026-06-24): ★A1 부품검증 반영 — U2 SGM2036(300mA)→AP2112K-3.3(C51118, 600mA, SOT-23-5 핀:1VIN/2GND/3EN/4NC/5VOUT) [ESP32 WiFi피크 500mA 대응] + C1 10µF→22µF(C784585) ESP32 벌크 + C3 10V→25V(C96446) [TVS클램프 9.2V 여유] + D2 삭제[USB충전전용 고아부품, 45→44]. ⚠️미반영(다음): AMP_OUT 페라이트비드/LC필터(EMC 필수), MP3426 핀번호 미확정(데이터시트/라이브심볼 확인要), L1 Isat 확인, C19 AVDD값 확인. | v1.3.0 (2026-06-24): ★LCSC 번호 전면 정정 — 기존 lcsc_id들이 이름과 다른 엉뚱한 부품(전부 저항)을 가리켜 PCB가 비동작 상태였음. 정정: L1=C78804(SWPA6045S4R7MT 4.7uH 6x6x4.5mm 인덕터 Isat~5A; ★MP3426=6A스위치한계 확인됨, 실사용peak~3.2A라 5A충분·최대여유원하면 SRP6540-4R7M C1329351 7x7 Isat~8A), D3=C2905650(1N5819W 쇼트키 SOD-123 40V/1A), R1=C22807(150k), R2=C22818(16k), R3/R4/R7/R8=C23186(5.1k), R5/R6=C25804(10k). 재실행(run_draw_schematic.py) 필요. | v1.2.0 (2026-06-19): 데이터시트 기준 핀맵 전면 정정. U4(TAS5805M) I2C/I2S 핀번호·전원(DVDD/PVDD 4핀/PGND/EP→GND) 정정, U5(LSM6DSOX) VDD/VDDIO/CS 정정, U3(MP3426) 핀이름 참조로 전환, I2C 풀업(R7/R8)·앰프 디커플(C18/C19/C20) 추가. 상세: pinmap_master.md / 검증리포트_엄밀_2026-06-19.md. ⚠️ U3 정확한 핀이름/번호와 COMP 보상망은 S4 라이브 심볼 덤프에서 확정.",
+  "board_dimensions": {
+    "width_mm": 80.0,
+    "height_mm": 60.0,
+    "layers": 4
+  },
+  "components": [
+    {
+      "designator": "U1",
+      "name": "ESP32-WROOM-32UE",
+      "lcsc_id": "C701345",
+      "package": "SMD-ESP32-WROOM",
+      "x": 40.0,
+      "y": 18.01,
+      "angle": 0,
+      "_note": "2026-06-27 외장안테나 전환(-32E→-32UE-N8, 핀투핀 호환·8MB 동일). PCB안테나 제거로 E-02(안테나 내부지향) 근본해결: 키프아웃 불필요·U2/캡 간섭 해소(-32UE 6.3mm 짧음). 외장 u.FL 안테나는 케이스 부착. ★발주전 확인: -32UE 풋프린트 교체(패드 동일·재라우트 불필요, 바디outline/실크/u.FL 클리어런스만)·KC 인증 호환 안테나(게인한도) 사용. lcsc C701345=UE-N8(현 C701342=E-N8 매칭, 플래시 다르면 N4=C701344/N16=C701346)."
+    },
+    {
+      "designator": "U2",
+      "name": "AP2112K-3.3 LDO 600mA",
+      "lcsc_id": "C51118",
+      "package": "SOT-23-5",
+      "x": 24.99,
+      "y": 11.99,
+      "angle": 90,
+      "_note": "v1.4: SGM2036(300mA)→AP2112K-3.3(600mA). 핀 1=VIN,2=GND,3=EN,4=NC,5=VOUT (EP 없음)"
+    },
+    {
+      "designator": "U3",
+      "name": "MPS MP3426 Boost Converter",
+      "lcsc_id": "C133224",
+      "package": "QFN-14",
+      "x": 18.01,
+      "y": 43.0,
+      "angle": 180,
+      "_note": "정정(v1.2.1): LCSC ID C2909511이 잘못된번호(404, JLCPCB Process 500에러 원인)로 확인됨 → C133224(MP3426DL-LF-Z, QFN-14-EP 3x4, 재고766)로 정정. 2026-07-03."
+    },
+    {
+      "designator": "U4",
+      "name": "TI TAS5805M Amplifier",
+      "lcsc_id": "C478472",
+      "package": "HTSSOP-28",
+      "x": 40.0,
+      "y": 43.0,
+      "angle": 0
+    },
+    {
+      "designator": "U5",
+      "name": "ST LSM6DSOX Accelerometer",
+      "lcsc_id": "C481766",
+      "package": "LGA-14",
+      "x": 59.99,
+      "y": 16.0,
+      "angle": 270
+    },
+    {
+      "designator": "D1",
+      "name": "SMAJ5.0A TVS Diode",
+      "lcsc_id": "C83329",
+      "package": "SMA-DO-214AC",
+      "x": 11.26,
+      "y": 27.99,
+      "angle": 90,
+      "_note": "USB-C 우측 상단 밀착"
+    },
+    {
+      "designator": "USB_C",
+      "name": "TYPE-C-16P Female",
+      "lcsc_id": "C165948",
+      "package": "USB-C-16P",
+      "x": 5.0,
+      "y": 27.99,
+      "angle": 90
+    },
+    {
+      "designator": "UART_HDR",
+      "name": "UART 6Pin Header",
+      "lcsc_id": "C124380",
+      "package": "HDR-M-2.54_1X6",
+      "x": 72.01,
+      "y": 8.0,
+      "angle": 0
+    },
+    {
+      "designator": "C1",
+      "name": "MCU Bulk 22uF 25V",
+      "lcsc_id": "C784585",
+      "package": "0805",
+      "x": 37.0,
+      "y": 7.0,
+      "angle": 0,
+      "_note": "v1.4: 10µF→22µF (Espressif: ESP32 WiFi 트랜지언트 벌크 22-100µF 권장)"
+    },
+    {
+      "designator": "C2",
+      "name": "MCU Bypass 100nF",
+      "lcsc_id": "C14663",
+      "package": "0603",
+      "x": 33.0,
+      "y": 7.0,
+      "angle": 0
+    },
+    {
+      "designator": "C3",
+      "name": "LDO Input Cap 10uF 25V",
+      "lcsc_id": "C96446",
+      "package": "0603",
+      "x": 21.01,
+      "y": 11.99,
+      "angle": 90,
+      "_note": "v1.4: 10V→25V (5V레일, TVS 클램프 9.2V 대비 여유)"
+    },
+    {
+      "designator": "C4",
+      "name": "LDO Output Cap 10uF",
+      "lcsc_id": "C19702",
+      "package": "0603",
+      "x": 28.99,
+      "y": 11.99,
+      "angle": 90
+    },
+    {
+      "designator": "C5",
+      "name": "Boost Input Cap 4.7uF",
+      "lcsc_id": "C19666",
+      "package": "0603",
+      "x": 11.0,
+      "y": 44.39,
+      "angle": 0
+    },
+    {
+      "designator": "C6",
+      "name": "Boost Output Cap 22uF",
+      "lcsc_id": "C784585",
+      "package": "0805",
+      "x": 26.01,
+      "y": 46.21,
+      "angle": 90
+    },
+    {
+      "designator": "C7",
+      "name": "Boost Output Cap 22uF",
+      "lcsc_id": "C784585",
+      "package": "0805",
+      "x": 26.01,
+      "y": 40.0,
+      "angle": 0
+    },
+    {
+      "designator": "C8",
+      "name": "Amp PVDD Cap 10uF 25V",
+      "lcsc_id": "C96446",
+      "package": "0603",
+      "x": 33.26,
+      "y": 40.0,
+      "angle": 0
+    },
+    {
+      "designator": "C9",
+      "name": "Amp PVDD Cap 10uF 25V",
+      "lcsc_id": "C96446",
+      "package": "0603",
+      "x": 32.99,
+      "y": 46.0,
+      "angle": 0
+    },
+    {
+      "designator": "C10",
+      "name": "Accel VDD Cap 100nF",
+      "lcsc_id": "C14663",
+      "package": "0603",
+      "x": 56.01,
+      "y": 16.0,
+      "angle": 90
+    },
+    {
+      "designator": "L1",
+      "name": "Boost Inductor 4.7uH",
+      "lcsc_id": "C78804",
+      "package": "SMD-5.0x5.0",
+      "x": 18.01,
+      "y": 50.01,
+      "angle": 0
+    },
+    {
+      "designator": "D3",
+      "name": "Boost Schottky Diode 3A SS34",
+      "lcsc_id": "C8678",
+      "package": "SMA-DO-214AC",
+      "x": 24.0,
+      "y": 43.0,
+      "angle": 180
+    },
+    {
+      "designator": "R1",
+      "name": "Boost FB Resistor 1 (143k)",
+      "lcsc_id": "C22877",
+      "package": "0603",
+      "x": 13.0,
+      "y": 38.0,
+      "angle": 0
+    },
+    {
+      "designator": "R2",
+      "name": "Boost FB Resistor 2 (16k)",
+      "lcsc_id": "C22818",
+      "package": "0603",
+      "x": 16.0,
+      "y": 38.0,
+      "angle": 0
+    },
+    {
+      "designator": "R3",
+      "name": "USB CC1 Pulldown 5.1k",
+      "lcsc_id": "C23186",
+      "package": "0603",
+      "x": 9.32,
+      "y": 24.0,
+      "angle": 90
+    },
+    {
+      "designator": "R4",
+      "name": "USB CC2 Pulldown 5.1k",
+      "lcsc_id": "C23186",
+      "package": "0603",
+      "x": 9.32,
+      "y": 30.99,
+      "angle": 90
+    },
+    {
+      "designator": "R5",
+      "name": "ESP EN Pullup 10k",
+      "lcsc_id": "C25804",
+      "package": "0603",
+      "x": 27.99,
+      "y": 22.0,
+      "angle": 0,
+      "_note": "v1.8 C5: U1 풋프린트 겹침 해소 위해 모듈 밖으로 이동"
+    },
+    {
+      "designator": "C17",
+      "name": "ESP EN RC Cap 1uF",
+      "lcsc_id": "C106858",
+      "package": "0603",
+      "x": 27.99,
+      "y": 26.01,
+      "angle": 0,
+      "_note": "v1.8: 100nF->1uF (Espressif EN POR RC 10k+1uF 기준, 부팅안정) | v1.8 C5: U1 풋프린트 겹침 해소 위해 모듈 밖으로 이동"
+    },
+    {
+      "designator": "R6",
+      "name": "ESP IO0 Pullup 10k",
+      "lcsc_id": "C25804",
+      "package": "0603",
+      "x": 51.99,
+      "y": 22.0,
+      "angle": 0,
+      "_note": "v1.8 C5: U1 풋프린트 겹침 해소 위해 모듈 밖으로 이동"
+    },
+    {
+      "designator": "C11",
+      "name": "Accel VDDIO Cap 100nF",
+      "lcsc_id": "C14663",
+      "package": "0603",
+      "x": 56.01,
+      "y": 13.0,
+      "angle": 90
+    },
+    {
+      "designator": "C12",
+      "name": "BST A+ Cap 100nF",
+      "lcsc_id": "C14663",
+      "package": "0603",
+      "x": 35.0,
+      "y": 48.5,
+      "angle": 0
+    },
+    {
+      "designator": "C13",
+      "name": "BST A- Cap 100nF",
+      "lcsc_id": "C14663",
+      "package": "0603",
+      "x": 38.0,
+      "y": 48.5,
+      "angle": 0
+    },
+    {
+      "designator": "C14",
+      "name": "BST B+ Cap 100nF",
+      "lcsc_id": "C14663",
+      "package": "0603",
+      "x": 44.0,
+      "y": 48.5,
+      "angle": 0
+    },
+    {
+      "designator": "C15",
+      "name": "BST B- Cap 100nF",
+      "lcsc_id": "C14663",
+      "package": "0603",
+      "x": 41.0,
+      "y": 48.5,
+      "angle": 0
+    },
+    {
+      "designator": "J1",
+      "name": "Speaker Output A",
+      "lcsc_id": "C124375",
+      "package": "HDR-M-2.54_1X2",
+      "x": 78.0,
+      "y": 41.0,
+      "angle": 180
+    },
+    {
+      "designator": "J2",
+      "name": "Speaker Output B",
+      "lcsc_id": "C124375",
+      "package": "HDR-M-2.54_1X2",
+      "x": 78.0,
+      "y": 45.01,
+      "angle": 180
+    },
+    {
+      "designator": "R7",
+      "name": "I2C SDA Pullup 5.1k",
+      "lcsc_id": "C23186",
+      "package": "0603",
+      "x": 37.01,
+      "y": 35.99,
+      "angle": 90,
+      "_note": "추가(v1.2): TAS5805M I2C SDA 풀업 → VCC_3V3"
+    },
+    {
+      "designator": "R8",
+      "name": "I2C SCL Pullup 5.1k",
+      "lcsc_id": "C23186",
+      "package": "0603",
+      "x": 43.0,
+      "y": 35.99,
+      "angle": 90,
+      "_note": "추가(v1.2): TAS5805M I2C SCL 풀업 → VCC_3V3"
+    },
+    {
+      "designator": "C18",
+      "name": "Amp DVDD Cap 100nF",
+      "lcsc_id": "C14663",
+      "package": "0603",
+      "x": 34.92,
+      "y": 38.0,
+      "angle": 0,
+      "_note": "추가(v1.2): TAS5805M DVDD(pin2, 3.3V 디지털 공급) 디커플"
+    },
+    {
+      "designator": "C19",
+      "name": "Amp AVDD Cap 1uF 25V",
+      "lcsc_id": "C106858",
+      "package": "0603",
+      "x": 45.09,
+      "y": 38.0,
+      "angle": 0,
+      "_note": "v1.5: 100nF→1µF (TAS5805M AVDD=내부5V LDO 출력, 안정화 캡 ~1µF 권장). ⚠️정확값 데이터시트 확정"
+    },
+    {
+      "designator": "C20",
+      "name": "Amp VR_DIG Cap 1uF 25V",
+      "lcsc_id": "C106858",
+      "package": "0603",
+      "x": 40.0,
+      "y": 38.0,
+      "angle": 0,
+      "_note": "v1.6: 100nF->1uF (TAS5805M VR_DIG=내부1.5V LDO 출력, Table8-3 C9/C10=1uF)"
+    },
+    {
+      "designator": "R9",
+      "name": "Boost FSET 82k",
+      "lcsc_id": "C325632",
+      "package": "0603",
+      "x": 10.01,
+      "y": 46.0,
+      "angle": 0,
+      "_note": "추가(v1.2.1): MP3426 FSET(14)→GND, 82k≈556kHz (데이터시트 84.5k=540kHz/Table2=600kHz)"
+    },
+    {
+      "designator": "R10",
+      "name": "Boost COMP Res 24.9k",
+      "lcsc_id": "C48391802",
+      "package": "0603",
+      "x": 10.01,
+      "y": 43.0,
+      "angle": 0,
+      "_note": "추가(v1.2.1): MP3426 COMP 보상저항(Table2 5V/12V/22uF=25k)"
+    },
+    {
+      "designator": "R11",
+      "name": "Boost EN Pulldown 100k",
+      "lcsc_id": "C2073721",
+      "package": "0603",
+      "x": 10.01,
+      "y": 40.0,
+      "angle": 0,
+      "_note": "추가(v1.2.1): MP3426 EN(2) 풀다운(부팅 시 boost OFF 페일세이프, 데이터시트 do-not-float)"
+    },
+    {
+      "designator": "C21",
+      "name": "Boost VDD Cap 1uF",
+      "lcsc_id": "C106858",
+      "package": "0603",
+      "x": 11.19,
+      "y": 47.59,
+      "angle": 0,
+      "_note": "추가(v1.2.1): MP3426 VDD(7, 내부LDO 출력) 바이패스"
+    },
+    {
+      "designator": "C22",
+      "name": "Boost COMP Cap 4.7nF",
+      "lcsc_id": "C596328",
+      "package": "0603",
+      "x": 14.0,
+      "y": 45.14,
+      "angle": 0,
+      "_note": "추가(v1.2.1): MP3426 COMP 보상캡(Table2 4.9nF≈4.7nF), R10과 직렬→GND"
+    },
+    {
+      "designator": "C23",
+      "name": "Boost SS Cap 4.7nF",
+      "lcsc_id": "C596328",
+      "package": "0603",
+      "x": 14.0,
+      "y": 46.55,
+      "angle": 0,
+      "_note": "v1.5: MP3426 SS(핀10) 소프트스타트 캡→GND. ⚠️값 4.7nF=임시, 데이터시트 SS공식으로 확정"
+    },
+    {
+      "designator": "FB1",
+      "name": "AMP Out Ferrite Bead 220R@100MHz 3A",
+      "lcsc_id": "C154119",
+      "package": "0805",
+      "x": 54.0,
+      "y": 38.0,
+      "angle": 90,
+      "_note": "v1.6: TAS5805M 출력 EMI 필터(filterless+2m케이블). TI UPZ2012E 권장"
+    },
+    {
+      "designator": "C24",
+      "name": "AMP Out Filter Cap 2.2nF 50V",
+      "lcsc_id": "C16033",
+      "package": "0603",
+      "x": 57.99,
+      "y": 38.0,
+      "angle": 0,
+      "_note": "v1.6: 출력 EMI 필터 캡(TI Table8-3 2200pF)→GND"
+    },
+    {
+      "designator": "FB2",
+      "name": "AMP Out Ferrite Bead 220R@100MHz 3A",
+      "lcsc_id": "C154119",
+      "package": "0805",
+      "x": 54.0,
+      "y": 42.01,
+      "angle": 90,
+      "_note": "v1.6: TAS5805M 출력 EMI 필터(filterless+2m케이블). TI UPZ2012E 권장"
+    },
+    {
+      "designator": "C25",
+      "name": "AMP Out Filter Cap 2.2nF 50V",
+      "lcsc_id": "C16033",
+      "package": "0603",
+      "x": 57.99,
+      "y": 42.01,
+      "angle": 0,
+      "_note": "v1.6: 출력 EMI 필터 캡(TI Table8-3 2200pF)→GND"
+    },
+    {
+      "designator": "FB3",
+      "name": "AMP Out Ferrite Bead 220R@100MHz 3A",
+      "lcsc_id": "C154119",
+      "package": "0805",
+      "x": 54.0,
+      "y": 46.0,
+      "angle": 90,
+      "_note": "v1.6: TAS5805M 출력 EMI 필터(filterless+2m케이블). TI UPZ2012E 권장"
+    },
+    {
+      "designator": "C26",
+      "name": "AMP Out Filter Cap 2.2nF 50V",
+      "lcsc_id": "C16033",
+      "package": "0603",
+      "x": 57.99,
+      "y": 46.0,
+      "angle": 0,
+      "_note": "v1.6: 출력 EMI 필터 캡(TI Table8-3 2200pF)→GND"
+    },
+    {
+      "designator": "FB4",
+      "name": "AMP Out Ferrite Bead 220R@100MHz 3A",
+      "lcsc_id": "C154119",
+      "package": "0805",
+      "x": 54.0,
+      "y": 50.01,
+      "angle": 90,
+      "_note": "v1.6: TAS5805M 출력 EMI 필터(filterless+2m케이블). TI UPZ2012E 권장"
+    },
+    {
+      "designator": "C27",
+      "name": "AMP Out Filter Cap 2.2nF 50V",
+      "lcsc_id": "C16033",
+      "package": "0603",
+      "x": 57.99,
+      "y": 50.01,
+      "angle": 0,
+      "_note": "v1.6: 출력 EMI 필터 캡(TI Table8-3 2200pF)→GND"
+    },
+    {
+      "designator": "R12",
+      "name": "Amp ADR Pullup 4.7k",
+      "lcsc_id": "C23162",
+      "package": "0603",
+      "x": 46.0,
+      "y": 38.0,
+      "angle": 0,
+      "_note": "추가(2026-06-24 fresh-eye): TAS5805M ADR은 DVDD 풀업저항으로 I2C주소 설정(Table7-5). GND직결→주소미정. 4.7k→0x2C(FW일치)."
+    },
+    {
+      "designator": "R13",
+      "name": "AMP_PDN Pullup 10k",
+      "lcsc_id": "C25804",
+      "package": "0603",
+      "x": 47.0,
+      "y": 40.0,
+      "angle": 0,
+      "_note": "추가(fresh-eye): GPIO15(MTDO 스트래핑)+PDN 공유넷 부트상태 고정. pull-up=부트로그유지+PDN high(부팅시 PVDD없어 무해)."
+    },
+    {
+      "designator": "R14",
+      "name": "SPI_CS Pullup 10k",
+      "lcsc_id": "C25804",
+      "package": "0603",
+      "x": 58.0,
+      "y": 19.0,
+      "angle": 0,
+      "_note": "추가(fresh-eye): GPIO5 스트래핑핀 HIGH 고정 + IMU 부팅시 deselect."
+    }
+  ],
+  "nets": {
+    "VBUS_5V": [
+      [
+        "USB_C",
+        "VBUS"
+      ],
+      [
+        "D1",
+        "1"
+      ],
+      [
+        "U2",
+        "1"
+      ],
+      [
+        "U2",
+        "3"
+      ],
+      [
+        "C3",
+        "1"
+      ],
+      [
+        "U3",
+        "3"
+      ],
+      [
+        "C5",
+        "1"
+      ],
+      [
+        "L1",
+        "1"
+      ]
+    ],
+    "VCC_3V3": [
+      [
+        "U2",
+        "5"
+      ],
+      [
+        "C4",
+        "1"
+      ],
+      [
+        "U1",
+        "3V3"
+      ],
+      [
+        "C1",
+        "1"
+      ],
+      [
+        "C2",
+        "1"
+      ],
+      [
+        "U5",
+        "5"
+      ],
+      [
+        "U5",
+        "8"
+      ],
+      [
+        "C10",
+        "1"
+      ],
+      [
+        "C11",
+        "1"
+      ],
+      [
+        "UART_HDR",
+        "1"
+      ],
+      [
+        "R5",
+        "1"
+      ],
+      [
+        "R6",
+        "1"
+      ],
+      [
+        "U4",
+        "2"
+      ],
+      [
+        "C18",
+        "1"
+      ],
+      [
+        "R7",
+        "2"
+      ],
+      [
+        "R8",
+        "2"
+      ],
+      [
+        "R12",
+        "2"
+      ],
+      [
+        "R13",
+        "2"
+      ],
+      [
+        "R14",
+        "2"
+      ]
+    ],
+    "PVDD_12V": [
+      [
+        "D3",
+        "1"
+      ],
+      [
+        "C6",
+        "1"
+      ],
+      [
+        "C7",
+        "1"
+      ],
+      [
+        "R1",
+        "1"
+      ],
+      [
+        "U4",
+        "15"
+      ],
+      [
+        "U4",
+        "16"
+      ],
+      [
+        "U4",
+        "27"
+      ],
+      [
+        "U4",
+        "28"
+      ],
+      [
+        "C8",
+        "1"
+      ],
+      [
+        "C9",
+        "1"
+      ]
+    ],
+    "BOOST_SW": [
+      [
+        "U3",
+        "4"
+      ],
+      [
+        "U3",
+        "5"
+      ],
+      [
+        "U3",
+        "6"
+      ],
+      [
+        "L1",
+        "2"
+      ],
+      [
+        "D3",
+        "2"
+      ]
+    ],
+    "BOOST_FB": [
+      [
+        "U3",
+        "13"
+      ],
+      [
+        "R1",
+        "2"
+      ],
+      [
+        "R2",
+        "1"
+      ]
+    ],
+    "BOOST_EN": [
+      [
+        "U1",
+        "GPIO4"
+      ],
+      [
+        "U3",
+        "2"
+      ],
+      [
+        "R11",
+        "1"
+      ]
+    ],
+    "BOOST_VDD": [
+      [
+        "U3",
+        "7"
+      ],
+      [
+        "C21",
+        "1"
+      ]
+    ],
+    "BOOST_FSET": [
+      [
+        "U3",
+        "14"
+      ],
+      [
+        "R9",
+        "1"
+      ]
+    ],
+    "BOOST_SS": [
+      [
+        "U3",
+        "12"
+      ],
+      [
+        "C23",
+        "1"
+      ]
+    ],
+    "BOOST_COMP": [
+      [
+        "U3",
+        "1"
+      ],
+      [
+        "R10",
+        "1"
+      ]
+    ],
+    "COMP_RC": [
+      [
+        "R10",
+        "2"
+      ],
+      [
+        "C22",
+        "1"
+      ]
+    ],
+    "SPI_MOSI": [
+      [
+        "U1",
+        "GPIO23"
+      ],
+      [
+        "U5",
+        "14"
+      ]
+    ],
+    "SPI_MISO": [
+      [
+        "U1",
+        "GPIO19"
+      ],
+      [
+        "U5",
+        "1"
+      ]
+    ],
+    "SPI_SCLK": [
+      [
+        "U1",
+        "GPIO18"
+      ],
+      [
+        "U5",
+        "13"
+      ]
+    ],
+    "SPI_CS": [
+      [
+        "U1",
+        "GPIO5"
+      ],
+      [
+        "U5",
+        "12"
+      ],
+      [
+        "R14",
+        "1"
+      ]
+    ],
+    "SENSOR_INT1": [
+      [
+        "U5",
+        "4"
+      ],
+      [
+        "U1",
+        "GPIO34"
+      ]
+    ],
+    "I2S_BCLK": [
+      [
+        "U1",
+        "GPIO26"
+      ],
+      [
+        "U4",
+        "7"
+      ]
+    ],
+    "I2S_LRCLK": [
+      [
+        "U1",
+        "GPIO25"
+      ],
+      [
+        "U4",
+        "6"
+      ]
+    ],
+    "I2S_DIN": [
+      [
+        "U1",
+        "GPIO22"
+      ],
+      [
+        "U4",
+        "8"
+      ]
+    ],
+    "AMP_I2C_SDA": [
+      [
+        "U1",
+        "GPIO21"
+      ],
+      [
+        "U4",
+        "10"
+      ],
+      [
+        "R7",
+        "1"
+      ]
+    ],
+    "AMP_I2C_SCL": [
+      [
+        "U1",
+        "GPIO27"
+      ],
+      [
+        "U4",
+        "11"
+      ],
+      [
+        "R8",
+        "1"
+      ]
+    ],
+    "AMP_PDN": [
+      [
+        "U1",
+        "GPIO15"
+      ],
+      [
+        "U4",
+        "12"
+      ],
+      [
+        "R13",
+        "1"
+      ]
+    ],
+    "AVDD": [
+      [
+        "U4",
+        "13"
+      ],
+      [
+        "C19",
+        "1"
+      ]
+    ],
+    "VR_DIG": [
+      [
+        "U4",
+        "4"
+      ],
+      [
+        "C20",
+        "1"
+      ]
+    ],
+    "ESP_RXD": [
+      [
+        "U1",
+        "RXD"
+      ],
+      [
+        "UART_HDR",
+        "5"
+      ]
+    ],
+    "ESP_TXD": [
+      [
+        "U1",
+        "TXD"
+      ],
+      [
+        "UART_HDR",
+        "4"
+      ]
+    ],
+    "ESP_IO0": [
+      [
+        "U1",
+        "GPIO0"
+      ],
+      [
+        "UART_HDR",
+        "3"
+      ],
+      [
+        "R6",
+        "2"
+      ]
+    ],
+    "ESP_EN": [
+      [
+        "U1",
+        "EN"
+      ],
+      [
+        "UART_HDR",
+        "2"
+      ],
+      [
+        "R5",
+        "2"
+      ],
+      [
+        "C17",
+        "1"
+      ]
+    ],
+    "USB_CC1": [
+      [
+        "USB_C",
+        "CC1"
+      ],
+      [
+        "R3",
+        "1"
+      ]
+    ],
+    "USB_CC2": [
+      [
+        "USB_C",
+        "CC2"
+      ],
+      [
+        "R4",
+        "1"
+      ]
+    ],
+    "BST_A+": [
+      [
+        "U4",
+        "25"
+      ],
+      [
+        "C12",
+        "2"
+      ]
+    ],
+    "BST_A-": [
+      [
+        "U4",
+        "22"
+      ],
+      [
+        "C13",
+        "2"
+      ]
+    ],
+    "BST_B+": [
+      [
+        "U4",
+        "18"
+      ],
+      [
+        "C14",
+        "2"
+      ]
+    ],
+    "BST_B-": [
+      [
+        "U4",
+        "21"
+      ],
+      [
+        "C15",
+        "2"
+      ]
+    ],
+    "AMP_OUT_A+": [
+      [
+        "U4",
+        "26"
+      ],
+      [
+        "C12",
+        "1"
+      ],
+      [
+        "FB1",
+        "1"
+      ]
+    ],
+    "AMP_OUT_A-": [
+      [
+        "U4",
+        "23"
+      ],
+      [
+        "C13",
+        "1"
+      ],
+      [
+        "FB2",
+        "1"
+      ]
+    ],
+    "AMP_OUT_B+": [
+      [
+        "U4",
+        "17"
+      ],
+      [
+        "C14",
+        "1"
+      ],
+      [
+        "FB3",
+        "1"
+      ]
+    ],
+    "AMP_OUT_B-": [
+      [
+        "U4",
+        "20"
+      ],
+      [
+        "C15",
+        "1"
+      ],
+      [
+        "FB4",
+        "1"
+      ]
+    ],
+    "GND": [
+      [
+        "USB_C",
+        "GND"
+      ],
+      [
+        "D1",
+        "2"
+      ],
+      [
+        "U2",
+        "2"
+      ],
+      [
+        "C3",
+        "2"
+      ],
+      [
+        "C4",
+        "2"
+      ],
+      [
+        "U3",
+        "11"
+      ],
+      [
+        "U3",
+        "15"
+      ],
+      [
+        "C5",
+        "2"
+      ],
+      [
+        "C6",
+        "2"
+      ],
+      [
+        "C7",
+        "2"
+      ],
+      [
+        "R2",
+        "2"
+      ],
+      [
+        "U1",
+        "GND"
+      ],
+      [
+        "C1",
+        "2"
+      ],
+      [
+        "C2",
+        "2"
+      ],
+      [
+        "U5",
+        "6"
+      ],
+      [
+        "U5",
+        "7"
+      ],
+      [
+        "C10",
+        "2"
+      ],
+      [
+        "C11",
+        "2"
+      ],
+      [
+        "U4",
+        "1"
+      ],
+      [
+        "U4",
+        "5"
+      ],
+      [
+        "U4",
+        "14"
+      ],
+      [
+        "U4",
+        "19"
+      ],
+      [
+        "U4",
+        "24"
+      ],
+      [
+        "U4",
+        "29"
+      ],
+      [
+        "C8",
+        "2"
+      ],
+      [
+        "C9",
+        "2"
+      ],
+      [
+        "UART_HDR",
+        "6"
+      ],
+      [
+        "R3",
+        "2"
+      ],
+      [
+        "R4",
+        "2"
+      ],
+      [
+        "C17",
+        "2"
+      ],
+      [
+        "C18",
+        "2"
+      ],
+      [
+        "C19",
+        "2"
+      ],
+      [
+        "C20",
+        "2"
+      ],
+      [
+        "R9",
+        "2"
+      ],
+      [
+        "C21",
+        "2"
+      ],
+      [
+        "C22",
+        "2"
+      ],
+      [
+        "R11",
+        "2"
+      ],
+      [
+        "C23",
+        "2"
+      ],
+      [
+        "C24",
+        "2"
+      ],
+      [
+        "C25",
+        "2"
+      ],
+      [
+        "C26",
+        "2"
+      ],
+      [
+        "C27",
+        "2"
+      ],
+      [
+        "U3",
+        "8"
+      ],
+      [
+        "U3",
+        "9"
+      ],
+      [
+        "U3",
+        "10"
+      ],
+      [
+        "U5",
+        "2"
+      ],
+      [
+        "U5",
+        "3"
+      ],
+      [
+        "U5",
+        "10"
+      ],
+      [
+        "U5",
+        "11"
+      ],
+      [
+        "USB_C",
+        "1"
+      ],
+      [
+        "USB_C",
+        "2"
+      ],
+      [
+        "USB_C",
+        "3"
+      ],
+      [
+        "USB_C",
+        "4"
+      ]
+    ],
+    "SPK_A+": [
+      [
+        "FB1",
+        "2"
+      ],
+      [
+        "J1",
+        "1"
+      ],
+      [
+        "C24",
+        "1"
+      ]
+    ],
+    "SPK_A-": [
+      [
+        "FB2",
+        "2"
+      ],
+      [
+        "J1",
+        "2"
+      ],
+      [
+        "C25",
+        "1"
+      ]
+    ],
+    "SPK_B+": [
+      [
+        "FB3",
+        "2"
+      ],
+      [
+        "J2",
+        "1"
+      ],
+      [
+        "C26",
+        "1"
+      ]
+    ],
+    "SPK_B-": [
+      [
+        "FB4",
+        "2"
+      ],
+      [
+        "J2",
+        "2"
+      ],
+      [
+        "C27",
+        "1"
+      ]
+    ],
+    "AMP_ADR": [
+      [
+        "U4",
+        "3"
+      ],
+      [
+        "R12",
+        "1"
+      ]
+    ]
+  },
+  "pcb_constraints": {
+    "antenna_keepout": {
+      "x_min": 32.5,
+      "x_max": 47.5,
+      "y_min": 49.0,
+      "y_max": 60.0,
+      "_note": "U1 Y좌표 이동에 따라 y_min 52→49로 갱신"
+    },
+    "routing_widths_mm": {
+      "VBUS_5V": 1.2,
+      "PVDD_12V": 1.0,
+      "VCC_3V3": 0.25,
+      "BOOST_SW": 0.8,
+      "default": 0.15
+    },
+    "switching_loop_max_dist_mm": 2.0
+  }
+}
