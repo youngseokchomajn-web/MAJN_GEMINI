@@ -1,0 +1,21 @@
+Item_ID,File_or_Feature_Name,Description,Category,File_Size_or_Value,Architecture_Layer,Engineering_Function,Reconciliation_Result,Status
+FAB-01,Gerber_TopLayer.GTL,Top Copper Layer (Layer 1),Copper,"63,216 bytes",4-Layer Structure,"High-speed signals, component pads, power polygons",Matches CAD netlist,VERIFIED
+FAB-02,Gerber_InnerLayer1.G1,Inner Ground Layer (Layer 2),Copper,"78,094 bytes",4-Layer Structure,Solid unbroken ground reference plane,Matches 4-layer stackup,VERIFIED
+FAB-03,Gerber_InnerLayer2.G2,Inner Power Layer (Layer 3),Copper,"5,609 bytes",4-Layer Structure,VCC_3V3 and PVDD_12V power split polygons,Matches 4-layer stackup,VERIFIED
+FAB-04,Gerber_BottomLayer.GBL,Bottom Copper Layer (Layer 4),Copper,"5,884 bytes",4-Layer Structure,Auxiliary routing and bottom ground shield,Matches 4-layer stackup,VERIFIED
+FAB-05,Gerber_TopSilkscreenLayer.GTO,Top Silkscreen,Silkscreen,"75,201 bytes",Silkscreen,"Component outlines, designator text, polarity marks",Shows U1 silk as -32E (mismatch with -32UE),CONDITIONALLY_VERIFIED
+FAB-06,Gerber_BottomSilkscreenLayer.GBO,Bottom Silkscreen,Silkscreen,647 bytes,Silkscreen,Bottom logo and regulatory text,Matches single-sided SMT,VERIFIED
+FAB-07,Gerber_TopSolderMaskLayer.GTS,Top Solder Mask,Solder Mask,"9,953 bytes",Solder Mask,Solder mask openings for Top SMT pads,Matches Top SMT BOM/CPL,VERIFIED
+FAB-08,Gerber_BottomSolderMaskLayer.GBS,Bottom Solder Mask,Solder Mask,"1,558 bytes",Solder Mask,Solder mask openings for mounting holes & THT pins,No SMT pad openings on Bottom,VERIFIED
+FAB-09,Gerber_TopPasteMaskLayer.GTP,Top Solder Paste Stencil,Paste Mask,"33,860 bytes",Paste Mask,Stencil apertures for 56 Top SMT component pads,Matches 56 Top SMT parts,VERIFIED
+FAB-10,Gerber_BoardOutlineLayer.GKO,Board Mechanical Outline,Mechanical,783 bytes,Keepout / Outline,Defines exact PCB perimeter dimensions and cutouts,Matches mechanical bassinet mounting,VERIFIED
+FAB-11,Gerber_DocumentLayer.GDL,Fabrication Drawing,Documentation,"2,321 bytes",Fab Notes,"Board dimensions, layer count, hole chart",Layer count indicated as 4,VERIFIED
+FAB-12,Drill_PTH_Through.DRL,Plated Through-Hole Drill,NC Drill,"2,420 bytes",Drill Data,"Through-hole connector pins (UART, J1, J2, Boot)",Matches THT component count,VERIFIED
+FAB-13,Drill_NPTH_Through.DRL,Non-Plated Through-Hole Drill,NC Drill,245 bytes,Drill Data,M3 chassis mounting screw holes,Matches mechanical mounting holes,VERIFIED
+FAB-14,Drill_PTH_Through_Via.DRL,Via Hole Drill,NC Drill,"1,866 bytes",Drill Data,"Inter-layer vias connecting Top, G1, G2, Bottom",Via hole diameter 0.3mm / pad 0.6mm,VERIFIED
+FAB-15,FlyingProbeTesting.json,Electrical Test Coordinates,Test Metadata,"55,756 bytes",E-Test,EasyEDA Pro flying probe continuity netlist,Covers all 44 nets,VERIFIED
+FAB-16,Fabrication_Colorful*.FCTS/FCBS,Color Silkscreen Metadata (4 files),Metadata,"554,372 bytes",Color Print,EasyEDA proprietary color silkscreen raster layers,Not required for standard PCB fabrication,AUXILIARY_METADATA
+FAB-17,C11 Physical Footprint Mismatch,Capacitor C11 Pad Geometry,Component,0402 in BOM vs 0603 in JSON,SMT Footprint,Top layer pad size in GTL matches C0402 footprint,Physical component on board unmeasured,VERIFIED_DESIGN_DATA_0402
+FAB-18,R12 Physical Footprint Mismatch,Resistor R12 Pad Geometry,Component,Top 0402 in BOM vs Bot 0603 JSON,SMT Footprint,Top layer pad size in GTL matches R0402 footprint,Physical component on board unmeasured,VERIFIED_DESIGN_DATA_0402
+FAB-19,Physical PCB Stackup Thickness,Dielectric & Copper Build,Fabrication,"1.6mm Total, 7628 Prepreg",Fab Stackup,Assumed JLCPCB standard stackup JLC7628,JLCPCB formal invoice & microsection unobtained,PENDING_FAB_CONFIRMATION
+FAB-20,Controlled RF Impedance (50R),CPW Feedline Geometry,RF Trace,"W=0.35mm, S=0.2mm over GND",Impedance,"Calculated for Er=4.5, H=0.21mm",VNA coupon measurement pending,PENDING_FAB_CONFIRMATION
