@@ -1,0 +1,18 @@
+Designator,Component_Name,Manufacturer,MPN,LCSC_Part_No,Package,Rating_Voltage,Rating_Current,Selection_Rationale,Second_Source
+U1,ESP32-WROOM-32UE-N8,Espressif,ESP32-WROOM-32UE-N8,C701345,SMD-ESP32-WROOM,3.3V,500mA,KC Certified 8MB Flash external uFL RF module,ESP32-WROOM-32UE-N16
+U2,AP2112K-3.3TRG1,Diodes Inc,AP2112K-3.3TRG1,C51118,SOT-23-5,6.0V max,600mA,Low dropout 250mV @ 600mA fast transient,RT9193-33GB
+U3,MP3426DL-LF-Z,MPS,MP3426DL-LF-Z,C133224,QFN-14,35V max,6A switch,High efficiency 12V 1.5A boost converter,TPS61088RHLR
+U4,TAS5805MPWPR,TI,TAS5805MPWPR,C478472,HTSSOP-28,26.4V PVDD,2x23W BTL,Digital input Class-D audio amp with integrated DSP,TAS5825MPWPR
+U5,LSM6DSOXTR,STMicroelectronics,LSM6DSOXTR,C444062,LGA-14,3.6V max,0.55mA,High accuracy 6-axis IMU with embedded ML core,LSM6DS3TR-C
+L1,MWPA7070S4R7MT,Sunlord,MWPA7070S4R7MT,C512398,SMD 7.0x7.0mm,N/A,Isat=7.5A Irms=5.2A,Meets REQ-P1-06 Isat>=7.0A requirement,SWPA7070S4R7MT
+D1,SMAJ5.0A,Littelfuse,SMAJ5.0A,C80241,SMA (DO-214AC),5.0V standoff,400W peak,VBUS input ESD and surge clamping,SMAJ5.0CA
+D3,SS34,MDD,SS34,C8678,SMA (DO-214AC),40V,3.0A,Low forward drop Schottky rectifier for boost,B340A-13-F
+C6,CL32B226KAJNNNE,Samsung,CL32B226KAJNNNE,C13585,1210,35V,N/A,Upgraded to 35V X7R to prevent DC-bias derating,GRM32ER71H226KE14L
+C7,CL32B226KAJNNNE,Samsung,CL32B226KAJNNNE,C13585,1210,35V,N/A,Upgraded to 35V X7R to prevent DC-bias derating,GRM32ER71H226KE14L
+R_ISO1,RC2512JK-070RL,Yageo,RC2512JK-070RL,C17936,2512,N/A,5A continuous,Power domain isolation and bringup protection,CRCW25120000Z0EG
+R_BLEED,RC1206JR-071K5L,Yageo,RC1206JR-071K5L,C17940,1206,200V,0.25W,No-load bleeder for MP3426 overshoot protection,CRCW12061K50JNEA
+R_SHUNT1,RL1206FR-070R05L,Yageo,RL1206FR-070R05L,C17945,1206,N/A,0.5W 50mR,VBUS power monitoring and cable drop sensing,WSL1206R0500FEA
+R_SHUNT2,RL1206FR-070R02L,Yageo,RL1206FR-070R02L,C17946,1206,N/A,0.5W 20mR,PVDD amplifier power monitoring and efficiency,WSL1206R0200FEA
+J1,B2B-PH-K-S,JST,B2B-PH-K-S,C131337,JST PH 2.0mm,100V,2.0A,Locking connector prevents vibration dislodgement,S2B-PH-K-S
+J2,B2B-PH-K-S,JST,B2B-PH-K-S,C131337,JST PH 2.0mm,100V,2.0A,Locking connector prevents vibration dislodgement,S2B-PH-K-S
+USB_C,TYPE-C-31-M-12,Korean Hroparts,TYPE-C-31-M-12,C165948,USB-C 16-Pin,20V,3.0A,Robust outward facing SMD USB-C receptacle,USB4105-GF-A

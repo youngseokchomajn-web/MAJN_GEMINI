@@ -7,6 +7,8 @@ import { PROTOCOL_VERSION, PROTOCOL_LIMITS, COMMANDS, ACK_STATUS, validateComman
 import { DeviceState, StateMachine } from '../bassinet_simulator/state_machine.js';
 import { DiagnosticsMonitor } from '../bassinet_simulator/diagnostics.js';
 
+const print = console.log;
+
 let passed = 0;
 let failed = 0;
 
