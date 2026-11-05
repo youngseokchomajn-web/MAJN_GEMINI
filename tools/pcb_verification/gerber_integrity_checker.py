@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 """
-MAJN PCB Automated Verification Tool: Gerber Package Integrity Checker
+MAJN PCB Automated Verification Tool: Gerber Package Integrity Checker (v2.0)
 Author: Antigravity (Google DeepMind pair programming assistant)
-Purpose: Analyzes Gerber zip archives, verifies 4-layer stackup presence,
-         checks drill files, board outline, and outputs file table with SHA-256.
+Purpose: Analyzes Gerber zip archives, verifies 4-layer copper files presence,
+         checks drill files and keepout, and explicitly distinguishes
+         between 'Gerber CAD Layer Presence' vs 'Physical Fab Stackup Confirmation'.
 """
 
 import sys
@@ -12,10 +13,10 @@ import zipfile
 import hashlib
 
 EXPECTED_REV_B_FILES = {
-    "Gerber_TopLayer.GTL": "Top Copper Layer",
-    "Gerber_BottomLayer.GBL": "Bottom Copper Layer",
-    "Gerber_InnerLayer1.G1": "Inner 1 (GND Plane)",
-    "Gerber_InnerLayer2.G2": "Inner 2 (Power/Signals)",
+    "Gerber_TopLayer.GTL": "Top Copper Layer (Layer 1)",
+    "Gerber_BottomLayer.GBL": "Bottom Copper Layer (Layer 4)",
+    "Gerber_InnerLayer1.G1": "Inner 1 GND Plane (Layer 2)",
+    "Gerber_InnerLayer2.G2": "Inner 2 VCC/Signals (Layer 3)",
     "Gerber_TopSilkscreenLayer.GTO": "Top Silkscreen",
     "Gerber_BottomSilkscreenLayer.GBO": "Bottom Silkscreen",
     "Gerber_TopSolderMaskLayer.GTS": "Top Solder Mask",
@@ -52,19 +53,26 @@ def check_gerber_zip(zip_path):
             print(f"    [MISSING] {exp_file:32s} ({desc})")
             missing_critical.append(exp_file)
 
-    # 4-Layer Verification
-    is_4_layer = ("Gerber_InnerLayer1.G1" in file_map) and ("Gerber_InnerLayer2.G2" in file_map)
-    if is_4_layer:
-        print("[PASS] 4-Layer Stackup VERIFIED (G1 GND and G2 VCC inner layers present).")
+    # 4-Layer CAD Presence Verification
+    is_4_layer_cad = ("Gerber_InnerLayer1.G1" in file_map) and ("Gerber_InnerLayer2.G2" in file_map)
+    if is_4_layer_cad and not missing_critical:
+        print("[PASS] 4-Layer CAD Dataset VERIFIED (Top, G1 GND, G2 VCC, Bottom copper layers present).")
     else:
-        print("[FAIL] Not a verified 4-layer board (inner layer files missing).")
+        print("[FAIL] Incomplete Gerber dataset.")
+
+    # Engineering Boundary Note
+    print("\n[*] Physical Stackup Verification Scope Boundary:")
+    print("    [NOTE] Gerber CAD files verify layer presence and routing geometry.")
+    print("    [PENDING] Physical Fab Stackup (Prepreg 7628 0.21mm, Core 1.065mm, 1.6mm total thickness,")
+    print("             copper weight 1oz/1oz, and controlled impedance) requires JLCPCB fab invoice & cross-section validation.")
 
     return {
         "zip_path": zip_path,
         "zip_sha256": zip_sha256,
         "total_files": len(file_map),
-        "is_4_layer": is_4_layer,
-        "missing_critical": missing_critical
+        "is_4_layer_cad": is_4_layer_cad,
+        "missing_critical": missing_critical,
+        "fab_stackup_status": "PENDING_FAB_CONFIRMATION"
     }
 
 if __name__ == "__main__":

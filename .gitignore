@@ -54,3 +54,6 @@ deploy_original/
 settings_antigravity/
 antigravity.db
 .gemini/
+
+# === OpenCode / OMO Cache ===
+.omo/
