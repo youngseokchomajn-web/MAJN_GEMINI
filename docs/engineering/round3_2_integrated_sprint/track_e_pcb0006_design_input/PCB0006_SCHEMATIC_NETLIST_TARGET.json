@@ -1,0 +1,168 @@
+{
+  "version": "2.0.0",
+  "project": "MAJN Smart Bassinet PCB #0006",
+  "status": "ENGINEERING_TARGET_BASELINE",
+  "components": {
+    "link_U1": {
+      "props": {
+        "Designator": "U1",
+        "Device": "ESP32-WROOM-32E-N8",
+        "Manufacturer": "ESPRESSIF",
+        "Manufacturer Part": "ESP32-WROOM-32E-N8",
+        "Supplier": "LCSC",
+        "Supplier Part": "C701345",
+        "Footprint": "WIFI-SMD_ESP32-WROOM-32E"
+      },
+      "pinInfoMap": {
+        "1": {"number": "1", "name": "GND", "net": "GND"},
+        "2": {"number": "2", "name": "3V3", "net": "VCC_3V3"},
+        "3": {"number": "3", "name": "EN", "net": "ESP_EN"},
+        "6": {"number": "6", "name": "IO34", "net": "SENSOR_INT1"},
+        "7": {"number": "7", "name": "IO35", "net": "AMP_FAULTz_ADR"},
+        "10": {"number": "10", "name": "IO25", "net": "I2S_LRCLK"},
+        "11": {"number": "11", "name": "IO26", "net": "I2S_BCLK"},
+        "12": {"number": "12", "name": "IO27", "net": "AMP_I2C_SCL"},
+        "15": {"number": "15", "name": "GND", "net": "GND"},
+        "16": {"number": "16", "name": "IO13", "net": "AMP_PDN"},
+        "23": {"number": "23", "name": "IO15", "net": "NC"},
+        "25": {"number": "25", "name": "IO0", "net": "ESP_IO0"},
+        "26": {"number": "26", "name": "IO4", "net": "BOOST_EN"},
+        "29": {"number": "29", "name": "IO5", "net": "SPI_CS"},
+        "30": {"number": "30", "name": "IO18", "net": "SPI_SCLK"},
+        "31": {"number": "31", "name": "IO19", "net": "SPI_MISO"},
+        "33": {"number": "33", "name": "IO21", "net": "AMP_I2C_SDA"},
+        "34": {"number": "34", "name": "RXD0", "net": "ESP_RXD"},
+        "35": {"number": "35", "name": "TXD0", "net": "ESP_TXD"},
+        "36": {"number": "36", "name": "IO22", "net": "I2S_DIN"},
+        "37": {"number": "37", "name": "IO23", "net": "SPI_MOSI"},
+        "38": {"number": "38", "name": "GND", "net": "GND"},
+        "39": {"number": "39", "name": "GND", "net": "GND"}
+      }
+    },
+    "link_U2": {
+      "props": {
+        "Designator": "U2",
+        "Device": "AP2112K-3.3TRG1",
+        "Manufacturer": "Diodes Incorporated",
+        "Manufacturer Part": "AP2112K-3.3TRG1",
+        "Supplier": "LCSC",
+        "Supplier Part": "C51118",
+        "Footprint": "SOT-25-5"
+      },
+      "pinInfoMap": {
+        "1": {"number": "1", "name": "VIN", "net": "VBUS_5V"},
+        "2": {"number": "2", "name": "GND", "net": "GND"},
+        "3": {"number": "3", "name": "EN", "net": "VBUS_5V"},
+        "5": {"number": "5", "name": "VOUT", "net": "VCC_3V3"}
+      }
+    },
+    "link_U3": {
+      "props": {
+        "Designator": "U3",
+        "Device": "MP3426DL",
+        "Manufacturer": "MPS",
+        "Manufacturer Part": "MP3426DL-LF-Z",
+        "Supplier": "LCSC",
+        "Supplier Part": "C133224",
+        "Footprint": "DFN-14_L4.0-W3.0-P0.50"
+      },
+      "pinInfoMap": {
+        "1": {"number": "1", "name": "IN", "net": "VBUS_5V"},
+        "2": {"number": "2", "name": "IN", "net": "VBUS_5V"},
+        "3": {"number": "3", "name": "EN", "net": "BOOST_EN"},
+        "7": {"number": "7", "name": "FB", "net": "BOOST_FB"},
+        "8": {"number": "8", "name": "COMP", "net": "BOOST_COMP"},
+        "10": {"number": "10", "name": "FREQ", "net": "BOOST_FREQ"},
+        "13": {"number": "13", "name": "SW", "net": "BOOST_SW"},
+        "14": {"number": "14", "name": "SW", "net": "BOOST_SW"},
+        "15": {"number": "15", "name": "EP", "net": "GND"}
+      }
+    },
+    "link_U4": {
+      "props": {
+        "Designator": "U4",
+        "Device": "TAS5805MPWPR",
+        "Manufacturer": "TI",
+        "Manufacturer Part": "TAS5805MPWPR",
+        "Supplier": "LCSC",
+        "Supplier Part": "C478472",
+        "Footprint": "HTSSOP-28-EP"
+      },
+      "pinInfoMap": {
+        "1": {"number": "1", "name": "DGND", "net": "GND"},
+        "2": {"number": "2", "name": "DVDD", "net": "VCC_3V3"},
+        "3": {"number": "3", "name": "ADR/FAULT#", "net": "AMP_FAULTz_ADR"},
+        "4": {"number": "4", "name": "VR_DIG", "net": "VR_DIG"},
+        "5": {"number": "5", "name": "DGND", "net": "GND"},
+        "6": {"number": "6", "name": "LRCLK", "net": "I2S_LRCLK"},
+        "7": {"number": "7", "name": "SCLK", "net": "I2S_BCLK"},
+        "8": {"number": "8", "name": "SDIN", "net": "I2S_DIN"},
+        "9": {"number": "9", "name": "SDOUT", "net": "NC"},
+        "10": {"number": "10", "name": "SDA", "net": "AMP_I2C_SDA"},
+        "11": {"number": "11", "name": "SCL", "net": "AMP_I2C_SCL"},
+        "12": {"number": "12", "name": "PDN#", "net": "AMP_PDN"},
+        "13": {"number": "13", "name": "AVDD", "net": "AVDD"},
+        "14": {"number": "14", "name": "AGND", "net": "GND"},
+        "15": {"number": "15", "name": "PVDD", "net": "PVDD_12V_AMP"},
+        "16": {"number": "16", "name": "PVDD", "net": "PVDD_12V_AMP"},
+        "17": {"number": "17", "name": "OUT_B+", "net": "AMP_OUT_B+"},
+        "18": {"number": "18", "name": "BST_B+", "net": "BST_B+"},
+        "19": {"number": "19", "name": "PGND", "net": "GND"},
+        "20": {"number": "20", "name": "OUT_B-", "net": "AMP_OUT_B-"},
+        "21": {"number": "21", "name": "BST_B-", "net": "BST_B-"},
+        "22": {"number": "22", "name": "BST_A-", "net": "BST_A-"},
+        "23": {"number": "23", "name": "OUT_A-", "net": "AMP_OUT_A-"},
+        "24": {"number": "24", "name": "PGND", "net": "GND"},
+        "25": {"number": "25", "name": "BST_A+", "net": "BST_A+"},
+        "26": {"number": "26", "name": "OUT_A+", "net": "AMP_OUT_A+"},
+        "27": {"number": "27", "name": "PVDD", "net": "PVDD_12V_AMP"},
+        "28": {"number": "28", "name": "PVDD", "net": "PVDD_12V_AMP"},
+        "29": {"number": "29", "name": "EP", "net": "GND"}
+      }
+    },
+    "link_R1": {
+      "props": {"Designator": "R1", "Value": "143kΩ", "Footprint": "R0603"},
+      "pinInfoMap": {"1": {"number": "1", "net": "PVDD_12V_BOOST"}, "2": {"number": "2", "net": "BOOST_FB"}}
+    },
+    "link_R2": {
+      "props": {"Designator": "R2", "Value": "16kΩ", "Footprint": "R0603"},
+      "pinInfoMap": {"1": {"number": "1", "net": "BOOST_FB"}, "2": {"number": "2", "net": "GND"}}
+    },
+    "link_R3": {
+      "props": {"Designator": "R3", "Value": "5.1kΩ", "Footprint": "R0603"},
+      "pinInfoMap": {"1": {"number": "1", "net": "USB_CC1"}, "2": {"number": "2", "net": "GND"}}
+    },
+    "link_R4": {
+      "props": {"Designator": "R4", "Value": "5.1kΩ", "Footprint": "R0603"},
+      "pinInfoMap": {"1": {"number": "1", "net": "USB_CC2"}, "2": {"number": "2", "net": "GND"}}
+    },
+    "link_R11": {
+      "props": {"Designator": "R11", "Value": "100kΩ", "Footprint": "R0603"},
+      "pinInfoMap": {"1": {"number": "1", "net": "BOOST_EN"}, "2": {"number": "2", "net": "GND"}}
+    },
+    "link_R12": {
+      "props": {"Designator": "R12", "Value": "4.7kΩ", "Footprint": "R0603"},
+      "pinInfoMap": {"1": {"number": "1", "net": "VCC_3V3"}, "2": {"number": "2", "net": "AMP_FAULTz_ADR"}}
+    },
+    "link_R13": {
+      "props": {"Designator": "R13", "Value": "10kΩ", "Footprint": "R0603"},
+      "pinInfoMap": {"1": {"number": "1", "net": "AMP_PDN"}, "2": {"number": "2", "net": "GND"}}
+    },
+    "link_R_BLEED": {
+      "props": {"Designator": "R_BLEED", "Value": "1.5kΩ", "Footprint": "R1206"},
+      "pinInfoMap": {"1": {"number": "1", "net": "PVDD_12V_BOOST"}, "2": {"number": "2", "net": "GND"}}
+    },
+    "link_R_ISO1": {
+      "props": {"Designator": "R_ISO1", "Value": "0Ω", "Footprint": "R2512"},
+      "pinInfoMap": {"1": {"number": "1", "net": "PVDD_12V_BOOST"}, "2": {"number": "2", "net": "PVDD_12V_AMP"}}
+    },
+    "link_L1": {
+      "props": {"Designator": "L1", "Value": "4.7uH", "Footprint": "IND-SMD_L8.0-W8.0_SWPA8040S"},
+      "pinInfoMap": {"1": {"number": "1", "net": "VBUS_5V"}, "2": {"number": "2", "net": "BOOST_SW"}}
+    },
+    "link_D3": {
+      "props": {"Designator": "D3", "Value": "SS34", "Footprint": "SMA"},
+      "pinInfoMap": {"1": {"number": "1", "net": "BOOST_SW"}, "2": {"number": "2", "net": "PVDD_12V_BOOST"}}
+    }
+  }
+}

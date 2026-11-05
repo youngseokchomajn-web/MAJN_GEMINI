@@ -1,0 +1,11 @@
+Operating_Mode,VBUS_Input_V,Audio_Scale,Load_Impedance_Ohm,Audio_RMS_W,Amp_Efficiency,PVDD_Load_W,Boost_Efficiency,Boost_Pin_W,MCU_LDO_Pwr_W,Total_Sys_Pwr_W,VBUS_Current_A,L1_Ripple_A,L1_Peak_Current_A,L1_Sat_Margin_Pct,USB_10W_Margin_W,Status_And_Risk
+Standby_Safe,5.00,0.00,16.0,0.00,70.0%,0.34,75.0%,0.45,0.60,1.05,0.21,0.52,0.35,89.3%,+8.95,SAFE: Minimal quiescent power
+Normal_Infant_Soothing,5.00,0.50,16.0,1.89,80.0%,2.70,85.0%,3.18,0.90,4.08,0.82,0.54,0.90,75.0%,+5.92,SAFE: Nominal engineering target
+Moderate_Vibration_60Hz,4.75,0.60,16.0,2.72,81.0%,3.70,84.0%,4.40,1.00,5.40,1.14,0.55,1.20,66.7%,+4.60,SAFE: Normal dynamic headroom
+Max_Allowed_Vibration_45Hz,4.75,0.70,16.0,3.70,82.0%,4.85,84.0%,5.77,1.20,6.97,1.47,0.55,1.49,58.6%,+3.03,ACCEPTABLE: Firmware clamp limit
+Worst_Low_VBUS_Nominal,4.50,0.50,16.0,1.89,80.0%,2.70,82.0%,3.29,1.10,4.39,0.98,0.57,0.98,72.8%,+5.61,SAFE: Cable loss handled
+WiFi_Burst_Active_Vibration,4.75,0.50,16.0,1.89,80.0%,2.70,84.0%,3.21,2.25,5.46,1.15,0.55,0.95,73.6%,+4.54,SAFE: Handled by LDO and caps
+Unconstrained_Full_Sine,4.50,1.00,16.0,7.56,85.0%,9.23,80.0%,11.54,1.20,12.74,2.83,0.58,2.85,20.8%,-2.74,CRITICAL_VIOLATION: Exceeds 10W USB limit
+Fault_Square_Wave_0dBFS,4.50,1.00,16.0,9.25,87.0%,10.87,78.0%,13.94,1.50,15.44,3.43,0.60,3.40,5.6%,-5.44,FATAL: Inductor saturation and VBUS brownout
+Impedance_Dip_8Ohm_Burst,4.50,0.70,8.0,7.40,83.0%,9.16,79.0%,11.60,1.20,12.80,2.84,0.58,2.87,20.3%,-2.80,CRITICAL_VIOLATION: Low impedance overload
+Target_PCB0006_Clamped_Limit,4.50,0.67,16.0,3.40,82.0%,4.49,83.0%,5.41,1.50,6.91,1.54,0.57,1.49,58.6%,+3.09,DESIGN_STANDARD: Enforced by firmware limiter

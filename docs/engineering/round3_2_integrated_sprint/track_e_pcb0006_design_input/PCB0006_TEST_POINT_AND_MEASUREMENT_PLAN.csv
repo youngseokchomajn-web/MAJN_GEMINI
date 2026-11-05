@@ -1,0 +1,16 @@
+Test_Point_ID,Signal_Name,Target_Net,Pad_Type,Probe_Type,Acceptance_Criteria,Measurement_Rule_and_Safety_Warning
+TP-01,PVDD_BOOST_OUT,PVDD_12V_BOOST,SMD Round 1.0mm,10:1 Passive Scope Probe,12.17V ± 3% (11.80V~12.53V) / Overshoot <= 13.2V,Measure relative to TP_GND. Coaxial spring ground required.
+TP-02,VBUS_INPUT,VBUS_5V,SMD Round 1.0mm,DMM / Scope AC Ripple,Minimum >= 4.50V under full load / Peak <= 2.0A,Ensure USB cable resistance <= 0.3Ω.
+TP-03,BTL_DIFF_OUT_A,AMP_OUT_A+ vs AMP_OUT_A-,Dual SMD 1.0mm (2.54mm pitch),Active Differential Probe ONLY,Swing <= 11.5V / Back-EMF <= 12.5V,CRITICAL: NEVER connect passive scope ground clip! Diff probe only.
+TP-04,BTL_DIFF_OUT_B,AMP_OUT_B+ vs AMP_OUT_B-,Dual SMD 1.0mm (2.54mm pitch),Active Differential Probe ONLY,Swing <= 11.5V / Back-EMF <= 12.5V,CRITICAL: NEVER connect passive scope ground clip! Diff probe only.
+TP-05,BOOST_SWITCH_NODE,BOOST_SW,SMD Round 0.8mm,500MHz Passive Coaxial Probe,Vpk <= 18.0V (Abs Max 22V) / Fsw = 1.22MHz ±5%,Keep probe ground lead <= 5mm. High-frequency ringing node.
+TP-06,L1_INDUCTOR_CURRENT,L1_SERIES,Dedicated Current Shunt Loop,Clip-on HF Current Probe,Ipk <= 2.65A cont / <= 3.10A burst (Isat >= 5.0A),Verify linear ramp; no saturation downward curvature.
+TP-07,3V3_MCU_RAIL,VCC_3V3,SMD Round 1.0mm,10:1 Passive Scope Probe,3.30V ± 3% (3.20V~3.40V) / Transient Sag <= 100mV,Test during Wi-Fi 802.11b TX burst.
+TP-08,AMP_PDN_CONTROL,AMP_PDN,SMD Round 0.8mm,Logic Probe / Multimeter,Boot <= 0.2V / Active >= 3.0V,Must remain LOW during 3.3V power rise.
+TP-09,AMP_FAULT_INTERRUPT,AMP_FAULTz_ADR,SMD Round 0.8mm,Logic Analyzer / Scope,Normal = 3.3V / Fault <= 0.4V,Active-LOW open drain. Check interrupt trigger latency <= 10us.
+TP-10,BOOST_ENABLE,BOOST_EN,SMD Round 0.8mm,Logic Probe / Multimeter,Default = 0V / Active = 3.3V,Driven by ESP32 GPIO4. Settle delay 20ms.
+TP-11,I2C_BUS_SDA,AMP_I2C_SDA,SMD Round 0.8mm,Logic Analyzer,Rise time <= 300ns / 400kHz Fast Mode,Verify 5.1kΩ pull-up R7 to 3.3V.
+TP-12,I2C_BUS_SCL,AMP_I2C_SCL,SMD Round 0.8mm,Logic Analyzer,Rise time <= 300ns / 400kHz Fast Mode,Verify 5.1kΩ pull-up R8 to 3.3V.
+TP-13,I2S_BIT_CLOCK,I2S_BCLK,SMD Round 0.8mm,500MHz Scope Probe,Freq = 1.536MHz (32x 48kHz) / Jitter <= 500ps,Clock integrity for TAS5805M auto-rate detector.
+TP-14,USB_CC1_VOLTAGE,USB_CC1,SMD Round 0.8mm,Multimeter / Scope,0.20V ~ 0.80V when connected to DFP,Verifies 5.1kΩ pull-down R3.
+TP-15,SYSTEM_STAR_GND,TP_GND,SMD Turret / 2.0mm Pad,Probe Ground Reference,0.00V Low-impedance star ground,Mandatory return path for all single-ended scope probes.

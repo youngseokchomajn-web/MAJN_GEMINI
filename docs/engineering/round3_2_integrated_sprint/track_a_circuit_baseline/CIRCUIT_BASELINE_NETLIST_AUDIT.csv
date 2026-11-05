@@ -1,0 +1,36 @@
+Signal_or_Pin,Designator,Pin_Num,PCB0005_Schematic_Net,PCB0005_Layout_Net,PCB0005_BOM_CPL_Status,PCB0006_Target_Net,Mismatch_Severity,Root_Cause_Analysis,ECO_Resolution_and_Action
+TAS5805M_DGND,U4,1,GND,GND,Mounted,GND,NONE,Digital Ground properly grounded in schematic and layout.,Maintain solid low-impedance ground connection.
+TAS5805M_DVDD,U4,2,VCC_3V3,VCC_3V3,Mounted,VCC_3V3,NONE,Digital Core 3.3V supply properly connected.,Maintain 100nF decoupling capacitor (C18) close to pin.
+TAS5805M_ADR_FAULT,U4,3,GND,AMP_ADR,R12 added in BOM/CPL (not in SCH),AMP_FAULTz_ADR,CRITICAL,"Schematic had pin 3 tied to GND (0x2D / no pull-up). PCB layout patched R12 (4.7kΩ) to VCC_3V3 for 0x2C but left unrouted to MCU. Round 3 erroneously called Pin 1 FAULTz.",Reconcile schematic: disconnect Pin 3 from GND; create net AMP_FAULTz_ADR connected to U4.3; R12 (4.7kΩ to 3.3V); and ESP32 GPIO35 (Pin 7).
+TAS5805M_VR_DIG,U4,4,VR_DIG,VR_DIG,Mounted,VR_DIG,NONE,Internal digital regulator decoupling.,Maintain 1uF X7R capacitor (C17) to GND.
+TAS5805M_DGND_5,U4,5,GND,GND,Mounted,GND,NONE,Digital Ground.,Connect to GND plane.
+TAS5805M_LRCLK,U4,6,I2S_LRCLK,I2S_LRCLK,Mounted,I2S_LRCLK,NONE,I2S Word Select / Frame Sync from ESP32 GPIO25.,Maintain impedance matching and direct routing.
+TAS5805M_SCLK,U4,7,I2S_BCLK,I2S_BCLK,Mounted,I2S_BCLK,NONE,I2S Bit Clock from ESP32 GPIO26.,Maintain continuous ground reference; avoid crosstalk.
+TAS5805M_SDIN,U4,8,I2S_DIN,I2S_DIN,Mounted,I2S_DIN,NONE,I2S Serial Data In from ESP32 GPIO22.,Maintain direct routing.
+TAS5805M_SDOUT,U4,9,NC,NC,Unconnected,NC,NONE,Unused audio return channel.,Keep NC or route to test point for diagnostics.
+TAS5805M_SDA,U4,10,AMP_I2C_SDA,AMP_I2C_SDA,Mounted,AMP_I2C_SDA,NONE,I2C Data line connected to ESP32 GPIO21.,Ensure 5.1kΩ pull-up R7 to VCC_3V3 is verified.
+TAS5805M_SCL,U4,11,AMP_I2C_SCL,AMP_I2C_SCL,Mounted,AMP_I2C_SCL,NONE,I2C Clock line connected to ESP32 GPIO27.,Ensure 5.1kΩ pull-up R8 to VCC_3V3 is verified.
+TAS5805M_PDN,U4,12,AMP_PDN,AMP_PDN,Mounted,AMP_PDN,CRITICAL,"Connected to ESP32 GPIO15 (MTDO strapping pin) and pulled up to 3.3V via R13. Causes boot logging/strapping hazard and enables amp prematurely.",Relocate AMP_PDN net from ESP32 GPIO15 to GPIO13 (Pin 16 non-strapping). Replace R13 with 10kΩ pull-down to GND.
+TAS5805M_AVDD,U4,13,AVDD,AVDD,Mounted,AVDD,NONE,Analog power supply decoupling.,Maintain 1uF X7R capacitor (C19) to AGND.
+TAS5805M_AGND,U4,14,GND,GND,Mounted,GND,NONE,Analog ground connection.,Ensure star-point ground return to thermal pad.
+TAS5805M_PVDD_15,U4,15,PVDD_12V,PVDD_12V,Mounted,PVDD_12V_AMP,MAJOR,PVDD connected directly to MP3426 output without isolation jumper.,Insert R_ISO1 (2512 0Ω jumper / DFI pad) between Boost and Amp.
+TAS5805M_PVDD_16,U4,16,PVDD_12V,PVDD_12V,Mounted,PVDD_12V_AMP,MAJOR,PVDD connected directly to MP3426 output without isolation jumper.,Upgrade local decoupling MLCCs C8/C9 to 1210 35V 22uF X7R.
+TAS5805M_OUT_B_P,U4,17,AMP_OUT_B+,AMP_OUT_B+,Mounted,AMP_OUT_B+,MAJOR,BTL Output Right+ has no inductive kickback clamp.,Add Schottky clamping diodes (BAT54S) to PVDD and GND.
+TAS5805M_BST_B_P,U4,18,BST_B+,BST_B+,Mounted,BST_B+,NONE,Bootstrap cap for Right+ high-side FET.,Maintain 100nF (C14) close to pins 17 and 18.
+TAS5805M_PGND_19,U4,19,GND,GND,Mounted,GND,NONE,Power Stage Ground.,Wide copper pour to bottom GND plane via multiple vias.
+TAS5805M_OUT_B_N,U4,20,AMP_OUT_B-,AMP_OUT_B-,Mounted,AMP_OUT_B-,MAJOR,BTL Output Right- has no inductive kickback clamp.,Add Schottky clamping diodes (BAT54S) to PVDD and GND.
+TAS5805M_BST_B_N,U4,21,BST_B-,BST_B-,Mounted,BST_B-,NONE,Bootstrap cap for Right- high-side FET.,Maintain 100nF (C15) close to pins 20 and 21.
+TAS5805M_BST_A_N,U4,22,BST_A-,BST_A-,Mounted,BST_A-,NONE,Bootstrap cap for Left- high-side FET.,Maintain 100nF (C13) close to pins 22 and 23.
+TAS5805M_OUT_A_N,U4,23,AMP_OUT_A-,AMP_OUT_A-,Mounted,AMP_OUT_A-,MAJOR,BTL Output Left- has no inductive kickback clamp.,Add Schottky clamping diodes (BAT54S) to PVDD and GND.
+TAS5805M_PGND_24,U4,24,GND,GND,Mounted,GND,NONE,Power Stage Ground.,Wide copper pour to bottom GND plane via multiple vias.
+TAS5805M_BST_A_P,U4,25,BST_A+,BST_A+,Mounted,BST_A+,NONE,Bootstrap cap for Left+ high-side FET.,Maintain 100nF (C12) close to pins 25 and 26.
+TAS5805M_OUT_A_P,U4,26,AMP_OUT_A+,AMP_OUT_A+,Mounted,AMP_OUT_A+,MAJOR,BTL Output Left+ has no inductive kickback clamp.,Add Schottky clamping diodes (BAT54S) to PVDD and GND.
+TAS5805M_PVDD_27,U4,27,PVDD_12V,PVDD_12V,Mounted,PVDD_12V_AMP,MAJOR,PVDD connected directly to MP3426 output without isolation jumper.,Maintain wide low-impedance power loop.
+TAS5805M_PVDD_28,U4,28,PVDD_12V,PVDD_12V,Mounted,PVDD_12V_AMP,MAJOR,PVDD connected directly to MP3426 output without isolation jumper.,Maintain wide low-impedance power loop.
+TAS5805M_PAD_EP,U4,29,GND,GND,Mounted,GND,NONE,Exposed thermal pad underneath IC.,16x thermal vias (0.3mm drill) to bottom ground plane.
+ESP32_GPIO13,U1,16,NC,NC,Unassigned,AMP_PDN,CRITICAL,Was NC in schematic and layout while GPIO15 was wrongly used for PDN.,Assign GPIO13 (Pin 16) as dedicated AMP_PDN control line.
+ESP32_GPIO15,U1,23,AMP_PDN,AMP_PDN,Mounted to PDN via R13,NC_or_DEBUG,CRITICAL,"MTDO strapping pin held HIGH at boot by R13 pull-up, violating silent boot.",Disconnect GPIO15 from AMP_PDN. Leave as uncommitted or test pad.
+ESP32_GPIO35,U1,7,NC,NC,Unassigned,AMP_FAULTz_ADR,CRITICAL,Was NC in schematic and layout; no fault interrupt existed.,Assign GPIO35 (Pin 7, input-only GPI) to monitor TAS5805M Pin 3 FAULTz.
+RES_R12,R12,1-2,NOT_IN_SCH,VCC_3V3 / AMP_ADR,Mounted (4.7kΩ),VCC_3V3 / AMP_FAULTz_ADR,CRITICAL,"R12 existed in BOM and PCB layout but was missing in schematic JSON.",Add R12 (4.7kΩ 0603/0402) into schematic between VCC_3V3 and net AMP_FAULTz_ADR.
+RES_R13,R13,1-2,NOT_IN_SCH,VCC_3V3 / AMP_PDN,Mounted (10kΩ pull-up),GND / AMP_PDN,CRITICAL,"R13 was a 10kΩ pull-up to 3.3V on strapping pin GPIO15, causing premature turn-on.",Change R13 to a 10kΩ pull-down to GND on net AMP_PDN (GPIO13).
+RES_R3_R4,R3_R4,1-2,USB_CC1_CC2 / GND,USB_CC1_CC2 / GND,Mounted (5.1kΩ in BOM / 14kΩ in early sch),USB_CC1_CC2 / GND,MAJOR,"Early schematic netlist listed 14kΩ; BOM revB updated to 5.1kΩ.",Standardize schematic and BOM to 5.1kΩ ±1% (0603) for Type-C standard compliance.
