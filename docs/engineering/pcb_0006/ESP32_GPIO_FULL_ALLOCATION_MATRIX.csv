@@ -1,0 +1,39 @@
+Pin_Number,Pin_Name,Primary_Function,Allocated_Net,Strapping_Pin,Reset_Default_State,IO_Type,Current_Usage,Status_in_PCB0006,Notes
+1,GND,Ground,GND,No,0V,Power,System Ground,Dedicated,Solid GND Plane Connection
+2,3V3,Power Supply 3.3V,VCC_3V3,No,3.3V,Power,System 3.3V,Dedicated,Decoupled via C1 C2
+3,EN,Chip Enable / Reset,CHIP_PU,No,Weak Pull-up,Input,Hardware Reset,Dedicated,10k Pull-up + 1uF Capacitor
+4,SENSOR_VP (GPIO36),GPI,NC,No,Floating,Input Only,Unused,Free_Input,ADC1_CH0 only (No Output Driver)
+5,SENSOR_VN (GPIO39),GPI,NC,No,Floating,Input Only,Unused,Free_Input,ADC1_CH3 only (No Output Driver)
+6,GPIO34,GPI,PIN_SAFETY_INT1,No,Floating,Input Only,IMU 1.5g Impact IRQ,Dedicated_Input,LSM6DSOX INT1
+7,GPIO35,GPI,NC,No,Floating,Input Only,Unused,Free_Input,ADC1_CH7 only (No Output Driver)
+8,GPIO32,GPIO / 32K_XP,NC,No,Weak Pull-down,Bidirectional,Unused,Candidate_3_PDN,RTC GPIO / 32kHz XTAL Pad
+9,GPIO33,GPIO / 32K_XN,NC,No,Weak Pull-down,Bidirectional,Unused,Free_GPIO,RTC GPIO / 32kHz XTAL Pad
+10,GPIO25,GPIO / DAC1,PIN_I2S_LRCLK,No,Weak Pull-down,Bidirectional,I2S Word Select (48kHz),Dedicated_Output,TAS5805M LRCLK
+11,GPIO26,GPIO / DAC2,PIN_I2S_BCLK,No,Weak Pull-down,Bidirectional,I2S Bit Clock (1.536MHz),Dedicated_Output,TAS5805M BCLK
+12,GPIO27,GPIO / ADC2_CH7,PIN_I2C_SCL,No,Weak Pull-up,Bidirectional,I2C Clock,Dedicated_I2C,External 4.7k Pull-up
+13,GPIO14,GPIO / MTMS,NC,No,Weak Pull-up,Bidirectional,Unused,Free_GPIO,JTAG TMS / ADC2_CH6
+14,GPIO12,GPIO / MTDI,NC,YES (Strapping),Weak Pull-down,Bidirectional,Unused,AVOID,Flash Voltage Select (VDD_SDIO)
+15,GND,Ground,GND,No,0V,Power,System Ground,Dedicated,Common Ground
+16,GPIO13,GPIO / MTCK,AMP_PDN_CANDIDATE,No,Weak Pull-down,Bidirectional,Amp Power Down Control,Candidate_1_PDN,Primary Candidate Pending Gate G3 Approval
+17,SHD/SD2,SPI Flash SD2,INTERNAL_FLASH,No,-,Internal,Internal Flash Bus,RESTRICTED,Do Not Connect Externally
+18,SWP/SD3,SPI Flash SD3,INTERNAL_FLASH,No,-,Internal,Internal Flash Bus,RESTRICTED,Do Not Connect Externally
+19,SCS/CMD,SPI Flash CMD,INTERNAL_FLASH,No,-,Internal,Internal Flash Bus,RESTRICTED,Do Not Connect Externally
+20,SCK/CLK,SPI Flash CLK,INTERNAL_FLASH,No,-,Internal,Internal Flash Bus,RESTRICTED,Do Not Connect Externally
+21,SDO/SD0,SPI Flash SD0,INTERNAL_FLASH,No,-,Internal,Internal Flash Bus,RESTRICTED,Do Not Connect Externally
+22,SDI/SD1,SPI Flash SD1,INTERNAL_FLASH,No,-,Internal,Internal Flash Bus,RESTRICTED,Do Not Connect Externally
+23,GPIO15,GPIO / MTDO,FORMER_AMP_PDN,YES (Strapping),Weak Pull-up,Bidirectional,Former PDN (Harmful),ISOLATE_AVOID,MTDO Boot Log Print Hazard
+24,GPIO2,GPIO / HS2_DATA0,NC,YES (Strapping),Weak Pull-down,Bidirectional,Unused,AVOID,Flashing Boot Mode Strapping
+25,GPIO0,GPIO / BOOT,BOOT_IO0,YES (Strapping),Weak Pull-up,Bidirectional,UART Download Boot Button,Dedicated_Input,10k Pull-up + Tact Switch
+26,GPIO4,GPIO / ADC2_CH0,PIN_BOOST_EN,No,Weak Pull-down,Bidirectional,MP3426 12V Boost Enable,Dedicated_Output,10k External Pull-down
+27,GPIO16,GPIO / U2RXD,NC,No,Floating,Bidirectional,Unused,Candidate_2_PDN,Secondary Alternative Candidate (No PSRAM)
+28,GPIO17,GPIO / U2TXD,NC,No,Floating,Bidirectional,Unused,Free_GPIO,Free (No PSRAM on WROOM-32UE)
+29,GPIO5,GPIO / VSPICS0,PIN_SPI_CS_XL,YES (Strapping),Weak Pull-up,Bidirectional,IMU SPI Chip Select,Dedicated_Output,10k Pull-up / SDIO Slave Timing
+30,GPIO18,GPIO / VSPICLK,PIN_SPI_SCLK,No,Pull-down,Bidirectional,IMU SPI Serial Clock,Dedicated_SPI,Occupied by LSM6DSOX Pin 13
+31,GPIO19,GPIO / VSPIQ,PIN_SPI_MISO,No,Pull-down,Bidirectional,IMU SPI Data In,Dedicated_SPI,Occupied by LSM6DSOX Pin 14
+32,NC,No Connect,NC,No,-,None,Unconnected,Dedicated_NC,Physical Floating
+33,GPIO21,GPIO / SDA,PIN_I2C_SDA,No,Weak Pull-up,Bidirectional,I2C Data,Dedicated_I2C,External 4.7k Pull-up
+34,RXD0 (GPIO3),UART0 RX,UART_RX,No,Weak Pull-up,Bidirectional,USB-UART Console In,Dedicated_UART,Connected to CP2102 / CH340 Header
+35,TXD0 (GPIO1),UART0 TX,UART_TX,No,Weak Pull-up,Bidirectional,USB-UART Console Out,Dedicated_UART,Connected to CP2102 / CH340 Header
+36,GPIO22,GPIO / VSPIWP,PIN_I2S_DOUT,No,Weak Pull-down,Bidirectional,I2S Serial Audio Out,Dedicated_Output,TAS5805M SDIN (Pin 10)
+37,GPIO23,GPIO / VSPID,PIN_SPI_MOSI,No,Pull-down,Bidirectional,IMU SPI Data Out,Dedicated_SPI,Occupied by LSM6DSOX Pin 12
+38,GND,Ground,GND,No,0V,Power,System Ground,Dedicated,Solid GND Plane Connection

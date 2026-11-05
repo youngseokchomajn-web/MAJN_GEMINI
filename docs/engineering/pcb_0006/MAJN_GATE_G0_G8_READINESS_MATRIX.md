@@ -5,7 +5,7 @@
 - **리비전**: v1.0
 - **작성 일자**: 2026-11-05
 - **책임 주체**: Antigravity (독립 기술 심사 에이전트)
-- **최종 판정**: **G0/G1: CONDITIONAL_PASS | G2~G5: HOLD (설계 착수 및 거버 생성 동결) | G6~G8: NOT_STARTED**
+- **최종 판정**: **G0/G1: HOLD (조건부 진행 중, 최종 통과 미승인) | G2~G5: HOLD (설계 착수 및 거버 생성 동결) | G6~G8: NOT_STARTED**
 - **적용 규칙**: [AGENTS.md](file:///Users/youngseok/Desktop/majn/AGENTS.md) 제2조, 제5조 (독립 검토 및 Human Chief Authority 최종 승인 원칙)
 
 ---
@@ -29,8 +29,8 @@
 
 | Gate | 명칭 (Stage Name) | 진입 기준 (Entry Criteria) | 요구 물리·공학적 증거 (Required Evidence) | 현재 상태 (Current Status) | 승인 권한 (Sign-off Authority) | 잔여 갭 및 액션 아이템 |
 | :---: | :--- | :--- | :--- | :---: | :---: | :--- |
-| **G0** | **PCB #0005 제조 기준선 복원** | 7월 제조 발주 파일 및 실물 증거 확보 | • 4층 거버 20개 파일 일치<br>• BOM/CPL 56개 단일면 SMT 100% 일치<br>• 실물 사진(ESP32-32UE, L1 4R7 등) 대조<br>• 37개 구버전 격리 | **CONDITIONAL_PASS** | Antigravity (검증)<br>User (최종 승인) | • EasyEDA Pro 클린 SSOT 프로젝트(`.epro2`) 역합성 완료 필요 |
-| **G1** | **고장 분석 및 FMEA 확정** | 선행 시제품 고장 이력 수집 | • 12대 고장 모드(FM-01~12) 메커니즘 규명<br>• FMEA RPN 우선순위 평가 완료<br>• 고장 재현 계측 계획 수립 | **CONDITIONAL_PASS** | OpenCode (분석)<br>Antigravity (검증)<br>User (승인) | • 물리적 벤치 재현 계측(오실로스코프 파형 획득)은 시제품 가용 시 완료 |
+| **G0** | **PCB #0005 제조 기준선 복원** | 7월 제조 발주 파일 및 실물 증거 확보 | • 4층 거버 20개 파일 일치<br>• BOM/CPL 56개 단일면 SMT 100% 일치<br>• 실물 사진(ESP32-32UE, L1 4R7 등) 대조<br>• 37개 구버전 격리 | **HOLD**<br>(조건부 진행 중) | Antigravity (검증)<br>User (최종 승인) | • EasyEDA Pro 클린 SSOT 프로젝트(`.epro2`) 역합성 및 C11/R12 실물 치수 실측 필요 |
+| **G1** | **고장 분석 및 FMEA 확정** | 선행 시제품 고장 이력 수집 | • 12대 고장 모드(FM-01~12) 메커니즘 규명<br>• FMEA RPN 우선순위 평가 완료<br>• 고장 재현 계측 계획 수립 | **HOLD**<br>(조건부 진행 중) | OpenCode (분석)<br>Antigravity (검증)<br>User (승인) | • 물리적 벤치 재현 계측(TP-01~04 오실로스코프 파형 획득) 완료 필요 |
 | **G2** | **PCB #0006 요구사항 및 아키텍처 확정** | G0, G1 조건부 통과 및 DOC03 최신화 | • 12개 Core 요구사항 동결<br>• 3개 Extended 요구사항 승인 여부 결정<br>• RTM CSV 100% 양방향 매핑<br>• 시스템 전원/인터페이스 블록도 확정 | **HOLD**<br>(의사결정 대기) | Human Chief Authority (최종 확정) | • 확장 3개 항목(REQ-P0-06, P1-08, P1-09) 채택 여부 최종 서명 필요 |
 | **G3** | **회로 상세 설계 및 부품 승인** | G2 공식 승인 및 부품 선정 완료 | • 회로도 수정안 및 넷리스트<br>• ERC 0 Error / 0 Warning<br>• GPIO13 PDN 배정 및 FW 연동 승인<br>• L1(7.5A), C6-C9(35V) 부품 승인<br>• BTL 보호 토폴로지 승인 | **HOLD**<br>(설계 수정 미착수) | Lead Engineer<br>Antigravity<br>User (승인) | • Read-Only 규칙 유지 중<br>• G2 확정 후 회로도 수정 및 부품 ECO 결재 |
 | **G4** | **PCB Layout 및 DFM/DFT 검토** | G3 공식 승인 | • 4층 PCB 스택업(JLCPCB 7628 확인)<br>• 파워 루프 최소화 및 동박 Rebuild<br>• DRC 0 Error (Clearance/Crossing)<br>• 션트 패드 및 TP1~TP10 배치<br>• 기구 하우징 3D 간섭 검토 | **HOLD**<br>(선행 단계 대기) | Lead Engineer<br>Antigravity | • G3 승인 후 배선 착수<br>• JLCPCB DFM 온라인 검사기 검증 |
@@ -43,7 +43,7 @@
 
 ## 3. Gate별 상세 평가 및 잔여 갭 분석
 
-### 3.1 Gate G0: PCB #0005 기준선 복원 (Current: CONDITIONAL_PASS)
+### 3.1 Gate G0: PCB #0005 기준선 복원 (Current: HOLD / CONDITIONAL_IN_PROGRESS)
 - **달성된 사실 (Verified Fact)**:
   - 2026년 7월 9일 자 거버 파일(`Gerber_PCB1_revB_2026-07-09.zip`) 20개 레이어 구조 완비 확인.
   - 제조 발주 BOM/CPL 56개 부품 단일면 Top SMT 실장 100% 일치 확인.
@@ -56,7 +56,7 @@
 
 ---
 
-### 3.2 Gate G1: 고장 분석 및 FMEA 확정 (Current: CONDITIONAL_PASS)
+### 3.2 Gate G1: 고장 분석 및 FMEA 확정 (Current: HOLD / CONDITIONAL_IN_PROGRESS)
 - **달성된 사실 (Verified Fact)**:
   - 12대 고장 모드(`PCB_0005_FAILURE_ANALYSIS_REPORT.md`) 분석 완료.
   - FMEA 위험 우선순위 평가(`PCB_0005_FMEA.md`) 완료: FM-01(부스트 스파이크 RPN 240), FM-03(앰프 동시전원 RPN 216), FM-02(PDN 부유 RPN 210) 등 핵심 취약점 식별.

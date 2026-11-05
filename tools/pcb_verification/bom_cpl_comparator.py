@@ -123,7 +123,7 @@ def run_deep_comparison(bom_path, cpl_path, json_path):
     print(f"[*] Package & Footprint Audit:")
     print(f"    - Critical Physical Size Conflicts (0402 vs 0603): {len(physical_mismatches)} items")
     for d, b_f, j_p in physical_mismatches:
-        print(f"      * {d}: BOM Footprint={b_f} vs JSON Package={j_p} (Actual Hardware is BOM 0402)")
+        print(f"      * {d}: BOM Footprint={b_f} vs JSON Package={j_p} -> Status: VERIFIED_DESIGN_DATA_0402 (Assembled hardware physical measurement pending)")
     print(f"    - EDA Symbol/Footprint Naming Format Variants:      {len(naming_differences)} items")
 
     # 5. Coordinates Shifts Audit

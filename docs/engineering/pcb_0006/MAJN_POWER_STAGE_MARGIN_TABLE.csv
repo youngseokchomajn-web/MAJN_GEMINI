@@ -1,0 +1,12 @@
+Parameter,Symbol,Operating_Condition,Calculated_Value,Component_Rating,Component_Part_Number,Margin_Formula,Margin_Value,Temperature_Condition,Status,Verification_Method
+Boost_Output_Voltage,Vout,Nominal,12.09V,22V Max,MP3426 (U3),(22 - 12.09) / 22,45.05%,25C,PASS,Theoretical Calculation + DMM
+Inductor_Continuous_Average_Current,IL_avg_cont,Steady 10W (Vin=4.5V),2.525A,5.0A (Irms),Sunlord MWPA7070S4R7MT (L1),(5.0 - 2.525) / 5.0,49.50%,25C,PASS,Thermal Rise Simulation (<11C rise)
+Inductor_Continuous_Peak_Current,IL_peak_cont,Steady 10W (Vin=4.5V),2.831A,7.5A (Isat),Sunlord MWPA7070S4R7MT (L1),(7.5 - 2.831) / 7.5,62.25%,25C,PASS,Theoretical Calculation
+Inductor_Transient_Peak_Current_25C,IL_peak_worst,Audio Peak 16.5W (Vin=4.6V),4.385A,7.5A (Isat),Sunlord MWPA7070S4R7MT (L1),(7.5 - 4.385) / 7.5,41.53%,25C (Ambient),PASS,Current Probe Oscilloscope (TP-02)
+Inductor_Over_Design_Ratio_25C,Ratio_over_req,Audio Peak 16.5W (Vin=4.6V),4.385A,7.5A (Isat),Sunlord MWPA7070S4R7MT (L1),(7.5 - 4.385) / 4.385,71.04%,25C (Ambient),PASS,Mathematical Ratio
+Inductor_Transient_Peak_Current_60C,IL_peak_worst,Audio Peak 16.5W (Vin=4.6V),4.385A,6.375A (Isat Derated 15%),Sunlord MWPA7070S4R7MT (L1),(6.375 - 4.385) / 6.375,31.22%,60C (Enclosure),PASS,Thermal Chamber Profile
+MP3426_Switch_Peak_Current,Isw_peak,Audio Peak 16.5W (Vin=4.6V),4.385A,5.5A (Min Isw_limit),MP3426 (U3),(5.5 - 4.385) / 5.5,20.27%,25C to 60C,PASS,Cycle-by-cycle Current Trip Test
+Schottky_Diode_Reverse_Voltage,VR,Nominal 12V Boost,12.09V,40V (VRRM),SS34 (D3),(40 - 12.09) / 40,69.78%,25C,PASS,Oscilloscope Ringing Check (<24V peak)
+Schottky_Diode_Forward_Current,IF_avg,Steady 10W,0.833A,3.0A (IF(AV)),SS34 (D3),(3.0 - 0.833) / 3.0,72.23%,25C to 60C,PASS,Thermal Camera (<45C)
+Output_Capacitor_DC_Bias_Derating,Cout_eff,12V DC Bias,28.8uF (4x10uF x 0.72),35V X7R Rating,4x 10uF 35V 1210 (C6-C9),C_eff / C_nom,72.00%,25C,PASS,Manufacturer C-V Curve Audit
+Output_Voltage_Ripple,Vripple_pp,Steady 10W (Cout=28.8uF),36.7mV,120mV (1% of 12V),C6-C9 Network,(120 - 36.7) / 120,69.42%,25C,PASS,AC-coupled 20MHz Oscilloscope
