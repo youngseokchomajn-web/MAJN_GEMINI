@@ -1,0 +1,55 @@
+Designator,Pin_or_Terminal,Function_Name,TI_or_Espressif_Datasheet_Spec,PCB0005_Schematic_JSON_Net,PCB0005_Layout_JSON_Net,PCB0005_Legacy_TXT_Netlist,PCB0005_BOM_revB_Status,PCB0006_Target_JSON_Net,Reconciliation_Status,Discrepancy_Analysis,Mandatory_Disposition
+U4,1,DGND,Digital Ground (0V reference),GND,GND,GND,Mounted,GND,RECONCILED,Round 3 erroneously claimed Pin 1 was FAULTz. Pin 1 is DGND. Must remain solidly grounded.,ALLOWED_BASE
+U4,2,DVDD,Digital Core Supply (3.0V~3.6V),VCC_3V3,VCC_3V3,VCC_3V3,Mounted,VCC_3V3,RECONCILED,Properly connected to 3.3V LDO with 100nF decoupling capacitor C18.,ALLOWED_BASE
+U4,3,ADR/FAULT,I2C Address Latch at boot / FAULTz open-drain output at run,GND,AMP_ADR,GND,"R12 (4.7kΩ C25900) mounted",AMP_FAULTz_ADR,DISCREPANCY_RESOLVED,"In sch_netlist_final.json and TXT netlist, Pin 3 was erroneously tied to GND. In pcb_comps.json, patched with R12 to 3.3V but unrouted to MCU. Target net connects to ESP32 GPIO35.",HOLD_PENDING_ECO
+U4,4,VR_DIG,Digital LDO Reg Output (1.5V internal),VR_DIG,VR_DIG,VR_DIG,Mounted,VR_DIG,RECONCILED,Requires 1µF low-ESR ceramic decoupling capacitor C17 to DGND.,ALLOWED_BASE
+U4,5,DGND,Digital Ground (0V reference),GND,GND,GND,Mounted,GND,RECONCILED,Digital ground pin connected to GND plane.,ALLOWED_BASE
+U4,6,LRCLK,I2S Word Select / Frame Sync (Input),I2S_LRCLK,I2S_LRCLK,I2S_LRCLK,Mounted,I2S_LRCLK,RECONCILED,Connected to ESP32 GPIO25 (Pin 10). Clocks must start before PDN HIGH.,ALLOWED_BASE
+U4,7,SCLK,I2S Serial Bit Clock (Input),I2S_BCLK,I2S_BCLK,I2S_BCLK,Mounted,I2S_BCLK,RECONCILED,Connected to ESP32 GPIO26 (Pin 11). Clocks must start before PDN HIGH.,ALLOWED_BASE
+U4,8,SDIN,I2S Serial Audio Data (Input),I2S_DIN,I2S_DIN,I2S_DIN,Mounted,I2S_DIN,RECONCILED,Connected to ESP32 GPIO22 (Pin 36). Avoid Wire.begin() grabbing GPIO22.,ALLOWED_BASE
+U4,9,SDOUT,I2S Serial Audio Data Output (Diagnostics),NC,NC,NC,Unconnected,NC,RECONCILED,Unconnected in PCB #0005. Can remain NC or provide optional test pad.,ALLOWED_BASE
+U4,10,SDA,I2C Serial Data (Open-Drain Bidirectional),AMP_I2C_SDA,AMP_I2C_SDA,AMP_I2C_SDA,Mounted,AMP_I2C_SDA,RECONCILED,Connected to ESP32 GPIO21 (Pin 33). External 5.1kΩ pull-up R7.,ALLOWED_BASE
+U4,11,SCL,I2C Serial Clock (Open-Drain Bidirectional),AMP_I2C_SCL,AMP_I2C_SCL,AMP_I2C_SCL,Mounted,AMP_I2C_SCL,RECONCILED,Connected to ESP32 GPIO27 (Pin 12). External 5.1kΩ pull-up R8. NOT GPIO22.,ALLOWED_BASE
+U4,12,PDN#,Power Down / Shutdown Control (Active-LOW Input),AMP_PDN,AMP_PDN,AMP_PDN,Mounted,AMP_PDN,DISCREPANCY_RESOLVED,"In PCB #0005, connected to ESP32 GPIO15 with R13 pull-up to 3.3V. Relocating to GPIO13 with R13 pull-down to GND.",HOLD_PENDING_ECO
+U4,13,AVDD,Analog LDO Reg Output (5.4V internal),AVDD,AVDD,AVDD,Mounted,AVDD,RECONCILED,Requires 1µF low-ESR ceramic decoupling capacitor C19 to AGND.,ALLOWED_BASE
+U4,14,AGND,Analog Ground (0V reference),GND,GND,GND,Mounted,GND,RECONCILED,Connected to system GND via thermal pad.,ALLOWED_BASE
+U4,15,PVDD,Class-D Power Stage High-Voltage Rail (4.5V~26.4V),PVDD_12V,PVDD_12V,PVDD_12V,Mounted,PVDD_12V_AMP,DISCREPANCY_RESOLVED,"In PCB #0005, directly tied to MP3426 SW/D3 output. Target separates via R_ISO1 jumper into PVDD_12V_AMP.",HOLD_PENDING_ECO
+U4,16,PVDD,Class-D Power Stage High-Voltage Rail (4.5V~26.4V),PVDD_12V,PVDD_12V,PVDD_12V,Mounted,PVDD_12V_AMP,DISCREPANCY_RESOLVED,Same as Pin 15. Requires 1210 22µF 35V X7R MLCC decoupling.,HOLD_PENDING_ECO
+U4,17,OUT_B+,BTL Output Channel B Positive,AMP_OUT_B+,AMP_OUT_B+,AMP_OUT_B+,Mounted,AMP_OUT_B+,DISCREPANCY_RESOLVED,"Connected to J2.1. Lacks back-EMF protection in #0005. BAT54S proposed in R3.2 is under-rated; requires >=1A Schottky array.",HOLD_PENDING_ECO
+U4,18,BST_B+,Bootstrap Node Channel B Positive,BST_B+,BST_B+,BST_B+,Mounted,BST_B+,RECONCILED,Requires 100nF ceramic cap C14 to Pin 17.,ALLOWED_BASE
+U4,19,PGND,Class-D Power Ground Channel B,GND,GND,GND,Mounted,GND,RECONCILED,Power ground return connected to GND plane.,ALLOWED_BASE
+U4,20,OUT_B-,BTL Output Channel B Negative,AMP_OUT_B-,AMP_OUT_B-,AMP_OUT_B-,Mounted,AMP_OUT_B-,DISCREPANCY_RESOLVED,"Connected to J2.2. Lacks back-EMF protection in #0005. Requires >=1A clamp diode.",HOLD_PENDING_ECO
+U4,21,BST_B-,Bootstrap Node Channel B Negative,BST_B-,BST_B-,BST_B+,Mounted,BST_B-,RECONCILED,Requires 100nF ceramic cap C15 to Pin 20.,ALLOWED_BASE
+U4,22,BST_A-,Bootstrap Node Channel A Negative,BST_A-,BST_A-,BST_A-,Mounted,BST_A-,RECONCILED,Requires 100nF ceramic cap C13 to Pin 23.,ALLOWED_BASE
+U4,23,OUT_A-,BTL Output Channel A Negative,AMP_OUT_A-,AMP_OUT_A-,AMP_OUT_A-,Mounted,AMP_OUT_A-,DISCREPANCY_RESOLVED,"Connected to J1.2. Lacks back-EMF protection in #0005. Requires >=1A clamp diode.",HOLD_PENDING_ECO
+U4,24,PGND,Class-D Power Ground Channel A,GND,GND,GND,Mounted,GND,RECONCILED,Power ground return connected to GND plane.,ALLOWED_BASE
+U4,25,BST_A+,Bootstrap Node Channel A Positive,BST_A+,BST_A+,BST_A+,Mounted,BST_A+,RECONCILED,Requires 100nF ceramic cap C12 to Pin 26.,ALLOWED_BASE
+U4,26,OUT_A+,BTL Output Channel A Positive,AMP_OUT_A+,AMP_OUT_A+,AMP_OUT_A+,Mounted,AMP_OUT_A+,DISCREPANCY_RESOLVED,"Connected to J1.1. Lacks back-EMF protection in #0005. Requires >=1A clamp diode.",HOLD_PENDING_ECO
+U4,27,PVDD,Class-D Power Stage High-Voltage Rail (4.5V~26.4V),PVDD_12V,PVDD_12V,PVDD_12V,Mounted,PVDD_12V_AMP,DISCREPANCY_RESOLVED,Same as Pin 15. Requires 1210 22µF 35V X7R MLCC decoupling.,HOLD_PENDING_ECO
+U4,28,PVDD,Class-D Power Stage High-Voltage Rail (4.5V~26.4V),PVDD_12V,PVDD_12V,PVDD_12V,Mounted,PVDD_12V_AMP,DISCREPANCY_RESOLVED,Same as Pin 15. Requires 1210 22µF 35V X7R MLCC decoupling.,HOLD_PENDING_ECO
+U4,29,PowerPAD,Thermal and Electrical Ground Slug,GND,GND,GND,Mounted,GND,RECONCILED,Must have solid soldered thermal vias (minimum 16 vias) to bottom GND plane.,ALLOWED_BASE
+R12,1-2,4.7kΩ ±1%,ADR Pull-up to 3.3V (Address 0x2C latch & FAULT pull-up),NOT_IN_SCH,"1: VCC_3V3, 2: AMP_ADR",NOT_IN_NETLIST,Mounted (4.7kΩ C25900/C23162),"1: VCC_3V3, 2: AMP_FAULTz_ADR",DISCREPANCY_RESOLVED,"Missing in early schematic JSON. Existed in layout as pull-up to 3.3V. In target netlist, connected to Pin 3 and ESP32 GPIO35.",HOLD_PENDING_ECO
+R13,1-2,10kΩ ±1%,PDN Default State Pull Resistor,NOT_IN_SCH,"1: AMP_PDN, 2: VCC_3V3",NOT_IN_NETLIST,Mounted (10kΩ C25804),"1: AMP_PDN, 2: GND",DISCREPANCY_RESOLVED,"In PCB #0005 layout, R13 pulled GPIO15/PDN to 3.3V (boot hazard). In target netlist, changed to 10kΩ pull-down to GND on GPIO13.",HOLD_PENDING_ECO
+R3_R4,1-2,5.1kΩ ±1%,USB-C CC1 / CC2 Pull-Down Resistors (UFP sink mode),"14kΩ in early sch","5.1kΩ in layout","14kΩ in early TXT",Mounted (5.1kΩ C23186),"5.1kΩ in target JSON",DISCREPANCY_RESOLVED,"Early schematic listed 14kΩ (violates USB-C spec). BOM revB and PCB layout used 5.1kΩ. Reconciled to 5.1kΩ ±1% (0603).",ALLOWED_BASE
+R1,1-2,143kΩ ±1%,MP3426 Boost Feedback High Resistor,"16kΩ in early sch","143kΩ in layout","16kΩ in early TXT",Mounted (143kΩ C22877),"143kΩ in target JSON",DISCREPANCY_RESOLVED,"Early schematic had R1=16k, R2=150k swapped. BOM revB established R1=143k, R2=16k for 12.17V PVDD.",ALLOWED_BASE
+R2,1-2,16kΩ ±1%,MP3426 Boost Feedback Low Resistor,"150kΩ in early sch","16kΩ in layout","150kΩ in early TXT",Mounted (16kΩ C22818),"16kΩ in target JSON",DISCREPANCY_RESOLVED,Early schematic had 150kΩ. Reconciled to 16.0kΩ ±1% to GND.,ALLOWED_BASE
+R9,1-2,82kΩ ±1%,MP3426 Frequency Setting Resistor (FSET to AGND),82kΩ in sch,82kΩ in layout,NOT_IN_NETLIST,Mounted (82kΩ C325632),NOT_IN_TARGET_JSON,DISCREPANCY_UNRESOLVED,"82kΩ sets fsw ≈ 510kHz per MPS datasheet Table 1, NOT 1.22MHz. Omitted in Target JSON! Must be included and frequency recalculated.",BLOCKED_RECALCULATE
+R_BLEED,1-2,1.5kΩ 1206,PVDD Bleeder Resistor to GND,NOT_IN_SCH,NOT_IN_LAYOUT,NOT_IN_NETLIST,Not in #0005,"1: PVDD_12V_BOOST, 2: GND",NEW_PROPOSAL,"1.5kΩ draws 8.11mA (99mW). Does not fully prevent pulse-skipping (~300mW threshold), but provides safe capacitor bleed on shutdown.",HOLD_PENDING_ECO
+R_ISO1,1-2,0Ω 2512,PVDD 12V Isolation Jumper Pad,NOT_IN_SCH,NOT_IN_LAYOUT,NOT_IN_NETLIST,Not in #0005,"1: PVDD_12V_BOOST, 2: PVDD_12V_AMP",NEW_PROPOSAL,"Enables isolated bring-up of MP3426 without TAS5805M load. Must specify low-R jumper (<5mΩ) for 5A.",HOLD_PENDING_ECO
+U1,6,IO34,Input-Only (GPI),SENSOR_INT1,SENSOR_INT1,SENSOR_INT1,Mounted,SENSOR_INT1,RECONCILED,Connected to LSM6DSOX INT1 interrupt.,ALLOWED_BASE
+U1,7,IO35,Input-Only (GPI),NC,NC,NC,Unassigned,AMP_FAULTz_ADR,DISCREPANCY_RESOLVED,"Unconnected in PCB #0005. Target assigns to TAS5805M Pin 3 FAULTz interrupt. Valid GPI with no pull-ups.",HOLD_PENDING_ECO
+U1,10,IO25,Bidirectional GPIO / DAC1,I2S_LRCLK,I2S_LRCLK,I2S_LRCLK,Mounted,I2S_LRCLK,RECONCILED,I2S Frame Sync to TAS5805M Pin 6.,ALLOWED_BASE
+U1,11,IO26,Bidirectional GPIO / DAC2,I2S_BCLK,I2S_BCLK,I2S_BCLK,Mounted,I2S_BCLK,RECONCILED,I2S Bit Clock to TAS5805M Pin 7.,ALLOWED_BASE
+U1,12,IO27,Bidirectional GPIO / ADC2_CH7,AMP_I2C_SCL,AMP_I2C_SCL,AMP_I2C_SCL,Mounted,AMP_I2C_SCL,RECONCILED,I2C SCL to TAS5805M Pin 11. Custom I2C pin requiring Wire.begin(21, 27).,ALLOWED_BASE
+U1,14,IO12,Strapping Pin (MTDI Flash Voltage),NC,NC,NC,Unassigned,NC,RECONCILED,Must remain LOW or floating at boot to preserve 3.3V SPI flash supply.,ALLOWED_BASE
+U1,16,IO13,Non-Strapping Bidirectional GPIO (MTCK),NC,NC,NC,Unassigned,AMP_PDN,DISCREPANCY_RESOLVED,"Unconnected in PCB #0005. Target assigns to TAS5805M Pin 12 PDN with 10kΩ pull-down. Non-strapping, safe boot.",HOLD_PENDING_ECO
+U1,23,IO15,Strapping Pin (MTDO Boot Log Print),AMP_PDN,AMP_PDN,AMP_PDN,Mounted to PDN via R13,NC,DISCREPANCY_RESOLVED,"In PCB #0005, R13 pulled IO15 HIGH at boot, causing UART debug spam. Decoupled from PDN in target baseline.",HOLD_PENDING_ECO
+U1,24,IO2,Strapping Pin (HS2_DATA0),NC,NC,NC,Unassigned,NC,RECONCILED,Must remain LOW/floating during boot.,ALLOWED_BASE
+U1,25,IO0,Strapping Pin (BOOT),ESP_IO0,ESP_IO0,ESP_IO0,Mounted,ESP_IO0,RECONCILED,Connected to 10kΩ pull-up R6 and tact switch for bootloader entry.,ALLOWED_BASE
+U1,26,IO4,Bidirectional GPIO / ADC2_CH0,BOOST_EN,BOOST_EN,BOOST_EN,Mounted,BOOST_EN,RECONCILED,Controls MP3426 EN pin. External 100kΩ pull-down R11 ensures default OFF.,ALLOWED_BASE
+U1,29,IO5,Strapping Pin (VSPICS0),SPI_CS,SPI_CS,SPI_CS,Mounted,SPI_CS,RECONCILED,LSM6DSOX SPI Chip Select. Weak pull-up at boot.,ALLOWED_BASE
+U1,30,IO18,Bidirectional GPIO,SPI_SCLK,SPI_SCLK,SPI_SCLK,Mounted,SPI_SCLK,RECONCILED,LSM6DSOX SPI SCLK.,ALLOWED_BASE
+U1,31,IO19,Bidirectional GPIO,SPI_MISO,SPI_MISO,SPI_MISO,Mounted,SPI_MISO,RECONCILED,LSM6DSOX SPI MISO.,ALLOWED_BASE
+U1,33,IO21,Bidirectional GPIO,AMP_I2C_SDA,AMP_I2C_SDA,AMP_I2C_SDA,Mounted,AMP_I2C_SDA,RECONCILED,I2C SDA to TAS5805M Pin 10 with 5.1kΩ pull-up R7.,ALLOWED_BASE
+U1,36,IO22,Bidirectional GPIO,I2S_DIN,I2S_DIN,I2S_DIN,Mounted,I2S_DIN,RECONCILED,I2S Serial Data Out to TAS5805M Pin 8. Must NOT be reconfigured as I2C SCL.,ALLOWED_BASE
+U1,37,IO23,Bidirectional GPIO,SPI_MOSI,SPI_MOSI,SPI_MOSI,Mounted,SPI_MOSI,RECONCILED,LSM6DSOX SPI MOSI.,ALLOWED_BASE
