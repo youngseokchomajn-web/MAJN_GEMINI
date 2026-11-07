@@ -116,10 +116,33 @@
     border-top: 1px dashed #d1d5db;
     margin: 20px 0;
   }
+  .page-break {
+    page-break-before: always;
+    break-before: page;
+    margin: 28px 0 14px 0;
+    border-top: 2px dashed #94a3b8;
+  }
   @media print {
-    body { background: #fff; padding: 0; }
-    .toolbar { display: none; }
-    .page { box-shadow: none; margin: 0; padding: 15mm; }
+    @page { size: A4; margin: 18mm 18mm 18mm 18mm; }
+    body { background: #fff; padding: 0; font-size: 9.5pt; line-height: 1.35; }
+    .toolbar { display: none !important; }
+    .page { box-shadow: none; margin: 0; padding: 0; width: 100%; min-height: auto; }
+    .page-break {
+      page-break-before: always;
+      break-before: page;
+      border: none;
+      height: 0;
+      margin: 0;
+      padding: 0;
+    }
+    p { margin: 2.5px 0 2.5px 10px; line-height: 1.35; }
+    .sec-title { margin: 10px 0 4px 0; font-size: 10.5pt; }
+    .bullet-main { margin: 6px 0 2px 4px; font-size: 9.8pt; }
+    .q-box { margin: 14px 0 6px 0; padding: 6px 10px; font-size: 11pt; }
+    table.content-table { margin: 6px 0 10px 0; font-size: 8.5pt; }
+    table.content-table th, table.content-table td { padding: 3px 6px; line-height: 1.2; }
+    table.meta { margin-bottom: 12px; font-size: 9.5pt; }
+    table.meta th, table.meta td { padding: 4px 8px; }
   }
 </style>
 </head>
@@ -139,7 +162,7 @@
   <table class="meta">
     <tr><th>멘토기관</th><td>하나은행 (서울 권역) / 담당 멘토: 기획전략팀 김지영 팀장</td></tr>
     <tr><th>성명 (대표자)</th><td>조영석 (기술 총괄) / 오동규 (사업 총괄)</td></tr>
-    <tr><th>창업아이템명</th><td>20mm 언더매트리스 스마트 신생아 수면·진정 패드 「마중 (MAJN)」</td></tr>
+    <tr><th>창업아이템명</th><td>20mm 언더매트리스 신생아 미세진동 진정 보조 패드 「마중 (MAJN)」</td></tr>
     <tr>
       <th>아이템 요약</th>
       <td>
@@ -152,6 +175,8 @@
   </table>
 
   <div class="divider"></div>
+
+  <div class="page-break"></div>
 
   <div class="q-box">Q1. 문제 인식(problem)</div>
   <div class="guide">※ 아이디어의 개발 동기·목적 및 목표 시장 등</div>
@@ -213,7 +238,7 @@
   <div class="bullet-main">◦ 하드웨어 상태 및 기능 사실 관리 기준표 (사실표)</div>
   <table class="content-table">
     <tr><th>구분</th><th>대상 항목</th><th>현황 및 1R 검증 목표</th><th>판정 및 주의사항</th></tr>
-    <tr><td><strong>확인 완료 사실</strong></td><td>제어 회로 및 기구 설계</td><td>PCB 아트워크 설계 완료, 20mm 슬림 목업 CAD 모델링 완료</td><td>KiCad/CAD 설계 완료, PCB #0006 제작 대기 상태</td></tr>
+    <tr><td><strong>확인 완료 사실</strong></td><td>제어 회로 및 기구 치수안</td><td>차기 제어보드(PCB #0006) EasyEDA 회로·아트 설계 완료, 20mm 슬림 목업 기본 치수안 도출</td><td>EasyEDA 회로 설계 완료(PCB #0006 제작 대기), 기구 20mm 치수 기본안 확립</td></tr>
     <tr><td><strong>확인 완료 사실</strong></td><td>조리원 규격 실측</td><td>수도권 조리원 2개소 방문, 아크릴 카트(650×400mm) 실측</td><td>기존 카트 무단차 삽입 호환성 기구 확인</td></tr>
     <tr><td><strong>확인 완료 사실</strong></td><td>무선 통신 인터페이스</td><td>ESP32 기반 BLE 기본 연결 및 패킷 제어 구조 정의</td><td>스마트폰-보드 간 기본 연결 확인</td></tr>
     <tr><td><strong>1R 구현·실물 검증</strong></td><td>하드웨어 벤치 구동</td><td>차기 제어보드(PCB #0006) 벤치 전원 인가 및 진동 출력 확인</td><td>물리적 진동 가진 여부 검증 (벤치 시작 전)</td></tr>
@@ -302,9 +327,10 @@
     <tr><td><strong>단순 원금 회수 기간</strong></td><td>초기 투자금(120,000원) ÷ 월 기본 순유입액(27,500원)</td><td>단순 산술 회수</td><td>약 4.36개월 (약 4.4개월)</td></tr>
     <tr><td><strong>실질 원금 회수 기간</strong></td><td>초기 투자금(120,000원) ÷ 월 실질 순유입액(25,333원)</td><td>세척비 충당 후</td><td>약 4.74개월 (약 4.7개월)</td></tr>
     <tr><td><strong>최종 실질 회수 시점</strong></td><td>실질 회수 기간(4.74개월) + 초기/이전 유휴 공실(0.5~1.0개월)</td><td>공실 위험 가산</td><td>약 5.2~5.7개월 (약 5~6개월차 회수 완결)</td></tr>
+    <tr><td><strong>민감도 분석 (비관 가정)</strong></td><td>세척비 인상(회당 18,000원) 및 유휴 공실 1.5개월 발생 스트레스 테스트</td><td>공실·세척비 급증 시</td><td>약 6.5개월 (2회차 약정 렌탈로 회수 완결)</td></tr>
   </table>
   <p class="note" style="color: #64748b; font-size: 8.8pt; margin: 2px 0 6px 14px;">* 6개월 의무 약정 만료 시 총 순유입액은 165,000원(27,500원 × 6개월)이며, 반납 시 회수·세척비(13,000원) 차감 후 실질 순회수액은 152,000원으로 초기 투자금(120,000원)을 초과 회수함.</p>
-  <p class="note" style="color: #64748b; font-size: 8.8pt; margin: 2px 0 6px 14px;">* 본 렌탈 모델은 1R 즉시 실행 모델이 아닌 조리원 검증 후 후속 B2C 과제이며, 공급 견적 전 추정 모델로서 공실률, 회수율 및 세척비 단가에 따른 민감도 검증을 후속 추진함.</p>
+  <p class="note" style="color: #64748b; font-size: 8.8pt; margin: 2px 0 6px 14px;">* 본 렌탈 모델은 1R 즉시 실행 모델이 아닌 조리원 검증 후 후속 B2C 과제이며, 공급 견적 전 사전 추정 모델로서 공실률, 회수율, 고객획득비용(CAC), 세금(부가세) 및 세척비 단가에 따른 민감도 검증을 후속 추진함.</p>
   <div class="sec-title">2. 1R 현장 검증 및 단계적 시장 진입 계획</div>
   <div class="bullet-main">◦ 조리원 1~2개소 현장 협의 도입 조건의 단계화</div>
   <p>- [1단계: 1R 현장 협의 착수 조건 (현재 실행 기준)]</p>
@@ -333,7 +359,7 @@
     <tr><td><strong>1단계(1주차)</strong></td><td>[선행 게이트 1] PCB #0006 제작 발주 및 회로 검토</td><td>PCB #0006 거버 발주 확인서</td><td>회로도·아트워크 상세 검토서 및 PCB #0005 고장 분석서</td></tr>
     <tr><td><strong>2단계(2주차)</strong></td><td>[선행 게이트 2] PCB 입고, 벤치 전원 인가 및 진동 출력</td><td>전원 레일 전압 확인 및 진동 가진 확인서</td><td>벤치 테스트용 계측 지그 구성도 및 DAQ 셋업 절차서</td></tr>
     <tr><td><strong>3단계(3주차)</strong></td><td>전원부 발열 제어 및 60분 연속 구동 부하 시험</td><td>전원 IC 및 하우징 표면 발열 계측 로그</td><td>열화상 시뮬레이션 모델 및 바이메탈 안전회로 검토서</td></tr>
-    <tr><td><strong>4단계(4주차)</strong></td><td>비영아 벤치(3.5kg 더미) 매트리스 표면 진동 계측</td><td>3축 가속도(RMS) 및 변위 벤치 실측 데이터</td><td>매트리스 재질별 진동 감쇠율 사전 모델링 보고서</td></tr>
+    <tr><td><strong>4단계(4주차)</strong></td><td>비영아 벤치(3.5kg 더미) 표면 진동 및 투과 소음 계측</td><td>3축 가속도(RMS)·변위 및 30cm 이격 소음 벤치 실측 데이터</td><td>매트리스 감쇠 모델링 보고서 및 소음 벤치 계측 절차서</td></tr>
     <tr><td><strong>5단계(5주차)</strong></td><td>KETI 등 연구기관 협력 타진 및 조리원 현장 규격 검증</td><td>시험 의뢰 항목 협의서 및 카트 장착 점검표</td><td>공인 시험 항목 정의서 및 조리원 인터뷰 정성 분석록</td></tr>
     <tr><td><strong>6단계(6주차)</strong></td><td>1R 실측 데이터 종합 및 2R 사업계획·로드맵 확정</td><td>1R 데이터북 및 2R 고도화 사업계획서</td><td>1R 공학 가설 검증 보고서 및 대체 시험 종합록</td></tr>
   </table>
@@ -381,16 +407,18 @@
   <p>- 6~24개월(유아기): 1R 기본 모델 안정화 이후 뒤집힘 감지 센서를 포함한 유아용 매트 형태로 파생 모델 개발 검토.</p>
   <p>- 성인·시니어 케어 적용 검토: 미세 진동을 활용한 장기 요양 환자 체위 관리 보조용 매트로 원천 진동 구조의 장기적 응용 가능성 검토.</p>
 
-  <div class="q-box">[붙임] 증빙 자료 기획 (최대 3장)</div>
+  <div class="page-break"></div>
+
+  <div class="q-box">[붙임] 증빙 자료 제출 계획 (최대 3장)</div>
   <div class="sec-title">1. 20mm 슬림 패드 구조도 및 매트리스 장착 개념도</div>
-  <p>- [확보 완료 기구설계] 20mm 알루미늄-ABS 복합 슬림 목업 CAD 단면도 및 주요 치수 도면 (650×400×20mm 설계안).</p>
-  <p>- [1R 실측 및 확보 계획] 산후조리원 아크릴 바구니 카트 매트리스 실측 치수 매핑도 (수도권 2개소 현장 조사 바탕 실물 카트 단차 점검표 수립 예정).</p>
+  <p>- [1R 기구설계 및 도면화 계획] 20mm 알루미늄-ABS 복합 슬림 목업 CAD 단면도 및 주요 치수 도면 (650×400×20mm 목표 설계안 수립 계획).</p>
+  <p>- [1R 현장 실측 점검표 수립 계획] 산후조리원 아크릴 바구니 카트 매트리스 실측 치수 매핑도 (수도권 2개소 현장 조사 바탕 실물 카트 단차 점검표 수립 계획).</p>
   <div class="sec-title">2. 30~60Hz 진동 주파수 응답 기초 해석 데이터 및 비영아 벤치 측정 계획</div>
-  <p>- [1R 시뮬레이션 계획] 30~60Hz 대역 진동 전달 기초 CAE 시뮬레이션 해석 모델 (하모닉 응답 해석 모델링 및 감쇠율 예측 보고서 수립 계획).</p>
-  <p>- [1R 공학 벤치 계획] 비영아 벤치(3.5kg 더미 하중 모델) 3축 가속도계 부착 시험 구성도 및 매트리스 투과 진동 측정 절차서(안).</p>
-  <div class="sec-title">3. 산후조리원 현장 인터뷰 기록 요약 및 1R 후속 연계 계획</div>
-  <p>- [현장 의견 청취 요약] 수도권 산후조리원 2개소(A소 16실, B소 21실) 원장단 현장 인터뷰 정성 메모 요약본 (2026.10 방문 조사).</p>
-  <p>- [1R 후속 연계 계획] 하나은행 멘토링 연계 기술 보완 계획 및 B2B 협력 모델 개념도.</p>
+  <p>- [1R 시뮬레이션 모델링 계획] 30~60Hz 대역 진동 전달 기초 CAE 시뮬레이션 해석 모델 (하모닉 응답 해석 모델링 및 감쇠율 예측 보고서 수립 계획).</p>
+  <p>- [1R 공학 벤치 시험 절차서 수립 계획] 비영아 벤치(3.5kg 더미 하중 모델) 3축 가속도계 부착 시험 구성도 및 매트리스 투과 진동 측정 절차서(안).</p>
+  <div class="sec-title">3. 산후조리원 현장 인터뷰 정성 분석록 및 1R 후속 연계 계획</div>
+  <p>- [1R 현장 인터뷰 정성 분석록 수립 계획] 수도권 산후조리원 2개소(A소 16실, B소 21실) 원장단 현장 인터뷰 정성 메모 요약 및 분석록 (2026.10 방문 청취 바탕 수립 계획).</p>
+  <p>- [1R 멘토링 후속 연계 계획] 하나은행 멘토링 연계 기술 보완 계획 및 B2B 협력 모델 개념도.</p>
 </div>
 
 </body>

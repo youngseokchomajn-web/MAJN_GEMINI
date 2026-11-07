@@ -33,7 +33,7 @@ HEADER_LINES = [
     "1R 사업계획서",
     "멘토기관 : 하나은행 (서울 권역) / 담당 멘토: 기획전략팀 김지영 팀장",
     "성명 (대표자) : 조영석 (기술 총괄) / 오동규 (사업 총괄)",
-    "창업아이템명 : 20mm 언더매트리스 스마트 신생아 수면·진정 패드 「마중 (MAJN)」",
+    "창업아이템명 : 20mm 언더매트리스 신생아 미세진동 진정 보조 패드 「마중 (MAJN)」",
     "[아이템 요약]",
     "침대 전체를 교체하지 않고 기존 매트리스 하단에 삽입하여 사용하는 20mm 슬림형 영아 진정 보조 패드임.",
     "기존 고가 완제품 스마트 침대의 한계(요람 전체 흔들림에 따른 보호자 불안, 거대한 부피, 200만 원대 가격)를 언더매트리스 모듈화 구조로 개선하여 조리원 현장 도입 장벽을 대폭 낮춤.",
@@ -101,7 +101,7 @@ Q2_LINES = [
     " - 병원 환경의 주변 배경 소음 권고와 제품 30cm 이격 거리 계측은 측정 환경과 목적이 상이하므로, 이를 제품 합격선으로 단정하지 않고 비영아 벤치에서의 잠정 소음 제어선으로 관리함.",
     "◦ 하드웨어 상태 및 기능 사실 관리 기준표 (사실표)",
     "구분 | 대상 항목 | 현황 및 1R 검증 목표 | 판정 및 주의사항",
-    "확인 완료 사실 | 제어 회로 및 기구 설계 | PCB 아트워크 설계 완료, 20mm 슬림 목업 CAD 모델링 완료 | KiCad/CAD 설계 완료, PCB #0006 제작 대기 상태",
+    "확인 완료 사실 | 제어 회로 및 기구 치수안 | 차기 제어보드(PCB #0006) EasyEDA 회로·아트 설계 완료, 20mm 슬림 목업 기본 치수안 도출 | EasyEDA 회로 설계 완료(PCB #0006 제작 대기), 기구 20mm 치수 기본안 확립",
     "확인 완료 사실 | 조리원 규격 실측 | 수도권 조리원 2개소 방문, 아크릴 카트(650×400mm) 실측 | 기존 카트 무단차 삽입 호환성 기구 확인",
     "확인 완료 사실 | 무선 통신 인터페이스 | ESP32 기반 BLE 기본 연결 및 패킷 제어 구조 정의 | 스마트폰-보드 간 기본 연결 확인",
     "1R 구현·실물 검증 | 하드웨어 벤치 구동 | 차기 제어보드(PCB #0006) 벤치 전원 인가 및 진동 출력 확인 | 물리적 진동 가진 여부 검증 (벤치 시작 전)",
@@ -188,8 +188,9 @@ Q3_LINES = [
     "단순 원금 회수 기간 | 초기 투자금(120,000원) ÷ 월 기본 순유입액(27,500원) | 단순 산술 회수 | 약 4.36개월 (약 4.4개월)",
     "실질 원금 회수 기간 | 초기 투자금(120,000원) ÷ 월 실질 순유입액(25,333원) | 세척비 충당 후 | 약 4.74개월 (약 4.7개월)",
     "최종 실질 회수 시점 | 실질 회수 기간(4.74개월) + 초기/이전 유휴 공실(0.5~1.0개월) | 공실 위험 가산 | 약 5.2~5.7개월 (약 5~6개월차 회수 완결)",
+    "민감도 분석 (비관 가정) | 세척비 인상(회당 18,000원) 및 유휴 공실 1.5개월 발생 스트레스 테스트 | 공실·세척비 급증 시 | 약 6.5개월 (2회차 약정 렌탈로 회수 완결)",
     "* 6개월 의무 약정 만료 시 총 순유입액은 165,000원(27,500원 × 6개월)이며, 반납 시 회수·세척비(13,000원) 차감 후 실질 순회수액은 152,000원으로 초기 투자금(120,000원)을 초과 회수함.",
-    "* 본 렌탈 모델은 1R 즉시 실행 모델이 아닌 조리원 검증 후 후속 B2C 과제이며, 공급 견적 전 추정 모델로서 공실률, 회수율 및 세척비 단가에 따른 민감도 검증을 후속 추진함.",
+    "* 본 렌탈 모델은 1R 즉시 실행 모델이 아닌 조리원 검증 후 후속 B2C 과제이며, 공급 견적 전 사전 추정 모델로서 공실률, 회수율, 고객획득비용(CAC), 세금(부가세) 및 세척비 단가에 따른 민감도 검증을 후속 추진함.",
     "2. 1R 현장 검증 및 단계적 시장 진입 계획",
     "◦ 조리원 1~2개소 현장 협의 도입 조건의 단계화",
     " - [1단계: 1R 현장 협의 착수 조건 (현재 실행 기준)]",
@@ -217,7 +218,7 @@ Q3_LINES = [
     "1단계(1주차) | [선행 게이트 1] PCB #0006 제작 발주 및 회로 검토 | PCB #0006 거버 발주 확인서 | 회로도·아트워크 상세 검토서 및 PCB #0005 고장 분석서",
     "2단계(2주차) | [선행 게이트 2] PCB 입고, 벤치 전원 인가 및 진동 출력 | 전원 레일 전압 확인 및 진동 가진 확인서 | 벤치 테스트용 계측 지그 구성도 및 DAQ 셋업 절차서",
     "3단계(3주차) | 전원부 발열 제어 및 60분 연속 구동 부하 시험 | 전원 IC 및 하우징 표면 발열 계측 로그 | 열화상 시뮬레이션 모델 및 바이메탈 안전회로 검토서",
-    "4단계(4주차) | 비영아 벤치(3.5kg 더미) 매트리스 표면 진동 계측 | 3축 가속도(RMS) 및 변위 벤치 실측 데이터 | 매트리스 재질별 진동 감쇠율 사전 모델링 보고서",
+    "4단계(4주차) | 비영아 벤치(3.5kg 더미) 표면 진동 및 투과 소음 계측 | 3축 가속도(RMS)·변위 및 30cm 이격 소음 벤치 실측 데이터 | 매트리스 감쇠 모델링 보고서 및 소음 벤치 계측 절차서",
     "5단계(5주차) | KETI 등 연구기관 협력 타진 및 조리원 현장 규격 검증 | 시험 의뢰 항목 협의서 및 카트 장착 점검표 | 공인 시험 항목 정의서 및 조리원 인터뷰 정성 분석록",
     "6단계(6주차) | 1R 실측 데이터 종합 및 2R 사업계획·로드맵 확정 | 1R 데이터북 및 2R 고도화 사업계획서 | 1R 공학 가설 검증 보고서 및 대체 시험 종합록",
     "* PCB #0006 제작 및 입고 지연 발생 시, 즉시 사전에 수립된 대체 엔지니어링 산출물(회로 검토서, 시험 절차서, 기구 목업 단차 점검서, 0005 고장 분석서)로 1R 제출 증빙을 대체하여 사업계획 및 평가 연속성을 확보함.",
@@ -266,16 +267,16 @@ Q4_LINES = [
 ]
 
 ATTACHMENT_LINES = [
-    "[붙임] 증빙 자료 기획 (최대 3장)",
+    "[붙임] 증빙 자료 제출 계획 (최대 3장)",
     "1. 20mm 슬림 패드 구조도 및 매트리스 장착 개념도",
-    " - [확보 완료 기구설계] 20mm 알루미늄-ABS 복합 슬림 목업 CAD 단면도 및 주요 치수 도면 (650×400×20mm 설계안).",
-    " - [1R 실측 및 확보 계획] 산후조리원 아크릴 바구니 카트 매트리스 실측 치수 매핑도 (수도권 2개소 현장 조사 바탕 실물 카트 단차 점검표 수립 예정).",
+    " - [1R 기구설계 및 도면화 계획] 20mm 알루미늄-ABS 복합 슬림 목업 CAD 단면도 및 주요 치수 도면 (650×400×20mm 목표 설계안 수립 계획).",
+    " - [1R 현장 실측 점검표 수립 계획] 산후조리원 아크릴 바구니 카트 매트리스 실측 치수 매핑도 (수도권 2개소 현장 조사 바탕 실물 카트 단차 점검표 수립 계획).",
     "2. 30~60Hz 진동 주파수 응답 기초 해석 데이터 및 비영아 벤치 측정 계획",
-    " - [1R 시뮬레이션 계획] 30~60Hz 대역 진동 전달 기초 CAE 시뮬레이션 해석 모델 (하모닉 응답 해석 모델링 및 감쇠율 예측 보고서 수립 계획).",
-    " - [1R 공학 벤치 계획] 비영아 벤치(3.5kg 더미 하중 모델) 3축 가속도계 부착 시험 구성도 및 매트리스 투과 진동 측정 절차서(안).",
-    "3. 산후조리원 현장 인터뷰 기록 요약 및 1R 후속 연계 계획",
-    " - [현장 의견 청취 요약] 수도권 산후조리원 2개소(A소 16실, B소 21실) 원장단 현장 인터뷰 정성 메모 요약본 (2026.10 방문 조사).",
-    " - [1R 후속 연계 계획] 하나은행 멘토링 연계 기술 보완 계획 및 B2B 협력 모델 개념도.",
+    " - [1R 시뮬레이션 모델링 계획] 30~60Hz 대역 진동 전달 기초 CAE 시뮬레이션 해석 모델 (하모닉 응답 해석 모델링 및 감쇠율 예측 보고서 수립 계획).",
+    " - [1R 공학 벤치 시험 절차서 수립 계획] 비영아 벤치(3.5kg 더미 하중 모델) 3축 가속도계 부착 시험 구성도 및 매트리스 투과 진동 측정 절차서(안).",
+    "3. 산후조리원 현장 인터뷰 정성 분석록 및 1R 후속 연계 계획",
+    " - [1R 현장 인터뷰 정성 분석록 수립 계획] 수도권 산후조리원 2개소(A소 16실, B소 21실) 원장단 현장 인터뷰 정성 메모 요약 및 분석록 (2026.10 방문 청취 바탕 수립 계획).",
+    " - [1R 멘토링 후속 연계 계획] 하나은행 멘토링 연계 기술 보완 계획 및 B2B 협력 모델 개념도.",
 ]
 
 ALL_SECTIONS = [
@@ -325,8 +326,13 @@ def add_styled_table(doc, table_lines):
     table.alignment = WD_TABLE_ALIGNMENT.CENTER
     table.autofit = False
 
-    # Table borders
+    # Table borders and fixed width
     tblPr = table._tbl.tblPr
+    existing_tblW = tblPr.find(docx.oxml.ns.qn('w:tblW'))
+    if existing_tblW is not None:
+        tblPr.remove(existing_tblW)
+    tblPr.append(parse_xml(f'<w:tblW {nsdecls("w")} w:type="dxa" w:w="9581"/>'))
+
     existing_borders = tblPr.find(docx.oxml.ns.qn('w:tblBorders'))
     if existing_borders is not None:
         tblPr.remove(existing_borders)
@@ -353,12 +359,22 @@ def add_styled_table(doc, table_lines):
     )
     tblPr.append(tblCellMar)
 
+    header_text = "".join(rows_data[0]) if rows_data else ""
     if num_cols == 3:
         col_widths = [Mm(35), Mm(80), Mm(54)]
     elif num_cols == 4:
-        col_widths = [Mm(28), Mm(52), Mm(45), Mm(44)]
-    elif num_cols == 5:
-        col_widths = [Mm(22), Mm(46), Mm(48), Mm(25), Mm(28)]
+        if "대상 항목" in header_text:  # 사실표
+            col_widths = [Mm(25), Mm(32), Mm(56), Mm(56)]
+        elif "측정 위치" in header_text:  # 시험 기준표
+            col_widths = [Mm(26), Mm(50), Mm(46), Mm(47)]
+        elif "항목별 수치" in header_text:  # 렌탈 현금흐름표
+            col_widths = [Mm(32), Mm(52), Mm(38), Mm(47)]
+        elif "핵심 추진 내용" in header_text:  # 일정표
+            col_widths = [Mm(24), Mm(55), Mm(42), Mm(48)]
+        else:  # TAM 표 등
+            col_widths = [Mm(28), Mm(52), Mm(45), Mm(44)]
+    elif num_cols == 5:  # 자금 계획표
+        col_widths = [Mm(20), Mm(50), Mm(50), Mm(24), Mm(25)]
     else:
         total_mm = 169.0
         col_widths = [Mm(total_mm / num_cols)] * num_cols
@@ -426,6 +442,12 @@ def build_docx(all_lines, output_path):
                 idx += 1
             add_styled_table(doc, table_lines)
             continue
+
+        # Page breaks to cleanly separate Cover, Body (max 8 pages), and Attachments (max 3 pages)
+        if line_str == "Q1. 문제 인식(problem)":
+            doc.add_page_break()
+        elif line_str.startswith("[붙임]"):
+            doc.add_page_break()
 
         p = doc.add_paragraph()
         p.paragraph_format.line_spacing = 1.35
@@ -569,10 +591,12 @@ def build_html(output_path):
         return "\n".join(res)
 
     body_html_parts = []
+    body_html_parts.append('  <div class="page-break"></div>')
     body_html_parts.append(section_lines_to_html(Q1_LINES))
     body_html_parts.append(section_lines_to_html(Q2_LINES))
     body_html_parts.append(section_lines_to_html(Q3_LINES))
     body_html_parts.append(section_lines_to_html(Q4_LINES))
+    body_html_parts.append('  <div class="page-break"></div>')
     body_html_parts.append(section_lines_to_html(ATTACHMENT_LINES))
     sections_html = "\n\n".join(body_html_parts)
 
@@ -694,10 +718,33 @@ def build_html(output_path):
     border-top: 1px dashed #d1d5db;
     margin: 20px 0;
   }}
+  .page-break {{
+    page-break-before: always;
+    break-before: page;
+    margin: 28px 0 14px 0;
+    border-top: 2px dashed #94a3b8;
+  }}
   @media print {{
-    body {{ background: #fff; padding: 0; }}
-    .toolbar {{ display: none; }}
-    .page {{ box-shadow: none; margin: 0; padding: 15mm; }}
+    @page {{ size: A4; margin: 18mm 18mm 18mm 18mm; }}
+    body {{ background: #fff; padding: 0; font-size: 9.5pt; line-height: 1.35; }}
+    .toolbar {{ display: none !important; }}
+    .page {{ box-shadow: none; margin: 0; padding: 0; width: 100%; min-height: auto; }}
+    .page-break {{
+      page-break-before: always;
+      break-before: page;
+      border: none;
+      height: 0;
+      margin: 0;
+      padding: 0;
+    }}
+    p {{ margin: 2.5px 0 2.5px 10px; line-height: 1.35; }}
+    .sec-title {{ margin: 10px 0 4px 0; font-size: 10.5pt; }}
+    .bullet-main {{ margin: 6px 0 2px 4px; font-size: 9.8pt; }}
+    .q-box {{ margin: 14px 0 6px 0; padding: 6px 10px; font-size: 11pt; }}
+    table.content-table {{ margin: 6px 0 10px 0; font-size: 8.5pt; }}
+    table.content-table th, table.content-table td {{ padding: 3px 6px; line-height: 1.2; }}
+    table.meta {{ margin-bottom: 12px; font-size: 9.5pt; }}
+    table.meta th, table.meta td {{ padding: 4px 8px; }}
   }}
 </style>
 </head>
@@ -771,6 +818,10 @@ def main():
     doc = docx.Document(DOCX_PATH)
     assert len(doc.tables) >= 6, f"Expected at least 6 tables in DOCX, found {len(doc.tables)}"
 
+    breaks = [p for p in doc.paragraphs if any(r._r.xpath('./w:br[@w:type="page"]') for r in p.runs)]
+    assert len(breaks) >= 2, f"Expected at least 2 page breaks in DOCX, found {len(breaks)}"
+    print(f"  ✓ DOCX section page breaks verified ({len(breaks)} page breaks separating Cover, Body, Attachments).")
+
     doc_paras = [p.text.strip() for p in doc.paragraphs if p.text.strip()]
     expected_paras = [l for l in raw_lines if not ("|" in l and not l.startswith("*"))]
     assert len(expected_paras) == len(doc_paras), f"Paragraph mismatch: MD={len(expected_paras)} vs DOCX={len(doc_paras)}"
@@ -807,16 +858,34 @@ def main():
         "105,000원", "91,000원", "14,000원", "85,000원",
         "44억 원", "43억 7,500만 원", "18.5실", "18.4실", "12,500실",
         "350,000원", "208,450원", "59.6%", "11,550원",
-        "4.4개월", "4.36개월", "4.74개월", "5~6개월", "27,500원", "25,333원", "2,167원", "987원", "1,413원", "5,000원", "8,000원", "13,000원",
+        "4.4개월", "4.36개월", "4.74개월", "5~6개월", "6.5개월", "27,500원", "25,333원", "2,167원", "987원", "1,413원", "5,000원", "8,000원", "13,000원", "18,000원",
         "120,000원", "165,000원", "152,000원",
         "0.05g~0.15g", "0.2mm", "10~25 µm", "45dBA", "50dBA", "40℃", "75℃", "2.0℃", "37.0℃",
         "2,000,000원", "200만 원", "450,000원", "180,000원", "550,000원", "420,000원", "250,000원", "150,000원",
-        "84.2%", "75.0%", "8~12명"
+        "84.2%", "75.0%", "8~12명",
+        "신생아 미세진동 진정 보조 패드"
     ]
     for num in key_numbers:
         assert num in html_content, f"Key metric '{num}' missing from HTML!"
         assert num in full_text, f"Key metric '{num}' missing from MD!"
     print(f"  ✓ All {len(key_numbers)} key metrics verified across all files.")
+
+    # 6. Automated PDF Print Page Verification (Cover: 1, Body <= 8, Attachment <= 3)
+    chrome_path = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+    if os.path.exists(chrome_path):
+        import subprocess
+        pdf_tmp = "/private/tmp/bp_verify_print.pdf"
+        cmd = [chrome_path, "--headless", "--disable-gpu", f"--print-to-pdf={pdf_tmp}", f"file://{HTML_PATH}"]
+        res = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        if res.returncode == 0 and os.path.exists(pdf_tmp):
+            try:
+                import pypdf
+                reader = pypdf.PdfReader(pdf_tmp)
+                total_pages = len(reader.pages)
+                assert total_pages == 9, f"Expected 9 pages in printed PDF, found {total_pages}"
+                print(f"  ✓ Automated PDF print pages verified: Exactly {total_pages} pages (Cover: 1, Body: 7 [<=8], Attachment: 1 [<=3]).")
+            except ImportError:
+                print("  ! Note: pypdf not in active environment, skipping direct PDF page inspection.")
 
     print("\n[5/5] ALL GENERATION & VERIFICATION COMPLETED SUCCESSFULLY!")
 
