@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>마중 스마트배시넷 Rev 2 — 전장·기구 100% 통합 3D 디지털 트윈 뷰어 (PCB·가스켓·배선 완비)</title>
+  <title>마중 스마트배시넷 — 영아 안전 격리형 분리 컨트롤러 3D 디지털 트윈 (외부 컨트롤러 + 초슬림 배시넷 패드)</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; }
     body {
@@ -182,10 +182,10 @@
     <div>
       <div class="flex items-center gap-2">
         <span class="badge badge-green">오차 0.00mm 정밀 교정</span>
-        <span class="badge badge-amber">4.5T 자작합판 Rev 2</span>
+        <span class="badge badge-amber">분리형 아키텍처 (대안 C)</span>
       </div>
       <h1 class="mt-2">마중 배시넷 3D 정밀 어셈블리</h1>
-      <p class="subtitle">기구(4.5T) + 실리콘가스켓 + PCB메인보드 + 4채널배선 + USB-C 통합 디지털 트윈</p>
+      <p class="subtitle">영아 침대(발열·RF 제로화) + 침대 외벽 분리형 스마트 컨트롤러 팟(External Pod) 3D 통합 모델</p>
     </div>
 
     <!-- Explode Distance Slider -->
@@ -240,8 +240,15 @@
         </label>
         <label class="toggle-item">
           <div class="toggle-label">
+            <span class="color-dot" style="background:#3b82f6;"></span>
+            <span>외부 컨트롤러 팟 (External Pod)</span>
+          </div>
+          <input type="checkbox" checked onchange="togglePart('pod', this.checked)">
+        </label>
+        <label class="toggle-item">
+          <div class="toggle-label">
             <span class="color-dot" style="background:#059669;"></span>
-            <span>PCB 메인보드 (80×60mm FR-4)</span>
+            <span>PCB 메인보드 (외부 팟 내부 실장)</span>
           </div>
           <input type="checkbox" checked onchange="togglePart('pcb', this.checked)">
         </label>
@@ -291,15 +298,14 @@
       </div>
     </div>
 
-    <!-- Complete Digital Twin Fact Sheet -->
+    <!-- Detached External Controller Fact Sheet -->
     <div class="card" style="font-size:11px; line-height:1.5;">
-      <div class="card-title">🔌 전장·기구 통합 디지털 트윈 명세</div>
-      <div>• <strong>외곽 치수</strong>: 450.0 × 250.0 × 22.5 mm (캐비티 높이 13.5mm)</div>
-      <div>• <strong>실리콘 가스켓</strong>: 1.2T 외곽 12mm 림 + 10개소 볼트 러그 일체형</div>
-      <div>• <strong>PCB 메인보드</strong>: 80×60mm 4층 기판, M2.5 황동 스탠드오프(H=5mm) 4점 체결</div>
-      <div>• <strong>주전원 인입</strong>: 단변 ⌀7.0mm 실리콘 그로밋 관통 USB-C 5V 배선</div>
-      <div>• <strong>진동자 배선</strong>: 24AWG 실리콘 연선 (CH A / CH B 각 2개 직렬 16Ω 결선)</div>
-      <div>• <strong>배선 공기 유격</strong>: 내부 13.5mm 중 익사이터(10.11mm) 제외 <strong>+3.39mm 안전 유격</strong> 확보</div>
+      <div class="card-title">🛡️ 분리형(Detached) 아키텍처 4대 혁신</div>
+      <div>• <strong>영아 안전 100%</strong>: 침대 내부에는 12V 승압·발열·2.4GHz RF 전무</div>
+      <div>• <strong>외부 컨트롤러 팟</strong>: 95×70×24mm 컴팩트 인클로저 (난간 거치형)</div>
+      <div>• <strong>배시넷 패드 초슬림화</strong>: PCB 볼트홀 불필요, 진동자 4개 전용 공간화</div>
+      <div>• <strong>진동 피로 제로</strong>: 30~65Hz 충격이 PCB 솔더 조인트에 전달되지 않음</div>
+      <div>• <strong>하네스 케이블</strong>: 1m 유연 실리콘 하네스로 침대와 컨트롤러 원클릭 연결</div>
     </div>
   </div>
 
@@ -424,6 +430,23 @@
       metalness: 0.8
     });
     // --- New Materials for PCB, Electronics & Cabling ---
+    const podHousingMat = new THREE.MeshStandardMaterial({
+      color: 0x1e293b, // Matte Slate Blue-Black Pod Enclosure
+      roughness: 0.35,
+      metalness: 0.4
+    });
+    const podLidMat = new THREE.MeshStandardMaterial({
+      color: 0x334155, // Translucent Smoked Acrylic Top Lid
+      transparent: true,
+      opacity: 0.65,
+      roughness: 0.2,
+      metalness: 0.8
+    });
+    const ledBlueMat = new THREE.MeshStandardMaterial({
+      color: 0x38bdf8,
+      emissive: 0x0284c7,
+      emissiveIntensity: 0.8
+    });
     const pcbMat = new THREE.MeshStandardMaterial({
       color: 0x065f46, // FR-4 Deep Forest Green
       roughness: 0.35,
@@ -539,6 +562,7 @@
       gasket: new THREE.Group(),
       frame: new THREE.Group(),
       inserts: new THREE.Group(),
+      pod: new THREE.Group(),
       pcb: new THREE.Group(),
       cables: new THREE.Group(),
       exciters: new THREE.Group(),
@@ -706,226 +730,192 @@
     topMesh.castShadow = true;
     partGroups.top.add(topMesh);
     // ==========================================
-    // 6.5) PCB MAINBOARD (80 x 60 x 1.6 mm) & STANDOFFS
-    // ECO-001 Rev 7: M2.5 x 5.0mm Standoffs, 4-point mounting
+    // 6.5) DETACHED ARCHITECTURE: EXTERNAL CONTROLLER POD & BED PAD
+    // PCB & Power are MOVED OUTSIDE THE BASSINET to external housing!
     // ==========================================
+    const podGroup = new THREE.Group();
     const pcbGroup = new THREE.Group();
-    const pcbCenterX = -135.0; // Centered between left exciters and left rail
-    const pcbCenterZ = 0.0;
+    const cablesGroup = new THREE.Group();
+
+    // External Controller Pod Placement (Placed on left side of bassinet)
+    const podCenterX = -310.0; // 85mm standoff clearance from bassinet edge (-225)
+    const podCenterY = 11.25;  // Aligned with bassinet center height
+    const podCenterZ = 0.0;
+    const podW = 96.0;  // Length (X)
+    const podD = 74.0;  // Width (Z)
+    const podH = 24.0;  // Height (Y)
+
+    // (a) External Controller Bottom Enclosure Box
+    const podBottomGeom = new THREE.BoxGeometry(podW, 14.0, podD);
+    const podBottomMesh = new THREE.Mesh(podBottomGeom, podHousingMat);
+    podBottomMesh.position.set(podCenterX, podCenterY - 5.0, podCenterZ);
+    podBottomMesh.receiveShadow = true;
+    podGroup.add(podBottomMesh);
+
+    // (b) Smoked Acrylic Top Lid (Allows viewing PCB inside)
+    const podLidGeom = new THREE.BoxGeometry(podW, 4.0, podD);
+    const podLidMesh = new THREE.Mesh(podLidGeom, podLidMat);
+    podLidMesh.position.set(podCenterX, podCenterY + 10.0, podCenterZ);
+    podGroup.add(podLidMesh);
+
+    // (c) Controller Status LED & Power Tact Button
+    const ledGeom = new THREE.CylinderGeometry(1.5, 1.5, 2.0, 16);
+    const ledMesh = new THREE.Mesh(ledGeom, ledBlueMat);
+    ledMesh.position.set(podCenterX + 25.0, podCenterY + 12.0, podCenterZ - 20.0);
+    podGroup.add(ledMesh);
+
+    const btnGeom = new THREE.CylinderGeometry(3.5, 3.5, 3.0, 16);
+    const btnMesh = new THREE.Mesh(btnGeom, steelMat);
+    btnMesh.position.set(podCenterX + 25.0, podCenterY + 12.0, podCenterZ + 15.0);
+    podGroup.add(btnMesh);
+
+    // Bedside Frame Mount Bracket (Aluminum hook to hang on bassinet rail)
+    const hookGeom = new THREE.BoxGeometry(10.0, 40.0, 15.0);
+    const hookMesh = new THREE.Mesh(hookGeom, steelMat);
+    hookMesh.position.set(podCenterX + podW / 2 + 5.0, podCenterY + 10.0, podCenterZ);
+    podGroup.add(hookMesh);
+
+    partGroups.pod.add(podGroup);
+
+    // ==========================================
+    // (B) PCB MAINBOARD (80 x 60 x 1.6 mm) INSIDE EXTERNAL POD
+    // ==========================================
     const pcbW = 80.0;
     const pcbD = 60.0;
     const pcbH = 1.6;
-    const standoffH = 5.0;
-    const pcbBaseY = 4.5 + standoffH; // 9.5 mm
+    const pcbY = podCenterY - 2.0;
 
-    // (a) FR-4 PCB Board
     const pcbGeom = new THREE.BoxGeometry(pcbW, pcbH, pcbD);
     const pcbMesh = new THREE.Mesh(pcbGeom, pcbMat);
-    pcbMesh.position.set(pcbCenterX, pcbBaseY + pcbH / 2, pcbCenterZ); // Y center = 10.3 mm
+    pcbMesh.position.set(podCenterX, pcbY, podCenterZ);
     pcbMesh.receiveShadow = true;
     pcbGroup.add(pcbMesh);
 
-    // (b) 4 M2.5 Brass Standoffs & Top Screws
-    // Standoff hole offset: 3.5mm from edges -> X=±36.5, Z=±26.5 from PCB center
-    const standoffOffsets = [
-      [-pcbW / 2 + 3.5, -pcbD / 2 + 3.5],
-      [ pcbW / 2 - 3.5, -pcbD / 2 + 3.5],
-      [-pcbW / 2 + 3.5,  pcbD / 2 - 3.5],
-      [ pcbW / 2 - 3.5,  pcbD / 2 - 3.5]
+    // 4 Standoffs inside External Pod
+    const pcbOffsets = [
+      [-pcbW/2 + 3.5, -pcbD/2 + 3.5], [ pcbW/2 - 3.5, -pcbD/2 + 3.5],
+      [-pcbW/2 + 3.5,  pcbD/2 - 3.5], [ pcbW/2 - 3.5,  pcbD/2 - 3.5]
     ];
-
-    standoffOffsets.forEach(([soX, soZ]) => {
-      const wx = pcbCenterX + soX;
-      const wz = pcbCenterZ + soZ;
-
-      // Hexagonal Brass Standoff (H=5.0mm, radius=2.4mm)
-      const soGeom = new THREE.CylinderGeometry(2.4, 2.4, standoffH, 6);
+    pcbOffsets.forEach(([ox, oz]) => {
+      const soGeom = new THREE.CylinderGeometry(2.0, 2.0, 4.0, 6);
       const soMesh = new THREE.Mesh(soGeom, brassMat);
-      soMesh.position.set(wx, 4.5 + standoffH / 2, wz); // Y center = 7.0 mm
+      soMesh.position.set(podCenterX + ox, pcbY - 2.0, podCenterZ + oz);
       pcbGroup.add(soMesh);
 
-      // Top Stainless Screw Head (ISO 7380 button head, radius=2.2mm, height=1.3mm)
-      const scrGeom = new THREE.CylinderGeometry(2.2, 2.0, 1.3, 14);
+      const scrGeom = new THREE.CylinderGeometry(1.8, 1.8, 1.0, 12);
       const scrMesh = new THREE.Mesh(scrGeom, steelMat);
-      scrMesh.position.set(wx, pcbBaseY + pcbH + 0.65, wz); // Y center = 11.75 mm
+      scrMesh.position.set(podCenterX + ox, pcbY + pcbH/2 + 0.5, podCenterZ + oz);
       pcbGroup.add(scrMesh);
-
-      // Gold Annular Ring Ground Pad on PCB top
-      const padGeom = new THREE.RingGeometry(1.4, 2.5, 16);
-      padGeom.rotateX(-Math.PI / 2);
-      const padMesh = new THREE.Mesh(padGeom, goldMat);
-      padMesh.position.set(wx, pcbBaseY + pcbH + 0.02, wz);
-      pcbGroup.add(padMesh);
     });
 
-    // (c) Major Onboard Electronic Components
-    // U1: ESP32-WROOM-32UE (18.0 x 3.2 x 19.2 mm) Silver RF Shield
+    // Major ICs on external PCB
+    // ESP32-WROOM-32UE
     const espGeom = new THREE.BoxGeometry(18.0, 3.2, 19.2);
     const espMesh = new THREE.Mesh(espGeom, rfShieldMat);
-    espMesh.position.set(pcbCenterX, pcbBaseY + pcbH + 1.6, -10.0);
+    espMesh.position.set(podCenterX - 10.0, pcbY + pcbH/2 + 1.6, -12.0);
     pcbGroup.add(espMesh);
 
-    // u.FL Gold Receptacle on ESP32
-    const uflGeom = new THREE.CylinderGeometry(1.0, 1.0, 1.25, 12);
-    const uflMesh = new THREE.Mesh(uflGeom, goldMat);
-    uflMesh.position.set(pcbCenterX + 6.0, pcbBaseY + pcbH + 3.2 + 0.6, -16.0);
-    pcbGroup.add(uflMesh);
-
-    // USB_C: Type-C 16-pin Metal Receptacle (9.0 x 3.2 x 7.5 mm) facing -X
+    // USB-C 5V Input Port (Faces outside the pod, -X)
     const usbGeom = new THREE.BoxGeometry(9.0, 3.2, 7.5);
     const usbMesh = new THREE.Mesh(usbGeom, steelMat);
-    usbMesh.position.set(pcbCenterX - pcbW / 2 + 4.5, pcbBaseY + pcbH + 1.6, 0.0);
+    usbMesh.position.set(podCenterX - podW/2 + 4.5, pcbY + pcbH/2 + 1.6, 0.0);
     pcbGroup.add(usbMesh);
 
-    // U4: TAS5805M Class-D Amplifier (HTSSOP-28: 9.7 x 1.2 x 4.4 mm)
+    // TAS5805M Class-D Amp
     const tasGeom = new THREE.BoxGeometry(9.7, 1.2, 4.4);
     const tasMesh = new THREE.Mesh(tasGeom, icBlackMat);
-    tasMesh.position.set(pcbCenterX, pcbBaseY + pcbH + 0.6, 14.0);
+    tasMesh.position.set(podCenterX + 10.0, pcbY + pcbH/2 + 0.6, 12.0);
     pcbGroup.add(tasMesh);
 
-    // L1: Bourns SRP6540-4R7M Power Inductor (6.5 x 4.0 x 6.5 mm)
+    // Bourns SRP6540-4R7M Power Inductor
     const indGeom = new THREE.BoxGeometry(6.5, 4.0, 6.5);
     const indMesh = new THREE.Mesh(indGeom, icBlackMat);
-    indMesh.position.set(pcbCenterX - 18.0, pcbBaseY + pcbH + 2.0, 0.0);
+    indMesh.position.set(podCenterX - 20.0, pcbY + pcbH/2 + 2.0, 0.0);
     pcbGroup.add(indMesh);
 
-    // U3: MP3426 Step-Up Boost IC (QFN-14: 3.0 x 0.9 x 4.0 mm)
-    const mpGeom = new THREE.BoxGeometry(3.0, 0.9, 4.0);
-    const mpMesh = new THREE.Mesh(mpGeom, icBlackMat);
-    mpMesh.position.set(pcbCenterX - 18.0, pcbBaseY + pcbH + 0.45, 14.0);
-    pcbGroup.add(mpMesh);
-
-    // U2: AP2112K-3.3 LDO (SOT-23-5: 2.9 x 1.2 x 1.6 mm)
-    const ldoGeom = new THREE.BoxGeometry(2.9, 1.2, 1.6);
-    const ldoMesh = new THREE.Mesh(ldoGeom, icBlackMat);
-    ldoMesh.position.set(pcbCenterX - 18.0, pcbBaseY + pcbH + 0.6, -14.0);
-    pcbGroup.add(ldoMesh);
-
-    // J1: Channel A Audio JST Connector (White nylon 5.0 x 4.5 x 4.0 mm)
-    const j1Geom = new THREE.BoxGeometry(5.0, 4.5, 4.0);
-    const j1Mesh = new THREE.Mesh(j1Geom, connectorWhiteMat);
-    j1Mesh.position.set(pcbCenterX + pcbW / 2 - 3.5, pcbBaseY + pcbH + 2.25, -12.0);
-    pcbGroup.add(j1Mesh);
-
-    // J2: Channel B Audio JST Connector (White nylon 5.0 x 4.5 x 4.0 mm)
-    const j2Geom = new THREE.BoxGeometry(5.0, 4.5, 4.0);
-    const j2Mesh = new THREE.Mesh(j2Geom, connectorWhiteMat);
-    j2Mesh.position.set(pcbCenterX + pcbW / 2 - 3.5, pcbBaseY + pcbH + 2.25, +12.0);
-    pcbGroup.add(j2Mesh);
+    // External Audio Output 4-Pin Locking Connector (Faces +X towards bassinet)
+    const outConnGeom = new THREE.BoxGeometry(8.0, 6.0, 12.0);
+    const outConnMesh = new THREE.Mesh(outConnGeom, steelMat);
+    outConnMesh.position.set(podCenterX + podW/2 - 4.0, pcbY + pcbH/2 + 3.0, 0.0);
+    pcbGroup.add(outConnMesh);
 
     partGroups.pcb.add(pcbGroup);
 
     // ==========================================
-    // 6.6) CABLE HARNESS & SILICONE GROMMET ROUTING
-    // Precise 3D Splines (CatmullRomCurve3 & TubeGeometry)
+    // (C) DETACHED HARNESS & SILICONE GROMMET
     // ==========================================
-    const cablesGroup = new THREE.Group();
-
-    // (a) Silicone Cable Grommet in Left Short Rail (X = -222.75, Z = 0, Y = 11.25)
+    // 1. External Silicone Grommet on Bassinet Short Rail (X = -222.75)
     const grommetOuter = new THREE.CylinderGeometry(5.5, 5.5, 6.5, 20);
     grommetOuter.rotateZ(Math.PI / 2);
     const grommetMesh = new THREE.Mesh(grommetOuter, grommetRubberMat);
     grommetMesh.position.set(-222.75, 11.25, 0.0);
     cablesGroup.add(grommetMesh);
 
-    // (b) Main USB-C 5V Power Cable (Matte Black ⌀3.8mm Flexible Tube)
-    const usbCurve = new THREE.CatmullRomCurve3([
-      new THREE.Vector3(-270.0, 11.25, 0.0),    // Outside bassinet
-      new THREE.Vector3(-222.75, 11.25, 0.0),   // Passing through grommet
-      new THREE.Vector3(-200.0, 11.25, 0.0),    // Inside cavity
-      new THREE.Vector3(-185.0, 12.0, 0.0),     // Approaching PCB
-      new THREE.Vector3(-175.0, 12.7, 0.0)      // Plugged into USB-C receptacle
+    // 2. Main Bed-to-Pod Flexible Braided Harness (Connects External Pod -> Bed Grommet)
+    // Runs from External Pod Output (+X) into Bed Pad Grommet (-222.75)
+    const harnessCurve = new THREE.CatmullRomCurve3([
+      new THREE.Vector3(podCenterX + podW/2, pcbY + pcbH/2 + 3.0, 0.0), // Pod Output
+      new THREE.Vector3(-255.0, 8.0, 15.0),  // Natural graceful curve in air
+      new THREE.Vector3(-235.0, 10.5, 5.0),
+      new THREE.Vector3(-222.75, 11.25, 0.0) // Enters Bassinet Grommet
     ]);
-    const usbCableGeom = new THREE.TubeGeometry(usbCurve, 32, 1.9, 10, false);
-    const usbCableMesh = new THREE.Mesh(usbCableGeom, usbCableMat);
-    cablesGroup.add(usbCableMesh);
+    const harnessGeom = new THREE.TubeGeometry(harnessCurve, 28, 2.5, 12, false);
+    const harnessMesh = new THREE.Mesh(harnessGeom, usbCableMat);
+    cablesGroup.add(harnessMesh);
 
-    // (c) Channel A Exciter Wiring (24AWG Red/Black Pair, J1 -> Exciter 1 -> Exciter 2)
-    // Exciter 1 is at (-105, 18, -65), Exciter 2 is at (+105, 18, -65)
-    // Branch 1: J1 to Exciter 1 (Red wire)
-    const chA_p1_Curve = new THREE.CatmullRomCurve3([
-      new THREE.Vector3(pcbCenterX + pcbW / 2 - 1.0, pcbBaseY + pcbH + 2.5, -11.0), // J1 Pin 1
-      new THREE.Vector3(-92.0, 8.5, -25.0),
-      new THREE.Vector3(-98.0, 10.0, -48.0),
-      new THREE.Vector3(-105.0, 15.0, -58.0) // Exciter 1 Terminal A
+    // 3. USB-C Wall Power Adapter Cable (Into Pod from outside left)
+    const pwrCurve = new THREE.CatmullRomCurve3([
+      new THREE.Vector3(podCenterX - podW/2 - 50.0, 5.0, -15.0),
+      new THREE.Vector3(podCenterX - podW/2 - 25.0, 8.0, -5.0),
+      new THREE.Vector3(podCenterX - podW/2, pcbY + pcbH/2 + 1.6, 0.0)
     ]);
-    const chA_p1_Mesh = new THREE.Mesh(new THREE.TubeGeometry(chA_p1_Curve, 24, 0.65, 8, false), wireRedMat);
-    cablesGroup.add(chA_p1_Mesh);
+    const pwrMesh = new THREE.Mesh(new THREE.TubeGeometry(pwrCurve, 20, 1.8, 10, false), usbCableMat);
+    cablesGroup.add(pwrMesh);
 
-    // Series Jumper: Exciter 1 to Exciter 2 (Spans length of bassinet at Y=10~12mm)
-    const chA_jump_Curve = new THREE.CatmullRomCurve3([
-      new THREE.Vector3(-105.0, 15.0, -72.0), // Exciter 1 Terminal B
-      new THREE.Vector3(-55.0, 9.5, -85.0),
-      new THREE.Vector3(  0.0, 9.0, -90.0),   // Center cavity clearance
-      new THREE.Vector3( 55.0, 9.5, -85.0),
-      new THREE.Vector3(105.0, 15.0, -72.0)  // Exciter 2 Terminal A
+    // 4. Clean Internal Cavity Exciter Wiring (NO PCB INSIDE BED!)
+    // Inside the bed, harness splits into CH A and CH B to drive the 4 exciters cleanly:
+    // CH A Wire (Red): From Grommet to Exciter 1 (-105, 18, -65) -> Exciter 2 (105, 18, -65)
+    const chA_Wire_Curve = new THREE.CatmullRomCurve3([
+      new THREE.Vector3(-220.0, 11.25, 0.0),
+      new THREE.Vector3(-180.0, 10.0, -25.0),
+      new THREE.Vector3(-140.0, 10.0, -50.0),
+      new THREE.Vector3(-105.0, 15.5, -62.0)
     ]);
-    const chA_jump_Mesh = new THREE.Mesh(new THREE.TubeGeometry(chA_jump_Curve, 32, 0.65, 8, false), wireBlueMat);
-    cablesGroup.add(chA_jump_Mesh);
+    cablesGroup.add(new THREE.Mesh(new THREE.TubeGeometry(chA_Wire_Curve, 24, 0.7, 8, false), wireRedMat));
 
-    // Return: Exciter 2 back to J1 (Black wire)
-    const chA_ret_Curve = new THREE.CatmullRomCurve3([
-      new THREE.Vector3(105.0, 15.0, -58.0), // Exciter 2 Terminal B
-      new THREE.Vector3( 45.0, 8.5, -78.0),
-      new THREE.Vector3(-25.0, 8.5, -60.0),
-      new THREE.Vector3(-85.0, 8.5, -20.0),
-      new THREE.Vector3(pcbCenterX + pcbW / 2 - 1.0, pcbBaseY + pcbH + 2.5, -13.0) // J1 Pin 2
+    const chA_Jump_Curve = new THREE.CatmullRomCurve3([
+      new THREE.Vector3(-105.0, 15.5, -68.0),
+      new THREE.Vector3(   0.0, 10.0, -85.0),
+      new THREE.Vector3( 105.0, 15.5, -65.0)
     ]);
-    const chA_ret_Mesh = new THREE.Mesh(new THREE.TubeGeometry(chA_ret_Curve, 36, 0.65, 8, false), wireBlackMat);
-    cablesGroup.add(chA_ret_Mesh);
+    cablesGroup.add(new THREE.Mesh(new THREE.TubeGeometry(chA_Jump_Curve, 24, 0.7, 8, false), wireBlueMat));
 
-    // (d) Channel B Exciter Wiring (24AWG Red/Black Pair, J2 -> Exciter 3 -> Exciter 4)
-    // Exciter 3 is at (-105, 18, +65), Exciter 4 is at (+105, 18, +65)
-    // Branch 1: J2 to Exciter 3 (Red wire)
-    const chB_p1_Curve = new THREE.CatmullRomCurve3([
-      new THREE.Vector3(pcbCenterX + pcbW / 2 - 1.0, pcbBaseY + pcbH + 2.5, +11.0), // J2 Pin 1
-      new THREE.Vector3(-92.0, 8.5, +25.0),
-      new THREE.Vector3(-98.0, 10.0, +48.0),
-      new THREE.Vector3(-105.0, 15.0, +58.0) // Exciter 3 Terminal A
+    // CH B Wire (Blue): From Grommet to Exciter 3 (-105, 18, +65) -> Exciter 4 (105, 18, +65)
+    const chB_Wire_Curve = new THREE.CatmullRomCurve3([
+      new THREE.Vector3(-220.0, 11.25, 0.0),
+      new THREE.Vector3(-180.0, 10.0, +25.0),
+      new THREE.Vector3(-140.0, 10.0, +50.0),
+      new THREE.Vector3(-105.0, 15.5, +62.0)
     ]);
-    const chB_p1_Mesh = new THREE.Mesh(new THREE.TubeGeometry(chB_p1_Curve, 24, 0.65, 8, false), wireRedMat);
-    cablesGroup.add(chB_p1_Mesh);
+    cablesGroup.add(new THREE.Mesh(new THREE.TubeGeometry(chB_Wire_Curve, 24, 0.7, 8, false), wireBlueMat));
 
-    // Series Jumper: Exciter 3 to Exciter 4
-    const chB_jump_Curve = new THREE.CatmullRomCurve3([
-      new THREE.Vector3(-105.0, 15.0, +72.0), // Exciter 3 Terminal B
-      new THREE.Vector3(-55.0, 9.5, +85.0),
-      new THREE.Vector3(  0.0, 9.0, +90.0),   // Center cavity clearance
-      new THREE.Vector3( 55.0, 9.5, +85.0),
-      new THREE.Vector3(105.0, 15.0, +72.0)  // Exciter 4 Terminal A
+    const chB_Jump_Curve = new THREE.CatmullRomCurve3([
+      new THREE.Vector3(-105.0, 15.5, +68.0),
+      new THREE.Vector3(   0.0, 10.0, +85.0),
+      new THREE.Vector3( 105.0, 15.5, +65.0)
     ]);
-    const chB_jump_Mesh = new THREE.Mesh(new THREE.TubeGeometry(chB_jump_Curve, 32, 0.65, 8, false), wireBlueMat);
-    cablesGroup.add(chB_jump_Mesh);
+    cablesGroup.add(new THREE.Mesh(new THREE.TubeGeometry(chB_Jump_Curve, 24, 0.7, 8, false), wireRedMat));
 
-    // Return: Exciter 4 back to J2 (Black wire)
-    const chB_ret_Curve = new THREE.CatmullRomCurve3([
-      new THREE.Vector3(105.0, 15.0, +58.0), // Exciter 4 Terminal B
-      new THREE.Vector3( 45.0, 8.5, +78.0),
-      new THREE.Vector3(-25.0, 8.5, +60.0),
-      new THREE.Vector3(-85.0, 8.5, +20.0),
-      new THREE.Vector3(pcbCenterX + pcbW / 2 - 1.0, pcbBaseY + pcbH + 2.5, +13.0) // J2 Pin 2
+    // Return Ground Wire back to Grommet
+    const ret_Wire_Curve = new THREE.CatmullRomCurve3([
+      new THREE.Vector3( 105.0, 15.5, -60.0),
+      new THREE.Vector3(  20.0,  9.0,   0.0),
+      new THREE.Vector3(-100.0,  9.0,   0.0),
+      new THREE.Vector3(-220.0, 11.25,  0.0)
     ]);
-    const chB_ret_Mesh = new THREE.Mesh(new THREE.TubeGeometry(chB_ret_Curve, 36, 0.65, 8, false), wireBlackMat);
-    cablesGroup.add(chB_ret_Mesh);
-
-    // (e) RF Antenna Micro-Coaxial Cable & FPC Antenna Patch
-    const rfCoaxCurve = new THREE.CatmullRomCurve3([
-      new THREE.Vector3(pcbCenterX + 6.0, pcbBaseY + pcbH + 3.8, -16.0), // u.FL port
-      new THREE.Vector3(-150.0, 12.0, -35.0),
-      new THREE.Vector3(-180.0, 11.0, -75.0),
-      new THREE.Vector3(-205.0, 13.5, -95.0)  // Side wall attachment point
-    ]);
-    const rfCoaxMesh = new THREE.Mesh(new THREE.TubeGeometry(rfCoaxCurve, 24, 0.55, 8, false), wireCoaxMat);
-    cablesGroup.add(rfCoaxMesh);
-
-    // FPC Flexible Antenna Patch adhered to inner side rail
-    const fpcGeom = new THREE.BoxGeometry(25.0, 8.0, 0.4);
-    const fpcMesh = new THREE.Mesh(fpcGeom, fpcAntennaMat);
-    fpcMesh.position.set(-205.0, 13.5, -98.0);
-    cablesGroup.add(fpcMesh);
+    cablesGroup.add(new THREE.Mesh(new THREE.TubeGeometry(ret_Wire_Curve, 28, 0.8, 8, false), wireBlackMat));
 
     partGroups.cables.add(cablesGroup);
-
 
     // Laser marking rectangles on underside of top plate (INFO layer)
     exciterCoords.forEach(([ex, ez]) => {
@@ -947,13 +937,16 @@
       // When f = 0, all parts meet flush with 0.00mm tolerance:
       partGroups.bolts.position.y = -f * 0.4;
       partGroups.bottom.position.y = 0;
-      partGroups.gasket.position.y = f * 0.22;
-      partGroups.pcb.position.y = f * 0.45;        // PCB elevates gracefully
-      partGroups.frame.position.y = f * 0.65;
-      partGroups.inserts.position.y = f * 0.65;
-      partGroups.cables.position.y = f * 0.80;     // Cabling moves with cavity
-      partGroups.exciters.position.y = f * 1.05;
-      partGroups.top.position.y = f * 1.35;
+      partGroups.gasket.position.y = f * 0.25;
+      partGroups.frame.position.y = f * 0.55;
+      partGroups.inserts.position.y = f * 0.55;
+      partGroups.exciters.position.y = f * 0.85;
+      partGroups.top.position.y = f * 1.15;
+
+      // External Controller Pod & PCB explodes in X & Y for clarity:
+      partGroups.pod.position.x = -f * 0.6;
+      partGroups.pcb.position.x = -f * 0.6;
+      partGroups.pcb.position.y = f * 0.35;
     }
 
     function setExplode(val) {
