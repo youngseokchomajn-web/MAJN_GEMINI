@@ -255,7 +255,7 @@
         <label class="toggle-item">
           <div class="toggle-label">
             <span class="color-dot" style="background:#ef4444;"></span>
-            <span>전원 및 진동자 배선 (하네스/그로밋)</span>
+            <span>전원/진동자 배선 & 안티래틀 클립 (6개소)</span>
           </div>
           <input type="checkbox" checked onchange="togglePart('cables', this.checked)">
         </label>
@@ -984,11 +984,28 @@
     cablesGroup.add(pwrMesh);
 
     // 4. Clean Internal Cavity Exciter Wiring (NO PCB INSIDE BED!)
-    // Inside the bed, harness splits into CH A and CH B to drive the 4 exciters cleanly:
+    // Anti-Rattle Silicone Cable Retention Clips & Vibration-Damped Wire Guides
+    const clipGeom = new THREE.BoxGeometry(4.0, 3.0, 8.0);
+    const clipMat = new THREE.MeshStandardMaterial({ color: 0x334155, roughness: 0.8 }); // Silicone rubber dampening clips
+    const clipPositions = [
+      [-170.0, 10.5, -35.0],
+      [-170.0, 10.5,  35.0],
+      [   0.0, 10.5, -88.0],
+      [   0.0, 10.5,  88.0],
+      [  50.0, 10.5, -88.0],
+      [  50.0, 10.5,  88.0]
+    ];
+    clipPositions.forEach(([cx, cy, cz]) => {
+      const cMesh = new THREE.Mesh(clipGeom, clipMat);
+      cMesh.position.set(cx, cy, cz);
+      cablesGroup.add(cMesh);
+    });
+
     // CH A Wire (Red): From Grommet to Exciter 1 (-105, 18, -65) -> Exciter 2 (105, 18, -65)
     const chA_Wire_Curve = new THREE.CatmullRomCurve3([
       new THREE.Vector3(-220.0, 11.25, 0.0),
       new THREE.Vector3(-180.0, 10.0, -25.0),
+      new THREE.Vector3(-170.0, 10.5, -35.0), // Anchored at Clip 1
       new THREE.Vector3(-140.0, 10.0, -50.0),
       new THREE.Vector3(-105.0, 15.5, -62.0)
     ]);
@@ -996,7 +1013,8 @@
 
     const chA_Jump_Curve = new THREE.CatmullRomCurve3([
       new THREE.Vector3(-105.0, 15.5, -68.0),
-      new THREE.Vector3(   0.0, 10.0, -85.0),
+      new THREE.Vector3(   0.0, 10.5, -88.0), // Anchored at Frame Rail Clip 3
+      new THREE.Vector3(  50.0, 10.5, -88.0), // Anchored at Frame Rail Clip 5
       new THREE.Vector3( 105.0, 15.5, -65.0)
     ]);
     cablesGroup.add(new THREE.Mesh(new THREE.TubeGeometry(chA_Jump_Curve, 24, 0.7, 8, false), wireBlueMat));
@@ -1005,6 +1023,7 @@
     const chB_Wire_Curve = new THREE.CatmullRomCurve3([
       new THREE.Vector3(-220.0, 11.25, 0.0),
       new THREE.Vector3(-180.0, 10.0, +25.0),
+      new THREE.Vector3(-170.0, 10.5, +35.0), // Anchored at Clip 2
       new THREE.Vector3(-140.0, 10.0, +50.0),
       new THREE.Vector3(-105.0, 15.5, +62.0)
     ]);
@@ -1012,7 +1031,8 @@
 
     const chB_Jump_Curve = new THREE.CatmullRomCurve3([
       new THREE.Vector3(-105.0, 15.5, +68.0),
-      new THREE.Vector3(   0.0, 10.0, +85.0),
+      new THREE.Vector3(   0.0, 10.5, +88.0), // Anchored at Frame Rail Clip 4
+      new THREE.Vector3(  50.0, 10.5, +88.0), // Anchored at Frame Rail Clip 6
       new THREE.Vector3( 105.0, 15.5, +65.0)
     ]);
     cablesGroup.add(new THREE.Mesh(new THREE.TubeGeometry(chB_Jump_Curve, 24, 0.7, 8, false), wireRedMat));
