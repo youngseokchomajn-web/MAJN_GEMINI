@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>마중 스마트배시넷 — 영아 안전 격리형 분리 컨트롤러 3D 디지털 트윈 (외부 컨트롤러 + 초슬림 배시넷 패드)</title>
+  <title>마중 스마트배시넷 — 롱 하네스 분리형 컨트롤러 팟 (물리버튼 3종 & 4단계 진동 LED)</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; }
     body {
@@ -182,10 +182,10 @@
     <div>
       <div class="flex items-center gap-2">
         <span class="badge badge-green">오차 0.00mm 정밀 교정</span>
-        <span class="badge badge-amber">분리형 아키텍처 (대안 C)</span>
+        <span class="badge badge-amber">1.2m 롱 하네스 + 3버튼 팟</span>
       </div>
-      <h1 class="mt-2">마중 배시넷 3D 정밀 어셈블리</h1>
-      <p class="subtitle">영아 침대(발열·RF 제로화) + 침대 외벽 분리형 스마트 컨트롤러 팟(External Pod) 3D 통합 모델</p>
+      <h1 class="mt-2">마중 배시넷 3D 디지털 트윈</h1>
+      <p class="subtitle">배시넷 패드(발열·RF 0%) + 침대 난간 거치형 외장 컨트롤러 팟(전원 ON/OFF, 강도 +/- 물리버튼)</p>
     </div>
 
     <!-- Explode Distance Slider -->
@@ -300,12 +300,13 @@
 
     <!-- Detached External Controller Fact Sheet -->
     <div class="card" style="font-size:11px; line-height:1.5;">
-      <div class="card-title">🛡️ 분리형(Detached) 아키텍처 4대 혁신</div>
-      <div>• <strong>영아 안전 100%</strong>: 침대 내부에는 12V 승압·발열·2.4GHz RF 전무</div>
-      <div>• <strong>외부 컨트롤러 팟</strong>: 95×70×24mm 컴팩트 인클로저 (난간 거치형)</div>
-      <div>• <strong>배시넷 패드 초슬림화</strong>: PCB 볼트홀 불필요, 진동자 4개 전용 공간화</div>
-      <div>• <strong>진동 피로 제로</strong>: 30~65Hz 충격이 PCB 솔더 조인트에 전달되지 않음</div>
-      <div>• <strong>하네스 케이블</strong>: 1m 유연 실리콘 하네스로 침대와 컨트롤러 원클릭 연결</div>
+      <div class="card-title">🛡️ 외장 컨트롤러 팟 & 물리버튼 사양</div>
+      <div>• <strong>어두운 방 직관 조작</strong>: 스마트폰 앱 없이 3개 물리버튼으로 즉시 제어</div>
+      <div>• <strong>전원 ON/OFF 버튼</strong>: 오목형 소프트 실리콘 버튼 (롱프레스 전원 차단 / 숏프레스 대기)</div>
+      <div>• <strong>강도 조절 (+ / -) 버튼</strong>: 4단계 진동 진폭 스텝 조절 (+ 증가 / - 감소)</div>
+      <div>• <strong>4-Segment LED 인디케이터</strong>: 진동 세기 4단계 실시간 표시 (수면 방해 없는 은은한 청백색)</div>
+      <div>• <strong>1.2m 롱 하네스 케이블</strong>: 침대 난간(Crib Rail) C-클립 거치 또는 옆 협탁에 여유 있게 배치</div>
+      <div>• <strong>영아 안전 100%</strong>: 아기 침대 패드 내부에는 12V 승압·발열·2.4GHz RF 전무</div>
     </div>
   </div>
 
@@ -321,20 +322,20 @@
 
     <div id="spec-box">
       <div class="spec-item">
-        <span class="spec-k">외경 치수</span>
+        <span class="spec-k">배시넷 패드 외경</span>
         <span class="spec-v">450 × 250 × 22.5 mm</span>
       </div>
       <div class="spec-item">
-        <span class="spec-k">내부 유효 높이</span>
-        <span class="spec-v">13.50 mm</span>
+        <span class="spec-k">유연 하네스 케이블</span>
+        <span class="spec-v" style="color:#38bdf8;">1,200 mm (롱 분리형)</span>
       </div>
       <div class="spec-item">
-        <span class="spec-k">익사이터 상하 유격</span>
-        <span class="spec-v" style="color:#10b981;">3.39 mm (바터밍 0%)</span>
+        <span class="spec-k">외장 리모컨 물리버튼</span>
+        <span class="spec-v" style="color:#a855f7;">전원 / 강도(+/-) / 4 LED</span>
       </div>
       <div class="spec-item">
-        <span class="spec-k">외벽 단차</span>
-        <span class="spec-v" style="color:#10b981;">0.00 mm (완전 일치)</span>
+        <span class="spec-k">침대 내부 발열 & RF</span>
+        <span class="spec-v" style="color:#10b981;">0.0 W / 0.0 mW (완전 격리)</span>
       </div>
     </div>
   </div>
@@ -347,8 +348,8 @@
     const scene = new THREE.Scene();
     scene.background = new THREE.Color(0x0c1017);
 
-    const camera = new THREE.PerspectiveCamera(38, container.clientWidth / container.clientHeight, 1, 3000);
-    camera.position.set(380, 260, 420);
+    const camera = new THREE.PerspectiveCamera(38, container.clientWidth / container.clientHeight, 1, 3500);
+    camera.position.set(200, 280, 620);
 
     const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
     renderer.setSize(container.clientWidth, container.clientHeight);
@@ -360,10 +361,10 @@
     const controls = new THREE.OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
     controls.dampingFactor = 0.05;
-    controls.target.set(0, 11.25, 0); // Center of 22.5mm box
+    controls.target.set(-100, 15, 0); // Balanced focus between bassinet pad and external pod
     controls.maxPolarAngle = Math.PI - 0.05;
     controls.minDistance = 30;
-    controls.maxDistance = 1500;
+    controls.maxDistance = 1800;
 
     // --- 2. Lighting ---
     const ambientLight = new THREE.AmbientLight(0xffffff, 0.75);
@@ -730,60 +731,157 @@
     topMesh.castShadow = true;
     partGroups.top.add(topMesh);
     // ==========================================
-    // 6.5) DETACHED ARCHITECTURE: EXTERNAL CONTROLLER POD & BED PAD
-    // PCB & Power are MOVED OUTSIDE THE BASSINET to external housing!
+    // 6.5) DETACHED ARCHITECTURE: EXTENDED EXTERNAL CONTROLLER POD & 1.2M HARNESS
+    // The PCB & Power are MOVED OUTSIDE THE BASSINET to a remote handheld/rail pod!
+    // Equipped with 3 Tactile Physical Buttons (Power ON/OFF, Intensity +/-) & 4-LED Bar
     // ==========================================
     const podGroup = new THREE.Group();
     const pcbGroup = new THREE.Group();
     const cablesGroup = new THREE.Group();
 
-    // External Controller Pod Placement (Placed on left side of bassinet)
-    const podCenterX = -310.0; // 85mm standoff clearance from bassinet edge (-225)
-    const podCenterY = 11.25;  // Aligned with bassinet center height
-    const podCenterZ = 0.0;
-    const podW = 96.0;  // Length (X)
-    const podD = 74.0;  // Width (Z)
-    const podH = 24.0;  // Height (Y)
+    // Extended External Controller Pod Placement (Farther out on crib rail / nightstand)
+    const podCenterX = -430.0; // Extended clearance ~205mm away from bassinet edge (-225)
+    const podCenterY = 26.0;   // Elevated at comfortable bedside rail height
+    const podCenterZ = 15.0;
+    const podW = 108.0; // Length (X)
+    const podD = 66.0;  // Width (Z)
+    const podH = 22.0;  // Height (Y)
 
-    // (a) External Controller Bottom Enclosure Box
+    // (a) External Controller Bottom Enclosure Box (Dark Graphite ABS)
     const podBottomGeom = new THREE.BoxGeometry(podW, 14.0, podD);
     const podBottomMesh = new THREE.Mesh(podBottomGeom, podHousingMat);
-    podBottomMesh.position.set(podCenterX, podCenterY - 5.0, podCenterZ);
+    podBottomMesh.position.set(podCenterX, podCenterY - 4.0, podCenterZ);
     podBottomMesh.receiveShadow = true;
     podGroup.add(podBottomMesh);
 
-    // (b) Smoked Acrylic Top Lid (Allows viewing PCB inside)
-    const podLidGeom = new THREE.BoxGeometry(podW, 4.0, podD);
+    // (b) Ergonomic Top Fascia Cover (Matte Slate / Beveled Control Panel)
+    const podLidGeom = new THREE.BoxGeometry(podW - 2.0, 4.0, podD - 2.0);
     const podLidMesh = new THREE.Mesh(podLidGeom, podLidMat);
-    podLidMesh.position.set(podCenterX, podCenterY + 10.0, podCenterZ);
+    podLidMesh.position.set(podCenterX, podCenterY + 5.0, podCenterZ);
     podGroup.add(podLidMesh);
 
-    // (c) Controller Status LED & Power Tact Button
-    const ledGeom = new THREE.CylinderGeometry(1.5, 1.5, 2.0, 16);
-    const ledMesh = new THREE.Mesh(ledGeom, ledBlueMat);
-    ledMesh.position.set(podCenterX + 25.0, podCenterY + 12.0, podCenterZ - 20.0);
-    podGroup.add(ledMesh);
+    // Top Control Faceplate Inset (Matte Black Membrane Face)
+    const facePlateGeom = new THREE.BoxGeometry(podW - 14.0, 1.2, podD - 14.0);
+    const facePlateMesh = new THREE.Mesh(facePlateGeom, new THREE.MeshStandardMaterial({
+      color: 0x111827,
+      roughness: 0.6,
+      metalness: 0.2
+    }));
+    facePlateMesh.position.set(podCenterX, podCenterY + 7.6, podCenterZ);
+    podGroup.add(facePlateMesh);
 
-    const btnGeom = new THREE.CylinderGeometry(3.5, 3.5, 3.0, 16);
-    const btnMesh = new THREE.Mesh(btnGeom, steelMat);
-    btnMesh.position.set(podCenterX + 25.0, podCenterY + 12.0, podCenterZ + 15.0);
-    podGroup.add(btnMesh);
+    // ==========================================
+    // PHYSICAL BUTTONS & USER INTERFACE (물리 버튼 3종 & 4단계 LED 바)
+    // ==========================================
 
-    // Bedside Frame Mount Bracket (Aluminum hook to hang on bassinet rail)
-    const hookGeom = new THREE.BoxGeometry(10.0, 40.0, 15.0);
-    const hookMesh = new THREE.Mesh(hookGeom, steelMat);
-    hookMesh.position.set(podCenterX + podW / 2 + 5.0, podCenterY + 10.0, podCenterZ);
-    podGroup.add(hookMesh);
+    // 1. Power ON/OFF Tact Button (Concave Ergonomic Power Switch)
+    const btnPwrBezelGeom = new THREE.CylinderGeometry(8.0, 8.5, 2.5, 24);
+    const btnPwrBezelMesh = new THREE.Mesh(btnPwrBezelGeom, steelMat);
+    btnPwrBezelMesh.position.set(podCenterX - 30.0, podCenterY + 8.5, podCenterZ - 10.0);
+    podGroup.add(btnPwrBezelMesh);
+
+    const btnPwrGeom = new THREE.CylinderGeometry(6.5, 6.5, 3.2, 24);
+    const btnPwrMesh = new THREE.Mesh(btnPwrGeom, new THREE.MeshStandardMaterial({
+      color: 0x2563eb, // Deep Tech Blue Soft Silicon
+      roughness: 0.3,
+      metalness: 0.2
+    }));
+    btnPwrMesh.position.set(podCenterX - 30.0, podCenterY + 9.2, podCenterZ - 10.0);
+    podGroup.add(btnPwrMesh);
+
+    // Power Ring Indicator (LED glow ring)
+    const pwrRingGeom = new THREE.TorusGeometry(3.5, 0.6, 12, 24);
+    pwrRingGeom.rotateX(Math.PI / 2);
+    const pwrRingMesh = new THREE.Mesh(pwrRingGeom, new THREE.MeshBasicMaterial({ color: 0x60a5fa }));
+    pwrRingMesh.position.set(podCenterX - 30.0, podCenterY + 10.9, podCenterZ - 10.0);
+    podGroup.add(pwrRingMesh);
+
+    // Power Status LED Pinhole
+    const pwrStatusLed = new THREE.Mesh(new THREE.CylinderGeometry(1.2, 1.2, 1.5, 16), ledBlueMat);
+    pwrStatusLed.position.set(podCenterX - 30.0, podCenterY + 8.5, podCenterZ - 21.0);
+    podGroup.add(pwrStatusLed);
+
+    // 2. Vibration Intensity UP (+) Button
+    const btnUpBezel = new THREE.Mesh(new THREE.CylinderGeometry(6.5, 7.0, 2.2, 20), steelMat);
+    btnUpBezel.position.set(podCenterX + 8.0, podCenterY + 8.5, podCenterZ - 12.0);
+    podGroup.add(btnUpBezel);
+
+    const btnUpMesh = new THREE.Mesh(new THREE.CylinderGeometry(5.2, 5.2, 3.0, 20), new THREE.MeshStandardMaterial({
+      color: 0x374151,
+      roughness: 0.4
+    }));
+    btnUpMesh.position.set(podCenterX + 8.0, podCenterY + 9.0, podCenterZ - 12.0);
+    podGroup.add(btnUpMesh);
+
+    // Plus (+) Symbol Emboss
+    const plusH = new THREE.Mesh(new THREE.BoxGeometry(4.0, 0.6, 1.2), steelMat);
+    plusH.position.set(podCenterX + 8.0, podCenterY + 10.7, podCenterZ - 12.0);
+    podGroup.add(plusH);
+    const plusV = new THREE.Mesh(new THREE.BoxGeometry(1.2, 0.6, 4.0), steelMat);
+    plusV.position.set(podCenterX + 8.0, podCenterY + 10.7, podCenterZ - 12.0);
+    podGroup.add(plusV);
+
+    // 3. Vibration Intensity DOWN (-) Button
+    const btnDownBezel = new THREE.Mesh(new THREE.CylinderGeometry(6.5, 7.0, 2.2, 20), steelMat);
+    btnDownBezel.position.set(podCenterX + 8.0, podCenterY + 8.5, podCenterZ + 12.0);
+    podGroup.add(btnDownBezel);
+
+    const btnDownMesh = new THREE.Mesh(new THREE.CylinderGeometry(5.2, 5.2, 3.0, 20), new THREE.MeshStandardMaterial({
+      color: 0x374151,
+      roughness: 0.4
+    }));
+    btnDownMesh.position.set(podCenterX + 8.0, podCenterY + 9.0, podCenterZ + 12.0);
+    podGroup.add(btnDownMesh);
+
+    // Minus (-) Symbol Emboss
+    const minusBar = new THREE.Mesh(new THREE.BoxGeometry(4.0, 0.6, 1.2), steelMat);
+    minusBar.position.set(podCenterX + 8.0, podCenterY + 10.7, podCenterZ + 12.0);
+    podGroup.add(minusBar);
+
+    // 4. 4-Segment Vibration Intensity LED Bar (Level 1, 2, 3, 4)
+    const ledCyanActiveMat = new THREE.MeshBasicMaterial({ color: 0x38bdf8 });
+    const ledCyanDimMat = new THREE.MeshBasicMaterial({ color: 0x0f2a4a });
+    const ledZPositions = [-18.0, -8.0, 2.0, 12.0];
+    
+    ledZPositions.forEach((lz, idx) => {
+      // Small horizontal pill lens (1.6 x 0.8 x 4.0 mm)
+      const barLedGeom = new THREE.BoxGeometry(2.0, 1.5, 5.0);
+      const isLit = idx <= 2; // Level 3 active by default showcase
+      const barLedMesh = new THREE.Mesh(barLedGeom, isLit ? ledCyanActiveMat : ledCyanDimMat);
+      barLedMesh.position.set(podCenterX + 28.0, podCenterY + 8.4, podCenterZ + lz);
+      podGroup.add(barLedMesh);
+
+      // Bezel frame for LED
+      const barFrame = new THREE.Mesh(new THREE.BoxGeometry(2.6, 1.2, 5.8), steelMat);
+      barFrame.position.set(podCenterX + 28.0, podCenterY + 8.0, podCenterZ + lz);
+      podGroup.add(barFrame);
+    });
+
+    // 5. Aluminum Logo & Status Nameplate
+    const namePlateGeom = new THREE.BoxGeometry(28.0, 0.4, 12.0);
+    const namePlateMesh = new THREE.Mesh(namePlateGeom, steelMat);
+    namePlateMesh.position.set(podCenterX - 18.0, podCenterY + 8.3, podCenterZ + 10.0);
+    podGroup.add(namePlateMesh);
+
+    // 6. Bedside Frame Mount Bracket (Heavy-Duty Aluminum Crib Rail Clamp / Hook)
+    const hookBase = new THREE.Mesh(new THREE.BoxGeometry(14.0, 50.0, 20.0), steelMat);
+    hookBase.position.set(podCenterX - podW / 2 - 7.0, podCenterY + 8.0, podCenterZ);
+    podGroup.add(hookBase);
+
+    // C-clamp lip curving over bedside rail
+    const hookLip = new THREE.Mesh(new THREE.BoxGeometry(32.0, 12.0, 20.0), steelMat);
+    hookLip.position.set(podCenterX - podW / 2 - 20.0, podCenterY + 30.0, podCenterZ);
+    podGroup.add(hookLip);
 
     partGroups.pod.add(podGroup);
 
     // ==========================================
-    // (B) PCB MAINBOARD (80 x 60 x 1.6 mm) INSIDE EXTERNAL POD
+    // (B) PCB MAINBOARD (85 x 55 x 1.6 mm) INSIDE EXTERNAL POD
     // ==========================================
-    const pcbW = 80.0;
-    const pcbD = 60.0;
+    const pcbW = 85.0;
+    const pcbD = 55.0;
     const pcbH = 1.6;
-    const pcbY = podCenterY - 2.0;
+    const pcbY = podCenterY - 1.5;
 
     const pcbGeom = new THREE.BoxGeometry(pcbW, pcbH, pcbD);
     const pcbMesh = new THREE.Mesh(pcbGeom, pcbMat);
@@ -793,8 +891,8 @@
 
     // 4 Standoffs inside External Pod
     const pcbOffsets = [
-      [-pcbW/2 + 3.5, -pcbD/2 + 3.5], [ pcbW/2 - 3.5, -pcbD/2 + 3.5],
-      [-pcbW/2 + 3.5,  pcbD/2 - 3.5], [ pcbW/2 - 3.5,  pcbD/2 - 3.5]
+      [-pcbW/2 + 4.0, -pcbD/2 + 4.0], [ pcbW/2 - 4.0, -pcbD/2 + 4.0],
+      [-pcbW/2 + 4.0,  pcbD/2 - 4.0], [ pcbW/2 - 4.0,  pcbD/2 - 4.0]
     ];
     pcbOffsets.forEach(([ox, oz]) => {
       const soGeom = new THREE.CylinderGeometry(2.0, 2.0, 4.0, 6);
@@ -809,67 +907,80 @@
     });
 
     // Major ICs on external PCB
-    // ESP32-WROOM-32UE
+    // ESP32-WROOM-32UE (RF Isolated outside the bassinet)
     const espGeom = new THREE.BoxGeometry(18.0, 3.2, 19.2);
     const espMesh = new THREE.Mesh(espGeom, rfShieldMat);
-    espMesh.position.set(podCenterX - 10.0, pcbY + pcbH/2 + 1.6, -12.0);
+    espMesh.position.set(podCenterX - 18.0, pcbY + pcbH/2 + 1.6, -10.0);
     pcbGroup.add(espMesh);
 
-    // USB-C 5V Input Port (Faces outside the pod, -X)
+    // USB-C 5V Input Port (Faces outside -X away from bassinet)
     const usbGeom = new THREE.BoxGeometry(9.0, 3.2, 7.5);
     const usbMesh = new THREE.Mesh(usbGeom, steelMat);
     usbMesh.position.set(podCenterX - podW/2 + 4.5, pcbY + pcbH/2 + 1.6, 0.0);
     pcbGroup.add(usbMesh);
 
-    // TAS5805M Class-D Amp
+    // TAS5805M Class-D Amp (Heat Isolated outside bassinet)
     const tasGeom = new THREE.BoxGeometry(9.7, 1.2, 4.4);
     const tasMesh = new THREE.Mesh(tasGeom, icBlackMat);
-    tasMesh.position.set(podCenterX + 10.0, pcbY + pcbH/2 + 0.6, 12.0);
+    tasMesh.position.set(podCenterX + 8.0, pcbY + pcbH/2 + 0.6, 10.0);
     pcbGroup.add(tasMesh);
 
     // Bourns SRP6540-4R7M Power Inductor
     const indGeom = new THREE.BoxGeometry(6.5, 4.0, 6.5);
     const indMesh = new THREE.Mesh(indGeom, icBlackMat);
-    indMesh.position.set(podCenterX - 20.0, pcbY + pcbH/2 + 2.0, 0.0);
+    indMesh.position.set(podCenterX - 6.0, pcbY + pcbH/2 + 2.0, 10.0);
     pcbGroup.add(indMesh);
 
     // External Audio Output 4-Pin Locking Connector (Faces +X towards bassinet)
-    const outConnGeom = new THREE.BoxGeometry(8.0, 6.0, 12.0);
+    const outConnGeom = new THREE.BoxGeometry(10.0, 7.0, 14.0);
     const outConnMesh = new THREE.Mesh(outConnGeom, steelMat);
-    outConnMesh.position.set(podCenterX + podW/2 - 4.0, pcbY + pcbH/2 + 3.0, 0.0);
+    outConnMesh.position.set(podCenterX + podW/2 - 5.0, pcbY + pcbH/2 + 3.5, 0.0);
     pcbGroup.add(outConnMesh);
 
     partGroups.pcb.add(pcbGroup);
 
     // ==========================================
-    // (C) DETACHED HARNESS & SILICONE GROMMET
+    // (C) EXTENDED 1.2M FLEXIBLE HARNESS & SILICONE GROMMET
     // ==========================================
     // 1. External Silicone Grommet on Bassinet Short Rail (X = -222.75)
-    const grommetOuter = new THREE.CylinderGeometry(5.5, 5.5, 6.5, 20);
+    const grommetOuter = new THREE.CylinderGeometry(6.0, 6.0, 7.0, 20);
     grommetOuter.rotateZ(Math.PI / 2);
     const grommetMesh = new THREE.Mesh(grommetOuter, grommetRubberMat);
     grommetMesh.position.set(-222.75, 11.25, 0.0);
     cablesGroup.add(grommetMesh);
 
-    // 2. Main Bed-to-Pod Flexible Braided Harness (Connects External Pod -> Bed Grommet)
-    // Runs from External Pod Output (+X) into Bed Pad Grommet (-222.75)
+    // Strain Relief Boots at both ends
+    const bootBed = new THREE.Mesh(new THREE.CylinderGeometry(3.8, 5.2, 12.0, 16), grommetRubberMat);
+    bootBed.rotateZ(Math.PI / 2);
+    bootBed.position.set(-228.0, 11.25, 0.0);
+    cablesGroup.add(bootBed);
+
+    const bootPod = new THREE.Mesh(new THREE.CylinderGeometry(3.8, 5.2, 12.0, 16), grommetRubberMat);
+    bootPod.rotateZ(Math.PI / 2);
+    bootPod.position.set(podCenterX + podW/2 + 6.0, pcbY + pcbH/2 + 3.5, 0.0);
+    cablesGroup.add(bootPod);
+
+    // 2. Main Extended Bed-to-Pod Braided Harness (1.2m representation with realistic gravity droop)
+    // Connecting Bassinet Grommet (-222.75) <---> Remote Controller Pod (-376.0)
     const harnessCurve = new THREE.CatmullRomCurve3([
-      new THREE.Vector3(podCenterX + podW/2, pcbY + pcbH/2 + 3.0, 0.0), // Pod Output
-      new THREE.Vector3(-255.0, 8.0, 15.0),  // Natural graceful curve in air
-      new THREE.Vector3(-235.0, 10.5, 5.0),
-      new THREE.Vector3(-222.75, 11.25, 0.0) // Enters Bassinet Grommet
+      new THREE.Vector3(podCenterX + podW/2, pcbY + pcbH/2 + 3.5, 0.0), // Pod Locking Connector
+      new THREE.Vector3(podCenterX + podW/2 + 25.0, podCenterY + 10.0, 8.0),
+      new THREE.Vector3(-350.0, 0.0, 28.0),     // Smooth sagging loop
+      new THREE.Vector3(-290.0, -12.0, 35.0),    // Lowest gravity droop point (~1.2m flex)
+      new THREE.Vector3(-250.0, 2.0, 18.0),
+      new THREE.Vector3(-222.75, 11.25, 0.0)    // Enters Bassinet Bed Grommet
     ]);
-    const harnessGeom = new THREE.TubeGeometry(harnessCurve, 28, 2.5, 12, false);
+    const harnessGeom = new THREE.TubeGeometry(harnessCurve, 48, 2.8, 16, false);
     const harnessMesh = new THREE.Mesh(harnessGeom, usbCableMat);
     cablesGroup.add(harnessMesh);
 
-    // 3. USB-C Wall Power Adapter Cable (Into Pod from outside left)
+    // 3. USB-C Wall Power Adapter Cable (Into Pod from outside left -X)
     const pwrCurve = new THREE.CatmullRomCurve3([
-      new THREE.Vector3(podCenterX - podW/2 - 50.0, 5.0, -15.0),
-      new THREE.Vector3(podCenterX - podW/2 - 25.0, 8.0, -5.0),
+      new THREE.Vector3(podCenterX - podW/2 - 70.0, 0.0, -20.0),
+      new THREE.Vector3(podCenterX - podW/2 - 35.0, 12.0, -8.0),
       new THREE.Vector3(podCenterX - podW/2, pcbY + pcbH/2 + 1.6, 0.0)
     ]);
-    const pwrMesh = new THREE.Mesh(new THREE.TubeGeometry(pwrCurve, 20, 1.8, 10, false), usbCableMat);
+    const pwrMesh = new THREE.Mesh(new THREE.TubeGeometry(pwrCurve, 24, 2.0, 12, false), usbCableMat);
     cablesGroup.add(pwrMesh);
 
     // 4. Clean Internal Cavity Exciter Wiring (NO PCB INSIDE BED!)
@@ -1013,16 +1124,16 @@
     function toggleCameraView() {
       isTopView = !isTopView;
       if (isTopView) {
-        camera.position.set(0, 550, 0.001);
+        camera.position.set(-100, 680, 0.001);
       } else {
-        camera.position.set(380, 260, 420);
+        camera.position.set(200, 280, 620);
       }
-      controls.target.set(0, 11.25, 0);
+      controls.target.set(-100, 15, 0);
     }
 
     function resetCamera() {
-      camera.position.set(380, 260, 420);
-      controls.target.set(0, 11.25, 0);
+      camera.position.set(200, 280, 620);
+      controls.target.set(-100, 15, 0);
     }
 
     function togglePart(partName, visible) {
