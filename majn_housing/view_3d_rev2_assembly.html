@@ -171,6 +171,140 @@
     .spec-item { display: flex; flex-direction: column; }
     .spec-k { font-size: 10.5px; color: #94a3b8; }
     .spec-v { font-size: 13px; font-weight: 700; color: #38bdf8; font-family: monospace; }
+
+    /* Mobile Responsive Optimizations */
+    #mobile-toggle-btn {
+      display: none;
+      position: absolute;
+      top: 14px;
+      left: 14px;
+      z-index: 50;
+      background: rgba(17, 24, 39, 0.92);
+      border: 1px solid #4b5563;
+      color: #f1f5f9;
+      padding: 8px 14px;
+      border-radius: 20px;
+      font-size: 12.5px;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+      backdrop-filter: blur(8px);
+      align-items: center;
+      gap: 6px;
+    }
+    #mobile-toggle-btn:hover { background: #1f2937; border-color: #3b82f6; }
+
+    #sidebar-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.65);
+      z-index: 25;
+      backdrop-filter: blur(4px);
+    }
+
+    .sidebar-close-btn {
+      display: none;
+      background: #374151;
+      border: none;
+      color: #94a3b8;
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 800;
+      font-size: 14px;
+      align-items: center;
+      justify-content: center;
+    }
+    .sidebar-close-btn:hover { background: #ef4444; color: #fff; }
+
+    #mobile-dock {
+      display: none;
+      position: absolute;
+      bottom: 14px;
+      left: 12px;
+      right: 12px;
+      z-index: 20;
+      background: rgba(17, 24, 39, 0.94);
+      border: 1px solid #374151;
+      backdrop-filter: blur(12px);
+      border-radius: 12px;
+      padding: 10px 14px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.7);
+      flex-direction: column;
+      gap: 8px;
+    }
+    .dock-slider-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 11.5px;
+      color: #cbd5e1;
+    }
+    .dock-btns {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 5px;
+    }
+    .dock-btn {
+      background: #1f2937;
+      border: 1px solid #374151;
+      color: #cbd5e1;
+      padding: 6px 4px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+      text-align: center;
+    }
+    .dock-btn.active { background: #2563eb; color: #fff; border-color: #3b82f6; }
+
+    @media (max-width: 860px) {
+      body {
+        position: relative;
+        overflow: hidden;
+      }
+      #mobile-toggle-btn {
+        display: flex;
+      }
+      #mobile-dock {
+        display: flex;
+      }
+      .sidebar-close-btn {
+        display: flex;
+      }
+      #sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        width: 320px;
+        max-width: 86vw;
+        z-index: 30;
+        transform: translateX(-100%);
+        transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 8px 0 30px rgba(0,0,0,0.8);
+      }
+      #sidebar.open {
+        transform: translateX(0);
+      }
+      #sidebar-backdrop.active {
+        display: block;
+      }
+      #viewport-container {
+        width: 100vw !important;
+        height: 100vh !important;
+        position: absolute;
+        inset: 0;
+      }
+      #overlay-hint {
+        display: none;
+      }
+      #spec-box {
+        display: none; /* 모바일 하단 독과 겹침 방지 */
+      }
+    }
   </style>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
@@ -178,14 +312,18 @@
 <body>
 
   <!-- Sidebar Controls -->
+  <div id="sidebar-backdrop" onclick="toggleSidebar(false)"></div>
   <div id="sidebar">
-    <div>
-      <div class="flex items-center gap-2">
-        <span class="badge badge-green">오차 0.00mm 정밀 교정</span>
-        <span class="badge badge-amber">1.2m 롱 하네스 + 3버튼 팟</span>
+    <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+      <div>
+        <div class="flex items-center gap-2">
+          <span class="badge badge-green">오차 0.00mm 정밀 교정</span>
+          <span class="badge badge-amber">1.2m 롱 하네스 + 3버튼 팟</span>
+        </div>
+        <h1 class="mt-2">마중 배시넷 3D 디지털 트윈</h1>
+        <p class="subtitle">배시넷 패드(발열·RF 0%) + 침대 난간 거치형 외장 컨트롤러 팟(전원 ON/OFF, 강도 +/- 물리버튼)</p>
       </div>
-      <h1 class="mt-2">마중 배시넷 3D 디지털 트윈</h1>
-      <p class="subtitle">배시넷 패드(발열·RF 0%) + 침대 난간 거치형 외장 컨트롤러 팟(전원 ON/OFF, 강도 +/- 물리버튼)</p>
+      <button class="sidebar-close-btn" onclick="toggleSidebar(false)" title="닫기">✕</button>
     </div>
 
     <!-- Explode Distance Slider -->
@@ -312,12 +450,32 @@
 
   <!-- 3D Viewport -->
   <div id="viewport-container">
+    <button id="mobile-toggle-btn" onclick="toggleSidebar(true)">
+      <span>⚙️</span>
+      <span>제어판 / 부품목록</span>
+    </button>
+
     <canvas id="canvas3d"></canvas>
     
     <div id="overlay-hint">
       <div class="hint-row"><span>🖱️ 좌클릭 드래그:</span> <strong>360° 자유 회전</strong></div>
       <div class="hint-row"><span>🔍 휠 스크롤:</span> <strong>초밀착 확대/축소</strong></div>
       <div class="hint-row"><span>✋ 우클릭 드래그:</span> <strong>시점 이동 (Pan)</strong></div>
+    </div>
+
+    <!-- Mobile Quick Control Bottom Dock -->
+    <div id="mobile-dock">
+      <div class="dock-slider-row">
+        <span>🚀 분해도:</span>
+        <input type="range" id="mobileExplodeSlider" min="0" max="80" value="0" style="flex:1;">
+        <span id="mobile-explode-val" style="font-family:monospace; color:#60a5fa; min-width:40px; font-weight:700;">0mm</span>
+      </div>
+      <div class="dock-btns">
+        <button id="m-snap-0" class="dock-btn active" onclick="setExplode(0)">0mm 조립</button>
+        <button id="m-snap-30" class="dock-btn" onclick="setExplode(30)">30mm 분해</button>
+        <button id="m-btn-xray" class="dock-btn" onclick="toggleXray()">X-Ray</button>
+        <button class="dock-btn" onclick="resetCamera()">리셋</button>
+      </div>
     </div>
 
     <div id="spec-box">
@@ -1080,19 +1238,47 @@
       partGroups.pcb.position.y = f * 0.35;
     }
 
+    // Mobile Sidebar Drawer Toggle
+    function toggleSidebar(open) {
+      const sb = document.getElementById('sidebar');
+      const bd = document.getElementById('sidebar-backdrop');
+      if (open) {
+        sb.classList.add('open');
+        bd.classList.add('active');
+      } else {
+        sb.classList.remove('open');
+        bd.classList.remove('active');
+      }
+    }
+
     function setExplode(val) {
       explodeDistance = val;
-      document.getElementById('explodeSlider').value = val;
-      document.getElementById('explode-val').innerText = val === 0 ? '0 mm (완전 조립 상태)' : val + ' mm';
+      const deskSlider = document.getElementById('explodeSlider');
+      const deskVal = document.getElementById('explode-val');
+      const mobSlider = document.getElementById('mobileExplodeSlider');
+      const mobVal = document.getElementById('mobile-explode-val');
+
+      if (deskSlider) deskSlider.value = val;
+      if (deskVal) deskVal.innerText = val === 0 ? '0 mm (완전 조립 상태)' : val + ' mm';
+      if (mobSlider) mobSlider.value = val;
+      if (mobVal) mobVal.innerText = val + 'mm';
       
-      // Update snap buttons
+      // Update snap buttons (Desktop)
       ['btn-snap-0', 'btn-snap-30', 'btn-snap-60'].forEach(id => {
         const btn = document.getElementById(id);
         if (btn) btn.classList.remove('active');
       });
-      if (val === 0) document.getElementById('btn-snap-0').classList.add('active');
-      if (val === 30) document.getElementById('btn-snap-30').classList.add('active');
-      if (val === 60) document.getElementById('btn-snap-60').classList.add('active');
+      if (val === 0 && document.getElementById('btn-snap-0')) document.getElementById('btn-snap-0').classList.add('active');
+      if (val === 30 && document.getElementById('btn-snap-30')) document.getElementById('btn-snap-30').classList.add('active');
+      if (val === 60 && document.getElementById('btn-snap-60')) document.getElementById('btn-snap-60').classList.add('active');
+
+      // Update snap buttons (Mobile)
+      ['m-snap-0', 'm-snap-30'].forEach(id => {
+        const btn = document.getElementById(id);
+        if (btn) btn.classList.remove('active');
+      });
+      if (val === 0 && document.getElementById('m-snap-0')) document.getElementById('m-snap-0').classList.add('active');
+      if (val === 30 && document.getElementById('m-snap-30')) document.getElementById('m-snap-30').classList.add('active');
 
       updateExplodePositions();
     }
@@ -1100,6 +1286,13 @@
     document.getElementById('explodeSlider').addEventListener('input', (e) => {
       setExplode(parseInt(e.target.value, 10));
     });
+
+    const mobInput = document.getElementById('mobileExplodeSlider');
+    if (mobInput) {
+      mobInput.addEventListener('input', (e) => {
+        setExplode(parseInt(e.target.value, 10));
+      });
+    }
 
     // --- 7. View Modes & Toggles ---
     let isXray = false;
@@ -1112,6 +1305,8 @@
       isXray = !isXray;
       document.getElementById('btn-xray').innerText = '반투명 X-Ray: ' + (isXray ? 'ON' : 'OFF');
       document.getElementById('btn-xray').classList.toggle('active', isXray);
+      const mBtn = document.getElementById('m-btn-xray');
+      if (mBtn) mBtn.classList.toggle('active', isXray);
       woodMat.transparent = isXray;
       woodMat.opacity = isXray ? 0.35 : 1.0;
       woodDarkMat.transparent = isXray;
