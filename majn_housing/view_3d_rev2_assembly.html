@@ -1,0 +1,1059 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>마중 스마트배시넷 Rev 2 — 전장·기구 100% 통합 3D 디지털 트윈 뷰어 (PCB·가스켓·배선 완비)</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans KR", sans-serif;
+      background-color: #0b0f19;
+      color: #f1f5f9;
+      overflow: hidden;
+      height: 100vh;
+      display: flex;
+    }
+    #sidebar {
+      width: 380px;
+      background: #111827;
+      border-right: 1px solid #1f2937;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      z-index: 20;
+      box-shadow: 4px 0 25px rgba(0,0,0,0.5);
+      overflow-y: auto;
+    }
+    #sidebar::-webkit-scrollbar { width: 5px; }
+    #sidebar::-webkit-scrollbar-thumb { background: #374151; border-radius: 3px; }
+    
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 8px;
+      border-radius: 9999px;
+      font-size: 11px;
+      font-weight: 700;
+    }
+    .badge-green { background: #065f46; color: #34d399; border: 1px solid #059669; }
+    .badge-amber { background: #78350f; color: #fcd34d; border: 1px solid #d97706; }
+    
+    h1 { font-size: 17px; font-weight: 800; color: #fff; letter-spacing: -0.3px; }
+    .subtitle { font-size: 12px; color: #94a3b8; line-height: 1.4; margin-top: 2px; }
+
+    .card {
+      background: #1f2937;
+      border: 1px solid #374151;
+      border-radius: 10px;
+      padding: 12px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .card-title {
+      font-size: 12px;
+      font-weight: 700;
+      color: #cbd5e1;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .slider-row {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+    .slider-header {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11.5px;
+      color: #94a3b8;
+    }
+    .slider-val { font-family: monospace; font-weight: 700; color: #60a5fa; }
+    input[type="range"] {
+      width: 100%;
+      height: 5px;
+      border-radius: 3px;
+      background: #374151;
+      appearance: none;
+      cursor: pointer;
+      accent-color: #3b82f6;
+    }
+
+    .btn-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+    }
+    .btn {
+      background: #374151;
+      border: 1px solid #4b5563;
+      color: #e2e8f0;
+      padding: 8px 10px;
+      border-radius: 6px;
+      font-size: 11.5px;
+      font-weight: 600;
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.15s ease;
+    }
+    .btn:hover { background: #4b5563; color: #fff; border-color: #60a5fa; }
+    .btn.active { background: #2563eb; color: #fff; border-color: #3b82f6; }
+
+    .toggle-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      font-size: 11.5px;
+    }
+    .toggle-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 5px 8px;
+      background: #111827;
+      border-radius: 6px;
+      border: 1px solid #374151;
+    }
+    .toggle-label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .color-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 2px;
+    }
+
+    #viewport-container {
+      flex: 1;
+      position: relative;
+      background: radial-gradient(circle at 50% 50%, #1e293b 0%, #090d16 100%);
+    }
+    #canvas3d { width: 100%; height: 100%; display: block; }
+    
+    #overlay-hint {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      background: rgba(17, 24, 39, 0.85);
+      border: 1px solid #374151;
+      backdrop-filter: blur(8px);
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-size: 11.5px;
+      color: #cbd5e1;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      pointer-events: none;
+    }
+    .hint-row { display: flex; align-items: center; gap: 6px; }
+
+    #spec-box {
+      position: absolute;
+      bottom: 16px;
+      right: 16px;
+      background: rgba(17, 24, 39, 0.9);
+      border: 1px solid #374151;
+      backdrop-filter: blur(8px);
+      padding: 12px 16px;
+      border-radius: 8px;
+      font-size: 12px;
+      display: flex;
+      gap: 18px;
+    }
+    .spec-item { display: flex; flex-direction: column; }
+    .spec-k { font-size: 10.5px; color: #94a3b8; }
+    .spec-v { font-size: 13px; font-weight: 700; color: #38bdf8; font-family: monospace; }
+  </style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+</head>
+<body>
+
+  <!-- Sidebar Controls -->
+  <div id="sidebar">
+    <div>
+      <div class="flex items-center gap-2">
+        <span class="badge badge-green">오차 0.00mm 정밀 교정</span>
+        <span class="badge badge-amber">4.5T 자작합판 Rev 2</span>
+      </div>
+      <h1 class="mt-2">마중 배시넷 3D 정밀 어셈블리</h1>
+      <p class="subtitle">기구(4.5T) + 실리콘가스켓 + PCB메인보드 + 4채널배선 + USB-C 통합 디지털 트윈</p>
+    </div>
+
+    <!-- Explode Distance Slider -->
+    <div class="card">
+      <div class="slider-row">
+        <div class="slider-header">
+          <span>🚀 층별 분해도 (Explode Distance)</span>
+          <span id="explode-val" class="slider-val">0 mm (조립 상태)</span>
+        </div>
+        <input type="range" id="explodeSlider" min="0" max="80" value="0">
+      </div>
+      <div class="btn-grid">
+        <button id="btn-snap-0" class="btn active" onclick="setExplode(0)">완전 조립 (0mm)</button>
+        <button id="btn-snap-30" class="btn" onclick="setExplode(30)">표준 분해 (30mm)</button>
+        <button id="btn-snap-60" class="btn" onclick="setExplode(60)">전체 전개 (60mm)</button>
+        <button class="btn" onclick="resetCamera()">카메라 리셋</button>
+      </div>
+    </div>
+
+    <!-- View Modes & Clipping -->
+    <div class="card">
+      <div class="card-title">
+        <span>🔬 가시화 모드 & 단면 투시</span>
+      </div>
+      <div class="btn-grid">
+        <button id="btn-xray" class="btn" onclick="toggleXray()">반투명 X-Ray: OFF</button>
+        <button id="btn-section" class="btn" onclick="toggleSection()">하프 단면 절단: OFF</button>
+        <button id="btn-wire" class="btn" onclick="toggleWireframe()">와이어프레임: OFF</button>
+        <button id="btn-ortho" class="btn" onclick="toggleCameraView()">Top/Iso 뷰 전환</button>
+      </div>
+    </div>
+
+    <!-- Layer Visibility Toggles -->
+    <div class="card">
+      <div class="card-title">
+        <span>👁️ 부품별 개별 표시/숨김</span>
+      </div>
+      <div class="toggle-list">
+        <label class="toggle-item">
+          <div class="toggle-label">
+            <span class="color-dot" style="background:#f4e0c8;"></span>
+            <span>4.5T 상판 (450×250 R20)</span>
+          </div>
+          <input type="checkbox" checked onchange="togglePart('top', this.checked)">
+        </label>
+        <label class="toggle-item">
+          <div class="toggle-label">
+            <span class="color-dot" style="background:#1e293b;"></span>
+            <span>TEAX14C02 (37×20mm 4개)</span>
+          </div>
+          <input type="checkbox" checked onchange="togglePart('exciters', this.checked)">
+        </label>
+        <label class="toggle-item">
+          <div class="toggle-label">
+            <span class="color-dot" style="background:#059669;"></span>
+            <span>PCB 메인보드 (80×60mm FR-4)</span>
+          </div>
+          <input type="checkbox" checked onchange="togglePart('pcb', this.checked)">
+        </label>
+        <label class="toggle-item">
+          <div class="toggle-label">
+            <span class="color-dot" style="background:#ef4444;"></span>
+            <span>전원 및 진동자 배선 (하네스/그로밋)</span>
+          </div>
+          <input type="checkbox" checked onchange="togglePart('cables', this.checked)">
+        </label>
+
+        <label class="toggle-item">
+          <div class="toggle-label">
+            <span class="color-dot" style="background:#d4af37;"></span>
+            <span>M3 황동 인서트 너트 (10개)</span>
+          </div>
+          <input type="checkbox" checked onchange="togglePart('inserts', this.checked)">
+        </label>
+        <label class="toggle-item">
+          <div class="toggle-label">
+            <span class="color-dot" style="background:#38bdf8;"></span>
+            <span>1.2T 실리콘 가스켓 (10볼트)</span>
+          </div>
+          <input type="checkbox" checked onchange="togglePart('gasket', this.checked)">
+        </label>
+        <label class="toggle-item">
+          <div class="toggle-label">
+            <span class="color-dot" style="background:#d8be9b;"></span>
+            <span>측판 & R20 코너 기둥 (13.5mm)</span>
+          </div>
+          <input type="checkbox" checked onchange="togglePart('frame', this.checked)">
+        </label>
+        <label class="toggle-item">
+          <div class="toggle-label">
+            <span class="color-dot" style="background:#f4e0c8;"></span>
+            <span>4.5T 하판 (10개 카운터싱크)</span>
+          </div>
+          <input type="checkbox" checked onchange="togglePart('bottom', this.checked)">
+        </label>
+        <label class="toggle-item">
+          <div class="toggle-label">
+            <span class="color-dot" style="background:#94a3b8;"></span>
+            <span>M3 스테인리스 볼트 (10개)</span>
+          </div>
+          <input type="checkbox" checked onchange="togglePart('bolts', this.checked)">
+        </label>
+      </div>
+    </div>
+
+    <!-- Complete Digital Twin Fact Sheet -->
+    <div class="card" style="font-size:11px; line-height:1.5;">
+      <div class="card-title">🔌 전장·기구 통합 디지털 트윈 명세</div>
+      <div>• <strong>외곽 치수</strong>: 450.0 × 250.0 × 22.5 mm (캐비티 높이 13.5mm)</div>
+      <div>• <strong>실리콘 가스켓</strong>: 1.2T 외곽 12mm 림 + 10개소 볼트 러그 일체형</div>
+      <div>• <strong>PCB 메인보드</strong>: 80×60mm 4층 기판, M2.5 황동 스탠드오프(H=5mm) 4점 체결</div>
+      <div>• <strong>주전원 인입</strong>: 단변 ⌀7.0mm 실리콘 그로밋 관통 USB-C 5V 배선</div>
+      <div>• <strong>진동자 배선</strong>: 24AWG 실리콘 연선 (CH A / CH B 각 2개 직렬 16Ω 결선)</div>
+      <div>• <strong>배선 공기 유격</strong>: 내부 13.5mm 중 익사이터(10.11mm) 제외 <strong>+3.39mm 안전 유격</strong> 확보</div>
+    </div>
+  </div>
+
+  <!-- 3D Viewport -->
+  <div id="viewport-container">
+    <canvas id="canvas3d"></canvas>
+    
+    <div id="overlay-hint">
+      <div class="hint-row"><span>🖱️ 좌클릭 드래그:</span> <strong>360° 자유 회전</strong></div>
+      <div class="hint-row"><span>🔍 휠 스크롤:</span> <strong>초밀착 확대/축소</strong></div>
+      <div class="hint-row"><span>✋ 우클릭 드래그:</span> <strong>시점 이동 (Pan)</strong></div>
+    </div>
+
+    <div id="spec-box">
+      <div class="spec-item">
+        <span class="spec-k">외경 치수</span>
+        <span class="spec-v">450 × 250 × 22.5 mm</span>
+      </div>
+      <div class="spec-item">
+        <span class="spec-k">내부 유효 높이</span>
+        <span class="spec-v">13.50 mm</span>
+      </div>
+      <div class="spec-item">
+        <span class="spec-k">익사이터 상하 유격</span>
+        <span class="spec-v" style="color:#10b981;">3.39 mm (바터밍 0%)</span>
+      </div>
+      <div class="spec-item">
+        <span class="spec-k">외벽 단차</span>
+        <span class="spec-v" style="color:#10b981;">0.00 mm (완전 일치)</span>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // --- 1. Scene, Camera, Renderer Setup ---
+    const container = document.getElementById('viewport-container');
+    const canvas = document.getElementById('canvas3d');
+
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x0c1017);
+
+    const camera = new THREE.PerspectiveCamera(38, container.clientWidth / container.clientHeight, 1, 3000);
+    camera.position.set(380, 260, 420);
+
+    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+    renderer.setSize(container.clientWidth, container.clientHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    renderer.localClippingEnabled = true;
+
+    const controls = new THREE.OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.05;
+    controls.target.set(0, 11.25, 0); // Center of 22.5mm box
+    controls.maxPolarAngle = Math.PI - 0.05;
+    controls.minDistance = 30;
+    controls.maxDistance = 1500;
+
+    // --- 2. Lighting ---
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.75);
+    scene.add(ambientLight);
+
+    const dirLight1 = new THREE.DirectionalLight(0xfff7ed, 1.1);
+    dirLight1.position.set(250, 400, 200);
+    dirLight1.castShadow = true;
+    scene.add(dirLight1);
+
+    const dirLight2 = new THREE.DirectionalLight(0x93c5fd, 0.45);
+    dirLight2.position.set(-250, -100, -200);
+    scene.add(dirLight2);
+
+    // Floor Grid Helper
+    const gridHelper = new THREE.GridHelper(600, 30, 0x334155, 0x1e293b);
+    gridHelper.position.y = -30;
+    scene.add(gridHelper);
+
+    // --- 3. Materials ---
+    const woodMat = new THREE.MeshStandardMaterial({
+      color: 0xf3dfc8,
+      roughness: 0.5,
+      metalness: 0.02,
+      side: THREE.DoubleSide
+    });
+
+    const woodDarkMat = new THREE.MeshStandardMaterial({
+      color: 0xd9be9b,
+      roughness: 0.6,
+      metalness: 0.02,
+      side: THREE.DoubleSide
+    });
+
+    const brassMat = new THREE.MeshStandardMaterial({
+      color: 0xeab308,
+      roughness: 0.3,
+      metalness: 0.85
+    });
+
+    const steelMat = new THREE.MeshStandardMaterial({
+      color: 0xcfd8dc,
+      roughness: 0.25,
+      metalness: 0.9
+    });
+
+    const gasketMat = new THREE.MeshStandardMaterial({
+      color: 0x38bdf8,
+      transparent: true,
+      opacity: 0.75,
+      roughness: 0.3,
+      metalness: 0.1,
+      side: THREE.DoubleSide
+    });
+
+    const exciterBodyMat = new THREE.MeshStandardMaterial({
+      color: 0x1e293b,
+      roughness: 0.4,
+      metalness: 0.7
+    });
+    const exciterCoilMat = new THREE.MeshStandardMaterial({
+      color: 0xf97316,
+      roughness: 0.35,
+      metalness: 0.8
+    });
+    // --- New Materials for PCB, Electronics & Cabling ---
+    const pcbMat = new THREE.MeshStandardMaterial({
+      color: 0x065f46, // FR-4 Deep Forest Green
+      roughness: 0.35,
+      metalness: 0.15
+    });
+    const goldMat = new THREE.MeshStandardMaterial({
+      color: 0xf59e0b, // ENIG Gold Plating
+      roughness: 0.25,
+      metalness: 0.9
+    });
+    const icBlackMat = new THREE.MeshStandardMaterial({
+      color: 0x0f172a, // Molded Black Epoxy IC
+      roughness: 0.5,
+      metalness: 0.2
+    });
+    const rfShieldMat = new THREE.MeshStandardMaterial({
+      color: 0xe2e8f0, // Nickeled Silver Steel Shield
+      roughness: 0.2,
+      metalness: 0.95
+    });
+    const connectorWhiteMat = new THREE.MeshStandardMaterial({
+      color: 0xf8fafc, // JST Nylon Connector
+      roughness: 0.4,
+      metalness: 0.05
+    });
+    const grommetRubberMat = new THREE.MeshStandardMaterial({
+      color: 0x18181b, // Black Silicone Rubber
+      roughness: 0.85,
+      metalness: 0.05
+    });
+    const usbCableMat = new THREE.MeshStandardMaterial({
+      color: 0x09090b, // Matte Black USB Jacket
+      roughness: 0.55,
+      metalness: 0.1
+    });
+    const wireRedMat = new THREE.MeshStandardMaterial({
+      color: 0xef4444, // 24AWG Red Wire
+      roughness: 0.4,
+      metalness: 0.1
+    });
+    const wireBlackMat = new THREE.MeshStandardMaterial({
+      color: 0x18181b, // 24AWG Black Wire
+      roughness: 0.4,
+      metalness: 0.1
+    });
+    const wireBlueMat = new THREE.MeshStandardMaterial({
+      color: 0x3b82f6, // 24AWG Blue Wire
+      roughness: 0.4,
+      metalness: 0.1
+    });
+    const wireCoaxMat = new THREE.MeshStandardMaterial({
+      color: 0x94a3b8, // 1.13mm Gray RF Coaxial Cable
+      roughness: 0.35,
+      metalness: 0.2
+    });
+    const fpcAntennaMat = new THREE.MeshStandardMaterial({
+      color: 0xd97706, // Amber Polyimide FPC Patch
+      roughness: 0.3,
+      metalness: 0.6
+    });
+
+
+    // --- 4. Mathematical CAD Geometry Builders (0.00mm Exact Tolerance) ---
+    // Outer Box Half-Dimensions
+    const LX = 225.0; // 450 / 2
+    const LZ = 125.0; // 250 / 2
+    const R = 20.0;   // Corner Radius
+    const CX = LX - R; // 205.0 (Corner Arc X Center)
+    const CZ = LZ - R; // 105.0 (Corner Arc Z Center)
+
+    // Helper: Exact 450 x 250 Rounded Rectangle Shape in X-Z Plane
+    function createExactPlateShape(w, d, r) {
+      const shape = new THREE.Shape();
+      const hx = w / 2;
+      const hz = d / 2;
+      const cx = hx - r;
+      const cz = hz - r;
+
+      // Start at top straight edge
+      shape.moveTo(-cx, hz);
+      shape.lineTo(cx, hz);
+      shape.absarc(cx, cz, r, Math.PI / 2, 0, true);
+      shape.lineTo(hx, -cz);
+      shape.absarc(cx, -cz, r, 0, -Math.PI / 2, true);
+      shape.lineTo(-cx, -hz);
+      shape.absarc(-cx, -cz, r, -Math.PI / 2, -Math.PI, true);
+      shape.lineTo(-hx, cz);
+      shape.absarc(-cx, cz, r, Math.PI, Math.PI / 2, true);
+      return shape;
+    }
+
+    // 10 Bolt Coordinates (in X-Z plane, origin at center of 450x250)
+    const boltCoords = [
+      // 4 Corners: at (14, 14) from original (0,0) corner -> (-225+14, -125+14) = (-211, -111)
+      [-211.0, -111.0], [211.0, -111.0], [-211.0, 111.0], [211.0, 111.0],
+      // 4 Long edge midpoints: X = ±75, Z = ±(125 - 10.5) = ±114.5
+      [-75.0, -114.5], [75.0, -114.5], [-75.0, 114.5], [75.0, 114.5],
+      // 2 Short edge centers: X = ±(225 - 10.5) = ±214.5, Z = 0
+      [-214.5, 0.0], [214.5, 0.0]
+    ];
+
+    // 4 Exciter Coordinates (Haptic Rev 2: 120/330, 60/190 -> centered at (0,0))
+    // X: 120 - 225 = -105, 330 - 225 = +105
+    // Z: 60 - 125 = -65, 190 - 125 = +65
+    const exciterCoords = [
+      [-105.0, -65.0], [105.0, -65.0], [-105.0, 65.0], [105.0, 65.0]
+    ];
+
+    // --- 5. Assembly Groups & Precise Construction ---
+    const partGroups = {
+      bottom: new THREE.Group(),
+      bolts: new THREE.Group(),
+      gasket: new THREE.Group(),
+      frame: new THREE.Group(),
+      inserts: new THREE.Group(),
+      pcb: new THREE.Group(),
+      cables: new THREE.Group(),
+      exciters: new THREE.Group(),
+      top: new THREE.Group()
+    };
+
+    const mainAssembly = new THREE.Group();
+    Object.values(partGroups).forEach(g => mainAssembly.add(g));
+    scene.add(mainAssembly);
+
+    // ==========================================
+    // 1) BOTTOM PLATE (Y = 0 to 4.5 mm)
+    // ==========================================
+    const botShape = createExactPlateShape(450, 250, 20);
+    // Drill 10 holes
+    boltCoords.forEach(([bx, bz]) => {
+      const hPath = new THREE.Path();
+      hPath.absarc(bx, bz, 1.6, 0, Math.PI * 2, true);
+      botShape.holes.push(hPath);
+    });
+    const botGeom = new THREE.ExtrudeGeometry(botShape, { depth: 4.5, bevelEnabled: false });
+    botGeom.rotateX(Math.PI / 2); // Extrude in Y direction
+    const botMesh = new THREE.Mesh(botGeom, woodMat);
+    botMesh.position.y = 4.5; // Top at Y=4.5, bottom at Y=0
+    botMesh.receiveShadow = true;
+    partGroups.bottom.add(botMesh);
+
+    // ==========================================
+    // 2) 10 M3 COUNTERSUNK BOLTS (at bottom plate)
+    // ==========================================
+    boltCoords.forEach(([bx, bz]) => {
+      const bGroup = new THREE.Group();
+      // Bolt head (tapered countersunk)
+      const headGeom = new THREE.CylinderGeometry(3.0, 1.5, 1.7, 16);
+      const headMesh = new THREE.Mesh(headGeom, steelMat);
+      headMesh.position.y = 0.85;
+      bGroup.add(headMesh);
+      // Shaft
+      const shaftGeom = new THREE.CylinderGeometry(1.5, 1.5, 12.0, 14);
+      const shaftMesh = new THREE.Mesh(shaftGeom, steelMat);
+      shaftMesh.position.y = 7.7;
+      bGroup.add(shaftMesh);
+
+      bGroup.position.set(bx, 0, bz);
+      partGroups.bolts.add(bGroup);
+    });
+
+    // ==========================================
+    // 3) 1.2T SILICONE GASKET (Y = 4.5 to 5.7 mm)
+    // ==========================================
+    const gasketShape = createExactPlateShape(450, 250, 20);
+    const gasketCutout = createExactPlateShape(426, 226, 8); // 12mm rim
+    gasketShape.holes.push(gasketCutout);
+    const gasketGeom = new THREE.ExtrudeGeometry(gasketShape, { depth: 1.2, bevelEnabled: false });
+    gasketGeom.rotateX(Math.PI / 2);
+    const gasketMesh = new THREE.Mesh(gasketGeom, gasketMat);
+    gasketMesh.position.y = 4.5 + 1.2;
+    partGroups.gasket.add(gasketMesh);
+
+    // ==========================================
+    // 4) MIDDLE FRAME (Y = 4.5 to 18.0 mm, H = 13.5 mm)
+    // ==========================================
+    // (a) Long Side Rails (410 x 13.5 x 4.5 mm)
+    // Exactly matches X = [-205, 205], Z = [120.5, 125.0] and [-125.0, -120.5]
+    const longRailGeom = new THREE.BoxGeometry(410.0, 13.5, 4.5);
+    const railFront = new THREE.Mesh(longRailGeom, woodDarkMat);
+    railFront.position.set(0, 11.25, 125.0 - 2.25);
+    const railBack = new THREE.Mesh(longRailGeom, woodDarkMat);
+    railBack.position.set(0, 11.25, -125.0 + 2.25);
+    partGroups.frame.add(railFront, railBack);
+
+    // (b) Short Side Rails (210 x 13.5 x 4.5 mm)
+    // Exactly matches Z = [-105, 105], X = [-225.0, -220.5] and [220.5, 225.0]
+    const shortRailGeom = new THREE.BoxGeometry(4.5, 13.5, 210.0);
+    const railLeft = new THREE.Mesh(shortRailGeom, woodDarkMat);
+    railLeft.position.set(-225.0 + 2.25, 11.25, 0);
+    const railRight = new THREE.Mesh(shortRailGeom, woodDarkMat);
+    railRight.position.set(225.0 - 2.25, 11.25, 0);
+    partGroups.frame.add(railLeft, railRight);
+
+    // (c) 4 Corner R20 Blocks (0.00mm Exact Alignment with Rails)
+    // Each corner connects (±205, ±125) and (±225, ±105) with outer R20 arc
+    function buildCornerBlockMesh(cx, cz, startAngle, endAngle) {
+      const shape = new THREE.Shape();
+      shape.moveTo(cx, cz); // Inner apex
+      shape.lineTo(cx + R * Math.cos(startAngle), cz + R * Math.sin(startAngle));
+      shape.absarc(cx, cz, R, startAngle, endAngle, false);
+      shape.lineTo(cx, cz);
+      const geom = new THREE.ExtrudeGeometry(shape, { depth: 13.5, bevelEnabled: false });
+      geom.rotateX(Math.PI / 2);
+      const mesh = new THREE.Mesh(geom, woodDarkMat);
+      mesh.position.y = 18.0;
+      return mesh;
+    }
+
+    // Corner 1: (+X, +Z) Top-Right (cx=205, cz=105, arc: 0 to pi/2)
+    partGroups.frame.add(buildCornerBlockMesh(205.0, 105.0, 0, Math.PI / 2));
+    // Corner 2: (-X, +Z) Top-Left (cx=-205, cz=105, arc: pi/2 to pi)
+    partGroups.frame.add(buildCornerBlockMesh(-205.0, 105.0, Math.PI / 2, Math.PI));
+    // Corner 3: (-X, -Z) Bottom-Left (cx=-205, cz=-105, arc: pi to 1.5*pi)
+    partGroups.frame.add(buildCornerBlockMesh(-205.0, -105.0, Math.PI, Math.PI * 1.5));
+    // Corner 4: (+X, -Z) Bottom-Right (cx=205, cz=-105, arc: 1.5*pi to 2*pi)
+    partGroups.frame.add(buildCornerBlockMesh(205.0, -105.0, Math.PI * 1.5, Math.PI * 2));
+
+    // (d) 6 Screw Bosses (Flush with inner rail wall, 13.5mm height)
+    // 4 Long Edge Bosses (16 x 14 x 13.5 mm) at X=±75, inner edge flush with Z=±(125-4.5)=±120.5
+    // Boss center Z: ±(120.5 - 7) = ±113.5
+    [-75.0, 75.0].forEach(bx => {
+      [113.5, -113.5].forEach(bz => {
+        const bossGeom = new THREE.BoxGeometry(16.0, 13.5, 14.0);
+        const bossMesh = new THREE.Mesh(bossGeom, woodDarkMat);
+        bossMesh.position.set(bx, 11.25, bz);
+        partGroups.frame.add(bossMesh);
+      });
+    });
+
+    // 2 Short Edge Bosses (14 x 16 x 13.5 mm) at Z=0, inner edge flush with X=±(225-4.5)=±220.5
+    // Boss center X: ±(220.5 - 7) = ±213.5
+    [-213.5, 213.5].forEach(bx => {
+      const bossGeom = new THREE.BoxGeometry(14.0, 13.5, 16.0);
+      const bossMesh = new THREE.Mesh(bossGeom, woodDarkMat);
+      bossMesh.position.set(bx, 11.25, 0);
+      partGroups.frame.add(bossMesh);
+    });
+
+    // ==========================================
+    // 5) 10 M3 BRASS INSERTS (at frame bottom)
+    // ==========================================
+    boltCoords.forEach(([bx, bz]) => {
+      const insGeom = new THREE.CylinderGeometry(2.1, 2.1, 5.0, 16);
+      const insMesh = new THREE.Mesh(insGeom, brassMat);
+      insMesh.position.set(bx, 4.5 + 2.5, bz);
+      partGroups.inserts.add(insMesh);
+    });
+
+    // ==========================================
+    // 6) 4 EXCITERS (TEAX14C02: 37 x 20 x 9.85 mm, mounted to top plate)
+    // ==========================================
+    exciterCoords.forEach(([ex, ez]) => {
+      const excGroup = new THREE.Group();
+      // Body (37 x 20 x 4.0 mm)
+      const bGeom = new THREE.BoxGeometry(37.0, 4.0, 20.0);
+      const bMesh = new THREE.Mesh(bGeom, exciterBodyMat);
+      bMesh.position.y = -2.0;
+      excGroup.add(bMesh);
+
+      // Voice coil (⌀14 mm, height 5.85 mm)
+      const cGeom = new THREE.CylinderGeometry(7.0, 7.0, 5.85, 24);
+      const cMesh = new THREE.Mesh(cGeom, exciterCoilMat);
+      cMesh.position.y = -6.925;
+      excGroup.add(cMesh);
+
+      excGroup.position.set(ex, 18.0, ez); // Flush against top plate underside
+      partGroups.exciters.add(excGroup);
+    });
+
+    // ==========================================
+    // 7) TOP PLATE (Y = 18.0 to 22.5 mm, H = 4.5 mm)
+    // ==========================================
+    const topShape = createExactPlateShape(450, 250, 20);
+    const topGeom = new THREE.ExtrudeGeometry(topShape, { depth: 4.5, bevelEnabled: false });
+    topGeom.rotateX(Math.PI / 2);
+    const topMesh = new THREE.Mesh(topGeom, woodMat);
+    topMesh.position.y = 22.5; // Underside at Y=18.0, top at Y=22.5
+    topMesh.castShadow = true;
+    partGroups.top.add(topMesh);
+    // ==========================================
+    // 6.5) PCB MAINBOARD (80 x 60 x 1.6 mm) & STANDOFFS
+    // ECO-001 Rev 7: M2.5 x 5.0mm Standoffs, 4-point mounting
+    // ==========================================
+    const pcbGroup = new THREE.Group();
+    const pcbCenterX = -135.0; // Centered between left exciters and left rail
+    const pcbCenterZ = 0.0;
+    const pcbW = 80.0;
+    const pcbD = 60.0;
+    const pcbH = 1.6;
+    const standoffH = 5.0;
+    const pcbBaseY = 4.5 + standoffH; // 9.5 mm
+
+    // (a) FR-4 PCB Board
+    const pcbGeom = new THREE.BoxGeometry(pcbW, pcbH, pcbD);
+    const pcbMesh = new THREE.Mesh(pcbGeom, pcbMat);
+    pcbMesh.position.set(pcbCenterX, pcbBaseY + pcbH / 2, pcbCenterZ); // Y center = 10.3 mm
+    pcbMesh.receiveShadow = true;
+    pcbGroup.add(pcbMesh);
+
+    // (b) 4 M2.5 Brass Standoffs & Top Screws
+    // Standoff hole offset: 3.5mm from edges -> X=±36.5, Z=±26.5 from PCB center
+    const standoffOffsets = [
+      [-pcbW / 2 + 3.5, -pcbD / 2 + 3.5],
+      [ pcbW / 2 - 3.5, -pcbD / 2 + 3.5],
+      [-pcbW / 2 + 3.5,  pcbD / 2 - 3.5],
+      [ pcbW / 2 - 3.5,  pcbD / 2 - 3.5]
+    ];
+
+    standoffOffsets.forEach(([soX, soZ]) => {
+      const wx = pcbCenterX + soX;
+      const wz = pcbCenterZ + soZ;
+
+      // Hexagonal Brass Standoff (H=5.0mm, radius=2.4mm)
+      const soGeom = new THREE.CylinderGeometry(2.4, 2.4, standoffH, 6);
+      const soMesh = new THREE.Mesh(soGeom, brassMat);
+      soMesh.position.set(wx, 4.5 + standoffH / 2, wz); // Y center = 7.0 mm
+      pcbGroup.add(soMesh);
+
+      // Top Stainless Screw Head (ISO 7380 button head, radius=2.2mm, height=1.3mm)
+      const scrGeom = new THREE.CylinderGeometry(2.2, 2.0, 1.3, 14);
+      const scrMesh = new THREE.Mesh(scrGeom, steelMat);
+      scrMesh.position.set(wx, pcbBaseY + pcbH + 0.65, wz); // Y center = 11.75 mm
+      pcbGroup.add(scrMesh);
+
+      // Gold Annular Ring Ground Pad on PCB top
+      const padGeom = new THREE.RingGeometry(1.4, 2.5, 16);
+      padGeom.rotateX(-Math.PI / 2);
+      const padMesh = new THREE.Mesh(padGeom, goldMat);
+      padMesh.position.set(wx, pcbBaseY + pcbH + 0.02, wz);
+      pcbGroup.add(padMesh);
+    });
+
+    // (c) Major Onboard Electronic Components
+    // U1: ESP32-WROOM-32UE (18.0 x 3.2 x 19.2 mm) Silver RF Shield
+    const espGeom = new THREE.BoxGeometry(18.0, 3.2, 19.2);
+    const espMesh = new THREE.Mesh(espGeom, rfShieldMat);
+    espMesh.position.set(pcbCenterX, pcbBaseY + pcbH + 1.6, -10.0);
+    pcbGroup.add(espMesh);
+
+    // u.FL Gold Receptacle on ESP32
+    const uflGeom = new THREE.CylinderGeometry(1.0, 1.0, 1.25, 12);
+    const uflMesh = new THREE.Mesh(uflGeom, goldMat);
+    uflMesh.position.set(pcbCenterX + 6.0, pcbBaseY + pcbH + 3.2 + 0.6, -16.0);
+    pcbGroup.add(uflMesh);
+
+    // USB_C: Type-C 16-pin Metal Receptacle (9.0 x 3.2 x 7.5 mm) facing -X
+    const usbGeom = new THREE.BoxGeometry(9.0, 3.2, 7.5);
+    const usbMesh = new THREE.Mesh(usbGeom, steelMat);
+    usbMesh.position.set(pcbCenterX - pcbW / 2 + 4.5, pcbBaseY + pcbH + 1.6, 0.0);
+    pcbGroup.add(usbMesh);
+
+    // U4: TAS5805M Class-D Amplifier (HTSSOP-28: 9.7 x 1.2 x 4.4 mm)
+    const tasGeom = new THREE.BoxGeometry(9.7, 1.2, 4.4);
+    const tasMesh = new THREE.Mesh(tasGeom, icBlackMat);
+    tasMesh.position.set(pcbCenterX, pcbBaseY + pcbH + 0.6, 14.0);
+    pcbGroup.add(tasMesh);
+
+    // L1: Bourns SRP6540-4R7M Power Inductor (6.5 x 4.0 x 6.5 mm)
+    const indGeom = new THREE.BoxGeometry(6.5, 4.0, 6.5);
+    const indMesh = new THREE.Mesh(indGeom, icBlackMat);
+    indMesh.position.set(pcbCenterX - 18.0, pcbBaseY + pcbH + 2.0, 0.0);
+    pcbGroup.add(indMesh);
+
+    // U3: MP3426 Step-Up Boost IC (QFN-14: 3.0 x 0.9 x 4.0 mm)
+    const mpGeom = new THREE.BoxGeometry(3.0, 0.9, 4.0);
+    const mpMesh = new THREE.Mesh(mpGeom, icBlackMat);
+    mpMesh.position.set(pcbCenterX - 18.0, pcbBaseY + pcbH + 0.45, 14.0);
+    pcbGroup.add(mpMesh);
+
+    // U2: AP2112K-3.3 LDO (SOT-23-5: 2.9 x 1.2 x 1.6 mm)
+    const ldoGeom = new THREE.BoxGeometry(2.9, 1.2, 1.6);
+    const ldoMesh = new THREE.Mesh(ldoGeom, icBlackMat);
+    ldoMesh.position.set(pcbCenterX - 18.0, pcbBaseY + pcbH + 0.6, -14.0);
+    pcbGroup.add(ldoMesh);
+
+    // J1: Channel A Audio JST Connector (White nylon 5.0 x 4.5 x 4.0 mm)
+    const j1Geom = new THREE.BoxGeometry(5.0, 4.5, 4.0);
+    const j1Mesh = new THREE.Mesh(j1Geom, connectorWhiteMat);
+    j1Mesh.position.set(pcbCenterX + pcbW / 2 - 3.5, pcbBaseY + pcbH + 2.25, -12.0);
+    pcbGroup.add(j1Mesh);
+
+    // J2: Channel B Audio JST Connector (White nylon 5.0 x 4.5 x 4.0 mm)
+    const j2Geom = new THREE.BoxGeometry(5.0, 4.5, 4.0);
+    const j2Mesh = new THREE.Mesh(j2Geom, connectorWhiteMat);
+    j2Mesh.position.set(pcbCenterX + pcbW / 2 - 3.5, pcbBaseY + pcbH + 2.25, +12.0);
+    pcbGroup.add(j2Mesh);
+
+    partGroups.pcb.add(pcbGroup);
+
+    // ==========================================
+    // 6.6) CABLE HARNESS & SILICONE GROMMET ROUTING
+    // Precise 3D Splines (CatmullRomCurve3 & TubeGeometry)
+    // ==========================================
+    const cablesGroup = new THREE.Group();
+
+    // (a) Silicone Cable Grommet in Left Short Rail (X = -222.75, Z = 0, Y = 11.25)
+    const grommetOuter = new THREE.CylinderGeometry(5.5, 5.5, 6.5, 20);
+    grommetOuter.rotateZ(Math.PI / 2);
+    const grommetMesh = new THREE.Mesh(grommetOuter, grommetRubberMat);
+    grommetMesh.position.set(-222.75, 11.25, 0.0);
+    cablesGroup.add(grommetMesh);
+
+    // (b) Main USB-C 5V Power Cable (Matte Black ⌀3.8mm Flexible Tube)
+    const usbCurve = new THREE.CatmullRomCurve3([
+      new THREE.Vector3(-270.0, 11.25, 0.0),    // Outside bassinet
+      new THREE.Vector3(-222.75, 11.25, 0.0),   // Passing through grommet
+      new THREE.Vector3(-200.0, 11.25, 0.0),    // Inside cavity
+      new THREE.Vector3(-185.0, 12.0, 0.0),     // Approaching PCB
+      new THREE.Vector3(-175.0, 12.7, 0.0)      // Plugged into USB-C receptacle
+    ]);
+    const usbCableGeom = new THREE.TubeGeometry(usbCurve, 32, 1.9, 10, false);
+    const usbCableMesh = new THREE.Mesh(usbCableGeom, usbCableMat);
+    cablesGroup.add(usbCableMesh);
+
+    // (c) Channel A Exciter Wiring (24AWG Red/Black Pair, J1 -> Exciter 1 -> Exciter 2)
+    // Exciter 1 is at (-105, 18, -65), Exciter 2 is at (+105, 18, -65)
+    // Branch 1: J1 to Exciter 1 (Red wire)
+    const chA_p1_Curve = new THREE.CatmullRomCurve3([
+      new THREE.Vector3(pcbCenterX + pcbW / 2 - 1.0, pcbBaseY + pcbH + 2.5, -11.0), // J1 Pin 1
+      new THREE.Vector3(-92.0, 8.5, -25.0),
+      new THREE.Vector3(-98.0, 10.0, -48.0),
+      new THREE.Vector3(-105.0, 15.0, -58.0) // Exciter 1 Terminal A
+    ]);
+    const chA_p1_Mesh = new THREE.Mesh(new THREE.TubeGeometry(chA_p1_Curve, 24, 0.65, 8, false), wireRedMat);
+    cablesGroup.add(chA_p1_Mesh);
+
+    // Series Jumper: Exciter 1 to Exciter 2 (Spans length of bassinet at Y=10~12mm)
+    const chA_jump_Curve = new THREE.CatmullRomCurve3([
+      new THREE.Vector3(-105.0, 15.0, -72.0), // Exciter 1 Terminal B
+      new THREE.Vector3(-55.0, 9.5, -85.0),
+      new THREE.Vector3(  0.0, 9.0, -90.0),   // Center cavity clearance
+      new THREE.Vector3( 55.0, 9.5, -85.0),
+      new THREE.Vector3(105.0, 15.0, -72.0)  // Exciter 2 Terminal A
+    ]);
+    const chA_jump_Mesh = new THREE.Mesh(new THREE.TubeGeometry(chA_jump_Curve, 32, 0.65, 8, false), wireBlueMat);
+    cablesGroup.add(chA_jump_Mesh);
+
+    // Return: Exciter 2 back to J1 (Black wire)
+    const chA_ret_Curve = new THREE.CatmullRomCurve3([
+      new THREE.Vector3(105.0, 15.0, -58.0), // Exciter 2 Terminal B
+      new THREE.Vector3( 45.0, 8.5, -78.0),
+      new THREE.Vector3(-25.0, 8.5, -60.0),
+      new THREE.Vector3(-85.0, 8.5, -20.0),
+      new THREE.Vector3(pcbCenterX + pcbW / 2 - 1.0, pcbBaseY + pcbH + 2.5, -13.0) // J1 Pin 2
+    ]);
+    const chA_ret_Mesh = new THREE.Mesh(new THREE.TubeGeometry(chA_ret_Curve, 36, 0.65, 8, false), wireBlackMat);
+    cablesGroup.add(chA_ret_Mesh);
+
+    // (d) Channel B Exciter Wiring (24AWG Red/Black Pair, J2 -> Exciter 3 -> Exciter 4)
+    // Exciter 3 is at (-105, 18, +65), Exciter 4 is at (+105, 18, +65)
+    // Branch 1: J2 to Exciter 3 (Red wire)
+    const chB_p1_Curve = new THREE.CatmullRomCurve3([
+      new THREE.Vector3(pcbCenterX + pcbW / 2 - 1.0, pcbBaseY + pcbH + 2.5, +11.0), // J2 Pin 1
+      new THREE.Vector3(-92.0, 8.5, +25.0),
+      new THREE.Vector3(-98.0, 10.0, +48.0),
+      new THREE.Vector3(-105.0, 15.0, +58.0) // Exciter 3 Terminal A
+    ]);
+    const chB_p1_Mesh = new THREE.Mesh(new THREE.TubeGeometry(chB_p1_Curve, 24, 0.65, 8, false), wireRedMat);
+    cablesGroup.add(chB_p1_Mesh);
+
+    // Series Jumper: Exciter 3 to Exciter 4
+    const chB_jump_Curve = new THREE.CatmullRomCurve3([
+      new THREE.Vector3(-105.0, 15.0, +72.0), // Exciter 3 Terminal B
+      new THREE.Vector3(-55.0, 9.5, +85.0),
+      new THREE.Vector3(  0.0, 9.0, +90.0),   // Center cavity clearance
+      new THREE.Vector3( 55.0, 9.5, +85.0),
+      new THREE.Vector3(105.0, 15.0, +72.0)  // Exciter 4 Terminal A
+    ]);
+    const chB_jump_Mesh = new THREE.Mesh(new THREE.TubeGeometry(chB_jump_Curve, 32, 0.65, 8, false), wireBlueMat);
+    cablesGroup.add(chB_jump_Mesh);
+
+    // Return: Exciter 4 back to J2 (Black wire)
+    const chB_ret_Curve = new THREE.CatmullRomCurve3([
+      new THREE.Vector3(105.0, 15.0, +58.0), // Exciter 4 Terminal B
+      new THREE.Vector3( 45.0, 8.5, +78.0),
+      new THREE.Vector3(-25.0, 8.5, +60.0),
+      new THREE.Vector3(-85.0, 8.5, +20.0),
+      new THREE.Vector3(pcbCenterX + pcbW / 2 - 1.0, pcbBaseY + pcbH + 2.5, +13.0) // J2 Pin 2
+    ]);
+    const chB_ret_Mesh = new THREE.Mesh(new THREE.TubeGeometry(chB_ret_Curve, 36, 0.65, 8, false), wireBlackMat);
+    cablesGroup.add(chB_ret_Mesh);
+
+    // (e) RF Antenna Micro-Coaxial Cable & FPC Antenna Patch
+    const rfCoaxCurve = new THREE.CatmullRomCurve3([
+      new THREE.Vector3(pcbCenterX + 6.0, pcbBaseY + pcbH + 3.8, -16.0), // u.FL port
+      new THREE.Vector3(-150.0, 12.0, -35.0),
+      new THREE.Vector3(-180.0, 11.0, -75.0),
+      new THREE.Vector3(-205.0, 13.5, -95.0)  // Side wall attachment point
+    ]);
+    const rfCoaxMesh = new THREE.Mesh(new THREE.TubeGeometry(rfCoaxCurve, 24, 0.55, 8, false), wireCoaxMat);
+    cablesGroup.add(rfCoaxMesh);
+
+    // FPC Flexible Antenna Patch adhered to inner side rail
+    const fpcGeom = new THREE.BoxGeometry(25.0, 8.0, 0.4);
+    const fpcMesh = new THREE.Mesh(fpcGeom, fpcAntennaMat);
+    fpcMesh.position.set(-205.0, 13.5, -98.0);
+    cablesGroup.add(fpcMesh);
+
+    partGroups.cables.add(cablesGroup);
+
+
+    // Laser marking rectangles on underside of top plate (INFO layer)
+    exciterCoords.forEach(([ex, ez]) => {
+      const lineGeom = new THREE.BufferGeometry().setFromPoints([
+        new THREE.Vector3(-18.5, 0, -10), new THREE.Vector3(18.5, 0, -10),
+        new THREE.Vector3(18.5, 0, 10), new THREE.Vector3(-18.5, 0, 10),
+        new THREE.Vector3(-18.5, 0, -10)
+      ]);
+      const line = new THREE.Line(lineGeom, new THREE.LineBasicMaterial({ color: 0x059669 }));
+      line.position.set(ex, 18.02, ez);
+      partGroups.top.add(line);
+    });
+
+    // --- 6. Exploded View Displacement Logic ---
+    let explodeDistance = 0; // mm (starts at 0 for complete flush verification)
+
+    function updateExplodePositions() {
+      const f = explodeDistance;
+      // When f = 0, all parts meet flush with 0.00mm tolerance:
+      partGroups.bolts.position.y = -f * 0.4;
+      partGroups.bottom.position.y = 0;
+      partGroups.gasket.position.y = f * 0.22;
+      partGroups.pcb.position.y = f * 0.45;        // PCB elevates gracefully
+      partGroups.frame.position.y = f * 0.65;
+      partGroups.inserts.position.y = f * 0.65;
+      partGroups.cables.position.y = f * 0.80;     // Cabling moves with cavity
+      partGroups.exciters.position.y = f * 1.05;
+      partGroups.top.position.y = f * 1.35;
+    }
+
+    function setExplode(val) {
+      explodeDistance = val;
+      document.getElementById('explodeSlider').value = val;
+      document.getElementById('explode-val').innerText = val === 0 ? '0 mm (완전 조립 상태)' : val + ' mm';
+      
+      // Update snap buttons
+      ['btn-snap-0', 'btn-snap-30', 'btn-snap-60'].forEach(id => {
+        const btn = document.getElementById(id);
+        if (btn) btn.classList.remove('active');
+      });
+      if (val === 0) document.getElementById('btn-snap-0').classList.add('active');
+      if (val === 30) document.getElementById('btn-snap-30').classList.add('active');
+      if (val === 60) document.getElementById('btn-snap-60').classList.add('active');
+
+      updateExplodePositions();
+    }
+
+    document.getElementById('explodeSlider').addEventListener('input', (e) => {
+      setExplode(parseInt(e.target.value, 10));
+    });
+
+    // --- 7. View Modes & Toggles ---
+    let isXray = false;
+    let isSection = false;
+    let isWire = false;
+
+    const clipPlane = new THREE.Plane(new THREE.Vector3(1, 0, 0), 0);
+
+    function toggleXray() {
+      isXray = !isXray;
+      document.getElementById('btn-xray').innerText = '반투명 X-Ray: ' + (isXray ? 'ON' : 'OFF');
+      document.getElementById('btn-xray').classList.toggle('active', isXray);
+      woodMat.transparent = isXray;
+      woodMat.opacity = isXray ? 0.35 : 1.0;
+      woodDarkMat.transparent = isXray;
+      woodDarkMat.opacity = isXray ? 0.35 : 1.0;
+    }
+
+    function toggleSection() {
+      isSection = !isSection;
+      document.getElementById('btn-section').innerText = '하프 단면 절단: ' + (isSection ? 'ON' : 'OFF');
+      document.getElementById('btn-section').classList.toggle('active', isSection);
+      renderer.clippingPlanes = isSection ? [clipPlane] : [];
+    }
+
+    function toggleWireframe() {
+      isWire = !isWire;
+      document.getElementById('btn-wire').innerText = '와이어프레임: ' + (isWire ? 'ON' : 'OFF');
+      document.getElementById('btn-wire').classList.toggle('active', isWire);
+      woodMat.wireframe = isWire;
+      woodDarkMat.wireframe = isWire;
+      gasketMat.wireframe = isWire;
+      pcbMat.wireframe = isWire;
+      rfShieldMat.wireframe = isWire;
+      usbCableMat.wireframe = isWire;
+      wireRedMat.wireframe = isWire;
+      wireBlackMat.wireframe = isWire;
+      wireBlueMat.wireframe = isWire;
+    }
+
+    let isTopView = false;
+    function toggleCameraView() {
+      isTopView = !isTopView;
+      if (isTopView) {
+        camera.position.set(0, 550, 0.001);
+      } else {
+        camera.position.set(380, 260, 420);
+      }
+      controls.target.set(0, 11.25, 0);
+    }
+
+    function resetCamera() {
+      camera.position.set(380, 260, 420);
+      controls.target.set(0, 11.25, 0);
+    }
+
+    function togglePart(partName, visible) {
+      if (partGroups[partName]) {
+        partGroups[partName].visible = visible;
+      }
+    }
+
+    // --- 8. Render Loop ---
+    function animate() {
+      requestAnimationFrame(animate);
+      controls.update();
+      renderer.render(scene, camera);
+    }
+
+    window.addEventListener('resize', () => {
+      camera.aspect = container.clientWidth / container.clientHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(container.clientWidth, container.clientHeight);
+    });
+
+    // Initialize at fully assembled flush state
+    setExplode(0);
+    animate();
+  </script>
+</body>
+</html>
