@@ -200,7 +200,10 @@
       $('btnEstop').disabled = !connected;
       $('btnVol').disabled = !connected;
       $('btnStatus').disabled = !connected;
-      if (!connected) {
+      if (connected) {
+        $('stateBadge').className = 'badge ready';
+        $('stateBadge').textContent = '연결됨';
+      } else {
         $('stateBadge').className = 'badge';
         $('stateBadge').textContent = '미연결';
         $('tPing').textContent = '대기';
@@ -209,9 +212,11 @@
 
     function sendCmd(obj) {
       if (!cmdChar) return Promise.resolve();
-      const payload = JSON.stringify({ id: cmdId++, ...obj });
-      writeQueue = writeQueue.then(() => cmdChar.writeValueWithResponse(enc.encode(payload)))
-        .catch(err => log(`전송 오류: ${err.message}`));
+      const data = enc.encode(JSON.stringify({ id: cmdId++, ...obj }));
+      const writeFn = () => (cmdChar.properties && cmdChar.properties.writeWithoutResponse)
+        ? cmdChar.writeValueWithoutResponse(data)
+        : cmdChar.writeValueWithResponse(data);
+      writeQueue = writeQueue.then(writeFn).catch(err => log(`전송 오류: ${err.message}`));
       return writeQueue;
     }
 
@@ -238,44 +243,50 @@
         });
 
         const server = await device.gatt.connect();
+        log('GATT 연결됨, 서비스 조회 중...');
         const service = await server.getPrimaryService(SERVICE_UUID);
         cmdChar = await service.getCharacteristic(CMD_UUID);
-        const telChar = await service.getCharacteristic(TEL_UUID);
-        const ackChar = await service.getCharacteristic(ACK_UUID);
-
-        await telChar.startNotifications();
-        telChar.addEventListener('characteristicvaluechanged', (e) => {
-          try {
-            const d = JSON.parse(dec.decode(e.target.value));
-            updateBadge(d.state, d.stopping);
-            $('tFw').textContent = d.firmware || '-';
-            $('tCurAmp').textContent = `${d.frequency_hz ?? '-'} Hz / ${d.amplitude_scale ?? '-'}`;
-            if (d.accel_g) {
-              $('tAcc').textContent = `x:${d.accel_g.x.toFixed(2)} y:${d.accel_g.y.toFixed(2)} z:${d.accel_g.z.toFixed(2)}`;
-            }
-          } catch {}
-        });
-
-        await ackChar.startNotifications();
-        ackChar.addEventListener('characteristicvaluechanged', (e) => {
-          const txt = dec.decode(e.target.value);
-          try {
-            const a = JSON.parse(txt);
-            if (a.amp_status) $('tAmp').textContent = `${a.amp_status} (S=${a.amp_state}, CF=${a.chan_fault}, GF=${a.glob_fault})`;
-            if (a.cmd !== 'PING') log(`ACK ${a.cmd}: ${a.status} ${a.diag || ''}`);
-          } catch { log(`ACK: ${txt}`); }
-        });
-
         setConnectedUI(true);
-        log('연결 완료');
-        await sendCmd({ cmd: 'STATUS' });
+        log('명령 채널 연결 완료');
 
+        if (pingTimer) clearInterval(pingTimer);
         pingTimer = setInterval(() => {
           if (cmdChar) {
             sendCmd({ cmd: 'PING' });
             $('tPing').textContent = new Date().toLocaleTimeString('ko-KR', { hour12: false });
           }
         }, 1500);
+
+        try {
+          const telChar = await service.getCharacteristic(TEL_UUID);
+          await telChar.startNotifications();
+          telChar.addEventListener('characteristicvaluechanged', (e) => {
+            try {
+              const d = JSON.parse(dec.decode(e.target.value));
+              updateBadge(d.state, d.stopping);
+              $('tFw').textContent = d.firmware || '-';
+              $('tCurAmp').textContent = `${d.frequency_hz ?? '-'} Hz / ${d.amplitude_scale ?? '-'}`;
+              if (d.accel_g) {
+                $('tAcc').textContent = `x:${d.accel_g.x.toFixed(2)} y:${d.accel_g.y.toFixed(2)} z:${d.accel_g.z.toFixed(2)}`;
+              }
+            } catch {}
+          });
+        } catch (e) { log(`텔레메트리 알림 경고: ${e.message}`); }
+
+        try {
+          const ackChar = await service.getCharacteristic(ACK_UUID);
+          await ackChar.startNotifications();
+          ackChar.addEventListener('characteristicvaluechanged', (e) => {
+            const txt = dec.decode(e.target.value);
+            try {
+              const a = JSON.parse(txt);
+              if (a.amp_status) $('tAmp').textContent = `${a.amp_status} (S=${a.amp_state}, CF=${a.chan_fault}, GF=${a.glob_fault})`;
+              if (a.cmd !== 'PING') log(`ACK ${a.cmd}: ${a.status} ${a.diag || ''}`);
+            } catch { log(`ACK: ${txt}`); }
+          });
+        } catch (e) { log(`ACK 알림 경고: ${e.message}`); }
+
+        await sendCmd({ cmd: 'STATUS' });
       } catch (err) {
         log(`연결 실패: ${err.message}`);
       }
