@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>MAJN PCB #0005 BLE 제어</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --card: #1e293b;
+      --border: #334155;
+      --text: #f8fafc;
+      --muted: #94a3b8;
+      --primary: #3b82f6;
+      --green: #10b981;
+      --amber: #f59e0b;
+      --red: #ef4444;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 16px;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.4;
+    }
+    .container { max-width: 480px; margin: 0 auto; display: flex; flex-direction: column; gap: 12px; }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 16px;
+    }
+    h1 { font-size: 18px; margin: 0 0 6px; }
+    .sub { font-size: 12px; color: var(--muted); margin: 0; }
+    .row { display: flex; gap: 8px; align-items: center; justify-content: space-between; }
+    .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      background: #334155;
+      color: #e2e8f0;
+    }
+    .badge.ready { background: rgba(16,185,129,0.2); color: #34d399; }
+    .badge.running { background: rgba(59,130,246,0.25); color: #60a5fa; }
+    .badge.fault { background: rgba(239,68,68,0.25); color: #f87171; }
+    button {
+      border: none;
+      border-radius: 10px;
+      padding: 12px 14px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      color: white;
+      background: var(--primary);
+      transition: opacity 0.15s;
+    }
+    button:disabled { opacity: 0.4; cursor: not-allowed; }
+    button.green { background: var(--green); }
+    button.amber { background: var(--amber); color: #111827; }
+    button.red { background: var(--red); }
+    button.gray { background: #475569; }
+    label { display: block; font-size: 13px; color: var(--muted); margin-bottom: 4px; }
+    input[type="range"] { width: 100%; accent-color: var(--primary); }
+    .val { font-size: 16px; font-weight: 700; color: var(--text); }
+    .kv { font-size: 13px; display: grid; grid-template-columns: 110px 1fr; gap: 6px 8px; }
+    .kv div:nth-child(odd) { color: var(--muted); }
+    .warn {
+      background: rgba(245,158,11,0.15);
+      border: 1px solid rgba(245,158,11,0.4);
+      color: #fcd34d;
+      padding: 10px 12px;
+      border-radius: 10px;
+      font-size: 12px;
+      display: none;
+    }
+    pre {
+      margin: 0;
+      background: #020617;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px;
+      font-size: 11px;
+      max-height: 180px;
+      overflow-y: auto;
+      white-space: pre-wrap;
+      word-break: break-all;
+      color: #cbd5e1;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <div class="row">
+        <div>
+          <h1>MAJN PCB #0005</h1>
+          <p class="sub">Web Bluetooth 진동 제어기 (MAJN-Bassinet)</p>
+        </div>
+        <span id="stateBadge" class="badge">미연결</span>
+      </div>
+      <div id="envWarn" class="warn" style="margin-top:10px;"></div>
+      <div class="grid2" style="margin-top:12px;">
+        <button id="btnConnect">BLE 연결</button>
+        <button id="btnDisconnect" class="gray" disabled>연결 해제</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="row" style="margin-bottom:8px;">
+        <label style="margin:0;">주파수 (Hz)</label>
+        <span class="val"><span id="freqVal">45</span> Hz</span>
+      </div>
+      <input id="freq" type="range" min="20" max="120" step="1" value="45" />
+
+      <div class="row" style="margin:14px 0 8px;">
+        <label style="margin:0;">진폭 (PCM 스케일, 최대 0.30)</label>
+        <span class="val" id="ampVal">0.10</span>
+      </div>
+      <input id="amp" type="range" min="0.02" max="0.30" step="0.01" value="0.10" />
+
+      <div class="grid2" style="margin-top:14px;">
+        <button id="btnStart" class="green" disabled>진동 시작 (START)</button>
+        <button id="btnStop" class="amber" disabled>정상 정지 (STOP)</button>
+      </div>
+      <div class="grid2" style="margin-top:8px;">
+        <button id="btnApply" class="gray" disabled>주파수/진폭 변경</button>
+        <button id="btnEstop" class="red" disabled>비상 정지 (ESTOP)</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="row" style="margin-bottom:8px;">
+        <label style="margin:0;">앰프 게인 (READY 상태에서만 변경)</label>
+        <span class="val"><span id="volVal">72</span>%</span>
+      </div>
+      <div class="row" style="gap:10px;">
+        <input id="vol" type="range" min="0" max="100" step="1" value="72" />
+        <button id="btnVol" class="gray" style="padding:8px 12px; font-size:13px;" disabled>적용</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="row" style="margin-bottom:8px;">
+        <strong style="font-size:14px;">실시간 상태</strong>
+        <button id="btnStatus" class="gray" style="padding:6px 10px; font-size:12px;" disabled>STATUS 조회</button>
+      </div>
+      <div class="kv">
+        <div>펌웨어</div><div id="tFw">-</div>
+        <div>앰프 상태</div><div id="tAmp">-</div>
+        <div>현재 진폭</div><div id="tCurAmp">-</div>
+        <div>가속도 (g)</div><div id="tAcc">-</div>
+        <div>Heartbeat</div><div id="tPing">대기</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <strong style="font-size:13px; display:block; margin-bottom:6px;">로그</strong>
+      <pre id="log"></pre>
+    </div>
+  </div>
+
+  <script>
+    const SERVICE_UUID = '7b4d0001-7a6a-4d41-9a4d-4d414a4a4e01';
+    const CMD_UUID     = '7b4d0002-7a6a-4d41-9a4d-4d414a4a4e01';
+    const TEL_UUID     = '7b4d0003-7a6a-4d41-9a4d-4d414a4a4e01';
+    const ACK_UUID     = '7b4d0004-7a6a-4d41-9a4d-4d414a4a4e01';
+
+    let device = null, cmdChar = null, pingTimer = null, cmdId = 1;
+    let writeQueue = Promise.resolve();
+    const enc = new TextEncoder(), dec = new TextDecoder();
+
+    const $ = (id) => document.getElementById(id);
+    function log(msg) {
+      const el = $('log');
+      const ts = new Date().toLocaleTimeString('ko-KR', { hour12: false });
+      el.textContent = `[${ts}] ${msg}\n` + el.textContent.slice(0, 4000);
+    }
+
+    if (!navigator.bluetooth) {
+      $('envWarn').style.display = 'block';
+      $('envWarn').textContent = '이 브라우저는 Web Bluetooth를 지원하지 않거나 HTTPS 환경이 아닙니다. 안드로이드 Chrome + HTTPS 주소에서 열어주세요.';
+      $('btnConnect').disabled = true;
+    }
+
+    $('freq').oninput = () => $('freqVal').textContent = $('freq').value;
+    $('amp').oninput  = () => $('ampVal').textContent  = Number($('amp').value).toFixed(2);
+    $('vol').oninput  = () => $('volVal').textContent  = $('vol').value;
+
+    function setConnectedUI(connected) {
+      $('btnConnect').disabled = connected;
+      $('btnDisconnect').disabled = !connected;
+      $('btnStart').disabled = !connected;
+      $('btnStop').disabled = !connected;
+      $('btnApply').disabled = !connected;
+      $('btnEstop').disabled = !connected;
+      $('btnVol').disabled = !connected;
+      $('btnStatus').disabled = !connected;
+      if (!connected) {
+        $('stateBadge').className = 'badge';
+        $('stateBadge').textContent = '미연결';
+        $('tPing').textContent = '대기';
+      }
+    }
+
+    function sendCmd(obj) {
+      if (!cmdChar) return Promise.resolve();
+      const payload = JSON.stringify({ id: cmdId++, ...obj });
+      writeQueue = writeQueue.then(() => cmdChar.writeValueWithResponse(enc.encode(payload)))
+        .catch(err => log(`전송 오류: ${err.message}`));
+      return writeQueue;
+    }
+
+    function updateBadge(state, stopping) {
+      const b = $('stateBadge');
+      if (state === 'READY') { b.className = 'badge ready'; b.textContent = 'READY'; }
+      else if (state === 'RUNNING') { b.className = 'badge running'; b.textContent = stopping ? 'STOPPING' : 'RUNNING'; }
+      else if (state === 'FAULT') { b.className = 'badge fault'; b.textContent = 'FAULT'; }
+      else { b.className = 'badge'; b.textContent = state || 'UNKNOWN'; }
+    }
+
+    $('btnConnect').onclick = async () => {
+      try {
+        log('MAJN-Bassinet 검색 중...');
+        device = await navigator.bluetooth.requestDevice({
+          filters: [{ name: 'MAJN-Bassinet' }],
+          optionalServices: [SERVICE_UUID]
+        });
+        device.addEventListener('gattserverdisconnected', () => {
+          log('BLE 연결 끊김');
+          clearInterval(pingTimer); pingTimer = null;
+          cmdChar = null;
+          setConnectedUI(false);
+        });
+
+        const server = await device.gatt.connect();
+        const service = await server.getPrimaryService(SERVICE_UUID);
+        cmdChar = await service.getCharacteristic(CMD_UUID);
+        const telChar = await service.getCharacteristic(TEL_UUID);
+        const ackChar = await service.getCharacteristic(ACK_UUID);
+
+        await telChar.startNotifications();
+        telChar.addEventListener('characteristicvaluechanged', (e) => {
+          try {
+            const d = JSON.parse(dec.decode(e.target.value));
+            updateBadge(d.state, d.stopping);
+            $('tFw').textContent = d.firmware || '-';
+            $('tCurAmp').textContent = `${d.frequency_hz ?? '-'} Hz / ${d.amplitude_scale ?? '-'}`;
+            if (d.accel_g) {
+              $('tAcc').textContent = `x:${d.accel_g.x.toFixed(2)} y:${d.accel_g.y.toFixed(2)} z:${d.accel_g.z.toFixed(2)}`;
+            }
+          } catch {}
+        });
+
+        await ackChar.startNotifications();
+        ackChar.addEventListener('characteristicvaluechanged', (e) => {
+          const txt = dec.decode(e.target.value);
+          try {
+            const a = JSON.parse(txt);
+            if (a.amp_status) $('tAmp').textContent = `${a.amp_status} (S=${a.amp_state}, CF=${a.chan_fault}, GF=${a.glob_fault})`;
+            if (a.cmd !== 'PING') log(`ACK ${a.cmd}: ${a.status} ${a.diag || ''}`);
+          } catch { log(`ACK: ${txt}`); }
+        });
+
+        setConnectedUI(true);
+        log('연결 완료');
+        await sendCmd({ cmd: 'STATUS' });
+
+        pingTimer = setInterval(() => {
+          if (cmdChar) {
+            sendCmd({ cmd: 'PING' });
+            $('tPing').textContent = new Date().toLocaleTimeString('ko-KR', { hour12: false });
+          }
+        }, 1500);
+      } catch (err) {
+        log(`연결 실패: ${err.message}`);
+      }
+    };
+
+    $('btnDisconnect').onclick = () => {
+      clearInterval(pingTimer); pingTimer = null;
+      if (device && device.gatt.connected) device.gatt.disconnect();
+    };
+
+    $('btnStart').onclick = async () => {
+      const f = Number($('freq').value), a = Number($('amp').value);
+      log(`START (${f}Hz, ${a})`);
+      await sendCmd({ cmd: 'START', frequency_hz: f, amplitude: a });
+    };
+    $('btnStop').onclick   = () => { log('STOP 요청'); return sendCmd({ cmd: 'STOP' }); };
+    $('btnEstop').onclick  = () => { log('ESTOP 요청'); return sendCmd({ cmd: 'ESTOP' }); };
+    $('btnStatus').onclick = () => sendCmd({ cmd: 'STATUS' });
+    $('btnApply').onclick  = () => {
+      const f = Number($('freq').value), a = Number($('amp').value);
+      log(`설정 변경 (${f}Hz, ${a})`);
+      return sendCmd({ cmd: 'SET_VIBRATION', frequency_hz: f, amplitude: a });
+    };
+    $('btnVol').onclick    = () => {
+      const v = Number($('vol').value);
+      log(`게인 변경 (${v}%)`);
+      return sendCmd({ cmd: 'SET_VOLUME', volume: v });
+    };
+  </script>
+</body>
+</html>
